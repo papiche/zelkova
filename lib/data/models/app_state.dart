@@ -16,6 +16,7 @@ class AppState extends Equatable implements IsJsonSerializable<AppState> {
       {this.introViewed = false,
       this.warningViewed = false,
       this.warningBrowserViewed = false,
+      this.warningBraveViewed = false,
       this.expertMode = false,
       bool? walletCreatedViewed,
       this.v2mode = false,
@@ -44,6 +45,7 @@ class AppState extends Equatable implements IsJsonSerializable<AppState> {
   final bool walletCreatedViewed;
   final bool warningViewed;
   final bool warningBrowserViewed;
+  final bool warningBraveViewed;
   final bool expertMode;
   final bool v2mode;
   final Currency currency;
@@ -70,6 +72,7 @@ class AppState extends Equatable implements IsJsonSerializable<AppState> {
         warningViewed,
         expertMode,
         warningBrowserViewed,
+        warningBraveViewed,
         walletCreatedViewed,
         tutorials,
         currency,

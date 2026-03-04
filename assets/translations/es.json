@@ -554,10 +554,13 @@
   "common.cancel": "Cancelar",
   "common.save": "Guardar",
   "common.saving": "Guardando...",
-  "account_upgrade_required_title": "Protege tu cuenta",
-  "account_upgrade_required_desc": "Para usar funciones de identidad, tu cuenta debe estar protegida con un patrón o contraseña. Esto asegura que tus fondos e identidad estén a salvo.",
-  "account_upgrade_success": "Cuenta asegurada correctamente",
-  "account_upgrade_failed": "No se pudo asegurar la cuenta. Inténtalo de nuevo.",
+   "account_upgrade_required_title": "Protege tu cuenta",
+   "account_upgrade_required_desc": "Para usar funciones de identidad, tu cuenta debe estar protegida con un patrón o contraseña. Esto asegura que tus fondos e identidad estén a salvo.",
+   "account_upgrade_success": "Cuenta asegurada correctamente",
+   "account_upgrade_failed": "No se pudo asegurar la cuenta. Inténtalo de nuevo.",
+   "card_options": "Opciones de Tarjeta",
+   "secure_account_option": "Asegurar cuenta",
+   "change_theme_option": "Cambiar tema",
   "settings_notifications_status_enabled": "Notificaciones habilitadas",
   "settings_notifications_status_disabled": "Notificaciones deshabilitadas",
   "settings_notifications_enabled_desc": "Recibirás notificaciones de transacciones",
@@ -574,5 +577,9 @@
   "update_button": "Actualizar Ahora",
   "update_later_button": "Más Tarde",
   "update_ignore_button": "Omitir Esta Versión",
-  "update_prompt": "Una versión más reciente de Ğ1nkgo está disponible. ¿Te gustaría actualizar?"
+  "update_prompt": "Una versión más reciente de Ğ1nkgo está disponible. ¿Te gustaría actualizar?",
+  "brave_warning_title": "Importante: Aviso sobre el Navegador Brave",
+  "brave_warning_desc": "Estás usando el navegador Brave. Debido a la protección de Brave Shields, tus monederos pueden ser borrados cuando cierres el navegador.\n\nPara evitar perder tus fondos:\n\n1. Exporta tu monedero regularmente (sección Info → Exportar monedero)\n2. Desactiva Brave Shields para este sitio (clic en el icono del león en la barra de direcciones)\n3. Considera usar Chrome o Firefox para mejor compatibilidad\n\nPor favor, exporta tu monedero ahora si aún no lo has hecho.",
+  "brave_warning_understand": "ENTIENDO",
+  "brave_warning_export_now": "EXPORTAR AHORA"
 }

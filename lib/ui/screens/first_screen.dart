@@ -1,9 +1,12 @@
+import 'dart:js_interop';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_framework/responsive_framework.dart';
+import 'package:web/web.dart' as web;
 import 'package:web_browser_detect/web_browser_detect.dart';
 
 import '../../data/models/app_cubit.dart';
@@ -37,6 +40,7 @@ class _FirstScreenState extends State<FirstScreen> {
   late Tutorial tutorial;
   final ScrollController _scrollController = ScrollController();
   bool _isCollapsed = false;
+  bool _braveWarningShown = false;
 
   @override
   void initState() {
@@ -61,6 +65,11 @@ class _FirstScreenState extends State<FirstScreen> {
         });
       }
     });
+
+    // Show Brave warning on init if needed
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _showBraveWarningIfNeeded();
+    });
   }
 
   @override
@@ -69,33 +78,114 @@ class _FirstScreenState extends State<FirstScreen> {
     super.dispose();
   }
 
+  Future<void> _showBraveWarningIfNeeded() async {
+    if (!mounted) {
+      return;
+    }
+
+    if (kIsWeb && !_braveWarningShown) {
+      final AppCubit appCubit = context.read<AppCubit>();
+
+      // Show Brave warning dialog (only once per session)
+      if (!appCubit.isWarningBraveViewed && _isBraveBrowser()) {
+        _braveWarningShown = true;
+
+        if (!mounted) {
+          return;
+        }
+
+        await showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (BuildContext dialogContext) => AlertDialog(
+            title: Row(
+              children: <Widget>[
+                const Icon(Icons.warning_amber_rounded,
+                    color: Colors.orange, size: 32),
+                const SizedBox(width: 10),
+                Expanded(child: Text(tr('brave_warning_title'))),
+              ],
+            ),
+            content: SingleChildScrollView(
+              child: Text(tr('brave_warning_desc')),
+            ),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  context.read<AppCubit>().warningBraveViewed();
+                  Navigator.of(dialogContext).pop();
+                },
+                child: Text(tr('brave_warning_understand')),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  context.read<AppCubit>().warningBraveViewed();
+                  Navigator.of(dialogContext).pop();
+                  // Navigate to export section (Info screen - index 4)
+                  context.read<BottomNavCubit>().getFifthScreen();
+                },
+                child: Text(tr('brave_warning_export_now')),
+              ),
+            ],
+          ),
+        );
+      }
+    }
+  }
+
+  /// Detects if the browser is Brave using multiple methods
+  bool _isBraveBrowser() {
+    if (!kIsWeb) {
+      return false;
+    }
+
+    // Method 1: Try using web_browser_detect package
+    try {
+      final Browser? browser = Browser.detectOrNull();
+      if (browser != null && browser.browserAgent == BrowserAgent.brave) {
+        return true;
+      }
+    } catch (e) {
+      // Ignore errors from web_browser_detect
+    }
+
+    // Method 2: Check user agent string for Brave indicators
+    try {
+      final String userAgent =
+          (web.window.navigator.userAgent as JSString).toDart;
+
+      // Brave explicitly identifies itself in user agent
+      if (userAgent.contains('Brave')) {
+        return true;
+      }
+
+      // Check for brave-specific patterns (case-insensitive)
+      if (userAgent.toLowerCase().contains('brave')) {
+        return true;
+      }
+    } catch (e) {
+      // Ignore errors
+    }
+
+    // Method 3: Check for navigator.brave API (if available)
+    // This is the most reliable method as Brave browser exposes navigator.brave
+    try {
+      // Try to access navigator.brave property dynamically
+      final dynamic navigator = web.window.navigator;
+      final dynamic braveProp = (navigator as JSObject)['brave'];
+      if (braveProp != null && braveProp != false) {
+        return true;
+      }
+    } catch (e) {
+      // Ignore errors
+    }
+
+    return false;
+  }
+
   @override
   Widget build(BuildContext context) => BlocBuilder<AppCubit, AppState>(
           builder: (BuildContext context, AppState appState) {
-        WidgetsBinding.instance.addPostFrameCallback((_) async {
-          if (kIsWeb) {
-            final Browser? browser = Browser.detectOrNull();
-            if (!appState.warningBrowserViewed) {
-              if (browser == null ||
-                  (browser.browserAgent != BrowserAgent.chrome &&
-                      browser.browserAgent != BrowserAgent.firefox) ||
-                  browser.browserAgent == BrowserAgent.safari) {
-                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                  behavior: SnackBarBehavior.floating,
-                  content: Text(tr('browser_warning')),
-                  duration: const Duration(days: 365),
-                  action: SnackBarAction(
-                    label: 'OK',
-                    onPressed: () {
-                      ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                      context.read<AppCubit>().warningBrowserViewed();
-                    },
-                  ),
-                ));
-              }
-            }
-          }
-        });
         final PaymentStatus paymentStatus =
             context.read<PaymentCubit>().state.status;
         if (paymentStatus == PaymentStatus.sending ||

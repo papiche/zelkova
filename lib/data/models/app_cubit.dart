@@ -22,6 +22,8 @@ class AppCubit extends HydratedCubit<AppState> {
 
   bool get isWarningBrowserViewed => state.warningBrowserViewed;
 
+  bool get isWarningBraveViewed => state.warningBraveViewed;
+
   bool get isExpertMode => state.expertMode;
 
   Currency get currency => state.currency;
@@ -46,6 +48,10 @@ class AppCubit extends HydratedCubit<AppState> {
 
   void warningBrowserViewed() {
     emit(state.copyWith(warningBrowserViewed: true));
+  }
+
+  void warningBraveViewed() {
+    emit(state.copyWith(warningBraveViewed: true));
   }
 
   @override

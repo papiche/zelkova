@@ -297,10 +297,13 @@ class SharedPreferencesHelperV2
   /// Helper to get the current index, returns 0 if not found
   int _getCurrentIndex() => getCurrentWalletIndex();
 
+  /// Internal method to set current wallet without notifying listeners.
+  /// Callers are responsible for notifying when appropriate.
+  // ignore: unused_element
   Future<void> _setCurrentWalletIndex(String pubKey) async {
     _currentPubKey = pubKey;
     await _saveCurrentPubKey();
-    notifyListeners();
+    // 🔥 CHANGE: Removed notifyListeners() - let callers decide when to notify
   }
 
   @override
@@ -309,8 +312,12 @@ class SharedPreferencesHelperV2
       final StoredAccount acc = accounts[index];
       accounts[index] =
           acc.copyWith(lastUsed: DateTime.now().millisecondsSinceEpoch);
-      await _saveAccounts(false);
-      await _setCurrentWalletIndex(acc.pubKey);
+      _currentPubKey = acc.pubKey;
+      // 🔥 CHANGE: Atomic update - save both accounts and current pubkey, then single notification
+      await _saveCurrentPubKey();
+      await _saveAccounts(); // Single notification with consistent state
+      // Refresh profile in background without blocking
+      _updateProfileInBackground(index);
     } else {
       throw Exception('Invalid wallet index: $index');
     }
@@ -330,25 +337,13 @@ class SharedPreferencesHelperV2
       final StoredAccount acc = accounts[i];
       accounts[i] =
           acc.copyWith(lastUsed: DateTime.now().millisecondsSinceEpoch);
-      await _saveAccounts(false);
-      await _setCurrentWalletIndex(acc.pubKey);
+      _currentPubKey = acc.pubKey;
+      // 🔥 CHANGE: Atomic update - ensure _currentPubKey is set before any notification
+      await _saveCurrentPubKey();
+      await _saveAccounts(); // Single notification with consistent state
 
-      // Refresh profile for newly selected wallet to ensure C+ info is up-to-date
-      try {
-        final Contact? cached = ContactsCache().getCachedContact(acc.pubKey);
-        if (cached != null) {
-          await ContactsCache().saveContact(cached.cloneWithoutIdentity());
-        }
-        final Contact updatedContact = await getProfile(
-          acc.pubKey,
-          resize: false,
-          complete: true,
-        );
-        accounts[i] = accounts[i].copyWith(contact: updatedContact);
-        await _saveAccounts(); // Notify listeners with updated profile
-      } catch (e) {
-        // Silent failure - keep existing profile
-      }
+      // Refresh profile in background without blocking the UI
+      _updateProfileInBackground(i);
 
       assert(() {
         debugPrint('✓ selectCurrentWallet() completed. New index: $i');
@@ -807,10 +802,17 @@ class SharedPreferencesHelperV2
         ? acc.copyWith(lastUsed: DateTime.now().millisecondsSinceEpoch)
         : acc;
     accounts.add(accountToAdd);
-    await _saveAccounts();
-    // Use selectCurrentWallet to properly handle index since wallets can be sorted by date
-    await selectCurrentWallet(accountToAdd.pubKey);
-    notifyListeners();
+
+    // 🔥 CHANGE: Atomic update - set _currentPubKey BEFORE any notifications
+    _currentPubKey = accountToAdd.pubKey;
+    await _saveCurrentPubKey();
+
+    // 🔥 CHANGE: Single notification with fully consistent state
+    await _saveAccounts(); // This triggers notifyListeners()
+
+    // Update profile in background without blocking the UI
+    final int addedIndex = accounts.length - 1;
+    _updateProfileInBackground(addedIndex);
   }
 
   @override
@@ -835,6 +837,39 @@ class SharedPreferencesHelperV2
           throw Exception('Missing volatile wallet');
         }
         return wallet.seed;
+    }
+  }
+
+  /// Updates wallet profile in background without blocking the UI or triggering multiple notifications.
+  /// This is a fire-and-forget operation.
+  void _updateProfileInBackground(int accountIndex) {
+    // Use unawaited to run in background without blocking
+    _performProfileUpdate(accountIndex);
+  }
+
+  /// Performs the actual profile update asynchronously.
+  Future<void> _performProfileUpdate(int accountIndex) async {
+    try {
+      if (accountIndex < 0 || accountIndex >= accounts.length) {
+        return;
+      }
+
+      final StoredAccount acc = accounts[accountIndex];
+      final Contact? cached = ContactsCache().getCachedContact(acc.pubKey);
+      if (cached != null) {
+        await ContactsCache().saveContact(cached.cloneWithoutIdentity());
+      }
+
+      final Contact updatedContact = await getProfile(
+        acc.pubKey,
+        resize: false,
+        complete: true,
+      );
+      accounts[accountIndex] =
+          accounts[accountIndex].copyWith(contact: updatedContact);
+      await _saveAccounts(); // Notify listeners with updated profile
+    } catch (e) {
+      // Silent failure - keep existing profile
     }
   }
 

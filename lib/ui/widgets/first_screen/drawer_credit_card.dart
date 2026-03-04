@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -11,6 +13,7 @@ import '../../../data/models/wallet_themes.dart';
 import '../../../g1/g1_helper.dart';
 import '../../../shared_prefs_helper.dart';
 import '../../logger.dart';
+import '../../secure_unlock_widget.dart';
 import '../../ui_helpers.dart';
 import '../account_card_theme_selector.dart';
 import '../avatar_badge.dart';
@@ -37,6 +40,51 @@ class _DrawerWalletCardState extends State<DrawerWalletCard> {
   static const Duration _deletionCooldown = Duration(milliseconds: 500);
   bool _isDeleting = false;
 
+  void _showAccountOptions(BuildContext context) {
+    // Check if account is v2PasswordLess and can be upgraded
+    final bool canUpgrade = widget.card.type == AccountType.v2PasswordLess;
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(tr('card_options')),
+          content: SizedBox(
+            width: double.maxFinite,
+            child: ListView(
+              shrinkWrap: true,
+              children: <Widget>[
+                ListTile(
+                  leading: const Icon(Icons.palette),
+                  title: Text(tr('change_theme_option')),
+                  onTap: () {
+                    Navigator.pop(context);
+                    _showThemeSelector(context);
+                  },
+                ),
+                if (canUpgrade)
+                  ListTile(
+                    leading: const Icon(Icons.security),
+                    title: Text(tr('secure_account_option')),
+                    onTap: () {
+                      Navigator.pop(context);
+                      _upgradeAccountToProtected(context);
+                    },
+                  ),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text(tr('cancel')),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   void _showThemeSelector(BuildContext context) {
     showDialog(
       context: context,
@@ -52,6 +100,54 @@ class _DrawerWalletCardState extends State<DrawerWalletCard> {
         );
       },
     );
+  }
+
+  Future<void> _upgradeAccountToProtected(BuildContext context) async {
+    // Show informative dialog first
+    final bool? proceed = await showDialog<bool>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext ctx) {
+        return AlertDialog(
+          title: Text(tr('account_upgrade_required_title')),
+          content: Text(tr('account_upgrade_required_desc')),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => Navigator.of(ctx).pop(false),
+              child: Text(tr('cancel')),
+            ),
+            TextButton(
+              onPressed: () => Navigator.of(ctx).pop(true),
+              child: Text(tr('accept')),
+            ),
+          ],
+        );
+      },
+    );
+    if (proceed != true || !mounted) {
+      return;
+    }
+    // Request pattern/password setup
+    final Uint8List? key = await requestSecureUnlock(isSetup: true);
+    if (key == null || key.isEmpty || !mounted) {
+      return;
+    }
+    // Upgrade the account
+    final bool success = await SharedPreferencesHelper()
+        .upgradeToPasswordProtected(widget.card, key);
+    if (!mounted) {
+      return;
+    }
+    if (success) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(tr('account_upgrade_success'))),
+      );
+      setState(() {});
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(tr('account_upgrade_failed'))),
+      );
+    }
   }
 
   void _showAvatarDialog() {
@@ -328,7 +424,7 @@ class _DrawerWalletCardState extends State<DrawerWalletCard> {
                               mini: true,
                               backgroundColor: Colors.white10,
                               elevation: 1,
-                              onPressed: () => _showThemeSelector(context),
+                              onPressed: () => _showAccountOptions(context),
                               child: const Icon(Icons.settings,
                                   color: Colors.white),
                             ),

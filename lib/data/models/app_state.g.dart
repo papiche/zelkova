@@ -13,6 +13,8 @@ abstract class _$AppStateCWProxy {
 
   AppState warningBrowserViewed(bool warningBrowserViewed);
 
+  AppState warningBraveViewed(bool warningBraveViewed);
+
   AppState expertMode(bool expertMode);
 
   AppState walletCreatedViewed(bool? walletCreatedViewed);
@@ -47,6 +49,7 @@ abstract class _$AppStateCWProxy {
     bool introViewed,
     bool warningViewed,
     bool warningBrowserViewed,
+    bool warningBraveViewed,
     bool expertMode,
     bool? walletCreatedViewed,
     bool v2mode,
@@ -78,6 +81,10 @@ class _$AppStateCWProxyImpl implements _$AppStateCWProxy {
   @override
   AppState warningBrowserViewed(bool warningBrowserViewed) =>
       this(warningBrowserViewed: warningBrowserViewed);
+
+  @override
+  AppState warningBraveViewed(bool warningBraveViewed) =>
+      this(warningBraveViewed: warningBraveViewed);
 
   @override
   AppState expertMode(bool expertMode) => this(expertMode: expertMode);
@@ -134,6 +141,7 @@ class _$AppStateCWProxyImpl implements _$AppStateCWProxy {
     Object? introViewed = const $CopyWithPlaceholder(),
     Object? warningViewed = const $CopyWithPlaceholder(),
     Object? warningBrowserViewed = const $CopyWithPlaceholder(),
+    Object? warningBraveViewed = const $CopyWithPlaceholder(),
     Object? expertMode = const $CopyWithPlaceholder(),
     Object? walletCreatedViewed = const $CopyWithPlaceholder(),
     Object? v2mode = const $CopyWithPlaceholder(),
@@ -160,6 +168,10 @@ class _$AppStateCWProxyImpl implements _$AppStateCWProxy {
           ? _value.warningBrowserViewed
           // ignore: cast_nullable_to_non_nullable
           : warningBrowserViewed as bool,
+      warningBraveViewed: warningBraveViewed == const $CopyWithPlaceholder()
+          ? _value.warningBraveViewed
+          // ignore: cast_nullable_to_non_nullable
+          : warningBraveViewed as bool,
       expertMode: expertMode == const $CopyWithPlaceholder()
           ? _value.expertMode
           // ignore: cast_nullable_to_non_nullable
@@ -227,6 +239,7 @@ AppState _$AppStateFromJson(Map<String, dynamic> json) => AppState(
       introViewed: json['introViewed'] as bool? ?? false,
       warningViewed: json['warningViewed'] as bool? ?? false,
       warningBrowserViewed: json['warningBrowserViewed'] as bool? ?? false,
+      warningBraveViewed: json['warningBraveViewed'] as bool? ?? false,
       expertMode: json['expertMode'] as bool? ?? false,
       walletCreatedViewed: json['walletCreatedViewed'] as bool?,
       v2mode: json['v2mode'] as bool? ?? false,
@@ -254,6 +267,7 @@ Map<String, dynamic> _$AppStateToJson(AppState instance) => <String, dynamic>{
       'walletCreatedViewed': instance.walletCreatedViewed,
       'warningViewed': instance.warningViewed,
       'warningBrowserViewed': instance.warningBrowserViewed,
+      'warningBraveViewed': instance.warningBraveViewed,
       'expertMode': instance.expertMode,
       'v2mode': instance.v2mode,
       'currency': _$CurrencyEnumMap[instance.currency]!,

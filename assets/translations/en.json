@@ -549,10 +549,13 @@
   "common.saving": "Saving...",
   "internal_contact_name": "Contact name",
   "internal_name_copied_to_clipboard": "Contact name copied",
-  "account_upgrade_required_title": "Secure your account",
-  "account_upgrade_required_desc": "To use identity features, your account must be protected with a pattern or password. This ensures your funds and identity remain safe.",
-  "account_upgrade_success": "Account secured successfully",
-  "account_upgrade_failed": "Could not secure the account. Please try again.",
+   "account_upgrade_required_title": "Secure your account",
+   "account_upgrade_required_desc": "To use identity features, your account must be protected with a pattern or password. This ensures your funds and identity remain safe.",
+   "account_upgrade_success": "Account secured successfully",
+   "account_upgrade_failed": "Could not secure the account. Please try again.",
+   "card_options": "Card Options",
+   "secure_account_option": "Secure account",
+   "change_theme_option": "Change theme",
   "settings_notifications_status_enabled": "Notifications enabled",
   "settings_notifications_status_disabled": "Notifications disabled",
   "settings_notifications_enabled_desc": "You will receive notifications for transactions",
@@ -569,5 +572,9 @@
   "update_button": "Update Now",
   "update_later_button": "Later",
   "update_ignore_button": "Skip This Version",
-  "update_prompt": "A newer version of Ğ1nkgo is available. Would you like to update?"
+  "update_prompt": "A newer version of Ğ1nkgo is available. Would you like to update?",
+  "brave_warning_title": "Important: Brave Browser Warning",
+  "brave_warning_desc": "You are using Brave browser. Due to Brave Shields protection, your wallets may be deleted when you close the browser.\n\nTo prevent losing your funds:\n\n1. Export your wallet regularly (Info section → Export wallet)\n2. Disable Brave Shields for this site (click the lion icon in the address bar)\n3. Consider using Chrome or Firefox for better compatibility\n\nPlease export your wallet now if you haven't already done so.",
+  "brave_warning_understand": "I UNDERSTAND",
+  "brave_warning_export_now": "EXPORT NOW"
 }

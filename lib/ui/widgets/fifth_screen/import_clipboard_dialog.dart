@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import '../../../g1/g1_helper.dart';
 import '../../../g1/g1_v2_helper.dart';
 import '../../clipboard_helper.dart';
+import '../../logger.dart';
 import '../../ui_helpers.dart';
 import '../generic_qr_button.dart';
 import 'import_types.dart';
@@ -26,26 +27,39 @@ class _ImportClipboardDialogState extends State<ImportClipboardDialog> {
   bool _isImporting = false; // optional guard
 
   Future<void> _validateAndImport() async {
+    loggerDev('_validateAndImport called, _isImporting: $_isImporting');
     if (_isImporting) {
+      loggerDev('Already importing, returning');
       return;
     }
     final String text = _textController.text;
+    final String preview = text.length > 50 ? text.substring(0, 50) : text;
+    loggerDev('Text to validate: $preview${text.length > 50 ? '...' : ''}');
 
     switch (widget.importType) {
       case ImportType.clipboardG1nkgoV1Export:
         if (text.isEmpty) {
+          loggerDev('Error: empty g1nkgo export');
           setState(() => _errorMessage = tr('error_empty_g1nkgo'));
           return;
         }
         break;
       case ImportType.clipboardPubKey:
-        if (!validateKey(text)) {
+        final bool isValid = validateKey(text);
+        loggerDev('Validating pubkey: $isValid');
+        if (!isValid) {
+          loggerDev('Error: invalid pubkey');
           setState(() => _errorMessage = tr('error_invalid_pubkey'));
           return;
         }
         break;
       case ImportType.clipboardMnemonic:
-        if (text.split(' ').length < 12 || !isValidMnemonic(text)) {
+        final int wordCount = text.split(' ').length;
+        final bool isValidMnem = isValidMnemonic(text);
+        loggerDev(
+            'Validating mnemonic: wordCount=$wordCount, isValid=$isValidMnem');
+        if (wordCount < 12 || !isValidMnem) {
+          loggerDev('Error: invalid mnemonic');
           setState(() => _errorMessage = tr('error_invalid_mnemonic'));
           return;
         }
@@ -54,17 +68,25 @@ class _ImportClipboardDialogState extends State<ImportClipboardDialog> {
         throw UnimplementedError('Not supported here');
     }
 
+    loggerDev('Validation passed, starting import');
     setState(() {
       _errorMessage = null;
       _isImporting = true;
     });
 
     try {
+      loggerDev('Calling widget.onImport');
       await widget.onImport(text);
+      loggerDev('Import completed successfully');
       if (!mounted) {
         return;
       }
       Navigator.of(context).pop(true); // close the dialog AFTER import
+    } catch (e, st) {
+      loggerDev('Error during import', error: e, stackTrace: st);
+      if (mounted) {
+        setState(() => _errorMessage = 'Import error: $e');
+      }
     } finally {
       if (mounted) {
         setState(() => _isImporting = false);
@@ -73,10 +95,13 @@ class _ImportClipboardDialogState extends State<ImportClipboardDialog> {
   }
 
   Future<void> _pasteFromClipboard() async {
+    loggerDev('_pasteFromClipboard called');
     pasteFromClipboard(onPaste: (String? value) {
+      loggerDev('Paste callback received');
       setState(() {
         if (value != null) {
           _textController.text = value;
+          loggerDev('TextController updated');
         }
       });
     });
@@ -131,9 +156,9 @@ class _ImportClipboardDialogState extends State<ImportClipboardDialog> {
             children: <Widget>[
               if (showQrButton)
                 GenericQrButton(
-                  onKeyScanned: (String key) {
+                  onKeyScanned: (String key) async {
                     Navigator.of(context).pop(true);
-                    widget.onImport(key);
+                    await widget.onImport(key);
                   },
                 ),
               TextButton(

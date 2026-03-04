@@ -31,6 +31,18 @@ import 'import_dialog_stub.dart'
 import 'import_types.dart';
 import 'select_import_method.dart';
 
+/// Get the appropriate text color for error messages based on theme
+Color _getErrorTextColor() {
+  // Using a red that's visible on both light and dark backgrounds
+  return const Color(0xFFFF6B6B);
+}
+
+/// Get the appropriate text color for success messages based on theme
+Color _getSuccessTextColor(BuildContext context) {
+  final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
+  return isDarkMode ? Colors.white : Colors.black87;
+}
+
 class ImportDialog extends StatefulWidget {
   const ImportDialog({super.key, this.textToImport});
 
@@ -51,9 +63,12 @@ class _ImportDialogState extends State<ImportDialog> {
   @override
   void initState() {
     super.initState();
+    loggerDev(
+        'ImportDialog initState: textToImport is ${widget.textToImport == null ? 'null' : 'not null'}');
     _importFuture = widget.textToImport == null
         ? _getImportFuture(context)
         : Future<String>.value(widget.textToImport);
+    loggerDev('ImportDialog: Future created, will complete with data');
   }
 
   @override
@@ -84,9 +99,14 @@ class _ImportDialogState extends State<ImportDialog> {
               snapshot.data != null &&
               snapshot.data!.isNotEmpty) {
             final String keyEncString = snapshot.data!;
+            final String preview = keyEncString.length > 50
+                ? keyEncString.substring(0, 50)
+                : keyEncString;
+            loggerDev('ImportDialog received text: $preview...');
 
             // If it's a pubkey, do not try to parse JSON here.
             if (validateKey(keyEncString)) {
+              loggerDev('ImportDialog: Text is a valid key, showing error');
               if (!_errorDialogShown) {
                 _errorDialogShown = true;
                 WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -112,6 +132,8 @@ class _ImportDialogState extends State<ImportDialog> {
 
             // Only JSON path from here.
             if (!looksLikeJson(keyEncString)) {
+              loggerDev(
+                  'ImportDialog: Text does not look like JSON, showing error');
               if (!_errorDialogShown) {
                 _errorDialogShown = true;
                 WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -138,9 +160,14 @@ class _ImportDialogState extends State<ImportDialog> {
             // This can fail if the string is not a valid JSON or a valid
             // export so we catch the error
             try {
+              loggerDev('ImportDialog: Attempting to decode JSON');
               final Map<String, dynamic> keyJson =
                   jsonDecode(keyEncString) as Map<String, dynamic>;
+              loggerDev(
+                  'ImportDialog: JSON decoded successfully, keys: ${keyJson.keys}');
               if (keyJson['key'] == null) {
+                loggerDev(
+                    'ImportDialog: No "key" field in JSON, showing error');
                 if (!_errorDialogShown) {
                   _errorDialogShown = true;
 
@@ -165,6 +192,8 @@ class _ImportDialogState extends State<ImportDialog> {
                 return Container();
               }
 
+              loggerDev(
+                  'ImportDialog: Found "key" field, building PatternLock UI');
               final String keyEncrypted = keyJson['key'] as String;
               return Scaffold(
                 key: _importKey,
@@ -196,7 +225,7 @@ class _ImportDialogState extends State<ImportDialog> {
                             c.replaceSnackbar(
                               content: Text(
                                 tr('too_many_attempts'),
-                                style: const TextStyle(color: Colors.red),
+                                style: TextStyle(color: _getErrorTextColor()),
                               ),
                             );
                             Navigator.of(context).pop(true);
@@ -302,8 +331,8 @@ class _ImportDialogState extends State<ImportDialog> {
                                   message,
                                   style: TextStyle(
                                       color: imported == 0
-                                          ? Colors.red
-                                          : Colors.white),
+                                          ? _getErrorTextColor()
+                                          : _getSuccessTextColor(c)),
                                 ),
                               );
 
@@ -324,7 +353,7 @@ class _ImportDialogState extends State<ImportDialog> {
                               c.replaceSnackbar(
                                 content: Text(
                                   tr('error_importing_wallet'),
-                                  style: const TextStyle(color: Colors.red),
+                                  style: TextStyle(color: _getErrorTextColor()),
                                 ),
                               );
                               await Sentry.captureException(e,
@@ -344,7 +373,7 @@ class _ImportDialogState extends State<ImportDialog> {
                             context.replaceSnackbar(
                               content: Text(
                                 tr('wrong_pattern'),
-                                style: const TextStyle(color: Colors.red),
+                                style: TextStyle(color: _getErrorTextColor()),
                               ),
                             );
                             await Sentry.captureException(e,
@@ -357,6 +386,7 @@ class _ImportDialogState extends State<ImportDialog> {
                 ),
               );
             } catch (e) {
+              loggerDev('ImportDialog: Error decoding JSON: $e');
               if (!_errorDialogShown) {
                 _errorDialogShown = true;
                 logger('Error decoding JSON: $e');
@@ -383,6 +413,8 @@ class _ImportDialogState extends State<ImportDialog> {
           } else if (snapshot.hasError) {
             return CustomErrorWidget(snapshot.error);
           } else {
+            loggerDev(
+                'ImportDialog FutureBuilder: snapshot has no data (hasData=${snapshot.hasData}, hasError=${snapshot.hasError}, connectionState=${snapshot.connectionState})');
             return Container(); // CustomErrorWidget(tr('import_failed'));
           }
         });
@@ -519,7 +551,12 @@ Future<void> showSelectImportMethodDialog(
           return ImportClipboardDialog(
             importType: importType,
             onImport: (String textToImport) async {
+              final String preview = textToImport.length > 50
+                  ? textToImport.substring(0, 50)
+                  : textToImport;
+              loggerDev('onImport callback started with text: $preview...');
               if (validateKey(textToImport)) {
+                loggerDev('Recognized as a valid key');
                 if (!SharedPreferencesHelper().has(textToImport)) {
                   await showAuthCesiumWalletDialog(
                       context, textToImport, returnTo);
@@ -532,6 +569,7 @@ Future<void> showSelectImportMethodDialog(
               }
 
               if (isValidMnemonic(textToImport)) {
+                loggerDev('Recognized as a valid mnemonic');
                 try {
                   await SharedPreferencesHelper().importWalletFromMnemonic(
                     textToImport,
@@ -562,12 +600,21 @@ Future<void> showSelectImportMethodDialog(
               }
 
               // Fallback: route non-JSON / non-mnemonic / non-pubkey to ImportDialog
-              showDialog(
+              loggerDev(
+                  'Not recognized as key or mnemonic, opening ImportDialog');
+              loggerDev(
+                  'About to call showDialog with context: ${context.runtimeType}');
+              await showDialog(
                 context: context,
                 builder: (BuildContext context) {
+                  loggerDev('ImportDialog builder called');
                   return ImportDialog(textToImport: textToImport);
                 },
-              );
+              ).then((dynamic result) {
+                loggerDev('ImportDialog closed with result: $result');
+              }).catchError((Object e) {
+                loggerDev('ImportDialog error: $e');
+              });
             },
           );
         }

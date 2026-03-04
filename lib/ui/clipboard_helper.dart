@@ -1,8 +1,10 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:super_clipboard/super_clipboard.dart';
+
 import '../data/models/stored_account.dart';
 import '../shared_prefs_helper.dart';
+import 'logger.dart';
 import 'pattern_util.dart';
 
 Future<void> copyPublicKeyToClipboard(BuildContext context,
@@ -57,28 +59,40 @@ Future<void> copyFileToClipboard(
     context.replaceSnackbar(
       content: Text(
         feedbackText,
-        style: const TextStyle(color: Colors.red),
+        style: const TextStyle(color: Colors.white),
       ),
     );
   }
 }
 
 Future<void> pasteFromClipboard({required Function(String?) onPaste}) async {
+  loggerDev('Starting pasteFromClipboard');
   final SystemClipboard? clipboard = SystemClipboard.instance;
   if (clipboard != null) {
     try {
+      loggerDev('Reading from clipboard...');
       final ClipboardReader reader = await clipboard.read();
+      loggerDev(
+          'Clipboard reader obtained, items count: ${reader.items.length}');
       final ClipboardDataReader? item = reader.items.firstOrNull;
       if (item != null) {
+        loggerDev('Reading clipboard item as plain text...');
         final String? text = await item.readValue(Formats.plainText);
+        final String preview = text != null
+            ? (text.length > 50 ? text.substring(0, 50) : text)
+            : 'null';
+        loggerDev('Clipboard text obtained: $preview...');
         onPaste(text);
       } else {
+        loggerDev('No items in clipboard');
         onPaste(null);
       }
-    } catch (e) {
+    } catch (e, st) {
+      loggerDev('Error reading from clipboard: $e', error: e, stackTrace: st);
       onPaste(null);
     }
   } else {
+    loggerDev('SystemClipboard not available');
     onPaste(null);
   }
 }

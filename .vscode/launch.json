@@ -147,6 +147,23 @@
             "type": "dart",
             "flutterMode": "debug",
             "deviceId": "android"
+        },
+        {
+            "name": "ginkgo (Brave - Web)",
+            "request": "launch",
+            "type": "dart",
+            "deviceId": "chrome",
+            "env": {
+                "CHROME_EXECUTABLE": "/usr/bin/brave-browser"
+            },
+            "args": [
+                "--web-renderer",
+                "html",
+                "--web-hostname",
+                "127.0.0.1",
+                "--web-port",
+                "8181"
+            ]
         }
     ]
 }

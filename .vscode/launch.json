@@ -130,6 +130,23 @@
             "program": "lib/main.dart",
             "request": "launch",
             "type": "dart"
+        },
+        {
+            "name": "ginkgo (Android - Keep Data)",
+            "program": "lib/main.dart",
+            "request": "launch",
+            "type": "dart",
+            "args": ["--no-uninstall-first"],
+            "flutterMode": "debug",
+            "deviceId": "android"
+        },
+        {
+            "name": "ginkgo (Android - Fresh Install)",
+            "program": "lib/main.dart",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "debug",
+            "deviceId": "android"
         }
     ]
 }

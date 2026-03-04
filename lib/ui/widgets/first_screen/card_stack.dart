@@ -51,15 +51,15 @@ class _CardStackState extends State<CardStack> {
         return true;
       }());
 
-      // Sort cards: least recently used at the top, most recently used at the bottom.
+      // Sort cards: most recently used at the top, least recently used at the bottom.
       cards.sort((StoredAccount a, StoredAccount b) {
         final int aUsed = a.lastUsed ?? 0;
         final int bUsed = b.lastUsed ?? 0;
         if (aUsed != bUsed) {
-          return aUsed.compareTo(bUsed);
+          return bUsed.compareTo(aUsed); // 🔥 REVERSED: descending order
         }
-        // Fallback to import order (original list order)
-        return accounts.indexOf(a).compareTo(accounts.indexOf(b));
+        // Fallback to import order (original list order) - reversed
+        return accounts.indexOf(b).compareTo(accounts.indexOf(a));
       });
 
       final int walletsSize = cards.length;
@@ -85,6 +85,7 @@ class _CardStackState extends State<CardStack> {
                         child: DrawerWalletCard(
                             card: card,
                             cardIndex: index,
+                            isCurrentWallet: isCurrentWallet,
                             settingsVisible:
                                 index == walletsSize - 1 && isCurrentWallet)),
                   );

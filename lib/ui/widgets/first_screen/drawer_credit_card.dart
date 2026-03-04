@@ -25,11 +25,13 @@ class DrawerWalletCard extends StatefulWidget {
       {super.key,
       required this.card,
       required this.cardIndex,
-      required this.settingsVisible});
+      required this.settingsVisible,
+      required this.isCurrentWallet});
 
   final StoredAccount card;
   final bool settingsVisible;
   final int cardIndex;
+  final bool isCurrentWallet;
 
   @override
   State<DrawerWalletCard> createState() => _DrawerWalletCardState();
@@ -139,14 +141,18 @@ class _DrawerWalletCardState extends State<DrawerWalletCard> {
       return;
     }
     if (success) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(tr('account_upgrade_success'))),
-      );
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(tr('account_upgrade_success'))),
+        );
+      }
       setState(() {});
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(tr('account_upgrade_failed'))),
-      );
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(tr('account_upgrade_failed'))),
+        );
+      }
     }
   }
 
@@ -184,9 +190,11 @@ class _DrawerWalletCardState extends State<DrawerWalletCard> {
         elevation: 8.0,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(cardRadius),
-          side: isHighlighted
-              ? const BorderSide(color: Colors.white, width: 2.0)
-              : BorderSide.none,
+          side: widget.isCurrentWallet
+              ? const BorderSide(color: Colors.green, width: 3.0)
+              : (isHighlighted
+                  ? const BorderSide(color: Colors.white, width: 2.0)
+                  : BorderSide.none),
         ),
         child: AspectRatio(
             aspectRatio: cardAspectRatio,

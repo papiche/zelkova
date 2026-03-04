@@ -624,8 +624,8 @@ Future<SignAndSendResult> changeOwnerKey(String newOwnerAddress,
         newKeySig: const $MultiSignature().ed25519(signature.toList()),
       );
 
-      // Build a batched transaction: claimUds + changeOwnerKey + transferAll
-      // This ensures atomicity — either all succeed or none do.
+      // Build a batched transaction: claimUds + transferAll + changeOwnerKey.
+      // Order matters for runtime 1100+: transferAll must run before changeOwnerKey.
       final List<RuntimeCall> calls = <RuntimeCall>[];
 
       // Claim unclaimed UDs before migrating (they would be lost otherwise)
@@ -640,8 +640,6 @@ Future<SignAndSendResult> changeOwnerKey(String newOwnerAddress,
         loggerDev('Warning: Could not check for unclaimed UDs', error: e);
       }
 
-      calls.add(changeOwnerCall);
-
       // Transfer all balance to the new owner account
       if (withBalance) {
         final Id multiAddress =
@@ -651,6 +649,8 @@ Future<SignAndSendResult> changeOwnerKey(String newOwnerAddress,
           keepAlive: false,
         ));
       }
+
+      calls.add(changeOwnerCall);
 
       final RuntimeCall finalCall = calls.length > 1
           ? polkadot.tx.utility.batchAll(calls: calls)

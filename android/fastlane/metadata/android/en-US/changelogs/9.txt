@@ -1,0 +1,5 @@
+Version 1.5.8 - Bug fixes and improvements
+
+• Fixed Android 15 compatibility issues
+• Improved app performance and stability
+• Various bug fixes and UI improvements

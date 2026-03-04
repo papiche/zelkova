@@ -228,17 +228,15 @@ Future<Directory?> getAppSpecificExternalFilesDirectory(
     [bool ext = false]) async {
   try {
     if (ext) {
-      final Directory? appSpecificExternalFilesDir =
-          await getExternalStorageDirectory();
-      return appSpecificExternalFilesDir;
+      return await getExternalStorageDirectory();
     }
-    return getDownloadsDirectory();
+    // FilePicker uses SAF on Android which doesn't need directory access
+    return await getDownloadsDirectory();
   } catch (e) {
-    loggerDev(e.toString());
+    loggerDev('Error getting external storage directory: $e');
+    // Fallback to app documents directory
     return getApplicationDocumentsDirectory();
   }
-  // Before:
-  // return getExternalStorageDirectory();
 }
 
 ImageIcon get g1nkgoIcon => ImageIcon(
@@ -389,22 +387,38 @@ const String protectedUserNameSuffix = ' 🔒'; // lock
 const double cardAspectRatio = 1.58;
 
 Future<bool> requestStoragePermission(BuildContext context) async {
+  // Storage Access Framework (SAF) handles file access on Android without needing
+  // READ/WRITE_EXTERNAL_STORAGE permissions. FilePicker and file operations
+  // use SAF automatically on Android 11+.
+  // This function is kept for backward compatibility but doesn't need to do anything.
   return true;
 }
 
 Future<Directory?> getGinkgoDownloadDirectory() async {
-  Directory? externalDirectory;
   try {
-    externalDirectory = await getDownloadsDirectory();
+    // Try to get Downloads directory first
+    final Directory? downloadsDir = await getDownloadsDirectory();
+    if (downloadsDir != null) {
+      return downloadsDir;
+    }
   } catch (e) {
     loggerDev('Failed to get downloads directory: $e');
   }
 
-  if (externalDirectory == null) {
-    logger('Downloads directory not found');
+  try {
+    // Fallback to app-specific external storage
+    return await getExternalStorageDirectory();
+  } catch (e) {
+    loggerDev('Failed to get external storage directory: $e');
   }
-  externalDirectory ??= await getAppSpecificExternalFilesDirectory();
-  return externalDirectory;
+
+  // Last resort: app documents directory
+  try {
+    return await getApplicationDocumentsDirectory();
+  } catch (e) {
+    loggerDev('Failed to get application documents directory: $e');
+    return null;
+  }
 }
 
 bool isAndroid() => !kIsWeb && Platform.isAndroid;

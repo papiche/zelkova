@@ -76,8 +76,17 @@ flutter pub get
 ### Launch all the tests
 
 ```sh
+# Unit tests
 flutter test
+
+# Integration tests (requires Patrol CLI)
+patrol test
+
+# Integration test for specific file
+patrol test integration_test/app_smoke_test.dart
 ```
+
+**Note:** Integration tests use the [Patrol](https://pub.dev/packages/patrol) framework. See [integration_test/README.md](./integration_test/README.md) for detailed instructions.
 
 ### Build & deploy
 

@@ -35,31 +35,28 @@ class _CardStackState extends State<CardStack> {
         return true;
       }());
 
-      assert(() {
-        final Set<String> seenKeys = <String>{};
-        final List<String> duplicates = <String>[];
-        for (final StoredAccount acc in accounts) {
-          if (seenKeys.contains(acc.pubKey)) {
-            duplicates.add(acc.pubKey);
-          }
-          seenKeys.add(acc.pubKey);
-        }
-        if (duplicates.isNotEmpty) {
-          debugPrint(
-              '⚠️ CardStack: Duplicate pubKeys detected: ${duplicates.join(', ')}');
-        }
-        return true;
-      }());
-
-      // Sort cards: most recently used at the top, least recently used at the bottom.
+      // Sort cards: least recently used at the top, most recently used at the bottom.
+      // The current wallet (matching _currentPubKey) MUST be last (visible on top).
       cards.sort((StoredAccount a, StoredAccount b) {
+        final bool aIsCurrent = a.pubKey == currentAccount.pubKey;
+        final bool bIsCurrent = b.pubKey == currentAccount.pubKey;
+
+        // CRITICAL: Current wallet always goes last (on top visually)
+        if (aIsCurrent && !bIsCurrent) {
+          return 1; // a goes after b
+        }
+        if (!aIsCurrent && bIsCurrent) {
+          return -1; // b goes after a
+        }
+
+        // For non-current wallets, sort by lastUsed
         final int aUsed = a.lastUsed ?? 0;
         final int bUsed = b.lastUsed ?? 0;
         if (aUsed != bUsed) {
-          return bUsed.compareTo(aUsed); // 🔥 REVERSED: descending order
+          return aUsed.compareTo(bUsed);
         }
-        // Fallback to import order (original list order) - reversed
-        return accounts.indexOf(b).compareTo(accounts.indexOf(a));
+        // Fallback to import order (original list order)
+        return accounts.indexOf(a).compareTo(accounts.indexOf(b));
       });
 
       final int walletsSize = cards.length;
@@ -85,7 +82,6 @@ class _CardStackState extends State<CardStack> {
                         child: DrawerWalletCard(
                             card: card,
                             cardIndex: index,
-                            isCurrentWallet: isCurrentWallet,
                             settingsVisible:
                                 index == walletsSize - 1 && isCurrentWallet)),
                   );

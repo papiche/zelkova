@@ -1,0 +1,7 @@
+- Improved Brave Browser compatibility detection
+- Fixed multiple card import functionality
+- Fixed wallet drawer stacking order - current wallet now displayed at top
+- Enhanced v2 passwordless account security features
+- Code quality improvements and lint fixes
+- Removed super_clipboard dependency for better Android compatibility
+- Bug fixes and improvements

@@ -20,6 +20,8 @@
         android:icon="@mipmap/ic_launcher"
         android:label="G1nkgo"
         android:supportsRtl="true"
+        android:allowBackup="true"
+        android:fullBackupContent="@xml/backup_scheme"
         tools:targetApi="35">
         <activity
             android:name=".MainActivity"

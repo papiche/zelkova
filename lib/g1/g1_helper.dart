@@ -368,11 +368,53 @@ final RegExp regex = RegExp(
 
 Set<Contact> parseMultipleKeys(String inputText) {
   final Set<Contact> contacts = <Contact>{};
-  final Iterable<RegExpMatch> allMatches = regex.allMatches(inputText);
-  loggerDev('matches: ${allMatches.length}');
-  for (final RegExpMatch match in allMatches) {
+
+  // Strategy: Find v2 addresses first, then v1 pubkeys
+  // This avoids truncating v2 addresses when extracting 44-char chunks
+
+  // We need to find sequences that could be v2 addresses or v1 pubkeys
+  // v2 addresses start with 'g1' are longer (typically 48-50 chars)
+  // v1 pubkeys are base58 strings (43-44 chars)
+
+  // Step 1: Use a broader regex to find potential base58 sequences
+  // This regex matches any sequence of 1+ base58 characters
+  final RegExp baseRegex = RegExp(r'[1-9A-HJ-NP-Za-km-z]+');
+  final Iterable<RegExpMatch> potentialMatches =
+      baseRegex.allMatches(inputText);
+
+  String textWithV2Removed = inputText;
+  int v2Count = 0;
+
+  // First pass: find and validate v2 addresses
+  for (final RegExpMatch match in potentialMatches) {
+    final String? candidate = match.group(0);
+    if (candidate != null &&
+        candidate.length >= 48 &&
+        isValidV2Address(candidate)) {
+      loggerDev('Found v2 address: $candidate');
+      v2Count++;
+      try {
+        contacts.add(Contact.withAddress(
+          address: candidate,
+          createdOn: DateTime.now().millisecondsSinceEpoch,
+        ));
+      } catch (e) {
+        loggerDev('Error adding v2 $candidate $e');
+      }
+      // Remove this v2 address from text to avoid extracting parts of it
+      textWithV2Removed = textWithV2Removed.replaceFirst(candidate, '');
+    }
+  }
+
+  // Step 2: Find v1 pubkeys in the remaining text
+  final Iterable<RegExpMatch> v1Matches = regex.allMatches(textWithV2Removed);
+  loggerDev(
+      '[parseMultipleKeys] Found $v2Count v2 addresses, ${v1Matches.length} potential v1 pubkeys');
+
+  for (final RegExpMatch match in v1Matches) {
     final String? publicKey = match.group(0);
     if (publicKey != null && validateKey(publicKey)) {
+      loggerDev('Found v1 pubkey: $publicKey');
       try {
         contacts.add(Contact(pubKey: publicKey));
       } catch (e) {
@@ -380,6 +422,8 @@ Set<Contact> parseMultipleKeys(String inputText) {
       }
     }
   }
+
+  loggerDev('[parseMultipleKeys] Total contacts found: ${contacts.length}');
   return contacts;
 }
 

@@ -27,7 +27,7 @@ class GinkgoUpgraderMessages extends UpgraderMessages {
 
   @override
   String get body {
-    final message = tr('update_available_message');
+    final String message = tr('update_available_message');
 
     // In debug mode with empty versions, provide test versions
     if (kDebugMode && message.contains('{{')) {

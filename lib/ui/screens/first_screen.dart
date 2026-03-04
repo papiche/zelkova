@@ -1,13 +1,9 @@
-import 'dart:js_interop';
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_framework/responsive_framework.dart';
-import 'package:web/web.dart' as web;
-import 'package:web_browser_detect/web_browser_detect.dart';
 
 import '../../data/models/app_cubit.dart';
 import '../../data/models/app_state.dart';
@@ -17,6 +13,8 @@ import '../../data/models/payment_state.dart';
 import '../../data/models/stored_account.dart';
 import '../../g1/g1_helper.dart';
 import '../../shared_prefs_helper.dart';
+import '../brave_detector.dart';
+import '../logger.dart';
 import '../tutorial.dart';
 import '../tutorial_keys.dart';
 import '../widgets/bottom_widget.dart';
@@ -79,18 +77,34 @@ class _FirstScreenState extends State<FirstScreen> {
   }
 
   Future<void> _showBraveWarningIfNeeded() async {
+    logger.debug('[FirstScreen] _showBraveWarningIfNeeded() called');
+
     if (!mounted) {
+      logger.debug(
+          '[FirstScreen] Widget not mounted, skipping Brave warning check');
       return;
     }
 
     if (kIsWeb && !_braveWarningShown) {
+      logger.debug(
+          '[FirstScreen] Running on web and warning not shown yet, checking Brave...');
+
+      // Read cubit before async gap to avoid use_build_context_synchronously warning
       final AppCubit appCubit = context.read<AppCubit>();
+      logger.debug(
+          '[FirstScreen] AppCubit read, isWarningBraveViewed: ${appCubit.isWarningBraveViewed}');
+
+      final bool isBrave = await isBraveBrowser();
+      logger.info('[FirstScreen] Brave detection result: $isBrave');
 
       // Show Brave warning dialog (only once per session)
-      if (!appCubit.isWarningBraveViewed && _isBraveBrowser()) {
+      if (!appCubit.isWarningBraveViewed && isBrave) {
+        logger.info('[FirstScreen] ✓ Showing Brave warning dialog');
         _braveWarningShown = true;
 
         if (!mounted) {
+          logger.debug(
+              '[FirstScreen] Widget unmounted after async call, skipping dialog');
           return;
         }
 
@@ -112,6 +126,8 @@ class _FirstScreenState extends State<FirstScreen> {
             actions: <Widget>[
               TextButton(
                 onPressed: () {
+                  logger
+                      .info('[FirstScreen] User clicked "I UNDERSTAND" button');
                   context.read<AppCubit>().warningBraveViewed();
                   Navigator.of(dialogContext).pop();
                 },
@@ -119,9 +135,12 @@ class _FirstScreenState extends State<FirstScreen> {
               ),
               ElevatedButton(
                 onPressed: () {
+                  logger.info('[FirstScreen] User clicked "EXPORT NOW" button');
                   context.read<AppCubit>().warningBraveViewed();
                   Navigator.of(dialogContext).pop();
                   // Navigate to export section (Info screen - index 4)
+                  logger
+                      .debug('[FirstScreen] Navigating to export/Info screen');
                   context.read<BottomNavCubit>().getFifthScreen();
                 },
                 child: Text(tr('brave_warning_export_now')),
@@ -129,58 +148,25 @@ class _FirstScreenState extends State<FirstScreen> {
             ],
           ),
         );
+      } else {
+        if (appCubit.isWarningBraveViewed) {
+          logger.debug('[FirstScreen] Warning already viewed, skipping dialog');
+        }
+        if (!isBrave) {
+          logger
+              .debug('[FirstScreen] Not using Brave browser, skipping warning');
+        }
+      }
+    } else {
+      if (!kIsWeb) {
+        logger.debug(
+            '[FirstScreen] Not running on web platform, skipping Brave warning');
+      }
+      if (_braveWarningShown) {
+        logger
+            .debug('[FirstScreen] Brave warning already shown in this session');
       }
     }
-  }
-
-  /// Detects if the browser is Brave using multiple methods
-  bool _isBraveBrowser() {
-    if (!kIsWeb) {
-      return false;
-    }
-
-    // Method 1: Try using web_browser_detect package
-    try {
-      final Browser? browser = Browser.detectOrNull();
-      if (browser != null && browser.browserAgent == BrowserAgent.brave) {
-        return true;
-      }
-    } catch (e) {
-      // Ignore errors from web_browser_detect
-    }
-
-    // Method 2: Check user agent string for Brave indicators
-    try {
-      final String userAgent =
-          (web.window.navigator.userAgent as JSString).toDart;
-
-      // Brave explicitly identifies itself in user agent
-      if (userAgent.contains('Brave')) {
-        return true;
-      }
-
-      // Check for brave-specific patterns (case-insensitive)
-      if (userAgent.toLowerCase().contains('brave')) {
-        return true;
-      }
-    } catch (e) {
-      // Ignore errors
-    }
-
-    // Method 3: Check for navigator.brave API (if available)
-    // This is the most reliable method as Brave browser exposes navigator.brave
-    try {
-      // Try to access navigator.brave property dynamically
-      final dynamic navigator = web.window.navigator;
-      final dynamic braveProp = (navigator as JSObject)['brave'];
-      if (braveProp != null && braveProp != false) {
-        return true;
-      }
-    } catch (e) {
-      // Ignore errors
-    }
-
-    return false;
   }
 
   @override

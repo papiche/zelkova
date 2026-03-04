@@ -15,7 +15,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.5.7+6
+version: 1.5.9+10
 
 environment:
   sdk: ^3.5.2
@@ -133,7 +133,8 @@ dependencies:
   file_picker: ^10.2.0
   shimmer: ^3.0.0
   bip39_mnemonic: ^3.0.9
-  substrate_bip39: ^0.7.0
+  substrate_bip39: 0.6.1
+  sr25519: 0.7.0
   emoji_picker_flutter: ^4.3.0
   web: ^1.1.1
   image_picker: ^1.0.8
@@ -152,6 +153,7 @@ dev_dependencies:
   hive_ce_generator: any
   hive: any
   bloc_lint: ^0.3.2
+  patrol: ^4.1.1
 
 # source: https://stackoverflow.com/a/75332857/8301867
 dependency_overrides:
@@ -159,6 +161,7 @@ dependency_overrides:
   #web_socket_channel: 2.4.4
   #web_socket: ^0.1.6
   intl: ^0.20.2
+  substrate_bip39: 0.6.1
   #web: ^1.0.0
 
 # For information on the generic Dart part of this file, see the

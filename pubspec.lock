@@ -489,6 +489,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.1"
+  dispose_scope:
+    dependency: transitive
+    description:
+      name: dispose_scope
+      sha256: "48ec38ca2631c53c4f8fa96b294c801e55c335db5e3fb9f82cede150cfe5a2af"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.1.0"
   dots_indicator:
     dependency: transitive
     description:
@@ -1645,6 +1653,30 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.3.0"
+  patrol:
+    dependency: "direct dev"
+    description:
+      name: patrol
+      sha256: c46dd59eeaca0b78419815e1d8a83a742b83a24666e21a586fc9f67c3cd08b60
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.2.0"
+  patrol_finders:
+    dependency: transitive
+    description:
+      name: patrol_finders
+      sha256: ac0bfaf3eaaa6cc3d49c8a365329cc7f4361a5f486f1adb45edc96dbfc854da9
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.1.0"
+  patrol_log:
+    dependency: transitive
+    description:
+      name: patrol_log
+      sha256: b3bd2862c15bd6b163763d7d2a80ae07c24af6da07d62d202798ceea327045d7
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.7.1"
   pattern_lock:
     dependency: "direct main"
     description:
@@ -2147,7 +2179,7 @@ packages:
     source: hosted
     version: "1.10.2"
   sr25519:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: sr25519
       sha256: "122c930a933da6af018ec4a2ccdb853a7d0eb1a0891bfb03467e366b56f86f12"
@@ -2206,10 +2238,10 @@ packages:
     dependency: "direct main"
     description:
       name: substrate_bip39
-      sha256: ba880015808079804f40a0fde8c5bff0315ec6792fe3a4281a704e408f1c6bdb
+      sha256: "256f440b45e33a37a374eb2a6a83ff879ecefb67b28a0b15599f09c8d920f6e3"
       url: "https://pub.dev"
     source: hosted
-    version: "0.7.0"
+    version: "0.6.1"
   substrate_metadata:
     dependency: transitive
     description:

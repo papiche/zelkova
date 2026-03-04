@@ -161,12 +161,26 @@ void _showSnackBar(BuildContext context, String message) {
   if (!context.mounted) {
     return;
   }
+  final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
+  final Color? backgroundColor =
+      isDarkMode ? Colors.grey[900] : Colors.grey[100];
+  final Color textColor = isDarkMode ? Colors.white : Colors.black87;
+
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
-      content: Text(message),
-      backgroundColor: Colors.red,
+      content: Text(
+        message,
+        style: TextStyle(color: textColor),
+      ),
+      backgroundColor: backgroundColor,
     ),
   );
+}
+
+/// Get the appropriate text color based on theme for success/info messages
+Color _getSuccessTextColor(BuildContext context) {
+  final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
+  return isDarkMode ? Colors.white : Colors.black87;
 }
 
 Future<void> _showSelectExportMethodDialog(
@@ -347,7 +361,7 @@ class _ExportDialogState extends State<ExportDialog> {
                 context.replaceSnackbar(
                   content: Text(
                     tr('at_least_3'),
-                    style: const TextStyle(color: Colors.red),
+                    style: const TextStyle(color: Color(0xFFFF6B6B)),
                   ),
                 );
                 return;
@@ -360,7 +374,7 @@ class _ExportDialogState extends State<ExportDialog> {
                   context.replaceSnackbar(
                     content: Text(
                       tr('pattern_do_not_match'),
-                      style: const TextStyle(color: Colors.red),
+                      style: const TextStyle(color: Color(0xFFFF6B6B)),
                     ),
                   );
                   setState(() {
@@ -416,7 +430,7 @@ class _ExportDialogState extends State<ExportDialog> {
                 context.replaceSnackbar(
                   content: Text(
                     tr('passwords_do_not_match'),
-                    style: const TextStyle(color: Colors.red),
+                    style: const TextStyle(color: Color(0xFFFF6B6B)),
                   ),
                 );
               } else {
@@ -580,7 +594,7 @@ class _ExportDialogState extends State<ExportDialog> {
               feedbackMessage.isNotEmpty
                   ? feedbackMessage
                   : tr('wallet_exported'),
-              style: const TextStyle(color: Colors.white),
+              style: TextStyle(color: _getSuccessTextColor(context)),
             ),
           );
         }
@@ -595,7 +609,7 @@ class _ExportDialogState extends State<ExportDialog> {
           context.replaceSnackbar(
             content: Text(
               feedbackMessage,
-              style: const TextStyle(color: Colors.white),
+              style: TextStyle(color: _getSuccessTextColor(context)),
             ),
           );
         }
@@ -661,7 +675,7 @@ class _ExportDialogState extends State<ExportDialog> {
       context.replaceSnackbar(
         content: Text(
           tr('wallet_exported'),
-          style: const TextStyle(color: Colors.green),
+          style: TextStyle(color: _getSuccessTextColor(context)),
         ),
       );
     }

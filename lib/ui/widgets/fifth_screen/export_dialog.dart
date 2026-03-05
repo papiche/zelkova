@@ -597,6 +597,14 @@ class _ExportDialogState extends State<ExportDialog> {
               style: TextStyle(color: _getSuccessTextColor(context)),
             ),
           );
+        } else {
+          // Export completely failed - show error message
+          context.replaceSnackbar(
+            content: Text(
+              tr('export_failed'),
+              style: const TextStyle(color: Color(0xFFFF6B6B)),
+            ),
+          );
         }
         break;
       case ExportType.share:
@@ -725,7 +733,11 @@ class _ExportDialogState extends State<ExportDialog> {
           bytes: Uint8List.fromList(bytes),
         );
         if (outputPath == null || outputPath.isEmpty) {
-          return false;
+          // SAF failed or user cancelled - offer fallback to clipboard
+          if (!context.mounted) {
+            return false;
+          }
+          return await _offerClipboardFallback(context, bytes);
         }
         loggerDev('File saved at: $outputPath');
         return true;
@@ -745,6 +757,49 @@ class _ExportDialogState extends State<ExportDialog> {
       await Sentry.captureException(e, stackTrace: stacktrace);
       return false;
     }
+  }
+
+  Future<bool> _offerClipboardFallback(
+      BuildContext context, List<int> bytes) async {
+    if (!context.mounted) {
+      return false;
+    }
+
+    final bool? useFallback = await showDialog<bool>(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title: Text(tr('export_file_failed_title')),
+        content: Text(tr('export_file_failed_offer_alternatives')),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: Text(tr('cancel')),
+          ),
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(true),
+            child: Text(tr('copy_to_clipboard')),
+          ),
+        ],
+      ),
+    );
+
+    if (useFallback != true) {
+      return false;
+    }
+
+    if (!context.mounted) {
+      return false;
+    }
+
+    // Convert bytes to JSON string and copy to clipboard
+    final String fileJson = utf8.decode(bytes);
+    copyFileToClipboard(
+      context: context,
+      fileJson: fileJson,
+      feedbackText: tr('export_file_fallback_success'),
+    );
+
+    return true;
   }
 
   String getWalletFileName() {

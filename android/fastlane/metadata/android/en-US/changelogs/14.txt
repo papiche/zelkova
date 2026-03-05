@@ -1,0 +1,2 @@
+- Fixed intro and paste issues (thanks sandrisha)
+- Clipboard fallback when file export fails

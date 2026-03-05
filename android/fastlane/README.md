@@ -31,6 +31,14 @@ Deploy to Google Play internal testing track
 
 Deploy to Google Play production track (upload existing AAB)
 
+### android deploy_production_no_images
+
+```sh
+[bundle exec] fastlane android deploy_production_no_images
+```
+
+Deploy to Google Play production track without images (upload existing AAB)
+
 ### android validate
 
 ```sh

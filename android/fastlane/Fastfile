@@ -27,6 +27,18 @@ platform :android do
     )
   end
 
+  desc "Deploy to Google Play production track without images (upload existing AAB)"
+  lane :deploy_production_no_images do
+    upload_to_play_store(
+      track: "production",
+      aab: "../build/app/outputs/bundle/release/app-release.aab",
+      release_status: "completed",
+      skip_upload_metadata: false,
+      skip_upload_images: true,
+      skip_upload_screenshots: true
+    )
+  end
+
   desc "Validate connection to Google Play API"
   lane :validate do
     validate_play_store_json_key(

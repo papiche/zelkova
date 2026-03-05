@@ -96,7 +96,7 @@ class _ImportClipboardDialogState extends State<ImportClipboardDialog> {
 
   Future<void> _pasteFromClipboard() async {
     loggerDev('_pasteFromClipboard called');
-    pasteFromClipboard(onPaste: (String? value) {
+    await pasteFromClipboard(onPaste: (String? value) {
       loggerDev('Paste callback received');
       setState(() {
         if (value != null) {

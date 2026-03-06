@@ -15,8 +15,7 @@ List<Node> defaultDuniterNodes = <Node>{
 
 List<Node> defaultCesiumPlusNodes = <Node>{
   ..._readDotNodeConfig(Env.cesiumPlusNodes),
-  ..._splitList(
-      'https://g1.data.brussels.ovh https://g1.data.e-is.pro https://g1.data.mithril.re https://g1.data.pini.fr https://g1.data.presles.fr https://g1.data.geragc.es')
+  ..._splitList('https://g1.data.e-is.pro')
 }.toList();
 List<Node> defaultGvaNodes = <Node>{
   ..._readDotNodeConfig(Env.gvaNodes),

@@ -11,18 +11,33 @@ server {
         try_files $uri $uri/ /index.html;
     }
 
-    # Cache static assets
+    # Cache static assets (long-lived cache for versioned assets)
     location ~* \.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot)$ {
         expires 1y;
         add_header Cache-Control "public, immutable";
     }
 
+    # Don't cache translation files (i18n assets that can change)
+    # These must always be fresh to avoid serving outdated translations
+    location ~* assets/translations/ {
+        add_header Cache-Control "public, max-age=3600, must-revalidate";
+        add_header Pragma "no-cache";
+    }
+
     # Don't cache index.html or env config (allow runtime env updates)
     location = /index.html {
         add_header Cache-Control "no-cache, no-store, must-revalidate";
+        add_header Pragma "no-cache";
     }
 
     location ~* env\.production\.txt$ {
         add_header Cache-Control "no-cache, no-store, must-revalidate";
+        add_header Pragma "no-cache";
+    }
+
+    # Service worker: must always be fresh
+    location = /flutter_service_worker.js {
+        add_header Cache-Control "max-age=0, no-cache, no-store, must-revalidate";
+        add_header Pragma "no-cache";
     }
 }

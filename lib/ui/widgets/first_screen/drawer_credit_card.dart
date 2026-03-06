@@ -233,7 +233,7 @@ class _DrawerWalletCardState extends State<DrawerWalletCard> {
                             _deriveAccount(context);
                           },
                           child:
-                              const Icon(Icons.add_link, color: Colors.white),
+                              const Icon(Icons.add_card, color: Colors.white),
                         ),
                       ),
                     if (widget.settingsVisible)

@@ -110,7 +110,7 @@ class _CardStackState extends State<CardStack> {
                               return const WalletOptionsDialog();
                             });
                       },
-                      child: const Icon(Icons.add),
+                      child: const Icon(Icons.add_card),
                     ),
                   ))
             ],

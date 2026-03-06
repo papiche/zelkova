@@ -1,0 +1,7 @@
+- Simplified Cesium+ node configuration (using only g1.data.e-is.pro, aligned with gecko and cesium2s)
+- Improved Web of Trust (WoT) messages
+- Technical fixes: Nginx caching, paste functionality, Brave browser detection
+- New translations and improvements: Italian, Esperanto, French
+- Testing improvements with Patrol
+- Wallet export from clipboard as fallback
+- Improved card ordering and passwordless account support

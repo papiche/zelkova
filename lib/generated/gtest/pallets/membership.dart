@@ -166,5 +166,5 @@ class Constants {
   final int membershipPeriod = 5259600;
 
   /// Minimum delay to wait before renewing membership, i.e., asking for distance evaluation.
-  final int membershipRenewalPeriod = 806400;
+  final int membershipRenewalPeriod = 876600;
 }

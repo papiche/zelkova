@@ -177,5 +177,5 @@ class Constants {
   final int minCertForMembership = 3;
 
   /// Maximum duration of inactivity allowed before a Smith is removed.
-  final int smithInactivityMaxDuration = 720;
+  final int smithInactivityMaxDuration = 2160;
 }

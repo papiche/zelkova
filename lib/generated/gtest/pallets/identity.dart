@@ -432,9 +432,9 @@ class Constants {
   final int deletionPeriod = 52596000;
 
   /// The minimum duration between two owner key changes to prevent identity theft.
-  final int changeOwnerKeyPeriod = 438300;
+  final int changeOwnerKeyPeriod = 2629800;
 
   /// The minimum duration between the creation of two identities by the same creator.
   /// Should be greater than or equal to the certification period defined in the certification pallet.
-  final int idtyCreationPeriod = 14400;
+  final int idtyCreationPeriod = 72000;
 }

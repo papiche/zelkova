@@ -211,7 +211,7 @@ class Constants {
   final int maxPastReeval = 160;
 
   /// Square of the money growth rate per UD reevaluation period.
-  final _i9.Perbill squareMoneyGrowthRate = 2381440;
+  final _i9.Perbill squareMoneyGrowthRate = 2382304;
 
   /// Universal dividend creation period in milliseconds.
   final BigInt udCreationPeriod = BigInt.from(86400000);

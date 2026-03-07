@@ -68,6 +68,57 @@ void main() {
       expect(w.pubKey.isNotEmpty, true);
       expect(helper.length, 1);
     });
+
+    test('Calling createDefWalletIfNotExist multiple times is idempotent',
+        () async {
+      expect(helper.isEmpty, true);
+
+      final StoredAccount w1 = await helper.createDefWalletIfNotExist();
+      expect(helper.length, 1);
+
+      final StoredAccount w2 = await helper.createDefWalletIfNotExist();
+      expect(helper.length, 1); // Still just one account
+      expect(w1.pubKey, w2.pubKey); // Same account
+    });
+
+    test('Can access all account methods after creation', () async {
+      expect(helper.isEmpty, true);
+
+      await helper.createDefWalletIfNotExist();
+      expect(helper.isEmpty, false);
+
+      // All these should work without throwing
+      expect(() => helper.getCurrentAccount(), returnsNormally);
+      expect(() => helper.getPubKey(), returnsNormally);
+      expect(() => helper.getName(), returnsNormally);
+      expect(() => helper.getTheme(), returnsNormally);
+    });
+
+    test('_currentPubKey is set correctly after account creation', () async {
+      expect(helper.isEmpty, true);
+
+      final StoredAccount created = await helper.createDefWalletIfNotExist();
+      final String pubKey = helper.getPubKey();
+
+      // pubKey is in format "pubKey:checksum", so check if it starts with account pubKey
+      expect(pubKey.startsWith(created.pubKey.substring(0, 20)), true);
+    });
+
+    test('Created account can be persisted and retrieved', () async {
+      expect(helper.isEmpty, true);
+
+      final StoredAccount created = await helper.createDefWalletIfNotExist();
+      final String originalPubKey = created.pubKey;
+
+      // Create a new helper instance to verify persistence
+      final SharedPreferencesHelper newHelper = SharedPreferencesHelper();
+      await newHelper.init(onlyV2: true);
+
+      expect(newHelper.isEmpty, false);
+      expect(newHelper.length, 1);
+      final StoredAccount retrieved = newHelper.getCurrentAccount();
+      expect(retrieved.pubKey, originalPubKey);
+    });
   });
 
   group('wallet persistence and retrieval', () {

@@ -251,6 +251,7 @@ void main() async {
     }
 
     // Init shared prefs and ensure a default wallet exists.
+    SharedPreferencesHelper.configure(useV2: true);
     final SharedPreferencesHelper shared = SharedPreferencesHelper();
     await shared.init();
 

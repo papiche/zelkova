@@ -239,127 +239,18 @@ class _ImportDialogState extends State<ImportDialog> {
                             final Map<String, dynamic> keys =
                                 decryptJsonForImport(
                                     keyEncrypted, pattern.join());
-                            try {
-                              final dynamic cesiumCards = keys['cesiumCards'];
-                              final dynamic v2Wallets = keys['v2Wallets'];
-                              final List<dynamic>? contacts =
-                                  keys['contacts'] as List<dynamic>?;
-                              importContacts(contacts, context);
 
-                              int imported = 0;
-                              final List<String> skipped = <String>[];
-
-                              // Import V1 wallets
-                              if (cesiumCards != null) {
-                                final List<dynamic> cesiumCardList =
-                                    jsonDecode(cesiumCards as String)
-                                        as List<dynamic>;
-                                for (final dynamic cesiumCard
-                                    in cesiumCardList) {
-                                  final bool result = importWalletToSharedPrefs(
-                                      context,
-                                      cesiumCard as Map<String, dynamic>);
-                                  if (result) {
-                                    imported += 1;
-                                  } else {
-                                    final String name =
-                                        cesiumCard['name'] as String? ??
-                                            cesiumCard['pubKey'] as String? ??
-                                            'Unknown';
-                                    skipped.add(name);
-                                  }
-                                }
-                              }
-
-                              // Import V2 wallets
-                              if (v2Wallets != null) {
-                                final List<dynamic> v2WalletList =
-                                    jsonDecode(v2Wallets as String)
-                                        as List<dynamic>;
-                                for (final dynamic v2Wallet in v2WalletList) {
-                                  if (!mounted) {
-                                    return;
-                                  }
-                                  final bool result =
-                                      await importV2WalletToSharedPrefs(context,
-                                          v2Wallet as Map<String, dynamic>);
-                                  if (result) {
-                                    imported += 1;
-                                  } else {
-                                    final String name =
-                                        v2Wallet['name'] as String? ??
-                                            v2Wallet['pubKey'] as String? ??
-                                            'Unknown';
-                                    skipped.add(name);
-                                  }
-                                }
-                              }
-
-                              if (!context.mounted) {
-                                return;
-                              }
-                              // Fallback for single wallet import (old format)
-                              if (cesiumCards == null && v2Wallets == null) {
-                                importWalletToSharedPrefs(context, keys);
-                                imported = 1;
-                              }
-
-                              if (!mounted) {
-                                return;
-                              }
-
-                              String message = imported == 0
-                                  ? tr('no_wallets_imported')
-                                  : tr('wallets_imported',
-                                      namedArgs: <String, String>{
-                                          'number': imported.toString()
-                                        });
-
-                              if (skipped.isNotEmpty) {
-                                message += '\n${tr('some_wallets_skipped')}';
-                              }
-
-                              if (!mounted) {
-                                return;
-                              }
-
-                              if (!c.mounted) {
-                                return;
-                              }
-                              c.replaceSnackbar(
-                                content: Text(
-                                  message,
-                                  style: TextStyle(
-                                      color: imported == 0
-                                          ? _getErrorTextColor()
-                                          : _getSuccessTextColor(c)),
-                                ),
-                              );
-
-                              if (!mounted) {
-                                return;
-                              }
-
-                              Navigator.of(context).pop(true);
-                              return;
-                            } catch (e, stacktrace) {
-                              logger('Error importing wallet: $e');
-                              if (!c.mounted) {
-                                return;
-                              }
-                              if (mounted) {
-                                setState(() => _isProcessing = false);
-                              }
-                              c.replaceSnackbar(
-                                content: Text(
-                                  tr('error_importing_wallet'),
-                                  style: TextStyle(color: _getErrorTextColor()),
-                                ),
-                              );
-                              await Sentry.captureException(e,
-                                  stackTrace: stacktrace);
+                            // Close dialog immediately
+                            if (!context.mounted) {
                               return;
                             }
+                            Navigator.of(context).pop(true);
+
+                            // Execute import in background with the parent context
+                            if (!c.mounted) {
+                              return;
+                            }
+                            await _performImportInBackground(c, keys);
                           } catch (e, stacktrace) {
                             if (mounted) {
                               setState(() => _isProcessing = false);
@@ -418,6 +309,98 @@ class _ImportDialogState extends State<ImportDialog> {
             return Container(); // CustomErrorWidget(tr('import_failed'));
           }
         });
+  }
+
+  Future<void> _performImportInBackground(
+      BuildContext parentContext, Map<String, dynamic> keys) async {
+    try {
+      final dynamic cesiumCards = keys['cesiumCards'];
+      final dynamic v2Wallets = keys['v2Wallets'];
+      final List<dynamic>? contacts = keys['contacts'] as List<dynamic>?;
+      importContacts(contacts, parentContext);
+
+      int imported = 0;
+      final List<String> skipped = <String>[];
+
+      // Import V1 wallets
+      if (cesiumCards != null) {
+        final List<dynamic> cesiumCardList =
+            jsonDecode(cesiumCards as String) as List<dynamic>;
+        for (final dynamic cesiumCard in cesiumCardList) {
+          final bool result = importWalletToSharedPrefs(
+              parentContext, cesiumCard as Map<String, dynamic>);
+          if (result) {
+            imported += 1;
+          } else {
+            final String name = cesiumCard['name'] as String? ??
+                cesiumCard['pubKey'] as String? ??
+                'Unknown';
+            skipped.add(name);
+          }
+        }
+      }
+
+      // Import V2 wallets
+      if (v2Wallets != null) {
+        final List<dynamic> v2WalletList =
+            jsonDecode(v2Wallets as String) as List<dynamic>;
+        for (final dynamic v2Wallet in v2WalletList) {
+          final bool result = await importV2WalletToSharedPrefs(
+              parentContext, v2Wallet as Map<String, dynamic>);
+          if (result) {
+            imported += 1;
+          } else {
+            final String name = v2Wallet['name'] as String? ??
+                v2Wallet['pubKey'] as String? ??
+                'Unknown';
+            skipped.add(name);
+          }
+        }
+      }
+
+      if (!parentContext.mounted) {
+        return;
+      }
+      // Fallback for single wallet import (old format)
+      if (cesiumCards == null && v2Wallets == null) {
+        importWalletToSharedPrefs(parentContext, keys);
+        imported = 1;
+      }
+
+      String message = imported == 0
+          ? tr('no_wallets_imported')
+          : tr('wallets_imported',
+              namedArgs: <String, String>{'number': imported.toString()});
+
+      if (skipped.isNotEmpty) {
+        message += '\n${tr('some_wallets_skipped')}';
+      }
+
+      if (!parentContext.mounted) {
+        return;
+      }
+      parentContext.replaceSnackbar(
+        content: Text(
+          message,
+          style: TextStyle(
+              color: imported == 0
+                  ? _getErrorTextColor()
+                  : _getSuccessTextColor(parentContext)),
+        ),
+      );
+    } catch (e, stacktrace) {
+      logger('Error importing wallet: $e');
+      if (!parentContext.mounted) {
+        return;
+      }
+      parentContext.replaceSnackbar(
+        content: Text(
+          tr('error_importing_wallet'),
+          style: TextStyle(color: _getErrorTextColor()),
+        ),
+      );
+      await Sentry.captureException(e, stackTrace: stacktrace);
+    }
   }
 
   void importContacts(List<dynamic>? contacts, BuildContext context) {

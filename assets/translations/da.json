@@ -79,6 +79,7 @@
   "copy_your_key": "Kopier din offentlige nøgle",
   "balance": "Saldo",
   "technical_info_title": "Teknisk information",
-   "nodes_list_title": "{type} Knudepunkter ({count})",
-   "nodes_list_last_updated": "Sidste opdatering: {time}"
+  "nodes_list_title": "{type} Knudepunkter ({count})",
+  "nodes_list_last_updated": "Sidste opdatering: {time}",
+  "use_biometric": "Brug biometri"
 }

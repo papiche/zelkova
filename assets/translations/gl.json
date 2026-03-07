@@ -536,6 +536,7 @@
   "unlock_wallet": "Desbloquea a túa billeteira",
   "use_password_instead": "Usa contrasinal en lugar de patrón",
   "use_pattern_instead": "Usa patrón en lugar de contrasinal",
+  "use_biometric": "Usa biometría",
   "validating_credentials": "Validando credenciais…",
   "v2_seed_export_description": "A continuación está a túa frase de recuperación secreta. Non a compartas con ninguén. Podes copiala ou escribila seguramente. Isto che permite recuperar a túa billeteira no caso de que perda acceso a ela.",
   "v2_seed_export_title": "Frase de recuperación da billeteira",

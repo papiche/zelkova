@@ -441,6 +441,7 @@
   "passwords_do_not_match": "La pasvortoj ne kongruas",
   "wrong_password": "Pasvorto malĝusta",
   "use_pattern_instead": "Uzi modelon anstataŭ pasvorton",
+  "use_biometric": "Uzi biometrio",
   "auth_config_title": "Parametroj por aŭtentiĝi",
   "auth_enable_biometrics": "Uzi biometrion por protekti vian monujon",
   "auth_change_pattern_button": "Modifi modelon aŭ pasvorton",

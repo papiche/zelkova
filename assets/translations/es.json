@@ -476,6 +476,7 @@
   "wrong_password": "Contraseña incorrecta",
   "use_password_instead": "Usar contraseña en vez de un patrón",
   "use_pattern_instead": "Usar patrón en vez de una contraseña",
+  "use_biometric": "Usar biometría",
   "auth_config_title": "Configuración de autenticación",
   "auth_enable_biometrics": "Usar biometría para proteger tu monedero",
   "auth_config_setup_button": "Configurar tu patrón o contraseña",

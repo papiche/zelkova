@@ -452,6 +452,7 @@
   "unlock_wallet": "Desbloca el teu moneder",
   "use_password_instead": "Usa contrasenya en lloc de patró",
   "use_pattern_instead": "Usa patró en lloc de contrasenya",
+  "use_biometric": "Usa biometria",
   "validating_credentials": "Validant credencials…",
   "v2_seed_export_description": "A sota es mostra la teva frase de recuperació secreta. No la comparteixis amb ningú. Pots copiar-la o escriure-la de forma segura. Això et permet recuperar el teu moneder en cas que perdis accés a ell.",
   "v2_seed_export_title": "Frase de recuperació del moneder",

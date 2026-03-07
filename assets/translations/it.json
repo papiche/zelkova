@@ -446,6 +446,7 @@
   "wrong_password": "Password errata",
   "use_password_instead": "Utilizzare una password invece di uno schema",
   "use_pattern_instead": "Utilizzare uno schema invece di una password",
+  "use_biometric": "Utilizzare la biometria",
   "auth_enable_biometrics": "Utilizza la biometria per proteggere il tuo portafoglio",
   "auth_config_setup_button": "Configurare il proprio schema o password",
   "auth_change_pattern_button": "Cambia password o schema",

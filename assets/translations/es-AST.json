@@ -538,6 +538,7 @@
   "unlock_wallet": "Desbloquea la to billetera",
   "use_password_instead": "Usar contraseña en ver d'un patrón",
   "use_pattern_instead": "Usar patrón en ver d'una contraseña",
+  "use_biometric": "Usar biometría",
   "v2_seed_export_description": "A continuación amuésate la to frase de recuperación secreta. Nun la compartas con naide. Asegures copyla o escribila de forma segura. Esto te permitirá recuperar la to billetera en casu de qu'pierdes accesu a ella.",
   "v2_seed_export_title": "Frase de recuperación de la to billetera",
   "valid_comment": "El comentariu nun pue tener tildes o cumes",

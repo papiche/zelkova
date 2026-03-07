@@ -478,6 +478,7 @@
     "wrong_password": "Pasahitz okerra",
     "use_password_instead": "Erabili pasahitza ereduaren ordez",
     "use_pattern_instead": "Erabili eredua pasahitzaren ordez",
+    "use_biometric": "Erabili biometria",
     "auth_config_title": "Autentifikazio ezarpenak",
     "auth_enable_biometrics": "Erabili biometria zure zorroa babesteko",
     "auth_config_setup_button": "Ezarri zure eredua edo pasahitza",

@@ -475,6 +475,7 @@
   "wrong_password": "Incorrect password",
   "use_password_instead": "Use a password instead of a pattern",
   "use_pattern_instead": "Use a pattern instead of a password",
+  "use_biometric": "Use biometrics",
   "auth_config_title": "Authentication Settings",
   "auth_enable_biometrics": "Use biometrics to protect your wallet",
   "auth_config_setup_button": "Set up your pattern or password",

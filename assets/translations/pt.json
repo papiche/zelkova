@@ -464,6 +464,7 @@
   "unlock_wallet": "Desbloqueie a sua carteira",
   "use_password_instead": "Use palavra-passe em vez de padrão",
   "use_pattern_instead": "Use padrão em vez de palavra-passe",
+  "use_biometric": "Use biometria",
   "validating_credentials": "Validando credenciais…",
   "v2_seed_export_description": "Abaixo está a sua frase de recuperação secreta. Não a partilhe com ninguém. Pode copiá-la ou escrevê-la de forma segura. Isto lhe permite recuperar a sua carteira se perder o acesso a ela.",
   "v2_seed_export_title": "Frase de recuperação da carteira",

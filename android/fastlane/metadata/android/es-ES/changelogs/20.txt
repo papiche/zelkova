@@ -1,0 +1,3 @@
+¡Bienvenido a Duniter 2.0!
+- Se solucionó problema de inicialización cuando v1 no existe
+- Se solucionó problema de caché de nodos de prueba

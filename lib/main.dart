@@ -57,7 +57,7 @@ import 'g1/distance_precompute_provider.dart';
 import 'g1/g1_helper.dart';
 import 'g1/service_manager.dart';
 import 'services/background_wallet_sync_service.dart';
-import 'services/g1_genesis_service.dart';
+// import 'services/g1_genesis_service.dart'; // DEPRECATED: Removed with forced V2 mode
 import 'shared_prefs_helper.dart';
 import 'ui/biometrics/biometric_auth_service.dart';
 import 'ui/contacts_cache.dart';
@@ -544,10 +544,13 @@ class GinkgoApp extends StatefulWidget {
 }
 
 class _GinkgoAppState extends State<GinkgoApp> {
+  /// Migration flag to clear old gtest nodes (one-time operation)
+  static const String _v2NodesMigrationKey = 'v2_nodes_migration_2026_03_07';
+
   /// Timer for periodic G1 production readiness detection (30s intervals).
   /// Active only when in test mode (V2 not auto-activated).
   /// Automatically stopped when G1 is detected or app is disposed.
-  Timer? _v2DetectionTimer;
+  // Timer? _v2DetectionTimer; // DEPRECATED: Commented out with forced V2 mode
 
   Future<void> _loadNodes() async {
     _printNodeStatus();
@@ -604,6 +607,46 @@ class _GinkgoAppState extends State<GinkgoApp> {
   /// - Polling stops immediately when G1 is detected (saves resources)
   ///
   /// See: [G1GenesisService] for hash validation and caching logic
+  Future<void> _migrateV2NodesIfNeeded() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final bool migrationDone = prefs.getBool(_v2NodesMigrationKey) ?? false;
+
+    if (!migrationDone) {
+      logger('Running V2 nodes migration: clearing old gtest node cache');
+
+      // Clear only V2 nodes (endpoint + squid indexer)
+      final NodeListCubit nodeListCubit = GetIt.instance.get<NodeListCubit>();
+      nodeListCubit.clearV2Nodes();
+
+      // Mark migration as completed
+      await prefs.setBool(_v2NodesMigrationKey, true);
+
+      logger(
+          'V2 nodes migration completed. New nodes will be loaded from .env');
+    }
+  }
+
+  /// Forces V2 mode permanently (no detection, no manual toggle)
+  /// In the future, this will be replaced by network selection feature
+  void _forceV2Mode() {
+    final AppCubit appCubit = context.read<AppCubit>();
+
+    // If not already in V2, activate it
+    if (!appCubit.isV2) {
+      logger('Forcing V2 mode (permanent configuration)');
+      appCubit.setV2Mode(true);
+    }
+
+    // Configure storage and services for V2
+    SharedPreferencesHelper.configure(useV2: true);
+    GetIt.instance<ServiceManager>().updateService(true);
+
+    logger('V2 mode is now active (forced)');
+  }
+
+  // DEPRECATED: G1 genesis auto-detection (forced V2 mode now)
+  // Preserved for reference - will be replaced by network selection feature
+  /*
   Future<void> _checkG1Genesis() async {
     final AppCubit appCubit = context.read<AppCubit>();
 
@@ -691,6 +734,7 @@ class _GinkgoAppState extends State<GinkgoApp> {
     fetchNodesIfNotReady(v2Only: false);
     logger('Reverted to gtest mode (G1 hash disappeared)');
   }
+  */
 
   @override
   void initState() {
@@ -702,11 +746,11 @@ class _GinkgoAppState extends State<GinkgoApp> {
     // Only after at least the action method is set, the notification events are delivered
     NotificationController.startListeningNotificationEvents();
 
-    final bool useV2 = context.read<AppCubit>().isV2;
-    SharedPreferencesHelper.configure(useV2: useV2);
+    // One-time migration: clear old gtest nodes
+    _migrateV2NodesIfNeeded();
 
-    // Check if G1 (production V2) is ready
-    _checkG1Genesis();
+    // Force V2 mode permanently
+    _forceV2Mode();
 
     // Schedule periodic/one-off tasks using Once/Timer.
     initCronTask();
@@ -717,7 +761,7 @@ class _GinkgoAppState extends State<GinkgoApp> {
     // Kick off nodes/tx fetch if online.
     ConnectivityWidgetWrapperWrapper.isConnected.then((bool isConnected) {
       if (isConnected) {
-        fetchNodesIfNotReady(v2Only: useV2);
+        fetchNodesIfNotReady(v2Only: true);
         // Fetch transactions (and balance) here too on start
         if (mounted) {
           fetchTransactions(context);
@@ -866,7 +910,7 @@ class _GinkgoAppState extends State<GinkgoApp> {
 
   @override
   void dispose() {
-    _v2DetectionTimer?.cancel();
+    // _v2DetectionTimer?.cancel();  // COMMENTED: No longer used (forced V2 mode)
     ContactsCache().dispose();
     _disposeDeepLinkListener();
     /* GetIt.instance<NodeListCubit>().closeCubit();

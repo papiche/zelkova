@@ -99,4 +99,15 @@ class NodeListCubit extends HydratedCubit<NodeListState> {
         duniterIndexerNodes: state.duniterIndexerNodes,
         isLoading: state.isLoading));
   }
+
+  /// Clears V2 node cache (endpoint + duniter indexer nodes only).
+  /// Preserves all V1 nodes and other user data.
+  /// Used during migration to force reload from updated .env file.
+  void clearV2Nodes() {
+    emit(state.copyWith(
+        endpointNodes: [],
+        duniterIndexerNodes: [],
+        endpointNodesLastUpdate: null,
+        duniterIndexerNodesLastUpdate: null));
+  }
 }

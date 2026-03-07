@@ -1,17 +1,13 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get_it/get_it.dart';
 
 import '../../../data/models/app_cubit.dart';
 import '../../../data/models/app_state.dart';
 import '../../../data/models/theme_cubit.dart';
-import '../../../g1/api.dart';
 import '../../../g1/currency.dart';
-import '../../../g1/service_manager.dart';
 import '../../../shared_prefs_helper.dart';
 import '../../../ui/notification_controller.dart';
-import '../../contacts_cache.dart';
 import '../fifth_screen/export_dialog.dart';
 import '../fifth_screen/import_dialog.dart';
 import 'authentication_settings_page.dart';
@@ -161,7 +157,9 @@ class _SettingsPageState extends State<SettingsPage> {
                   },
                 ),
 
-              // NETWORK SECTION (only in expert mode, and not if v2 was auto-activated)
+              // NETWORK SECTION - HIDDEN (V2 mode is now forced)
+              // In the future, this will be replaced by network selection
+              /*
               if (state.expertMode && !state.v2AutoActivated) ...<Widget>[
                 const SizedBox(height: 10),
                 SwitchListTile(
@@ -183,6 +181,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   },
                 ),
               ],
+              */
 
               // BACKUP & RESTORE SECTION
               const SizedBox(height: 10),

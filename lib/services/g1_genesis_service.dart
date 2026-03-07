@@ -1,3 +1,11 @@
+// DEPRECATED: G1 genesis auto-detection service
+// This file is preserved for reference but no longer used
+// App now forces V2 mode permanently (will be replaced by network selection)
+//
+// Original implementation based on Gecko's approach:
+// https://forum.duniter.org/t/gecko-talks-user-support/9372/590
+
+/*
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
@@ -241,3 +249,4 @@ class G1GenesisService {
     }
   }
 }
+*/

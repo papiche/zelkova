@@ -53,6 +53,11 @@ import 'v2_peers.dart';
 const String currencyDotEnv = Env.currency;
 final String currency = currencyDotEnv.isEmpty ? 'g1' : currencyDotEnv;
 
+// G1 production V2 genesis hash - used to validate discovered RPC nodes
+// Obtained from: https://get-g1-genesis-hash.p2p.legal
+const String expectedG1GenesisHash =
+    '0xfeb770bbb0344dabc8366b0d1f889a8e4e6ca09b914006655fe795920deb6d56';
+
 // Deduplication map for Cesium+ requests - tracks in-flight requests
 // Maps request path to list of Completers waiting for the result
 final Map<String, List<Completer<Tuple2<Node, http.Response>>>> _cPlusInFlight =
@@ -161,6 +166,16 @@ Future<Tuple2<Set<Node>, Set<Node>>> getV2Peers({
               .then((NodeCheckResult nodeCheck) {
             // Only add if the node responded successfully
             if (nodeCheck.latency != wrongNodeDuration) {
+              // Validate genesis hash for RPC endpoints
+              if (nodeCheck.genesisHash != null &&
+                  nodeCheck.genesisHash != expectedG1GenesisHash) {
+                if (debug) {
+                  loggerDev(
+                      'Rejecting endpoint $url: genesis hash mismatch. Expected: $expectedG1GenesisHash, Got: ${nodeCheck.genesisHash}');
+                }
+                return Future<
+                    void>.value(); // Skip this node - wrong genesis hash
+              }
               discoveredEndpointNodes.add(Node(
                 url: url,
                 latency: nodeCheck.latency.inMicroseconds,
@@ -821,7 +836,8 @@ Future<NodeCheckResult> _pingNode(String node, NodeType type,
       logger(
           'Node $node does not respond to ping: ${removeNewlines(e.toString())}');
     }
-    return NodeCheckResult(latency: wrongNodeDuration, currentBlock: 0);
+    return NodeCheckResult(
+        latency: wrongNodeDuration, currentBlock: 0, genesisHash: null);
   }
 }
 
@@ -1835,13 +1851,17 @@ Future<NodeCheckResult> testDuniterIndexerV2(
     loggerDev(
         'Node $node has errors: ${removeNewlines(response.linkException!.toString())}');
     result = NodeCheckResult(
-        currentBlock: 0, latency: wrongNodeDuration, version: version);
+        currentBlock: 0,
+        latency: wrongNodeDuration,
+        version: version,
+        genesisHash: null);
   } else {
     final int currentBlock = response.data?.blocks?.nodes.first.height ?? 0;
     result = NodeCheckResult(
         currentBlock: currentBlock,
         latency: currentBlock > 0 ? stopwatch.elapsed : wrongNodeDuration,
-        version: version);
+        version: version,
+        genesisHash: null);
   }
   return result;
 }
@@ -1859,13 +1879,15 @@ Future<NodeCheckResult> testDuniterDatapodV2(
   if (response.hasErrors) {
     loggerDev(
         'Node $node has errors: ${removeNewlines(response.linkException!.originalException.toString())}');
-    result = NodeCheckResult(currentBlock: 0, latency: wrongNodeDuration);
+    result = NodeCheckResult(
+        currentBlock: 0, latency: wrongNodeDuration, genesisHash: null);
   } else {
     final int currentBlock =
         response.data?.profiles_aggregate.aggregate?.count ?? 0;
     result = NodeCheckResult(
         currentBlock: currentBlock,
-        latency: currentBlock > 0 ? stopwatch.elapsed : wrongNodeDuration);
+        latency: currentBlock > 0 ? stopwatch.elapsed : wrongNodeDuration,
+        genesisHash: null);
   }
   return result;
 }
@@ -1877,8 +1899,8 @@ Future<NodeCheckResult> testIpfsGateway(String node, Duration timeout) async {
   final Duration latency =
       response.statusCode == 200 ? stopwatch.elapsed : wrongNodeDuration;
   final int currentBlock = response.statusCode;
-  final NodeCheckResult result =
-      NodeCheckResult(latency: latency, currentBlock: currentBlock);
+  final NodeCheckResult result = NodeCheckResult(
+      latency: latency, currentBlock: currentBlock, genesisHash: null);
   return result;
 }
 
@@ -1893,8 +1915,8 @@ Future<NodeCheckResult> testGVAV1Node(String node, Duration timeout) async {
       .balance('78ZwwgpgdH5uLZLbThUQH7LKwPgjMunYfLiCfUCySkM8')
       .timeout(timeout);
   final Duration latency = balance >= 0 ? stopwatch.elapsed : wrongNodeDuration;
-  final NodeCheckResult result =
-      NodeCheckResult(latency: latency, currentBlock: currentBlock);
+  final NodeCheckResult result = NodeCheckResult(
+      latency: latency, currentBlock: currentBlock, genesisHash: null);
   return result;
 }
 
@@ -1921,7 +1943,8 @@ Future<NodeCheckResult> testCPlusV1Node(String node, Duration timeout) async {
   } else {
     latency = wrongNodeDuration;
   }
-  return NodeCheckResult(latency: latency, currentBlock: currentBlock);
+  return NodeCheckResult(
+      latency: latency, currentBlock: currentBlock, genesisHash: null);
 }
 
 Future<NodeCheckResult> testDuniterV1Node(String node, Duration timeout) async {
@@ -1939,7 +1962,8 @@ Future<NodeCheckResult> testDuniterV1Node(String node, Duration timeout) async {
   } else {
     latency = wrongNodeDuration;
   }
-  return NodeCheckResult(latency: latency, currentBlock: currentBlock);
+  return NodeCheckResult(
+      latency: latency, currentBlock: currentBlock, genesisHash: null);
 }
 
 Future<Contact> getProfile(String pubKeyRaw,

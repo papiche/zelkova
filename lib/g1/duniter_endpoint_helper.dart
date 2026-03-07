@@ -53,9 +53,19 @@ Future<NodeCheckResult> testEndPointV2(String node,
     final Gtest polkadot = Gtest(provider);
     final int currentBlockNumber =
         await polkadot.query.system.number().timeout(timeout) - 1;
+
+    // Retrieve genesis hash (block 0)
+    final H256 genesisHashH256 =
+        await polkadot.query.system.blockHash(0).timeout(timeout);
+    final String genesisHash = genesisHashH256
+        .map((int byte) => byte.toRadixString(16).padLeft(2, '0'))
+        .join();
+
     stopwatch.stop();
     final NodeCheckResult nodeCheckResult = NodeCheckResult(
-        latency: stopwatch.elapsed, currentBlock: currentBlockNumber);
+        latency: stopwatch.elapsed,
+        currentBlock: currentBlockNumber,
+        genesisHash: genesisHash);
     return nodeCheckResult;
   } finally {
     try {
@@ -371,7 +381,8 @@ Future<PayResult> payV2({
   for (final String dest in to) {
     try {
       loggerDev('payV2: Converting pubkey to address: $dest');
-      addresses.add(isValidV2Address(dest) ? dest : addressFromV1PubkeyFaiSafe(dest));
+      addresses.add(
+          isValidV2Address(dest) ? dest : addressFromV1PubkeyFaiSafe(dest));
       loggerDev('payV2: Converted to address: ${addresses.last}');
     } catch (e) {
       loggerDev('payV2: Error converting pubkey $dest to address: $e');

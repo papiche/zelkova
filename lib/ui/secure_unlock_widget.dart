@@ -249,7 +249,7 @@ class _SecureUnlockWidgetState extends State<SecureUnlockWidget> {
             children: <Widget>[
               ElevatedButton(
                 onPressed: _onBiometricSetup,
-                child: Text('use_biometric'.tr()),
+                child: Text(tr('use_biometric')),
               ),
               const SizedBox(height: 12),
             ],

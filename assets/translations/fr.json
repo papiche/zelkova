@@ -533,7 +533,7 @@
   "transfer_identity_cooldown_title": "L'identité n'a pas encore pu être migrée",
   "transfer_identity_cooldown_days": "{days} jours",
   "internal_name_copied_to_clipboard": "Nom de contact copié",
-  "link_account_title": "Lier un nouveau compte ?",
+  "link_account_title": "Créer un nouveau compte lié ?",
   "link_account_success": "Compte lié avec succès",
   "link_account_error": "Erreur lors de la liaison du compte : {error}",
   "linked_to": "Lié à : {name}",

@@ -56,39 +56,38 @@ class _CesiumAuthDialogState extends State<CesiumAuthDialog> {
       appBar: AppBar(
         title: Text(tr('cesium_auth_title')),
         actions: <Widget>[
-          if (context.read<AppCubit>().isExpertMode)
-            PopupMenuButton<String>(
-              tooltip: tr('other_auth_methods'),
-              onSelected: (String result) async {
-                if (result == 'import') {
-                  await _showFileImportDialog(context, contact);
-                } else if (result == 'scan') {
-                  await _showScanQrDialog(context, contact);
-                }
-              },
-              itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
-                PopupMenuItem<String>(
-                  value: 'import',
-                  child: Row(
-                    children: <Widget>[
-                      const Icon(Icons.upload_file),
-                      const SizedBox(width: 8),
-                      Text(tr('keyfile_auth')),
-                    ],
-                  ),
+          PopupMenuButton<String>(
+            tooltip: tr('other_auth_methods'),
+            onSelected: (String result) async {
+              if (result == 'import') {
+                await _showFileImportDialog(context, contact);
+              } else if (result == 'scan') {
+                await _showScanQrDialog(context, contact);
+              }
+            },
+            itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+              PopupMenuItem<String>(
+                value: 'import',
+                child: Row(
+                  children: <Widget>[
+                    const Icon(Icons.upload_file),
+                    const SizedBox(width: 8),
+                    Text(tr('keyfile_auth')),
+                  ],
                 ),
-                PopupMenuItem<String>(
-                  value: 'scan',
-                  child: Row(
-                    children: <Widget>[
-                      const Icon(Icons.qr_code_scanner),
-                      const SizedBox(width: 8),
-                      Text(tr('scan_qr_auth')),
-                    ],
-                  ),
+              ),
+              PopupMenuItem<String>(
+                value: 'scan',
+                child: Row(
+                  children: <Widget>[
+                    const Icon(Icons.qr_code_scanner),
+                    const SizedBox(width: 8),
+                    Text(tr('scan_qr_auth')),
+                  ],
                 ),
-              ],
-            ),
+              ),
+            ],
+          ),
         ],
       ),
       body: SingleChildScrollView(

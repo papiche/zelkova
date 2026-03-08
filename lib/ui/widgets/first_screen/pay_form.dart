@@ -35,10 +35,18 @@ class _PayFormState extends State<PayForm> {
   final TextEditingController _commentController = TextEditingController();
   final ValueNotifier<String> _feedbackNotifier = ValueNotifier<String>('');
   bool _showEmojiPicker = false;
+  late final FocusNode _commentFocusNode;
+
+  @override
+  void initState() {
+    super.initState();
+    _commentFocusNode = FocusNode();
+  }
 
   @override
   void dispose() {
     _commentController.dispose();
+    _commentFocusNode.dispose();
     _feedbackNotifier.dispose();
     super.dispose();
   }
@@ -82,6 +90,7 @@ class _PayFormState extends State<PayForm> {
                     child: TextFormField(
                       key: _formCommentKey,
                       controller: _commentController,
+                      focusNode: _commentFocusNode,
                       // In V2, allow multiline comments
                       minLines: isV2 ? 2 : 1,
                       maxLines: isV2 ? 5 : 1,
@@ -121,12 +130,20 @@ class _PayFormState extends State<PayForm> {
                                   _showEmojiPicker
                                       ? Icons.keyboard
                                       : Icons.emoji_emotions_outlined,
-                                  color: Theme.of(context).primaryColor,
                                 ),
                                 onPressed: () {
+                                  if (_showEmojiPicker) {
+                                    // Closing emoji picker, restore keyboard focus
+                                    _commentFocusNode.requestFocus();
+                                  } else {
+                                    // Opening emoji picker, hide keyboard
+                                    _commentFocusNode.unfocus();
+                                  }
+
                                   setState(() {
                                     _showEmojiPicker = !_showEmojiPicker;
                                   });
+
                                   // Scroll to emoji picker after opening it
                                   if (_showEmojiPicker) {
                                     Future<void>.delayed(

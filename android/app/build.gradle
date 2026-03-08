@@ -49,6 +49,19 @@ android {
         }
     }
 
+    flavorDimensions = ["mode"]
+    productFlavors {
+        production {
+            dimension = "mode"
+            applicationIdSuffix = ""
+        }
+        development {
+            dimension = "mode"
+            applicationIdSuffix = ".dev"
+            versionNameSuffix = "-dev"
+        }
+    }
+
     buildTypes {
         release {
             // TODO: Add your own signing config for the release build.

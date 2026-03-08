@@ -85,14 +85,31 @@ class MultiWalletTransactionCubit
   }
 
   void _emitState(String keyRaw, TransactionState newState) {
+    if (isClosed) {
+      logger('[MultiWalletTransactionCubit] Skipping emit for key=$keyRaw, '
+          'cubit is closed. Transactions will be re-fetched on next app startup.');
+      return;
+    }
+
     final String key = extractPublicKey(keyRaw);
     final Map<String, TransactionState> newStates =
         Map<String, TransactionState>.of(state.map)..[key] = newState;
-    if (SharedPreferencesHelper().isExternal(key)) {
-      // External wallet, emit without persisting thanks to toJson
-      emit(MultiWalletTransactionState(newStates));
-    } else {
-      _emitControlled(MultiWalletTransactionState(newStates));
+
+    try {
+      if (SharedPreferencesHelper().isExternal(key)) {
+        // External wallet, emit without persisting thanks to toJson
+        emit(MultiWalletTransactionState(newStates));
+      } else {
+        _emitControlled(MultiWalletTransactionState(newStates));
+      }
+    } catch (e) {
+      if (e is StateError &&
+          e.toString().contains('Cannot emit new states after calling close')) {
+        logger('[MultiWalletTransactionCubit] State emission prevented '
+            '(cubit already closed). Transactions will be re-fetched on next app startup.');
+      } else {
+        rethrow;
+      }
     }
   }
 

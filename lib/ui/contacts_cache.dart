@@ -23,6 +23,22 @@ class ContactsCache {
 
   Box<dynamic>? box;
 
+  /// Lifecycle flags to prevent race conditions during disposal
+  bool _isDisposing = false;
+  bool _isDisposed = false;
+
+  /// Check if the Hive box is available and safe to use
+  bool _isBoxOpen() {
+    final bool isOpen =
+        box != null && box!.isOpen && !_isDisposing && !_isDisposed;
+    if (!isOpen) {
+      loggerDev(
+          '[ContactsCache] Box not available: box=$box, isOpen=${box?.isOpen}, '
+          '_isDisposing=$_isDisposing, _isDisposed=$_isDisposed');
+    }
+    return isOpen;
+  }
+
   Future<void> init([bool test = false]) async {
     if (test) {
       box = MemoryFallbackBox<Map<String, dynamic>>();
@@ -50,18 +66,48 @@ class ContactsCache {
   }
 
   Future<void> dispose() async {
-    await box?.close();
+    if (_isDisposed) {
+      logger('[ContactsCache] Already disposed, skipping dispose');
+      return;
+    }
+
+    _isDisposing = true;
+    logger('[ContactsCache] Starting disposal...');
+
+    try {
+      await box?.close();
+      logger('[ContactsCache] Hive box closed successfully');
+    } catch (e) {
+      logger('[ContactsCache] Error closing Hive box: $e');
+    }
+
+    _isDisposed = true;
+    logger('[ContactsCache] Disposal complete');
   }
 
   Future<void> clear() async {
+    if (!_isBoxOpen()) {
+      logger('[ContactsCache] Cannot clear, box is not available');
+      return;
+    }
     await box?.clear();
   }
 
   Future<void> removeContact(String pubKey) async {
+    if (!_isBoxOpen()) {
+      logger('[ContactsCache] Cannot remove contact, box is not available');
+      return;
+    }
     await box?.delete(pubKey);
   }
 
   static ContactsCache? _instance;
+
+  /// Reset the singleton instance (for testing purposes only)
+  static void resetInstance() {
+    _instance = null;
+  }
+
   final Map<String, List<Completer<Contact>>> _pendingRequests =
       <String, List<Completer<Contact>>>{};
   final Map<String, DateTime> _failedRequests = <String, DateTime>{};
@@ -158,6 +204,12 @@ class ContactsCache {
   }
 
   Future<void> addContact(Contact contactRaw) async {
+    if (_isDisposing || _isDisposed) {
+      logger('[ContactsCache.addContact] Skipping add, cache is '
+          'disposing/disposed. Contact: ${contactRaw.pubKey}');
+      return;
+    }
+
     // Get the cached version of the contact, if it exists
     final Contact contact =
         contactRaw.copyWith(pubKey: extractPublicKey(contactRaw.pubKey));
@@ -180,30 +232,48 @@ class ContactsCache {
   }
 
   Future<void> _storeContact(Contact contact) async {
-    await box!.put(contact.pubKey, <String, dynamic>{
-      'timestamp': DateTime.now().toIso8601String(),
-      'data': json.encode(contact.toJson()),
-    });
+    if (!_isBoxOpen()) {
+      logger(
+          '[ContactsCache._storeContact] Cannot store contact, box is not available. '
+          'Contact: ${contact.pubKey}');
+      return;
+    }
+
+    try {
+      await box!.put(contact.pubKey, <String, dynamic>{
+        'timestamp': DateTime.now().toIso8601String(),
+        'data': json.encode(contact.toJson()),
+      });
+    } catch (e) {
+      logger('[ContactsCache._storeContact] Error storing contact: $e');
+    }
   }
 
   Contact? _retrieveContact(String pubKey) {
-    // Return null if box is not initialized (e.g., in tests)
-    if (box == null) {
+    // Return null if box is not available
+    if (!_isBoxOpen()) {
+      logger(
+          '[ContactsCache._retrieveContact] Cannot retrieve contact, box is not available');
       return null;
     }
 
-    final dynamic record = box!.get(pubKey);
+    try {
+      final dynamic record = box!.get(pubKey);
 
-    if (record != null) {
-      final Map<String, dynamic> typedRecord =
-          Map<String, dynamic>.from(record as Map<dynamic, dynamic>);
-      // final DateTime timestamp =
-      // DateTime.parse(typedRecord['timestamp'] as String);
-      final Contact contact = Contact.fromJson(
-          json.decode(typedRecord['data'] as String) as Map<String, dynamic>);
-      return contact;
+      if (record != null) {
+        final Map<String, dynamic> typedRecord =
+            Map<String, dynamic>.from(record as Map<dynamic, dynamic>);
+        // final DateTime timestamp =
+        // DateTime.parse(typedRecord['timestamp'] as String);
+        final Contact contact = Contact.fromJson(
+            json.decode(typedRecord['data'] as String) as Map<String, dynamic>);
+        return contact;
+      }
+      return null;
+    } catch (e) {
+      logger('[ContactsCache._retrieveContact] Error retrieving contact: $e');
+      return null;
     }
-    return null;
   }
 }
 

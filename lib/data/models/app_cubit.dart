@@ -3,6 +3,7 @@ import 'package:hydrated_bloc/hydrated_bloc.dart';
 
 import '../../g1/currency.dart';
 import '../../g1/distance_precompute.dart';
+import '../../ui/logger.dart';
 import '../wot_info_fetcher.dart';
 import 'app_state.dart';
 import 'contact.dart';
@@ -87,8 +88,26 @@ class AppCubit extends HydratedCubit<AppState> {
   }
 
   void setUd(double currentUd) {
-    emit(state.copyWith(
-        currentUd: currentUd, currentUdLastUpdate: DateTime.now()));
+    if (isClosed) {
+      logger(
+          '[AppCubit] Skipping setUd(currentUd=$currentUd), cubit is closed. '
+          'UD will be re-fetched on next app startup.');
+      return;
+    }
+
+    try {
+      emit(state.copyWith(
+          currentUd: currentUd, currentUdLastUpdate: DateTime.now()));
+      loggerDev('[AppCubit] Updated UD to $currentUd');
+    } catch (e) {
+      if (e is StateError &&
+          e.toString().contains('Cannot emit new states after calling close')) {
+        logger('[AppCubit] State emission prevented (cubit already closed). '
+            'UD will be re-fetched on next app startup.');
+      } else {
+        rethrow;
+      }
+    }
   }
 
   bool shouldUpdateUd() {

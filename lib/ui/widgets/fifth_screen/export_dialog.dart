@@ -163,7 +163,7 @@ void _showSnackBar(BuildContext context, String message) {
   }
   final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
   final Color? backgroundColor =
-      isDarkMode ? Colors.grey[900] : Colors.grey[100];
+      isDarkMode ? Colors.grey[900] : Colors.grey[300];
   final Color textColor = isDarkMode ? Colors.white : Colors.black87;
 
   ScaffoldMessenger.of(context).showSnackBar(
@@ -175,12 +175,6 @@ void _showSnackBar(BuildContext context, String message) {
       backgroundColor: backgroundColor,
     ),
   );
-}
-
-/// Get the appropriate text color based on theme for success/info messages
-Color _getSuccessTextColor(BuildContext context) {
-  final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
-  return isDarkMode ? Colors.white : Colors.black87;
 }
 
 Future<void> _showSelectExportMethodDialog(
@@ -589,13 +583,11 @@ class _ExportDialogState extends State<ExportDialog> {
           return;
         }
         if (result) {
-          context.replaceSnackbar(
-            content: Text(
-              feedbackMessage.isNotEmpty
-                  ? feedbackMessage
-                  : tr('wallet_exported'),
-              style: TextStyle(color: _getSuccessTextColor(context)),
-            ),
+          _showSnackBar(
+            context,
+            feedbackMessage.isNotEmpty
+                ? feedbackMessage
+                : tr('wallet_exported'),
           );
         } else {
           // Export completely failed - show error message
@@ -614,12 +606,7 @@ class _ExportDialogState extends State<ExportDialog> {
         shareExport(context, fileJson);
         // Show feedback after share
         if (context.mounted && feedbackMessage.isNotEmpty) {
-          context.replaceSnackbar(
-            content: Text(
-              feedbackMessage,
-              style: TextStyle(color: _getSuccessTextColor(context)),
-            ),
-          );
+          _showSnackBar(context, feedbackMessage);
         }
         break;
       case ExportType.pubsec:
@@ -680,12 +667,7 @@ class _ExportDialogState extends State<ExportDialog> {
       if (!context.mounted) {
         return;
       }
-      context.replaceSnackbar(
-        content: Text(
-          tr('wallet_exported'),
-          style: TextStyle(color: _getSuccessTextColor(context)),
-        ),
-      );
+      _showSnackBar(context, tr('wallet_exported'));
     }
   }
 

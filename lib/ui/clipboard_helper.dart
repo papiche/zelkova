@@ -16,8 +16,11 @@ Future<void> copyPublicKeyToClipboard(BuildContext context,
           : SharedPreferencesHelper().getPubKey());
   await Clipboard.setData(ClipboardData(text: textToCopy));
   if (context.mounted) {
-    ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(tr(feedbackText ?? 'key_copied_to_clipboard'))));
+    final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    context.replaceSnackbar(
+      content: Text(tr(feedbackText ?? 'key_copied_to_clipboard')),
+      backgroundColor: isDarkMode ? Colors.grey[900] : Colors.grey[100],
+    );
   }
 }
 
@@ -27,8 +30,11 @@ Future<void> copyToClipboard(
     required String feedbackText}) async {
   await Clipboard.setData(ClipboardData(text: text));
   if (context.mounted) {
-    ScaffoldMessenger.of(context)
-        .showSnackBar(SnackBar(content: Text(tr(feedbackText))));
+    final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    context.replaceSnackbar(
+      content: Text(tr(feedbackText)),
+      backgroundColor: isDarkMode ? Colors.grey[900] : Colors.grey[100],
+    );
   }
 }
 
@@ -38,11 +44,15 @@ Future<void> copyFileToClipboard(
     required String feedbackText}) async {
   await Clipboard.setData(ClipboardData(text: fileJson));
   if (context.mounted) {
+    final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
     context.replaceSnackbar(
       content: Text(
         feedbackText,
-        style: const TextStyle(color: Colors.white),
+        style: TextStyle(
+          color: isDarkMode ? Colors.white : Colors.black87,
+        ),
       ),
+      backgroundColor: isDarkMode ? Colors.grey[900] : Colors.grey[100],
     );
   }
 }

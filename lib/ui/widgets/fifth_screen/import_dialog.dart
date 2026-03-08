@@ -32,15 +32,37 @@ import 'import_types.dart';
 import 'select_import_method.dart';
 
 /// Get the appropriate text color for error messages based on theme
-Color _getErrorTextColor() {
+Color _getErrorTextColor(BuildContext context) {
   // Using a red that's visible on both light and dark backgrounds
-  return const Color(0xFFFF6B6B);
+  final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
+  return isDarkMode ? Colors.red[200]! : const Color(0xFFFF6B6B);
 }
 
 /// Get the appropriate text color for success messages based on theme
 Color _getSuccessTextColor(BuildContext context) {
   final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
   return isDarkMode ? Colors.white : Colors.black87;
+}
+
+/// Get the appropriate background color for snackbars based on theme
+Color _getSnackBarBackgroundColor(BuildContext context) {
+  final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
+  return isDarkMode ? Colors.grey[900]! : Colors.grey[300]!;
+}
+
+/// Show a snackbar using the global messenger key (works even after context is destroyed)
+void _showGlobalSnackBar(
+    String message, Color textColor, Color backgroundColor) {
+  globalMessengerKey.currentState?.showSnackBar(
+    SnackBar(
+      content: Text(
+        message,
+        style: TextStyle(color: textColor),
+      ),
+      backgroundColor: backgroundColor,
+      duration: const Duration(seconds: 4),
+    ),
+  );
 }
 
 class ImportDialog extends StatefulWidget {
@@ -225,8 +247,9 @@ class _ImportDialogState extends State<ImportDialog> {
                             c.replaceSnackbar(
                               content: Text(
                                 tr('too_many_attempts'),
-                                style: TextStyle(color: _getErrorTextColor()),
+                                style: TextStyle(color: _getErrorTextColor(c)),
                               ),
+                              backgroundColor: _getSnackBarBackgroundColor(c),
                             );
                             Navigator.of(context).pop(true);
                             return;
@@ -240,17 +263,17 @@ class _ImportDialogState extends State<ImportDialog> {
                                 decryptJsonForImport(
                                     keyEncrypted, pattern.join());
 
-                            // Close dialog immediately
-                            if (!context.mounted) {
-                              return;
-                            }
-                            Navigator.of(context).pop(true);
-
-                            // Execute import in background with the parent context
+                            // Perform import in background first
                             if (!c.mounted) {
                               return;
                             }
                             await _performImportInBackground(c, keys);
+
+                            // Close dialog after successful import
+                            if (!context.mounted) {
+                              return;
+                            }
+                            Navigator.of(context).pop(true);
                           } catch (e, stacktrace) {
                             if (mounted) {
                               setState(() => _isProcessing = false);
@@ -264,8 +287,11 @@ class _ImportDialogState extends State<ImportDialog> {
                             context.replaceSnackbar(
                               content: Text(
                                 tr('wrong_pattern'),
-                                style: TextStyle(color: _getErrorTextColor()),
+                                style: TextStyle(
+                                    color: _getErrorTextColor(context)),
                               ),
+                              backgroundColor:
+                                  _getSnackBarBackgroundColor(context),
                             );
                             await Sentry.captureException(e,
                                 stackTrace: stacktrace);
@@ -313,7 +339,18 @@ class _ImportDialogState extends State<ImportDialog> {
 
   Future<void> _performImportInBackground(
       BuildContext parentContext, Map<String, dynamic> keys) async {
+    // Capture colors based on current theme before any async operations
+    late final Color successTextColor;
+    late final Color errorTextColor;
+    late final Color backgroundColor;
+
     try {
+      final bool isDarkMode =
+          Theme.of(parentContext).brightness == Brightness.dark;
+      successTextColor = _getSuccessTextColor(parentContext);
+      errorTextColor = _getErrorTextColor(parentContext);
+      backgroundColor = _getSnackBarBackgroundColor(parentContext);
+
       final dynamic cesiumCards = keys['cesiumCards'];
       final dynamic v2Wallets = keys['v2Wallets'];
       final List<dynamic>? contacts = keys['contacts'] as List<dynamic>?;
@@ -379,25 +416,18 @@ class _ImportDialogState extends State<ImportDialog> {
       if (!parentContext.mounted) {
         return;
       }
-      parentContext.replaceSnackbar(
-        content: Text(
-          message,
-          style: TextStyle(
-              color: imported == 0
-                  ? _getErrorTextColor()
-                  : _getSuccessTextColor(parentContext)),
-        ),
+      _showGlobalSnackBar(
+        message,
+        imported == 0 ? errorTextColor : successTextColor,
+        backgroundColor,
       );
     } catch (e, stacktrace) {
       logger('Error importing wallet: $e');
-      if (!parentContext.mounted) {
-        return;
-      }
-      parentContext.replaceSnackbar(
-        content: Text(
-          tr('error_importing_wallet'),
-          style: TextStyle(color: _getErrorTextColor()),
-        ),
+      // Note: we still have isDarkMode, errorTextColor, backgroundColor from the beginning
+      _showGlobalSnackBar(
+        tr('error_importing_wallet'),
+        errorTextColor,
+        backgroundColor,
       );
       await Sentry.captureException(e, stackTrace: stacktrace);
     }
@@ -561,14 +591,19 @@ Future<void> showSelectImportMethodDialog(
                   if (!context.mounted) {
                     return;
                   }
-                  context.replaceSnackbar(content: Text(tr('wallet_imported')));
+                  context.replaceSnackbar(
+                    content: Text(tr('wallet_imported')),
+                    backgroundColor: _getSnackBarBackgroundColor(context),
+                  );
                   Navigator.of(context).pop(true);
                 } on WalletAlreadyExistsException {
                   if (!context.mounted) {
                     return;
                   }
                   context.replaceSnackbar(
-                      content: Text(tr('wallet_already_imported')));
+                    content: Text(tr('wallet_already_imported')),
+                    backgroundColor: _getSnackBarBackgroundColor(context),
+                  );
                   Navigator.of(context).pop(true);
                 } catch (e, st) {
                   logger('Error importing mnemonic: $e');
@@ -577,7 +612,9 @@ Future<void> showSelectImportMethodDialog(
                     return;
                   }
                   context.replaceSnackbar(
-                      content: Text(tr('error_importing_wallet')));
+                    content: Text(tr('error_importing_wallet')),
+                    backgroundColor: _getSnackBarBackgroundColor(context),
+                  );
                 }
                 return;
               }

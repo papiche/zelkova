@@ -89,11 +89,17 @@ class _MultiWalletSelectorPageState extends State<MultiWalletSelectorPage> {
             label: Text(tr('ok')),
             onPressed: _selectedAccounts.isEmpty
                 ? () {
+                    final bool isDarkMode =
+                        Theme.of(context).brightness == Brightness.dark;
                     context.replaceSnackbar(
                       content: Text(
                         widget.errorMessage ?? tr('please_select_wallets'),
-                        style: const TextStyle(color: Colors.red),
+                        style: TextStyle(
+                          color: isDarkMode ? Colors.red[200] : Colors.red,
+                        ),
                       ),
+                      backgroundColor:
+                          isDarkMode ? Colors.grey[900] : Colors.grey[100],
                     );
                   }
                 : () {

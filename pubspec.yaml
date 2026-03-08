@@ -142,6 +142,8 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  integration_test:
+    sdk: flutter
   flutter_lints: ^6.0.0
   build_runner: any
   json_serializable: ^6.6.1
@@ -272,4 +274,5 @@ polkadart:
     # gtest: wss://gt.elo.tf/ws
     # gtest: wss://gtest.coinduf.eu/ws
     # gtest: wss://gtest.asycn.io/ws
-    gtest: wss://gtest.1000i100.fr
+    #gtest: wss://gtest.1000i100.fr
+    g1: wss://g1.p2p.legal/ws

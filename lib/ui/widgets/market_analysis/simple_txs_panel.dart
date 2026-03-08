@@ -113,8 +113,8 @@ class _SimpleTransactionsPanelState extends State<SimpleTransactionsPanel> {
 
     final String markdownSummary =
         _generateMarkdownSummary(totalReceived, totalSent);
-    widget.onResult(totalReceived, totalSent, totalSentNumber,
-        totalReceivedNumber, otherContacts, markdownSummary);
+    widget.onResult(totalReceived, totalSent, totalReceivedNumber,
+        totalSentNumber, otherContacts, markdownSummary);
   }
 
   String _generateMarkdownSummary(double totalReceived, double totalSent) {

@@ -594,5 +594,6 @@
   "brave_warning_export_now": "EXPORTER MAINTENANT",
   "profile_migration_failed": "Echec de la migration du profil Cesium+ vers le nouveau compte",
   "account_upgrade_required_title": "Sécurisez votre compte",
-  "account_upgrade_required_desc": "Pour utiliser les fonctionnalités d'identité, votre compte doit être protégé par un modèle ou un mot de passe. Ceci assure que vos fonds et votre identité restent en sécurité."
+  "account_upgrade_required_desc": "Pour utiliser les fonctionnalités d'identité, votre compte doit être protégé par un modèle ou un mot de passe. Ceci assure que vos fonds et votre identité restent en sécurité.",
+  "create_linked_account_option": "Créer un compte lié"
 }

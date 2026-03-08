@@ -31,7 +31,7 @@ platform :android do
   lane :deploy_production_no_images do
     upload_to_play_store(
       track: "production",
-      aab: "../build/app/outputs/bundle/release/app-release.aab",
+      aab: "../build/app/outputs/bundle/productionRelease/app-production-release.aab",
       release_status: "completed",
       skip_upload_metadata: false,
       skip_upload_images: true,

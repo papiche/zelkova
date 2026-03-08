@@ -1,0 +1,5 @@
+¡Bienvenido a Duniter 2.0!
+
+Novedades:
+- Mejor experiencia al iniciar la aplicación
+- Mejoras en el modo oscuro

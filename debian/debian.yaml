@@ -6,7 +6,7 @@ flutter_app:
 
 control:
   Package: g1nkgo
-  Version: 2.0.0
+  Version: 2.0.1
   Architecture: amd64
   Priority: optional
   Depends: libsecret-1-0, libjsoncpp1 | libjsoncpp25

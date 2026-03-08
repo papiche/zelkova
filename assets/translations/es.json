@@ -565,6 +565,7 @@
   "card_options": "Opciones de Tarjeta",
   "secure_account_option": "Asegurar cuenta",
   "change_theme_option": "Cambiar tema",
+  "create_linked_account_option": "Crear cuenta vinculada",
   "settings_notifications_status_enabled": "Notificaciones habilitadas",
   "settings_notifications_status_disabled": "Notificaciones deshabilitadas",
   "settings_notifications_enabled_desc": "Recibirás notificaciones de transacciones",

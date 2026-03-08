@@ -43,6 +43,9 @@ class _DrawerWalletCardState extends State<DrawerWalletCard> {
   void _showAccountOptions(BuildContext context) {
     // Check if account is v2PasswordLess and can be upgraded
     final bool canUpgrade = widget.card.type == AccountType.v2PasswordLess;
+    // Check if account can be used as parent for linked account
+    final bool canCreateLinked =
+        widget.card.type.isV2 && widget.card.derivationParentId == null;
 
     showDialog(
       context: context,
@@ -69,6 +72,15 @@ class _DrawerWalletCardState extends State<DrawerWalletCard> {
                     onTap: () {
                       Navigator.pop(context);
                       _upgradeAccountToProtected(context);
+                    },
+                  ),
+                if (canCreateLinked)
+                  ListTile(
+                    leading: const Icon(Icons.add_link),
+                    title: Text(tr('create_linked_account_option')),
+                    onTap: () {
+                      Navigator.pop(context);
+                      _deriveAccount(context);
                     },
                   ),
               ],
@@ -217,25 +229,6 @@ class _DrawerWalletCardState extends State<DrawerWalletCard> {
                 child: Padding(
                   padding: const EdgeInsets.all(10),
                   child: Stack(children: <Widget>[
-                    if (widget.settingsVisible &&
-                        widget.card.type.isV2 &&
-                        widget.card.derivationParentId == null)
-                      Positioned(
-                        bottom: 4,
-                        left: 4,
-                        child: FloatingActionButton(
-                          mini: true,
-                          backgroundColor: Colors.white10,
-                          elevation: 1,
-                          onPressed: () {
-                            SharedPreferencesHelper()
-                                .highlightGroup(widget.card.pubKey);
-                            _deriveAccount(context);
-                          },
-                          child:
-                              const Icon(Icons.add_card, color: Colors.white),
-                        ),
-                      ),
                     if (widget.settingsVisible)
                       Positioned(
                         bottom: 4,

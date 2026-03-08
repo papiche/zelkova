@@ -560,6 +560,7 @@
   "card_options": "Card Options",
   "secure_account_option": "Secure account",
   "change_theme_option": "Change theme",
+  "create_linked_account_option": "Create linked account",
   "settings_notifications_status_enabled": "Notifications enabled",
   "settings_notifications_status_disabled": "Notifications disabled",
   "settings_notifications_enabled_desc": "You will receive notifications for transactions",

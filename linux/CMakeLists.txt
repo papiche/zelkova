@@ -40,7 +40,7 @@ endif()
 # default. In most cases, you should add new options to specific targets instead
 # of modifying this function.
 function(APPLY_STANDARD_SETTINGS TARGET)
-  target_compile_features(${TARGET} PUBLIC cxx_std_14)
+  target_compile_features(${TARGET} PUBLIC cxx_std_20)
   target_compile_options(${TARGET} PRIVATE -Wall -Werror)
   target_compile_options(${TARGET} PRIVATE "$<$<NOT:$<CONFIG:Debug>>:-O3>")
   target_compile_definitions(${TARGET} PRIVATE "$<$<NOT:$<CONFIG:Debug>>:NDEBUG>")
@@ -53,6 +53,16 @@ add_subdirectory(${FLUTTER_MANAGED_DIR})
 # System-level dependencies.
 find_package(PkgConfig REQUIRED)
 pkg_check_modules(GTK REQUIRED IMPORTED_TARGET gtk+-3.0)
+
+# JNI configuration for Linux builds
+set(JAVA_HOME "/usr/lib/jvm/java-21-openjdk-amd64" CACHE PATH "Java home directory")
+if(EXISTS "${JAVA_HOME}/include/jni.h")
+  include_directories(${JAVA_HOME}/include)
+  include_directories(${JAVA_HOME}/include/linux)
+  message(STATUS "JNI headers found at: ${JAVA_HOME}/include")
+else()
+  message(WARNING "JNI headers not found at ${JAVA_HOME}/include")
+endif()
 
 add_definitions(-DAPPLICATION_ID="${APPLICATION_ID}")
 

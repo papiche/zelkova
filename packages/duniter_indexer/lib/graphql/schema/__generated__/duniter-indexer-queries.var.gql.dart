@@ -220,6 +220,8 @@ abstract class GAccountTransactionsVars
   _i2.GCursor? get issuedCursor;
   _i2.GCursor? get receivedCursor;
   _i2.GCursor? get udCursor;
+  _i2.GDatetime? get timestampFrom;
+  _i2.GDatetime? get timestampTo;
   static Serializer<GAccountTransactionsVars> get serializer =>
       _$gAccountTransactionsVarsSerializer;
 
@@ -477,6 +479,8 @@ abstract class GAccountTxsFieldsVars
 
   int? get first;
   _i2.GCursor? get after;
+  _i2.GDatetime? get timestampFrom;
+  _i2.GDatetime? get timestampTo;
   static Serializer<GAccountTxsFieldsVars> get serializer =>
       _$gAccountTxsFieldsVarsSerializer;
 

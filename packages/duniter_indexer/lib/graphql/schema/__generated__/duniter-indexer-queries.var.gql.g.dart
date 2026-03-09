@@ -486,6 +486,20 @@ class _$GAccountTransactionsVarsSerializer
         ..add(serializers.serialize(value,
             specifiedType: const FullType(_i2.GCursor)));
     }
+    value = object.timestampFrom;
+    if (value != null) {
+      result
+        ..add('timestampFrom')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(_i2.GDatetime)));
+    }
+    value = object.timestampTo;
+    if (value != null) {
+      result
+        ..add('timestampTo')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(_i2.GDatetime)));
+    }
     return result;
   }
 
@@ -520,6 +534,14 @@ class _$GAccountTransactionsVarsSerializer
         case 'udCursor':
           result.udCursor.replace(serializers.deserialize(value,
               specifiedType: const FullType(_i2.GCursor))! as _i2.GCursor);
+          break;
+        case 'timestampFrom':
+          result.timestampFrom.replace(serializers.deserialize(value,
+              specifiedType: const FullType(_i2.GDatetime))! as _i2.GDatetime);
+          break;
+        case 'timestampTo':
+          result.timestampTo.replace(serializers.deserialize(value,
+              specifiedType: const FullType(_i2.GDatetime))! as _i2.GDatetime);
           break;
       }
     }
@@ -830,6 +852,20 @@ class _$GAccountTxsFieldsVarsSerializer
         ..add(serializers.serialize(value,
             specifiedType: const FullType(_i2.GCursor)));
     }
+    value = object.timestampFrom;
+    if (value != null) {
+      result
+        ..add('timestampFrom')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(_i2.GDatetime)));
+    }
+    value = object.timestampTo;
+    if (value != null) {
+      result
+        ..add('timestampTo')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(_i2.GDatetime)));
+    }
     return result;
   }
 
@@ -852,6 +888,14 @@ class _$GAccountTxsFieldsVarsSerializer
         case 'after':
           result.after.replace(serializers.deserialize(value,
               specifiedType: const FullType(_i2.GCursor))! as _i2.GCursor);
+          break;
+        case 'timestampFrom':
+          result.timestampFrom.replace(serializers.deserialize(value,
+              specifiedType: const FullType(_i2.GDatetime))! as _i2.GDatetime);
+          break;
+        case 'timestampTo':
+          result.timestampTo.replace(serializers.deserialize(value,
+              specifiedType: const FullType(_i2.GDatetime))! as _i2.GDatetime);
           break;
       }
     }
@@ -1632,6 +1676,10 @@ class _$GAccountTransactionsVars extends GAccountTransactionsVars {
   final _i2.GCursor? receivedCursor;
   @override
   final _i2.GCursor? udCursor;
+  @override
+  final _i2.GDatetime? timestampFrom;
+  @override
+  final _i2.GDatetime? timestampTo;
 
   factory _$GAccountTransactionsVars(
           [void Function(GAccountTransactionsVarsBuilder)? updates]) =>
@@ -1642,7 +1690,9 @@ class _$GAccountTransactionsVars extends GAccountTransactionsVars {
       this.limit,
       this.issuedCursor,
       this.receivedCursor,
-      this.udCursor})
+      this.udCursor,
+      this.timestampFrom,
+      this.timestampTo})
       : super._();
   @override
   GAccountTransactionsVars rebuild(
@@ -1661,7 +1711,9 @@ class _$GAccountTransactionsVars extends GAccountTransactionsVars {
         limit == other.limit &&
         issuedCursor == other.issuedCursor &&
         receivedCursor == other.receivedCursor &&
-        udCursor == other.udCursor;
+        udCursor == other.udCursor &&
+        timestampFrom == other.timestampFrom &&
+        timestampTo == other.timestampTo;
   }
 
   @override
@@ -1672,6 +1724,8 @@ class _$GAccountTransactionsVars extends GAccountTransactionsVars {
     _$hash = $jc(_$hash, issuedCursor.hashCode);
     _$hash = $jc(_$hash, receivedCursor.hashCode);
     _$hash = $jc(_$hash, udCursor.hashCode);
+    _$hash = $jc(_$hash, timestampFrom.hashCode);
+    _$hash = $jc(_$hash, timestampTo.hashCode);
     _$hash = $jf(_$hash);
     return _$hash;
   }
@@ -1683,7 +1737,9 @@ class _$GAccountTransactionsVars extends GAccountTransactionsVars {
           ..add('limit', limit)
           ..add('issuedCursor', issuedCursor)
           ..add('receivedCursor', receivedCursor)
-          ..add('udCursor', udCursor))
+          ..add('udCursor', udCursor)
+          ..add('timestampFrom', timestampFrom)
+          ..add('timestampTo', timestampTo))
         .toString();
   }
 }
@@ -1717,6 +1773,18 @@ class GAccountTransactionsVarsBuilder
   _i2.GCursorBuilder get udCursor => _$this._udCursor ??= _i2.GCursorBuilder();
   set udCursor(_i2.GCursorBuilder? udCursor) => _$this._udCursor = udCursor;
 
+  _i2.GDatetimeBuilder? _timestampFrom;
+  _i2.GDatetimeBuilder get timestampFrom =>
+      _$this._timestampFrom ??= _i2.GDatetimeBuilder();
+  set timestampFrom(_i2.GDatetimeBuilder? timestampFrom) =>
+      _$this._timestampFrom = timestampFrom;
+
+  _i2.GDatetimeBuilder? _timestampTo;
+  _i2.GDatetimeBuilder get timestampTo =>
+      _$this._timestampTo ??= _i2.GDatetimeBuilder();
+  set timestampTo(_i2.GDatetimeBuilder? timestampTo) =>
+      _$this._timestampTo = timestampTo;
+
   GAccountTransactionsVarsBuilder();
 
   GAccountTransactionsVarsBuilder get _$this {
@@ -1727,6 +1795,8 @@ class GAccountTransactionsVarsBuilder
       _issuedCursor = $v.issuedCursor?.toBuilder();
       _receivedCursor = $v.receivedCursor?.toBuilder();
       _udCursor = $v.udCursor?.toBuilder();
+      _timestampFrom = $v.timestampFrom?.toBuilder();
+      _timestampTo = $v.timestampTo?.toBuilder();
       _$v = null;
     }
     return this;
@@ -1756,6 +1826,8 @@ class GAccountTransactionsVarsBuilder
             issuedCursor: _issuedCursor?.build(),
             receivedCursor: _receivedCursor?.build(),
             udCursor: _udCursor?.build(),
+            timestampFrom: _timestampFrom?.build(),
+            timestampTo: _timestampTo?.build(),
           );
     } catch (_) {
       late String _$failedField;
@@ -1766,6 +1838,10 @@ class GAccountTransactionsVarsBuilder
         _receivedCursor?.build();
         _$failedField = 'udCursor';
         _udCursor?.build();
+        _$failedField = 'timestampFrom';
+        _timestampFrom?.build();
+        _$failedField = 'timestampTo';
+        _timestampTo?.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
             r'GAccountTransactionsVars', _$failedField, e.toString());
@@ -2410,12 +2486,18 @@ class _$GAccountTxsFieldsVars extends GAccountTxsFieldsVars {
   final int? first;
   @override
   final _i2.GCursor? after;
+  @override
+  final _i2.GDatetime? timestampFrom;
+  @override
+  final _i2.GDatetime? timestampTo;
 
   factory _$GAccountTxsFieldsVars(
           [void Function(GAccountTxsFieldsVarsBuilder)? updates]) =>
       (GAccountTxsFieldsVarsBuilder()..update(updates))._build();
 
-  _$GAccountTxsFieldsVars._({this.first, this.after}) : super._();
+  _$GAccountTxsFieldsVars._(
+      {this.first, this.after, this.timestampFrom, this.timestampTo})
+      : super._();
   @override
   GAccountTxsFieldsVars rebuild(
           void Function(GAccountTxsFieldsVarsBuilder) updates) =>
@@ -2430,7 +2512,9 @@ class _$GAccountTxsFieldsVars extends GAccountTxsFieldsVars {
     if (identical(other, this)) return true;
     return other is GAccountTxsFieldsVars &&
         first == other.first &&
-        after == other.after;
+        after == other.after &&
+        timestampFrom == other.timestampFrom &&
+        timestampTo == other.timestampTo;
   }
 
   @override
@@ -2438,6 +2522,8 @@ class _$GAccountTxsFieldsVars extends GAccountTxsFieldsVars {
     var _$hash = 0;
     _$hash = $jc(_$hash, first.hashCode);
     _$hash = $jc(_$hash, after.hashCode);
+    _$hash = $jc(_$hash, timestampFrom.hashCode);
+    _$hash = $jc(_$hash, timestampTo.hashCode);
     _$hash = $jf(_$hash);
     return _$hash;
   }
@@ -2446,7 +2532,9 @@ class _$GAccountTxsFieldsVars extends GAccountTxsFieldsVars {
   String toString() {
     return (newBuiltValueToStringHelper(r'GAccountTxsFieldsVars')
           ..add('first', first)
-          ..add('after', after))
+          ..add('after', after)
+          ..add('timestampFrom', timestampFrom)
+          ..add('timestampTo', timestampTo))
         .toString();
   }
 }
@@ -2463,6 +2551,18 @@ class GAccountTxsFieldsVarsBuilder
   _i2.GCursorBuilder get after => _$this._after ??= _i2.GCursorBuilder();
   set after(_i2.GCursorBuilder? after) => _$this._after = after;
 
+  _i2.GDatetimeBuilder? _timestampFrom;
+  _i2.GDatetimeBuilder get timestampFrom =>
+      _$this._timestampFrom ??= _i2.GDatetimeBuilder();
+  set timestampFrom(_i2.GDatetimeBuilder? timestampFrom) =>
+      _$this._timestampFrom = timestampFrom;
+
+  _i2.GDatetimeBuilder? _timestampTo;
+  _i2.GDatetimeBuilder get timestampTo =>
+      _$this._timestampTo ??= _i2.GDatetimeBuilder();
+  set timestampTo(_i2.GDatetimeBuilder? timestampTo) =>
+      _$this._timestampTo = timestampTo;
+
   GAccountTxsFieldsVarsBuilder();
 
   GAccountTxsFieldsVarsBuilder get _$this {
@@ -2470,6 +2570,8 @@ class GAccountTxsFieldsVarsBuilder
     if ($v != null) {
       _first = $v.first;
       _after = $v.after?.toBuilder();
+      _timestampFrom = $v.timestampFrom?.toBuilder();
+      _timestampTo = $v.timestampTo?.toBuilder();
       _$v = null;
     }
     return this;
@@ -2495,12 +2597,18 @@ class GAccountTxsFieldsVarsBuilder
           _$GAccountTxsFieldsVars._(
             first: first,
             after: _after?.build(),
+            timestampFrom: _timestampFrom?.build(),
+            timestampTo: _timestampTo?.build(),
           );
     } catch (_) {
       late String _$failedField;
       try {
         _$failedField = 'after';
         _after?.build();
+        _$failedField = 'timestampFrom';
+        _timestampFrom?.build();
+        _$failedField = 'timestampTo';
+        _timestampTo?.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
             r'GAccountTxsFieldsVars', _$failedField, e.toString());

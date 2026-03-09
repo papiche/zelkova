@@ -1196,6 +1196,26 @@ const AccountTxsFields = _i1.FragmentDefinitionNode(
             _i1.EnumValueNode(name: _i1.NameNode(value: 'TIMESTAMP_DESC'))
           ]),
         ),
+        _i1.ArgumentNode(
+          name: _i1.NameNode(value: 'filter'),
+          value: _i1.ObjectValueNode(fields: [
+            _i1.ObjectFieldNode(
+              name: _i1.NameNode(value: 'timestamp'),
+              value: _i1.ObjectValueNode(fields: [
+                _i1.ObjectFieldNode(
+                  name: _i1.NameNode(value: 'greaterThanOrEqualTo'),
+                  value: _i1.VariableNode(
+                      name: _i1.NameNode(value: 'timestampFrom')),
+                ),
+                _i1.ObjectFieldNode(
+                  name: _i1.NameNode(value: 'lessThanOrEqualTo'),
+                  value: _i1.VariableNode(
+                      name: _i1.NameNode(value: 'timestampTo')),
+                ),
+              ]),
+            )
+          ]),
+        ),
       ],
       directives: [],
       selectionSet: _i1.SelectionSetNode(selections: [
@@ -1258,6 +1278,26 @@ const AccountTxsFields = _i1.FragmentDefinitionNode(
           name: _i1.NameNode(value: 'orderBy'),
           value: _i1.ListValueNode(values: [
             _i1.EnumValueNode(name: _i1.NameNode(value: 'TIMESTAMP_DESC'))
+          ]),
+        ),
+        _i1.ArgumentNode(
+          name: _i1.NameNode(value: 'filter'),
+          value: _i1.ObjectValueNode(fields: [
+            _i1.ObjectFieldNode(
+              name: _i1.NameNode(value: 'timestamp'),
+              value: _i1.ObjectValueNode(fields: [
+                _i1.ObjectFieldNode(
+                  name: _i1.NameNode(value: 'greaterThanOrEqualTo'),
+                  value: _i1.VariableNode(
+                      name: _i1.NameNode(value: 'timestampFrom')),
+                ),
+                _i1.ObjectFieldNode(
+                  name: _i1.NameNode(value: 'lessThanOrEqualTo'),
+                  value: _i1.VariableNode(
+                      name: _i1.NameNode(value: 'timestampTo')),
+                ),
+              ]),
+            )
           ]),
         ),
       ],
@@ -1326,12 +1366,36 @@ const AccountTxsFields = _i1.FragmentDefinitionNode(
           name: _i1.NameNode(value: 'filter'),
           value: _i1.ObjectValueNode(fields: [
             _i1.ObjectFieldNode(
-              name: _i1.NameNode(value: 'isUd'),
-              value: _i1.ObjectValueNode(fields: [
-                _i1.ObjectFieldNode(
-                  name: _i1.NameNode(value: 'equalTo'),
-                  value: _i1.BooleanValueNode(value: true),
-                )
+              name: _i1.NameNode(value: 'and'),
+              value: _i1.ListValueNode(values: [
+                _i1.ObjectValueNode(fields: [
+                  _i1.ObjectFieldNode(
+                    name: _i1.NameNode(value: 'isUd'),
+                    value: _i1.ObjectValueNode(fields: [
+                      _i1.ObjectFieldNode(
+                        name: _i1.NameNode(value: 'equalTo'),
+                        value: _i1.BooleanValueNode(value: true),
+                      )
+                    ]),
+                  )
+                ]),
+                _i1.ObjectValueNode(fields: [
+                  _i1.ObjectFieldNode(
+                    name: _i1.NameNode(value: 'timestamp'),
+                    value: _i1.ObjectValueNode(fields: [
+                      _i1.ObjectFieldNode(
+                        name: _i1.NameNode(value: 'greaterThanOrEqualTo'),
+                        value: _i1.VariableNode(
+                            name: _i1.NameNode(value: 'timestampFrom')),
+                      ),
+                      _i1.ObjectFieldNode(
+                        name: _i1.NameNode(value: 'lessThanOrEqualTo'),
+                        value: _i1.VariableNode(
+                            name: _i1.NameNode(value: 'timestampTo')),
+                      ),
+                    ]),
+                  )
+                ]),
               ]),
             )
           ]),
@@ -2014,6 +2078,24 @@ const AccountTransactions = _i1.OperationDefinitionNode(
       variable: _i1.VariableNode(name: _i1.NameNode(value: 'udCursor')),
       type: _i1.NamedTypeNode(
         name: _i1.NameNode(value: 'Cursor'),
+        isNonNull: false,
+      ),
+      defaultValue: _i1.DefaultValueNode(value: null),
+      directives: [],
+    ),
+    _i1.VariableDefinitionNode(
+      variable: _i1.VariableNode(name: _i1.NameNode(value: 'timestampFrom')),
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'Datetime'),
+        isNonNull: false,
+      ),
+      defaultValue: _i1.DefaultValueNode(value: null),
+      directives: [],
+    ),
+    _i1.VariableDefinitionNode(
+      variable: _i1.VariableNode(name: _i1.NameNode(value: 'timestampTo')),
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'Datetime'),
         isNonNull: false,
       ),
       defaultValue: _i1.DefaultValueNode(value: null),

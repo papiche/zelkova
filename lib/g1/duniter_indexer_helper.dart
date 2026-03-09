@@ -704,7 +704,23 @@ Future<tp.Tuple2<Map<String, dynamic>?, Node>> getHistoryAndBalanceV2(
       final ferry.Client client = await initDuniterIndexerClient(node.url);
 
       loggerDev(
-          'Fetching history for $pubKeyRaw/$address in node ${node.url} with cursors: issued=$issuedCursor, received=$receivedCursor');
+          'Fetching history for $pubKeyRaw/$address in node ${node.url} with cursors: issued=$issuedCursor, received=$receivedCursor, from=$from, to=$to');
+
+      // Convert Unix timestamps (seconds) to ISO 8601 format for GraphQL
+      String? timestampFrom;
+      String? timestampTo;
+      if (from != null) {
+        final DateTime fromDate =
+            DateTime.fromMillisecondsSinceEpoch(from * 1000, isUtc: true);
+        timestampFrom = fromDate.toIso8601String();
+        loggerDev('Converted from timestamp $from to $timestampFrom');
+      }
+      if (to != null) {
+        final DateTime toDate =
+            DateTime.fromMillisecondsSinceEpoch(to * 1000, isUtc: true);
+        timestampTo = toDate.toIso8601String();
+        loggerDev('Converted to timestamp $to to $timestampTo');
+      }
 
       // We need to make two separate requests or use a more complex query
       // For now, let's use the same cursor for both and let the API handle it
@@ -725,6 +741,14 @@ Future<tp.Tuple2<Map<String, dynamic>?, Node>> getHistoryAndBalanceV2(
         }
         if (udCursor != null) {
           b.vars.udCursor.value = udCursor;
+        }
+
+        // Set timestamp filters for date range
+        if (timestampFrom != null) {
+          b.vars.timestampFrom.value = timestampFrom;
+        }
+        if (timestampTo != null) {
+          b.vars.timestampTo.value = timestampTo;
         }
       });
 

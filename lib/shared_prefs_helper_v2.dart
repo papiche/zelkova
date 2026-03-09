@@ -274,7 +274,12 @@ class SharedPreferencesHelperV2
   int getCurrentWalletIndex() {
     if (_currentPubKey == null) {
       assert(() {
-        debugPrint('⚠️ WARNING: _currentPubKey is null, defaulting to index 0');
+        // Only warn if accounts exist but no current key is set
+        // (empty accounts list is a normal test case)
+        if (accounts.isNotEmpty) {
+          debugPrint(
+              '⚠️ WARNING: _currentPubKey is null but accounts exist, defaulting to index 0');
+        }
         return true;
       }());
       return 0;

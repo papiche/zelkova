@@ -38,6 +38,8 @@ android {
         ndk {
             abiFilters 'armeabi-v7a', 'arm64-v8a', 'x86_64'
         }
+        // Set development as default flavor for IDE builds
+        missingDimensionStrategy 'mode', 'development'
     }
 
     signingConfigs {
@@ -51,14 +53,14 @@ android {
 
     flavorDimensions = ["mode"]
     productFlavors {
-        production {
-            dimension = "mode"
-            applicationIdSuffix = ""
-        }
         development {
             dimension = "mode"
             applicationIdSuffix = ".dev"
             versionNameSuffix = "-dev"
+        }
+        production {
+            dimension = "mode"
+            applicationIdSuffix = ""
         }
     }
 

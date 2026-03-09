@@ -4,11 +4,11 @@ platform :android do
   desc "Deploy to Google Play internal testing track"
   lane :deploy_internal do
     sh("cd ../.. && flutter clean")
-    sh("cd ../.. && flutter build appbundle --release")
+    sh("cd ../.. && flutter build appbundle --release --flavor production")
 
     upload_to_play_store(
       track: "internal",
-      aab: "../build/app/outputs/bundle/release/app-release.aab",
+      aab: "../build/app/outputs/bundle/productionRelease/app-production-release.aab",
       skip_upload_metadata: false,
       skip_upload_images: true,
       skip_upload_screenshots: true
@@ -19,7 +19,7 @@ platform :android do
   lane :deploy_production_upload do
     upload_to_play_store(
       track: "production",
-      aab: "../build/app/outputs/bundle/release/app-release.aab",
+      aab: "../build/app/outputs/bundle/productionRelease/app-production-release.aab",
       release_status: "completed",
       skip_upload_metadata: false,
       skip_upload_images: false,

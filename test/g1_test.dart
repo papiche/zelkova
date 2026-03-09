@@ -853,4 +853,94 @@ Data: 2RTjpjZMnFnKHhgUadgT7JUvGeQem5sC6DQQpeuo5dCL6V1fgqsg8
     final Uint8List seedRestored = seedFromString('');
     expect(seedToString(seedRestored), equals(''));
   });
+
+  group('CesiumWallet with special characters (em-dash —)', () {
+    test('Create wallet with em-dash in secret phrase', () {
+      const String secret = 'test—password';
+      const String password = 'normal';
+
+      final CesiumWallet wallet = CesiumWallet(secret, password);
+
+      // Validate that a public key is generated
+      expect(wallet.pubkey, isNotEmpty);
+      expect(wallet.pubkey.length, equals(44)); // Base58 encoded key length
+
+      // FIXED: Em-dash (—, U+2014) is different from hyphen (-, U+002D)
+      // They must produce different public keys to maintain security
+      final CesiumWallet walletWithHyphen =
+          CesiumWallet('test-password', password);
+      expect(wallet.pubkey, isNot(equals(walletWithHyphen.pubkey)),
+          reason:
+              'Em-dash and hyphen must produce different public keys for security');
+
+      // Verify consistency - same inputs produce same output
+      final CesiumWallet wallet2 = CesiumWallet(secret, password);
+      expect(wallet.pubkey, equals(wallet2.pubkey),
+          reason:
+              'Same secret and password should produce consistent public key');
+    });
+
+    test('Create wallet with em-dash in password', () {
+      const String secret = 'normal';
+      const String password = 'my—secure—pass';
+
+      final CesiumWallet wallet = CesiumWallet(secret, password);
+
+      // Validate that a public key is generated
+      expect(wallet.pubkey, isNotEmpty);
+
+      // Validate consistency
+      final CesiumWallet wallet2 = CesiumWallet(secret, password);
+      expect(wallet.pubkey, equals(wallet2.pubkey),
+          reason: 'Same secret and password should produce same public key');
+    });
+
+    test('Create wallet with em-dash in both secret and password', () {
+      const String secret = 'test—secret';
+      const String password = 'my—password';
+
+      final CesiumWallet wallet = CesiumWallet(secret, password);
+
+      expect(wallet.pubkey, isNotEmpty);
+
+      final CesiumWallet wallet2 = CesiumWallet(secret, password);
+      expect(wallet.pubkey, equals(wallet2.pubkey));
+    });
+
+    test('EWIF export and import with em-dash password', () async {
+      const String password = 'dev—test';
+      final CesiumWallet wallet = CesiumWallet(password, password);
+
+      // Generate EWIF with em-dash password
+      final String ewifData = generateEwif(wallet, password);
+      expect(ewifData, isNotEmpty);
+
+      // Create EWIF file content
+      final String ewifContent = '''
+Type: EWIF
+Version: 1
+Data: $ewifData
+''';
+
+      // Parse back the EWIF with em-dash password
+      final CesiumWallet importedWallet =
+          await parseKeyFile(ewifContent, null, password);
+
+      // Verify the imported wallet matches the original
+      expect(importedWallet.pubkey, equals(wallet.pubkey),
+          reason: 'Imported wallet should have same pubkey as original');
+    });
+
+    test('Multiple em-dashes in password', () {
+      const String secret = 'my—secret—phrase—here';
+      const String password = '—password—with—multiple—dashes—';
+
+      final CesiumWallet wallet = CesiumWallet(secret, password);
+
+      expect(wallet.pubkey, isNotEmpty);
+
+      final CesiumWallet wallet2 = CesiumWallet(secret, password);
+      expect(wallet.pubkey, equals(wallet2.pubkey));
+    });
+  });
 }

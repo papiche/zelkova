@@ -22,7 +22,7 @@ void main() {
 
         // Look for the emoji button in the payment form
         // The emoji button should have an icon for emoji_emotions_outlined
-        final emojiButton = find.byIcon(Icons.emoji_emotions_outlined);
+        final Finder emojiButton = find.byIcon(Icons.emoji_emotions_outlined);
 
         // The button should exist if we're in V2 mode
         if (emojiButton.evaluate().isNotEmpty) {
@@ -40,7 +40,7 @@ void main() {
         await tester.pumpAndSettle(const Duration(seconds: 3));
 
         // Look for the emoji button
-        final emojiButton = find.byIcon(Icons.emoji_emotions_outlined);
+        final Finder emojiButton = find.byIcon(Icons.emoji_emotions_outlined);
 
         if (emojiButton.evaluate().isEmpty) {
           // Skip test if emoji button not found (V1 mode)
@@ -53,7 +53,7 @@ void main() {
 
         // After tapping, the button icon should change to keyboard icon
         // This indicates the picker is open
-        final keyboardButton = find.byIcon(Icons.keyboard);
+        final Finder keyboardButton = find.byIcon(Icons.keyboard);
         expect(keyboardButton, findsWidgets,
             reason: 'Icon should change to keyboard when emoji picker is open');
       },
@@ -65,7 +65,7 @@ void main() {
         app.main();
         await tester.pumpAndSettle(const Duration(seconds: 3));
 
-        final emojiButton = find.byIcon(Icons.emoji_emotions_outlined);
+        final Finder emojiButton = find.byIcon(Icons.emoji_emotions_outlined);
 
         if (emojiButton.evaluate().isEmpty) {
           return; // Skip if not in V2 mode
@@ -80,7 +80,7 @@ void main() {
             reason: 'Emoji picker should be open');
 
         // Close emoji picker
-        final keyboardButton = find.byIcon(Icons.keyboard);
+        final Finder keyboardButton = find.byIcon(Icons.keyboard);
         await tester.tap(keyboardButton);
         await tester.pumpAndSettle(const Duration(milliseconds: 500));
 
@@ -98,7 +98,7 @@ void main() {
         await tester.pumpAndSettle(const Duration(seconds: 3));
 
         // Find the comment text field
-        final commentField = find.byType(TextFormField);
+        final Finder commentField = find.byType(TextFormField);
 
         if (commentField.evaluate().isEmpty) {
           return;
@@ -115,7 +115,7 @@ void main() {
         // Verify text was entered
         expect(
           find.byWidgetPredicate(
-            (widget) =>
+            (Widget widget) =>
                 widget is TextFormField &&
                 (widget.controller?.text.contains('Test comment') ?? false),
           ),
@@ -131,7 +131,7 @@ void main() {
         app.main();
         await tester.pumpAndSettle(const Duration(seconds: 3));
 
-        final emojiButton = find.byIcon(Icons.emoji_emotions_outlined);
+        final Finder emojiButton = find.byIcon(Icons.emoji_emotions_outlined);
 
         if (emojiButton.evaluate().isEmpty) {
           return; // Skip if not in V2 mode
@@ -149,7 +149,7 @@ void main() {
             reason: 'Should show keyboard icon when picker is open');
 
         // Tap to close
-        final keyboardButton = find.byIcon(Icons.keyboard);
+        final Finder keyboardButton = find.byIcon(Icons.keyboard);
         await tester.tap(keyboardButton);
         await tester.pumpAndSettle(const Duration(milliseconds: 500));
 
@@ -162,7 +162,7 @@ void main() {
         await tester.pumpAndSettle(const Duration(milliseconds: 300));
         expect(find.byIcon(Icons.keyboard), findsWidgets);
 
-        final keyboardButton2 = find.byIcon(Icons.keyboard);
+        final Finder keyboardButton2 = find.byIcon(Icons.keyboard);
         await tester.tap(keyboardButton2);
         await tester.pumpAndSettle(const Duration(milliseconds: 300));
         expect(find.byIcon(Icons.emoji_emotions_outlined), findsOneWidget);
@@ -176,7 +176,7 @@ void main() {
         await tester.pumpAndSettle(const Duration(seconds: 3));
 
         // Find the send button
-        final sendButton = find.byIcon(Icons.send);
+        final Finder sendButton = find.byIcon(Icons.send);
 
         if (sendButton.evaluate().isEmpty) {
           return;
@@ -187,7 +187,7 @@ void main() {
             reason: 'Send button should be visible in payment form');
 
         // Open the emoji picker
-        final emojiButton = find.byIcon(Icons.emoji_emotions_outlined);
+        final Finder emojiButton = find.byIcon(Icons.emoji_emotions_outlined);
         if (emojiButton.evaluate().isNotEmpty) {
           await tester.tap(emojiButton);
           await tester.pumpAndSettle(const Duration(milliseconds: 500));
@@ -198,7 +198,7 @@ void main() {
                   'Send button should still be visible after opening emoji picker');
 
           // Close the picker
-          final keyboardButton = find.byIcon(Icons.keyboard);
+          final Finder keyboardButton = find.byIcon(Icons.keyboard);
           await tester.tap(keyboardButton);
           await tester.pumpAndSettle(const Duration(milliseconds: 500));
 
@@ -217,14 +217,14 @@ void main() {
         await tester.pumpAndSettle(const Duration(seconds: 3));
 
         // Find the comment text field
-        final commentField = find.byType(TextFormField);
+        final Finder commentField = find.byType(TextFormField);
 
         if (commentField.evaluate().isEmpty) {
           return;
         }
 
         // Find the emoji button
-        final emojiButton = find.byIcon(Icons.emoji_emotions_outlined);
+        final Finder emojiButton = find.byIcon(Icons.emoji_emotions_outlined);
         if (emojiButton.evaluate().isEmpty) {
           return;
         }
@@ -246,7 +246,7 @@ void main() {
             reason: 'Emoji picker should be open, showing keyboard icon');
 
         // Close the picker
-        final keyboardButton = find.byIcon(Icons.keyboard);
+        final Finder keyboardButton = find.byIcon(Icons.keyboard);
         await tester.tap(keyboardButton);
         await tester.pumpAndSettle(const Duration(milliseconds: 300));
 
@@ -258,7 +258,7 @@ void main() {
         // The previously entered text should still be there
         expect(
           find.byWidgetPredicate(
-            (widget) =>
+            (Widget widget) =>
                 widget is TextFormField &&
                 (widget.controller?.text.contains('Focus test') ?? false),
           ),

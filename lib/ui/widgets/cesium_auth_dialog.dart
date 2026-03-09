@@ -1,14 +1,13 @@
-import 'package:durt/durt.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../data/models/app_cubit.dart';
 import '../../data/models/bottom_nav_cubit.dart';
 import '../../data/models/contact.dart';
 import '../../data/models/multi_wallet_transaction_cubit.dart';
 import '../../g1/api.dart';
+import '../../g1/crypto/cesium_wallet.dart';
 import '../../g1/g1_export_auth_utils.dart';
 import '../../g1/g1_helper.dart';
 import '../../shared_prefs_helper.dart';

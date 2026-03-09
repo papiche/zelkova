@@ -1,9 +1,9 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
-import 'package:durt/src/crypto/cesium_wallet.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:ginkgo/g1/api.dart';
+import 'package:ginkgo/g1/crypto/cesium_wallet.dart';
 import 'package:polkadart/scale_codec.dart';
 import 'package:polkadart_keyring/polkadart_keyring.dart';
 
@@ -124,7 +124,8 @@ void main() {
       expect(profile['signature'], isNotEmpty);
       // Hash should be uppercase SHA-256 (64 hex chars)
       expect((profile['hash'] as String).length, equals(64));
-      expect(profile['hash'], equals((profile['hash'] as String).toUpperCase()));
+      expect(
+          profile['hash'], equals((profile['hash'] as String).toUpperCase()));
     });
 
     test('new profile preserves all optional fields from source', () {

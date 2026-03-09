@@ -1,12 +1,10 @@
 import 'dart:async';
 
-import 'package:durt/durt.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sn_progress_dialog/options/completed.dart';
 import 'package:sn_progress_dialog/progress_dialog.dart';
-import 'package:tuple/tuple.dart';
 
 import '../data/models/bottom_nav_cubit.dart';
 import '../data/models/contact.dart';
@@ -18,8 +16,6 @@ import '../data/models/payment_cubit.dart';
 import '../data/models/payment_state.dart';
 import '../data/models/transaction.dart';
 import '../data/models/transaction_type.dart';
-import '../data/models/utxo.dart';
-import '../data/models/utxo_cubit.dart';
 import '../g1/api.dart';
 import '../g1/currency.dart';
 import '../g1/g1_helper.dart';
@@ -85,7 +81,6 @@ Future<bool> payWithRetry(
           pd.close();
           return false;
         }
-        final UtxoCubit utxoCubit = context.read<UtxoCubit>();
         final double convertedAmount = toG1(amount, isG1, currentUd);
 
         // For v2 payments with multiple recipients, create separate pending transactions
@@ -123,37 +118,15 @@ Future<bool> payWithRetry(
           // PAY!
           logger('Starting payment process...');
           PayResult result;
-          if (!useBMA) {
-            logger(
-                'Calling pay() with recipients: ${recipients.map((Contact c) => c.pubKey).toList()}');
-            result = await pay(
-                to: recipients.map((Contact c) => c.pubKey).toList(),
-                comment: comment,
-                amount: convertedAmount);
-            logger('pay() returned with result: ${result.message}');
-          } else {
-            await utxoCubit.fetchUtxos(fromPubKey);
-            final List<Utxo>? utxos = utxoCubit.consume(convertedAmount);
-            final Tuple2<Map<String, dynamic>?, Node> currentBlock =
-                await getCurrentBlockGVA();
 
-            if (currentBlock != null && utxos != null) {
-              final CesiumWallet wallet =
-                  await SharedPreferencesHelper().getCesiumWallet();
-              result = await payWithBMA(
-                  destPub: recipients[0].pubKey,
-                  blockHash: '${currentBlock.item1!['hash']}',
-                  blockNumber: '${currentBlock.item1!['number']}',
-                  comment: comment,
-                  wallet: wallet,
-                  utxos: utxos,
-                  amount: convertedAmount);
-            } else {
-              final Node triedNode = currentBlock.item2;
-              result = PayResult(
-                  message: 'Error retrieving payment data', node: triedNode);
-            }
-          }
+          logger(
+              'Calling pay() with recipients: ${recipients.map((Contact c) => c.pubKey).toList()}');
+          result = await pay(
+              to: recipients.map((Contact c) => c.pubKey).toList(),
+              comment: comment,
+              amount: convertedAmount);
+          logger('pay() returned with result: ${result.message}');
+
           // Update pending transactions with debug info
           final List<Transaction> updatedPendingTxs =
               pendingTransactions.map((Transaction tx) {
@@ -396,8 +369,8 @@ void showPayError(
   showAlertDialog(context, tr('payment_error'), desc);
   context.read<PaymentCubit>().sentFailed();
   if (node != null && increaseErrors) {
-    NodeManager()
-        .increaseNodeErrors(NodeType.gva, node, cause: 'Payment error: $desc');
+    NodeManager().increaseNodeErrors(NodeType.endpoint, node,
+        cause: 'Payment error: $desc');
   }
 }
 

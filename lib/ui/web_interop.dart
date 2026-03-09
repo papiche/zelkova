@@ -1,8 +1,6 @@
 // Conditional imports for web interop
 // This file automatically imports the correct implementation based on platform
 
-import 'package:flutter/foundation.dart';
-
 // Conditional import
 import 'web_interop_web.dart' if (dart.library.io) 'web_interop_stub.dart'
     as web_interop;

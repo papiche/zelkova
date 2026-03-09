@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
-import 'package:durt/durt.dart';
+import 'package:ginkgo/g1/crypto/cesium_wallet.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:ginkgo/data/models/wallet_themes.dart';
 import 'package:ginkgo/g1/g1_helper.dart';

@@ -1,4 +1,4 @@
-import 'package:durt/durt.dart';
+import 'package:ginkgo/g1/crypto/cesium_wallet.dart';
 import 'package:fast_base58/fast_base58.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';

@@ -21,9 +21,7 @@ class NodeManager {
 
   static final NodeManager _singleton = NodeManager._internal();
 
-  final List<Node> duniterNodes = <Node>[];
   final List<Node> cesiumPlusNodes = <Node>[];
-  final List<Node> gvaNodes = <Node>[];
   final List<Node> endpointNodes = <Node>[];
   final List<Node> duniterIndexerNodes = <Node>[];
   final List<Node> duniterDataNodes = <Node>[];
@@ -100,19 +98,17 @@ class NodeManager {
 
   List<Node> nodeList(NodeType type) => _getList(type);
 
-  List<Node> _getList(NodeType type) => type == NodeType.duniter
-      ? duniterNodes
-      : type == NodeType.cesiumPlus
-          ? cesiumPlusNodes
-          : type == NodeType.endpoint
-              ? endpointNodes
-              : type == NodeType.duniterIndexer
-                  ? duniterIndexerNodes
-                  : type == NodeType.datapodEndpoint
-                      ? duniterDataNodes
-                      : type == NodeType.ipfsGateway
-                          ? ipfsGateways
-                          : gvaNodes;
+  List<Node> _getList(NodeType type) => type == NodeType.cesiumPlus
+      ? cesiumPlusNodes
+      : type == NodeType.endpoint
+          ? endpointNodes
+          : type == NodeType.duniterIndexer
+              ? duniterIndexerNodes
+              : type == NodeType.datapodEndpoint
+                  ? duniterDataNodes
+                  : type == NodeType.ipfsGateway
+                      ? ipfsGateways
+                      : endpointNodes;
 
   void addNode(NodeType type, Node node, {bool notify = true}) {
     final List<Node> nodes = _getList(type);
@@ -530,9 +526,7 @@ class NodeManagerObserver {
   }
 
   void update(NodeManager nodeManager) {
-    cubit.setDuniterNodes(nodeManager.duniterNodes);
     cubit.setCesiumPlusNodes(nodeManager.cesiumPlusNodes);
-    cubit.setGvaNodes(nodeManager.gvaNodes);
     cubit.setEndpointNodes(nodeManager.endpointNodes);
     cubit.setDuniterIndexerNodes(nodeManager.duniterIndexerNodes);
     cubit.setDuniterDataNodes(nodeManager.duniterDataNodes);

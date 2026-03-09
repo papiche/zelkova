@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:bip39_mnemonic/bip39_mnemonic.dart';
-import 'package:durt/durt.dart';
 import 'package:fast_base58/fast_base58.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -10,6 +9,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:ginkgo/data/models/contact.dart';
 import 'package:ginkgo/data/models/stored_account.dart';
 import 'package:ginkgo/data/models/wallet_themes.dart';
+import 'package:ginkgo/g1/crypto/cesium_wallet.dart';
 import 'package:ginkgo/g1/g1_helper.dart';
 import 'package:ginkgo/g1/g1_v2_helper.dart';
 import 'package:ginkgo/secure_crypto_helper.dart';
@@ -371,7 +371,7 @@ void main() {
   });
 
   test('Store and retrieve v2PasswordLess account', () async {
-    final String mnemonic = generateMnemonic();
+    final String mnemonic = mnemonicGenerate();
     await helper.importWalletFromMnemonic(mnemonic, AccountType.v2PasswordLess);
     final KeyPair kp = await KeyPair.ed25519.fromMnemonic(mnemonic);
     final String pubKey = v1pubkeyFromAddress(kp.address);

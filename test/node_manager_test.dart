@@ -9,7 +9,7 @@ void main() {
       final NodeManager nm = NodeManager();
 
       nm.updateNodes(
-          NodeType.gva,
+          NodeType.endpoint,
           <Node>[
             const Node(url: 'node1', errors: 2),
             const Node(url: 'node2', errors: 3),
@@ -18,14 +18,14 @@ void main() {
           notify: false);
 
       nm.updateNodes(
-          NodeType.gva,
+          NodeType.endpoint,
           <Node>[
             const Node(url: 'node1'),
             const Node(url: 'node3'),
           ],
           notify: false);
 
-      final List<Node> updatedNodes = nm.gvaNodes;
+      final List<Node> updatedNodes = nm.endpointNodes;
 
       expect(updatedNodes.length, 2);
       expect(updatedNodes[0].url, 'node1');
@@ -36,8 +36,8 @@ void main() {
 
     test('should handle empty node list', () {
       final NodeManager nm = NodeManager();
-      nm.updateNodes(NodeType.duniter, <Node>[], notify: false);
-      expect(nm.duniterNodes, isEmpty);
+      nm.updateNodes(NodeType.endpoint, <Node>[], notify: false);
+      expect(nm.endpointNodes, isEmpty);
     });
 
     test('should remove duplicates based on url', () {
@@ -63,9 +63,8 @@ void main() {
     setUp(() {
       nm = NodeManager();
       // Clean lists before each test
-      nm.duniterNodes.clear();
+      nm.endpointNodes.clear();
       nm.cesiumPlusNodes.clear();
-      nm.gvaNodes.clear();
       nm.endpointNodes.clear();
       nm.duniterIndexerNodes.clear();
       nm.duniterDataNodes.clear();
@@ -75,12 +74,13 @@ void main() {
     test('increaseNodeErrors should increase the error count of a node', () {
       const Node node = Node(url: 'node a');
 
-      nm.addNode(NodeType.gva, node, notify: false);
-      nm.increaseNodeErrors(NodeType.gva, node,
+      nm.addNode(NodeType.endpoint, node, notify: false);
+      nm.increaseNodeErrors(NodeType.endpoint, node,
           notify: false, cause: 'Test error');
 
-      final Node updatedNode =
-          nm.nodeList(NodeType.gva).firstWhere((Node n) => n.url == node.url);
+      final Node updatedNode = nm
+          .nodeList(NodeType.endpoint)
+          .firstWhere((Node n) => n.url == node.url);
 
       expect(updatedNode.errors, 1);
     });
@@ -88,12 +88,13 @@ void main() {
     test('updateNode should update the node in the list', () {
       const Node node = Node(url: 'node b');
 
-      nm.addNode(NodeType.gva, node, notify: false);
+      nm.addNode(NodeType.endpoint, node, notify: false);
       const Node updatedNode = Node(url: 'node b', errors: 2);
-      nm.updateNode(NodeType.gva, updatedNode, notify: false);
+      nm.updateNode(NodeType.endpoint, updatedNode, notify: false);
 
-      final Node retrievedNode =
-          nm.nodeList(NodeType.gva).firstWhere((Node n) => n.url == node.url);
+      final Node retrievedNode = nm
+          .nodeList(NodeType.endpoint)
+          .firstWhere((Node n) => n.url == node.url);
 
       expect(retrievedNode.errors, 2);
     });
@@ -130,25 +131,24 @@ void main() {
     });
 
     test('cleanErrorStats should reset all errors to 0', () {
-      nm.addNode(NodeType.gva, const Node(url: 'node1', errors: 5),
+      nm.addNode(NodeType.endpoint, const Node(url: 'node1', errors: 5),
           notify: false);
-      nm.addNode(NodeType.duniter, const Node(url: 'node2', errors: 3),
+      nm.addNode(NodeType.endpoint, const Node(url: 'node2', errors: 3),
           notify: false);
 
       nm.cleanErrorStats(notify: false);
 
-      expect(nm.gvaNodes.first.errors, 0);
-      expect(nm.duniterNodes.first.errors, 0);
+      expect(nm.endpointNodes.first.errors, 0);
     });
 
     test('nodesWorking should count nodes with errors below max', () {
-      nm.addNode(NodeType.gva, const Node(url: 'node1'), notify: false);
-      nm.addNode(NodeType.gva, const Node(url: 'node2', errors: 3),
+      nm.addNode(NodeType.endpoint, const Node(url: 'node1'), notify: false);
+      nm.addNode(NodeType.endpoint, const Node(url: 'node2', errors: 3),
           notify: false);
-      nm.addNode(NodeType.gva, const Node(url: 'node3', errors: 10),
+      nm.addNode(NodeType.endpoint, const Node(url: 'node3', errors: 10),
           notify: false);
 
-      final int workingCount = nm.nodesWorking(NodeType.gva);
+      final int workingCount = nm.nodesWorking(NodeType.endpoint);
 
       expect(workingCount, 2);
     });
@@ -174,12 +174,12 @@ void main() {
 
     setUp(() {
       nm = NodeManager();
-      nm.duniterNodes.clear();
+      nm.endpointNodes.clear();
     });
 
     test('should return nodes with low errors and near max block', () {
       nm.updateNodes(
-          NodeType.duniter,
+          NodeType.endpoint,
           <Node>[
             const Node(url: 'node1', latency: 100, currentBlock: 1000),
             const Node(
@@ -191,7 +191,7 @@ void main() {
           ],
           notify: false);
 
-      final List<Node> bestNodes = nm.getBestNodes(NodeType.duniter);
+      final List<Node> bestNodes = nm.getBestNodes(NodeType.endpoint);
 
       expect(bestNodes.isNotEmpty, isTrue);
       // Best nodes should have few errors and be close to the max block
@@ -204,7 +204,7 @@ void main() {
 
     test('should prioritize nodes with fewer errors', () {
       nm.updateNodes(
-          NodeType.duniter,
+          NodeType.endpoint,
           <Node>[
             const Node(url: 'node1', latency: 100, currentBlock: 1000),
             const Node(
@@ -214,7 +214,7 @@ void main() {
           ],
           notify: false);
 
-      final List<Node> bestNodes = nm.getBestNodes(NodeType.duniter);
+      final List<Node> bestNodes = nm.getBestNodes(NodeType.endpoint);
 
       // After sorting, the node with 0 errors should be first
       // (although shuffle may change the order, we verify that all are valid)
@@ -228,7 +228,7 @@ void main() {
       final int wrongNode = wrongNodeDuration.inMicroseconds;
 
       nm.updateNodes(
-          NodeType.duniter,
+          NodeType.endpoint,
           <Node>[
             const Node(url: 'node1', latency: 100, currentBlock: 1000),
             Node(url: 'node2', latency: wrongNode, currentBlock: 1000),
@@ -236,7 +236,7 @@ void main() {
           ],
           notify: false);
 
-      final List<Node> bestNodes = nm.getBestNodes(NodeType.duniter);
+      final List<Node> bestNodes = nm.getBestNodes(NodeType.endpoint);
 
       // Should not include node2 which has very high latency
       expect(bestNodes.any((Node n) => n.url == 'node2'), isFalse);
@@ -246,7 +246,7 @@ void main() {
     test('should return synced nodes with errors if no perfect nodes available',
         () {
       nm.updateNodes(
-          NodeType.duniter,
+          NodeType.endpoint,
           <Node>[
             const Node(
                 url: 'node1', latency: 100, errors: 10, currentBlock: 1000),
@@ -257,7 +257,7 @@ void main() {
           ],
           notify: false);
 
-      final List<Node> bestNodes = nm.getBestNodes(NodeType.duniter);
+      final List<Node> bestNodes = nm.getBestNodes(NodeType.endpoint);
 
       // All nodes have many errors, but are synchronized
       expect(bestNodes.isNotEmpty, isTrue);
@@ -267,21 +267,21 @@ void main() {
 
     test('should return default nodes if no good nodes available', () {
       nm.updateNodes(
-          NodeType.duniter,
+          NodeType.endpoint,
           <Node>[
             const Node(url: 'bad-node1', latency: 999999, errors: 10),
             const Node(url: 'bad-node2', latency: 999999, errors: 10),
           ],
           notify: false);
 
-      final List<Node> bestNodes = nm.getBestNodes(NodeType.duniter);
+      final List<Node> bestNodes = nm.getBestNodes(NodeType.endpoint);
 
       // Should return default nodes
       expect(bestNodes.isNotEmpty, isTrue);
     });
 
     test('should handle empty node list', () {
-      final List<Node> bestNodes = nm.getBestNodes(NodeType.duniter);
+      final List<Node> bestNodes = nm.getBestNodes(NodeType.endpoint);
 
       // Should return default nodes
       expect(bestNodes.isNotEmpty, isTrue);
@@ -308,7 +308,7 @@ void main() {
 
     test('should balance latency and errors in selection', () {
       nm.updateNodes(
-          NodeType.duniter,
+          NodeType.endpoint,
           <Node>[
             const Node(
                 url: 'fast-errors', latency: 50, errors: 3, currentBlock: 1000),
@@ -318,7 +318,7 @@ void main() {
           ],
           notify: false);
 
-      final List<Node> bestNodes = nm.getBestNodes(NodeType.duniter);
+      final List<Node> bestNodes = nm.getBestNodes(NodeType.endpoint);
 
       // All should be included since they have few errors and are synchronized
       expect(bestNodes.length, 3);
@@ -437,9 +437,8 @@ void main() {
 
     setUp(() {
       nm = NodeManager();
-      nm.duniterNodes.clear();
+      nm.endpointNodes.clear();
       nm.cesiumPlusNodes.clear();
-      nm.gvaNodes.clear();
       nm.endpointNodes.clear();
       nm.duniterIndexerNodes.clear();
       nm.duniterDataNodes.clear();
@@ -447,27 +446,23 @@ void main() {
     });
 
     test('should handle different node types independently', () {
-      nm.addNode(NodeType.duniter, const Node(url: 'duniter1'), notify: false);
       nm.addNode(NodeType.cesiumPlus, const Node(url: 'cesium1'),
           notify: false);
-      nm.addNode(NodeType.gva, const Node(url: 'gva1'), notify: false);
       nm.addNode(NodeType.endpoint, const Node(url: 'endpoint1'),
           notify: false);
 
-      expect(nm.duniterNodes.length, 1);
       expect(nm.cesiumPlusNodes.length, 1);
-      expect(nm.gvaNodes.length, 1);
       expect(nm.endpointNodes.length, 1);
     });
 
     test('should not mix nodes between different types', () {
       const Node node = Node(url: 'shared-url');
-      nm.addNode(NodeType.duniter, node, notify: false);
+      nm.addNode(NodeType.endpoint, node, notify: false);
       nm.addNode(NodeType.cesiumPlus, node, notify: false);
 
-      expect(nm.duniterNodes.first.url, 'shared-url');
+      expect(nm.endpointNodes.first.url, 'shared-url');
       expect(nm.cesiumPlusNodes.first.url, 'shared-url');
-      expect(nm.duniterNodes.length, 1);
+      expect(nm.endpointNodes.length, 1);
       expect(nm.cesiumPlusNodes.length, 1);
     });
   });
@@ -521,9 +516,8 @@ void main() {
 
     setUp(() {
       nm = NodeManager();
-      nm.duniterNodes.clear();
+      nm.endpointNodes.clear();
       nm.cesiumPlusNodes.clear();
-      nm.gvaNodes.clear();
       nm.endpointNodes.clear();
       nm.duniterIndexerNodes.clear();
       nm.duniterDataNodes.clear();
@@ -585,15 +579,15 @@ void main() {
     test('should handle rapid sequential updates', () async {
       for (int i = 0; i < 100; i++) {
         nm.updateNodes(
-            NodeType.duniter,
+            NodeType.endpoint,
             <Node>[
               Node(url: 'node$i', latency: i, currentBlock: 1000 + i),
             ],
             notify: false);
       }
 
-      expect(nm.duniterNodes.length, greaterThan(0));
-      expect(nm.duniterNodes.length, lessThanOrEqualTo(100));
+      expect(nm.endpointNodes.length, greaterThan(0));
+      expect(nm.endpointNodes.length, lessThanOrEqualTo(100));
     });
 
     test('should handle concurrent addNode operations', () async {
@@ -616,14 +610,15 @@ void main() {
     });
 
     test('should handle concurrent increaseNodeErrors', () async {
-      nm.addNode(NodeType.gva, const Node(url: 'test-node'), notify: false);
+      nm.addNode(NodeType.cesiumPlus, const Node(url: 'test-node'),
+          notify: false);
 
       final List<Future<void>> futures = <Future<void>>[];
 
       for (int i = 0; i < 10; i++) {
         futures.add(Future<void>(() {
-          final Node node = nm.gvaNodes.first;
-          nm.increaseNodeErrors(NodeType.gva, node,
+          final Node node = nm.cesiumPlusNodes.first;
+          nm.increaseNodeErrors(NodeType.cesiumPlus, node,
               notify: false, cause: 'Test error');
         }));
       }
@@ -631,8 +626,8 @@ void main() {
       await Future.wait(futures);
 
       // After 10 errors, the node should be marked as offline but still exist
-      expect(nm.gvaNodes.isNotEmpty, isTrue);
-      final Node node = nm.gvaNodes.first;
+      expect(nm.cesiumPlusNodes.isNotEmpty, isTrue);
+      final Node node = nm.cesiumPlusNodes.first;
       expect(node.errors, greaterThanOrEqualTo(NodeManager.absoluteMaxErrors));
       expect(node.isNotOk, isTrue); // Should be marked offline
     });
@@ -687,7 +682,7 @@ void main() {
       // Multiple updates with overlapping nodes
       futures.add(Future<void>(() {
         nm.updateNodes(
-            NodeType.duniter,
+            NodeType.endpoint,
             <Node>[
               const Node(url: 'node1', latency: 100),
               const Node(url: 'node2', latency: 150),
@@ -697,7 +692,7 @@ void main() {
 
       futures.add(Future<void>(() {
         nm.updateNodes(
-            NodeType.duniter,
+            NodeType.endpoint,
             <Node>[
               const Node(url: 'node2', latency: 120),
               const Node(url: 'node3', latency: 130),
@@ -707,7 +702,7 @@ void main() {
 
       futures.add(Future<void>(() {
         nm.updateNodes(
-            NodeType.duniter,
+            NodeType.endpoint,
             <Node>[
               const Node(url: 'node1', latency: 110),
               const Node(url: 'node3', latency: 140),
@@ -718,8 +713,8 @@ void main() {
       await Future.wait(futures);
 
       // Should have unique nodes
-      final Set<String> urls = nm.duniterNodes.map((Node n) => n.url).toSet();
-      expect(urls.length, nm.duniterNodes.length);
+      final Set<String> urls = nm.endpointNodes.map((Node n) => n.url).toSet();
+      expect(urls.length, nm.endpointNodes.length);
     });
   });
 
@@ -831,9 +826,8 @@ void main() {
 
       // Clean all lists first
       nm1.endpointNodes.clear();
-      nm1.duniterNodes.clear();
+      nm1.endpointNodes.clear();
       nm1.cesiumPlusNodes.clear();
-      nm1.gvaNodes.clear();
       nm1.duniterIndexerNodes.clear();
       nm1.duniterDataNodes.clear();
       nm1.ipfsGateways.clear();
@@ -848,21 +842,14 @@ void main() {
     test('should clear all node types with cleanErrorStats', () {
       final NodeManager nm = NodeManager();
 
-      nm.addNode(NodeType.endpoint, const Node(url: 'node1', errors: 5),
-          notify: false);
-      nm.addNode(NodeType.duniter, const Node(url: 'node2', errors: 3),
+      nm.addNode(NodeType.endpoint, const Node(url: 'node2', errors: 3),
           notify: false);
       nm.addNode(NodeType.cesiumPlus, const Node(url: 'node3', errors: 4),
           notify: false);
-      nm.addNode(NodeType.gva, const Node(url: 'node4', errors: 2),
-          notify: false);
-
       nm.cleanErrorStats(notify: false);
 
       expect(nm.endpointNodes.first.errors, 0);
-      expect(nm.duniterNodes.first.errors, 0);
       expect(nm.cesiumPlusNodes.first.errors, 0);
-      expect(nm.gvaNodes.first.errors, 0);
     });
   });
 
@@ -927,26 +914,26 @@ void main() {
 
     setUp(() {
       nm = NodeManager();
-      nm.duniterNodes.clear();
+      nm.endpointNodes.clear();
     });
 
     test('should prioritize nodes with fewer errors over lower latency', () {
       // Add a node with few errors but higher latency
       nm.addNodeSortedByLatency(
-          NodeType.duniter, const Node(url: 'slow-but-reliable', latency: 300),
+          NodeType.endpoint, const Node(url: 'slow-but-reliable', latency: 300),
           notify: false);
 
       // Add a node with fast latency but more errors
-      nm.addNodeSortedByLatency(NodeType.duniter,
+      nm.addNodeSortedByLatency(NodeType.endpoint,
           const Node(url: 'fast-but-errors', latency: 50, errors: 3),
           notify: false);
 
       // Add another reliable but slow node
-      nm.addNodeSortedByLatency(NodeType.duniter,
+      nm.addNodeSortedByLatency(NodeType.endpoint,
           const Node(url: 'medium-reliable', latency: 200, errors: 1),
           notify: false);
 
-      final List<Node> nodes = nm.duniterNodes;
+      final List<Node> nodes = nm.endpointNodes;
 
       // The first node should have the fewest errors, not the lowest latency
       expect(nodes[0].errors, 0);
@@ -956,18 +943,18 @@ void main() {
 
     test('should sort by latency when errors are equal', () {
       nm.addNodeSortedByLatency(
-          NodeType.duniter, const Node(url: 'node1', latency: 200, errors: 1),
+          NodeType.endpoint, const Node(url: 'node1', latency: 200, errors: 1),
           notify: false);
 
       nm.addNodeSortedByLatency(
-          NodeType.duniter, const Node(url: 'node2', latency: 100, errors: 1),
+          NodeType.endpoint, const Node(url: 'node2', latency: 100, errors: 1),
           notify: false);
 
       nm.addNodeSortedByLatency(
-          NodeType.duniter, const Node(url: 'node3', latency: 150, errors: 1),
+          NodeType.endpoint, const Node(url: 'node3', latency: 150, errors: 1),
           notify: false);
 
-      final List<Node> nodes = nm.duniterNodes;
+      final List<Node> nodes = nm.endpointNodes;
 
       // All have same errors, so should be sorted by latency
       expect(nodes[0].latency, 100);
@@ -978,15 +965,15 @@ void main() {
     test(
         'should insert node with zero errors at beginning even with high latency',
         () {
-      nm.addNodeSortedByLatency(NodeType.duniter,
+      nm.addNodeSortedByLatency(NodeType.endpoint,
           const Node(url: 'fast-with-errors', latency: 50, errors: 2),
           notify: false);
 
       nm.addNodeSortedByLatency(
-          NodeType.duniter, const Node(url: 'slow-no-errors', latency: 500),
+          NodeType.endpoint, const Node(url: 'slow-no-errors', latency: 500),
           notify: false);
 
-      final List<Node> nodes = nm.duniterNodes;
+      final List<Node> nodes = nm.endpointNodes;
 
       // The node with 0 errors should be first
       expect(nodes[0].url, 'slow-no-errors');
@@ -1201,7 +1188,7 @@ void main() {
 
     test('should NOT filter by version for non-indexer node types', () {
       nm.updateNodes(
-          NodeType.duniter,
+          NodeType.endpoint,
           <Node>[
             const Node(
                 url: 'node1',
@@ -1217,7 +1204,7 @@ void main() {
           ],
           notify: false);
 
-      final List<Node> bestNodes = nm.getBestNodes(NodeType.duniter);
+      final List<Node> bestNodes = nm.getBestNodes(NodeType.endpoint);
 
       // Should include all nodes regardless of version
       expect(bestNodes.length, 3);
@@ -1298,31 +1285,31 @@ void main() {
 
     setUp(() {
       nm = NodeManager();
-      nm.duniterNodes.clear();
+      nm.endpointNodes.clear();
       nm.duniterIndexerNodes.clear();
     });
 
     test('should mark node as offline when reaching absolute max errors', () {
       const Node node = Node(url: 'bad-node');
-      nm.addNode(NodeType.duniter, node, notify: false);
+      nm.addNode(NodeType.endpoint, node, notify: false);
 
       // Increase errors to absolute max
       for (int i = 0; i < NodeManager.absoluteMaxErrors; i++) {
-        nm.increaseNodeErrors(NodeType.duniter, node,
+        nm.increaseNodeErrors(NodeType.endpoint, node,
             notify: false, cause: 'Test error $i');
       }
 
       // Node should still exist but marked as offline
-      expect(nm.duniterNodes.any((Node n) => n.url == 'bad-node'), isTrue);
+      expect(nm.endpointNodes.any((Node n) => n.url == 'bad-node'), isTrue);
       final Node updatedNode =
-          nm.duniterNodes.firstWhere((Node n) => n.url == 'bad-node');
+          nm.endpointNodes.firstWhere((Node n) => n.url == 'bad-node');
       expect(updatedNode.errors, NodeManager.absoluteMaxErrors);
       expect(updatedNode.isNotOk, isTrue); // Should be marked offline
     });
 
     test('should not include nodes with excessive errors in getBestNodes', () {
       nm.updateNodes(
-          NodeType.duniter,
+          NodeType.endpoint,
           <Node>[
             const Node(url: 'good-node', latency: 100, currentBlock: 1000),
             const Node(
@@ -1330,7 +1317,7 @@ void main() {
           ],
           notify: false);
 
-      final List<Node> bestNodes = nm.getBestNodes(NodeType.duniter);
+      final List<Node> bestNodes = nm.getBestNodes(NodeType.endpoint);
 
       // Bad node should not be included
       expect(bestNodes.any((Node n) => n.url == 'bad-node'), isFalse);
@@ -1340,7 +1327,7 @@ void main() {
     test('should return default nodes when all nodes have excessive errors',
         () {
       nm.updateNodes(
-          NodeType.duniter,
+          NodeType.endpoint,
           <Node>[
             const Node(
                 url: 'bad-node-1',
@@ -1355,7 +1342,7 @@ void main() {
           ],
           notify: false);
 
-      final List<Node> bestNodes = nm.getBestNodes(NodeType.duniter);
+      final List<Node> bestNodes = nm.getBestNodes(NodeType.endpoint);
 
       // Should return default nodes
       expect(bestNodes.isNotEmpty, isTrue);
@@ -1398,24 +1385,25 @@ void main() {
     });
     test('should not remove nodes below absolute max errors threshold', () {
       const Node node = Node(url: 'test-node');
-      nm.addNode(NodeType.duniter, node, notify: false);
+      nm.addNode(NodeType.duniterIndexer, node, notify: false);
 
       // Increase errors but stay below absolute max
       for (int i = 0; i < NodeManager.absoluteMaxErrors - 1; i++) {
-        nm.increaseNodeErrors(NodeType.duniter, node,
+        nm.increaseNodeErrors(NodeType.duniterIndexer, node,
             notify: false, cause: 'Test error $i');
       }
 
       // Node should still exist
-      expect(nm.duniterNodes.any((Node n) => n.url == 'test-node'), isTrue);
+      expect(
+          nm.duniterIndexerNodes.any((Node n) => n.url == 'test-node'), isTrue);
       final Node updatedNode =
-          nm.duniterNodes.firstWhere((Node n) => n.url == 'test-node');
+          nm.duniterIndexerNodes.firstWhere((Node n) => n.url == 'test-node');
       expect(updatedNode.errors, NodeManager.absoluteMaxErrors - 1);
     });
 
     test('getBestNodes should filter nodes at maxNodeErrors threshold', () {
       nm.updateNodes(
-          NodeType.duniter,
+          NodeType.endpoint,
           <Node>[
             const Node(url: 'perfect', latency: 100, currentBlock: 1000),
             const Node(
@@ -1433,7 +1421,7 @@ void main() {
           ],
           notify: false);
 
-      final List<Node> bestNodes = nm.getBestNodes(NodeType.duniter);
+      final List<Node> bestNodes = nm.getBestNodes(NodeType.endpoint);
 
       // Should only include nodes with errors < maxNodeErrors
       expect(bestNodes.every((Node n) => n.errors < NodeManager.maxNodeErrors),

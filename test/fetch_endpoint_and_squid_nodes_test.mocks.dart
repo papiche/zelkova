@@ -320,20 +320,8 @@ class MockNodeListCubit extends _i1.Mock implements _i8.NodeListCubit {
       ) as bool);
 
   @override
-  List<_i9.Node> get duniterNodes => (super.noSuchMethod(
-        Invocation.getter(#duniterNodes),
-        returnValue: <_i9.Node>[],
-      ) as List<_i9.Node>);
-
-  @override
   List<_i9.Node> get cesiumPlusNodes => (super.noSuchMethod(
         Invocation.getter(#cesiumPlusNodes),
-        returnValue: <_i9.Node>[],
-      ) as List<_i9.Node>);
-
-  @override
-  List<_i9.Node> get gvaNodes => (super.noSuchMethod(
-        Invocation.getter(#gvaNodes),
         returnValue: <_i9.Node>[],
       ) as List<_i9.Node>);
 
@@ -439,15 +427,6 @@ class MockNodeListCubit extends _i1.Mock implements _i8.NodeListCubit {
       );
 
   @override
-  void setDuniterNodes(List<_i9.Node>? nodes) => super.noSuchMethod(
-        Invocation.method(
-          #setDuniterNodes,
-          [nodes],
-        ),
-        returnValueForMissingStub: null,
-      );
-
-  @override
   void setDuniterIndexerNodes(List<_i9.Node>? nodes) => super.noSuchMethod(
         Invocation.method(
           #setDuniterIndexerNodes,
@@ -484,15 +463,6 @@ class MockNodeListCubit extends _i1.Mock implements _i8.NodeListCubit {
       );
 
   @override
-  void setGvaNodes(List<_i9.Node>? nodes) => super.noSuchMethod(
-        Invocation.method(
-          #setGvaNodes,
-          [nodes],
-        ),
-        returnValueForMissingStub: null,
-      );
-
-  @override
   void setEndpointNodes(List<_i9.Node>? nodes) => super.noSuchMethod(
         Invocation.method(
           #setEndpointNodes,
@@ -519,6 +489,15 @@ class MockNodeListCubit extends _i1.Mock implements _i8.NodeListCubit {
   void resetCurrentGvaNode() => super.noSuchMethod(
         Invocation.method(
           #resetCurrentGvaNode,
+          [],
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  void clearV2Nodes() => super.noSuchMethod(
+        Invocation.method(
+          #clearV2Nodes,
           [],
         ),
         returnValueForMissingStub: null,

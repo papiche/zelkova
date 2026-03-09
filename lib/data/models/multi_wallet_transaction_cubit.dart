@@ -218,7 +218,7 @@ class MultiWalletTransactionCubit
         logger(
             'Failed to get transactions, attempt ${attempt + 1} of $retries');
         await Future<void>.delayed(const Duration(seconds: 1));
-        NodeManager().increaseNodeErrors(NodeType.gva, node,
+        NodeManager().increaseNodeErrors(NodeType.endpoint, node,
             cause: 'Failed to get transactions');
         continue;
       }
@@ -447,7 +447,7 @@ class MultiWalletTransactionCubit
             // Add it but with missing type
             newPendingTxs.add(pend.copyWith(type: TransactionType.failed));
             // Mark the node with one more error via increaseNodeErrors
-            NodeManager().increaseNodeErrors(NodeType.gva, node,
+            NodeManager().increaseNodeErrors(NodeType.endpoint, node,
                 cause: 'Pending transaction not found');
           }
         }

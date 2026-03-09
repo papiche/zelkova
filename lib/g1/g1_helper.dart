@@ -4,7 +4,6 @@ import 'dart:typed_data';
 
 import 'package:crypto/crypto.dart' as crypto;
 import 'package:crypto/crypto.dart';
-import 'package:durt/durt.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fast_base58/fast_base58.dart';
 import 'package:pointycastle/export.dart' as pc;
@@ -13,11 +12,11 @@ import 'package:sentry_flutter/sentry_flutter.dart';
 import '../data/models/contact.dart';
 import '../data/models/payment_state.dart';
 import '../data/models/transaction.dart';
-import '../data/models/utxo.dart';
 import '../ui/currency_helper.dart';
 import '../ui/logger.dart';
 //import '../ui/pay_helper.dart';
 import '../ui/ui_helpers.dart';
+import 'crypto/cesium_wallet.dart';
 import 'g1_v2_helper.dart';
 
 Random createRandom() {
@@ -425,26 +424,6 @@ Set<Contact> parseMultipleKeys(String inputText) {
 
   loggerDev('[parseMultipleKeys] Total contacts found: ${contacts.length}');
   return contacts;
-}
-
-List<List<Utxo>> sliceUtxos(List<Utxo> utxos, {int sliceSize = 40}) {
-  final List<List<Utxo>> slices = <List<Utxo>>[];
-
-  for (int i = 0; i < utxos.length; i += sliceSize) {
-    final int end =
-        (i + sliceSize < utxos.length) ? i + sliceSize : utxos.length;
-    slices.add(utxos.sublist(i, end));
-  }
-
-  return slices;
-}
-
-double truncBase(double amount, int base) {
-  final num p = pow(10, base);
-  if (amount < p) {
-    return 0;
-  }
-  return (amount / p).truncateToDouble() * p;
 }
 
 String genTxKey(Transaction t) {

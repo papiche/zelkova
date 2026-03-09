@@ -4,11 +4,6 @@ import 'package:flutter/foundation.dart';
 
 import 'logger.dart';
 
-// Import the appropriate implementation based on platform
-// ignore: avoid_relative_lib_imports
-import 'brave_detector_web.dart' if (dart.library.io) 'brave_detector_stub.dart'
-    as impl;
-
 /// Global flag to force Brave detection for testing
 /// Set this to true to simulate Brave browser for testing purposes
 bool _forceBraveDetectionForTesting = false;

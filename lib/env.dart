@@ -18,13 +18,8 @@ abstract class Env {
 
   // Nodes
   // v1
-  // @EnviedField(defaultValue: 'test_')
-  @EnviedField(varName: 'DUNITER_NODES')
-  static const String duniterNodes = _Env.duniterNodes;
   @EnviedField(varName: 'CESIUM_PLUS_NODES')
   static const String cesiumPlusNodes = _Env.cesiumPlusNodes;
-  @EnviedField(varName: 'GVA_NODES')
-  static const String gvaNodes = _Env.gvaNodes;
 
   // v2
   @EnviedField(varName: 'ENDPOINTS')

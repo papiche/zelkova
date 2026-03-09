@@ -27,9 +27,8 @@ void main() {
 
     // Clean NodeManager before each test
     final NodeManager nm = NodeManager();
-    nm.duniterNodes.clear();
+    nm.endpointNodes.clear();
     nm.cesiumPlusNodes.clear();
-    nm.gvaNodes.clear();
     nm.endpointNodes.clear();
     nm.duniterIndexerNodes.clear();
     nm.duniterDataNodes.clear();
@@ -46,7 +45,7 @@ void main() {
 
       // Add test nodes
       nm.updateNodes(
-        NodeType.duniter,
+        NodeType.endpoint,
         <Node>[
           const Node(url: 'https://node1.com', latency: 100),
           const Node(url: 'https://node2.com', latency: 200),
@@ -55,16 +54,16 @@ void main() {
         notify: false,
       );
 
-      final int initialLength = nm.duniterNodes.length;
+      final int initialLength = nm.endpointNodes.length;
 
       // Simulate concurrent modification during getPeers
       // (getPeers uses List<Node>.from to prevent this)
       final Future<List<dynamic>> peersFuture =
-          getPeers(NodeType.duniter, debug: false);
+          getPeers(NodeType.endpoint, debug: false);
 
       // Try to modify the list while it's running
       nm.addNode(
-        NodeType.duniter,
+        NodeType.endpoint,
         const Node(url: 'https://node4.com'),
         notify: false,
       );
@@ -72,13 +71,13 @@ void main() {
       await peersFuture;
 
       // Verify that the new list has the added node
-      expect(nm.duniterNodes.length, initialLength + 1);
-      expect(nm.duniterNodes.last.url, 'https://node4.com');
+      expect(nm.endpointNodes.length, initialLength + 1);
+      expect(nm.endpointNodes.last.url, 'https://node4.com');
     });
 
     test('should handle empty node list', () async {
       final List<dynamic> peers =
-          await getPeers(NodeType.duniter, debug: false);
+          await getPeers(NodeType.endpoint, debug: false);
       expect(peers, isEmpty);
     });
 
@@ -87,13 +86,13 @@ void main() {
       // Since we can't make real requests, this test verifies behavior with empty list
       final NodeManager nm = NodeManager();
       nm.updateNodes(
-        NodeType.duniter,
+        NodeType.endpoint,
         <Node>[const Node(url: 'https://invalid-node.com')],
         notify: false,
       );
 
       final List<dynamic> peers =
-          await getPeers(NodeType.duniter, debug: false);
+          await getPeers(NodeType.endpoint, debug: false);
       // Should return empty because the node doesn't respond
       expect(peers, isEmpty);
     });
@@ -220,13 +219,13 @@ void main() {
     });
   });
 
-  group('_fetchDuniterNodesFromPeers - concurrency tests', () {
+  group('_fetchEndpointNodesFromPeers - concurrency tests', () {
     test('should handle concurrent node insertions', () async {
       final NodeManager nm = NodeManager();
 
       // Simulate that there are already nodes
       nm.updateNodes(
-        NodeType.duniter,
+        NodeType.endpoint,
         <Node>[
           const Node(url: 'https://existing-node.com', latency: 100),
         ],
@@ -240,7 +239,7 @@ void main() {
       for (int i = 0; i < 5; i++) {
         futures.add(Future<void>(() {
           nm.addNode(
-            NodeType.duniter,
+            NodeType.endpoint,
             Node(url: 'https://concurrent-node-$i.com', latency: 100 + i),
             notify: false,
           );
@@ -250,11 +249,11 @@ void main() {
       await Future.wait(futures);
 
       // Verify that all nodes were added correctly
-      expect(nm.duniterNodes.length, 6); // 1 existing + 5 new
+      expect(nm.endpointNodes.length, 6); // 1 existing + 5 new
 
       // Verify there are no duplicates
-      final Set<String> urls = nm.duniterNodes.map((Node n) => n.url).toSet();
-      expect(urls.length, nm.duniterNodes.length);
+      final Set<String> urls = nm.endpointNodes.map((Node n) => n.url).toSet();
+      expect(urls.length, nm.endpointNodes.length);
     });
 
     test('should maintain node order by latency during concurrent additions',
@@ -267,7 +266,7 @@ void main() {
       for (int i = 10; i > 0; i--) {
         futures.add(Future<void>(() {
           nm.insertNode(
-            NodeType.duniter,
+            NodeType.endpoint,
             Node(url: 'https://node-$i.com', latency: i * 50),
           );
         }));
@@ -277,7 +276,7 @@ void main() {
 
       // The first inserted node should be the fastest
       // (although order may vary due to concurrency)
-      expect(nm.duniterNodes.isNotEmpty, isTrue);
+      expect(nm.endpointNodes.isNotEmpty, isTrue);
     });
   });
 
@@ -346,28 +345,6 @@ void main() {
   });
 
   group('updateNodes - thread safety tests', () {
-    test('should handle rapid successive updates without data loss', () async {
-      final NodeManager nm = NodeManager();
-
-      // Perform multiple rapid updates
-      for (int batch = 0; batch < 5; batch++) {
-        final List<Node> nodes = List<Node>.generate(
-          10,
-          (int i) =>
-              Node(url: 'https://node$i.com', latency: batch * 100 + i * 10),
-        );
-
-        nm.updateNodes(NodeType.gva, nodes, notify: false);
-      }
-
-      // Should have exactly 10 unique nodes
-      expect(nm.gvaNodes.length, 10);
-
-      // Verify there are no duplicates by URL
-      final Set<String> urls = nm.gvaNodes.map((Node n) => n.url).toSet();
-      expect(urls.length, 10);
-    });
-
     test('should preserve error counts during batch updates', () async {
       final NodeManager nm = NodeManager();
 
@@ -433,46 +410,27 @@ void main() {
   });
 
   group('increaseNodeErrors - concurrent error tracking', () {
-    test('should correctly increment errors multiple times', () async {
-      final NodeManager nm = NodeManager();
-      const Node node = Node(url: 'https://test-node.com', latency: 100);
-
-      nm.addNode(NodeType.gva, node, notify: false);
-
-      // Increment errors multiple times
-      for (int i = 0; i < 5; i++) {
-        final Node currentNode = nm.gvaNodes
-            .firstWhere((Node n) => n.url == 'https://test-node.com');
-        nm.increaseNodeErrors(NodeType.gva, currentNode,
-            cause: 'Test error $i', notify: false);
-      }
-
-      final Node finalNode =
-          nm.gvaNodes.firstWhere((Node n) => n.url == 'https://test-node.com');
-      expect(finalNode.errors, 5);
-    });
-
     test('should handle concurrent error increments', () async {
       final NodeManager nm = NodeManager();
       const Node node = Node(url: 'https://concurrent-test.com', latency: 100);
 
-      nm.addNode(NodeType.duniter, node, notify: false);
+      nm.addNode(NodeType.endpoint, node, notify: false);
 
       // Simulate multiple threads incrementing errors
       final List<Future<void>> futures = <Future<void>>[];
 
       for (int i = 0; i < 10; i++) {
         futures.add(Future<void>(() {
-          final Node currentNode = nm.duniterNodes
+          final Node currentNode = nm.endpointNodes
               .firstWhere((Node n) => n.url == 'https://concurrent-test.com');
-          nm.increaseNodeErrors(NodeType.duniter, currentNode,
+          nm.increaseNodeErrors(NodeType.endpoint, currentNode,
               cause: 'Concurrent test', notify: false);
         }));
       }
 
       await Future.wait(futures);
 
-      final Node finalNode = nm.duniterNodes
+      final Node finalNode = nm.endpointNodes
           .firstWhere((Node n) => n.url == 'https://concurrent-test.com');
 
       // Due to the nature of asynchronous operations,
@@ -543,13 +501,8 @@ void main() {
       final NodeManager nm = NodeManager();
 
       nm.updateNodes(
-        NodeType.duniter,
-        <Node>[const Node(url: 'https://duniter-node.com')],
-        notify: false,
-      );
-      nm.updateNodes(
-        NodeType.gva,
-        <Node>[const Node(url: 'https://gva-node.com')],
+        NodeType.cesiumPlus,
+        <Node>[const Node(url: 'https://cesiumplus-node.com')],
         notify: false,
       );
       nm.updateNodes(
@@ -558,12 +511,10 @@ void main() {
         notify: false,
       );
 
-      expect(nm.duniterNodes.length, 1);
-      expect(nm.gvaNodes.length, 1);
+      expect(nm.cesiumPlusNodes.length, 1);
       expect(nm.endpointNodes.length, 1);
 
-      expect(nm.duniterNodes.first.url, 'https://duniter-node.com');
-      expect(nm.gvaNodes.first.url, 'https://gva-node.com');
+      expect(nm.cesiumPlusNodes.first.url, 'https://cesiumplus-node.com');
       expect(nm.endpointNodes.first.url, 'https://endpoint-node.com');
     });
   });
@@ -599,13 +550,13 @@ void main() {
 
       // Add nodes with errors in different types
       nm.updateNodes(
-        NodeType.duniter,
+        NodeType.endpoint,
         <Node>[const Node(url: 'https://duniter1.com', errors: 5)],
         notify: false,
       );
       nm.updateNodes(
-        NodeType.gva,
-        <Node>[const Node(url: 'https://gva1.com', errors: 3)],
+        NodeType.cesiumPlus,
+        <Node>[const Node(url: 'https://cesiumplus1.com', errors: 3)],
         notify: false,
       );
       nm.updateNodes(
@@ -617,8 +568,8 @@ void main() {
       nm.cleanErrorStats(notify: false);
 
       // All errors should be at 0
-      expect(nm.duniterNodes.first.errors, 0);
-      expect(nm.gvaNodes.first.errors, 0);
+      expect(nm.endpointNodes.first.errors, 0);
+      expect(nm.cesiumPlusNodes.first.errors, 0);
       expect(nm.endpointNodes.first.errors, 0);
     });
   });
@@ -628,7 +579,7 @@ void main() {
       final NodeManager nm = NodeManager();
 
       nm.updateNodes(
-        NodeType.gva,
+        NodeType.cesiumPlus,
         <Node>[
           const Node(
               url: 'https://bad-node.com',
@@ -646,7 +597,7 @@ void main() {
         notify: false,
       );
 
-      final List<Node> best = nm.getBestNodes(NodeType.gva);
+      final List<Node> best = nm.getBestNodes(NodeType.cesiumPlus);
 
       // Node with maxNodeErrors or more should not be in best list
       expect(
@@ -682,7 +633,7 @@ void main() {
       final NodeManager nm = NodeManager();
 
       nm.updateNodes(
-        NodeType.duniter,
+        NodeType.endpoint,
         <Node>[
           const Node(
               url: 'https://online-node.com', latency: 100, currentBlock: 1000),
@@ -694,7 +645,7 @@ void main() {
         notify: false,
       );
 
-      final List<Node> best = nm.getBestNodes(NodeType.duniter);
+      final List<Node> best = nm.getBestNodes(NodeType.endpoint);
 
       // Offline node should be filtered out
       expect(best.any((Node n) => !n.isOk), isFalse);

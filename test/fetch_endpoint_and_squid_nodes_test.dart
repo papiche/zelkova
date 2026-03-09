@@ -34,9 +34,7 @@ void main() {
 
     // Clean NodeManager before each test
     final NodeManager nm = NodeManager();
-    nm.duniterNodes.clear();
     nm.cesiumPlusNodes.clear();
-    nm.gvaNodes.clear();
     nm.endpointNodes.clear();
     nm.duniterIndexerNodes.clear();
     nm.duniterDataNodes.clear();

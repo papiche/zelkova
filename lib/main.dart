@@ -49,7 +49,6 @@ import 'data/models/node_type.dart';
 import 'data/models/payment_cubit.dart';
 import 'data/models/theme_cubit.dart';
 import 'data/models/transaction.dart';
-import 'data/models/utxo_cubit.dart';
 import 'env.dart';
 import 'g1/api.dart';
 import 'g1/distance_precompute.dart';
@@ -351,9 +350,6 @@ void main() async {
                     BlocProvider<ContactsCubit>(
                       create: (BuildContext context) => ContactsCubit(),
                     ),
-                    BlocProvider<UtxoCubit>(
-                      create: (BuildContext context) => UtxoCubit(),
-                    ),
                     BlocProvider<MultiWalletTransactionCubit>(
                       create: (BuildContext context) =>
                           GetIt.instance.get<MultiWalletTransactionCubit>(),
@@ -575,16 +571,13 @@ class _GinkgoAppState extends State<GinkgoApp> {
   }
 
   void _printNodeStatus({String prefix = 'Starting'}) {
-    final int nDuniterNodes = NodeManager().nodeList(NodeType.duniter).length;
     final int nCesiumPlusNodes =
         NodeManager().nodeList(NodeType.cesiumPlus).length;
-    final int nGvaNodes = NodeManager().nodeList(NodeType.gva).length;
     logger(
-      '$prefix with $nDuniterNodes duniter nodes, $nCesiumPlusNodes c+ nodes, and $nGvaNodes gva nodes',
+      '$nCesiumPlusNodes c+ nodes',
     );
     if (!kReleaseMode) {
       logger('${NodeManager().nodeList(NodeType.cesiumPlus)}');
-      logger('${NodeManager().nodeList(NodeType.gva)}');
     }
   }
 
@@ -787,7 +780,6 @@ class _GinkgoAppState extends State<GinkgoApp> {
       printCubitStateSize('BottomNavCubit', context.read<BottomNavCubit>());
       // printCubitStateSize('ContactsCubit', context.read<ContactsCubit>());
       printCubitStateSize('ThemeCubit', context.read<ThemeCubit>());
-      printCubitStateSize('UtxoCubit', context.read<UtxoCubit>());
     } */
   }
 
@@ -1112,9 +1104,8 @@ Future<void> initGetItAll() async {
     final AppCubit appCubit = AppCubit();
     getIt.registerSingleton<AppCubit>(appCubit);
     getIt.registerSingleton<NodeListCubit>(NodeListCubit());
-    getIt.registerSingleton<UtxoCubit>(UtxoCubit());
     getIt.registerSingleton<ServiceManager>(
-      ServiceManager(initialIsV2: appCubit.isV2),
+      ServiceManager(),
     );
   }
 }

@@ -10,7 +10,6 @@
 import 'dart:async';
 import 'dart:math';
 
-import 'package:durt/durt.dart';
 import 'package:flutter/foundation.dart';
 import 'package:polkadart_keyring/polkadart_keyring.dart';
 
@@ -18,6 +17,7 @@ import 'data/models/contact.dart';
 import 'data/models/legacy_wallet.dart';
 import 'data/models/stored_account.dart';
 import 'data/models/wallet_themes.dart';
+import 'g1/crypto/cesium_wallet.dart';
 import 'g1/g1_helper.dart';
 import 'shared_prefs_helper_v1.dart' as v1;
 import 'shared_prefs_helper_v2.dart' as v2;

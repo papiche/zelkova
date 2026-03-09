@@ -32,11 +32,6 @@ class NodeListCubit extends HydratedCubit<NodeListState> {
     emit(state.copyWith(isLoading: isLoading));
   }
 
-  void setDuniterNodes(List<Node> nodes) {
-    emit(state.copyWith(
-        duniterNodes: nodes, duniterNodesLastUpdate: DateTime.now()));
-  }
-
   void setDuniterIndexerNodes(List<Node> nodes) {
     emit(state.copyWith(
         duniterIndexerNodes: nodes,
@@ -58,20 +53,12 @@ class NodeListCubit extends HydratedCubit<NodeListState> {
         cesiumPlusNodes: nodes, cesiumPlusNodesLastUpdate: DateTime.now()));
   }
 
-  void setGvaNodes(List<Node> nodes) {
-    emit(state.copyWith(gvaNodes: nodes, gvaNodesLastUpdate: DateTime.now()));
-  }
-
   void setEndpointNodes(List<Node> nodes) {
     emit(state.copyWith(
         endpointNodes: nodes, endpointNodesLastUpdate: DateTime.now()));
   }
 
-  List<Node> get duniterNodes => state.duniterNodes;
-
   List<Node> get cesiumPlusNodes => state.cesiumPlusNodes;
-
-  List<Node> get gvaNodes => state.gvaNodes;
 
   List<Node> get endpointNodes => state.endpointNodes;
 
@@ -92,8 +79,6 @@ class NodeListCubit extends HydratedCubit<NodeListState> {
 
   void resetCurrentGvaNode() {
     emit(NodeListState(
-        gvaNodes: state.gvaNodes,
-        duniterNodes: state.duniterNodes,
         cesiumPlusNodes: state.cesiumPlusNodes,
         endpointNodes: state.endpointNodes,
         duniterIndexerNodes: state.duniterIndexerNodes,

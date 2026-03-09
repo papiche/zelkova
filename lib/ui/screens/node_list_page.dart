@@ -36,24 +36,12 @@ class NodeListPage extends StatelessWidget {
           filterAndSortNodesByType(state.endpointNodes, NodeType.endpoint);
       final List<Node> duniterIndexerNodes = filterAndSortNodesByType(
           state.duniterIndexerNodes, NodeType.duniterIndexer);
-      final List<Node> duniterNodes =
-          filterAndSortNodesByType(state.duniterNodes, NodeType.duniter);
       final List<Node> cesiumPlusNodes =
           filterAndSortNodesByType(state.cesiumPlusNodes, NodeType.cesiumPlus);
-      final List<Node> gvaNodes =
-          filterAndSortNodesByType(state.gvaNodes, NodeType.gva);
-/*      final List<Node> duniterDataNodes = filterAndSortNodesByType(
-          state.duniterDataNodes, NodeType.datapodEndpoint);
-      final List<Node> ipfsGateways =
-          filterAndSortNodesByType(state.ipfsGateways, NodeType.ipfsGateway);*/
 
       // Use isV1 and isV2 from NodeType, and sort by enum index for consistent order
       final List<NodeType> v2Types = NodeType.values
           .where((NodeType type) => type.isV2)
-          .toList()
-        ..sort((NodeType a, NodeType b) => a.index.compareTo(b.index));
-      final List<NodeType> v1Types = NodeType.values
-          .where((NodeType type) => type.isV1)
           .toList()
         ..sort((NodeType a, NodeType b) => a.index.compareTo(b.index));
       // Map NodeType to nodes and lastUpdated
@@ -61,9 +49,7 @@ class NodeListPage extends StatelessWidget {
         NodeType.endpoint: endPointNodes,
         NodeType.duniterIndexer: duniterIndexerNodes,
 /*        NodeType.datapodEndpoint: duniterDataNodes,
-        NodeType.ipfsGateway: ipfsGateways,*/
-        NodeType.gva: gvaNodes,
-        NodeType.duniter: duniterNodes,
+         NodeType.ipfsGateway: ipfsGateways,*/
         NodeType.cesiumPlus: cesiumPlusNodes,
       };
       final Map<NodeType, DateTime?> nodeTypeToLastUpdated =
@@ -71,9 +57,7 @@ class NodeListPage extends StatelessWidget {
         NodeType.endpoint: state.endpointNodesLastUpdate,
         NodeType.duniterIndexer: state.duniterIndexerNodesLastUpdate,
 /*        NodeType.datapodEndpoint: state.duniterDataNodesLastUpdate,
-        NodeType.ipfsGateway: state.ipfsGatewaysLastUpdate,*/
-        NodeType.gva: state.gvaNodesLastUpdate,
-        NodeType.duniter: state.duniterNodesLastUpdate,
+         NodeType.ipfsGateway: state.ipfsGatewaysLastUpdate,*/
         NodeType.cesiumPlus: state.cesiumPlusNodesLastUpdate,
       };
       return Scaffold(
@@ -112,21 +96,6 @@ class NodeListPage extends StatelessWidget {
                                   nodeTypeToNodes[type]![0].currentBlock,
                             ),
                         ]
-                      else
-                        for (final NodeType type in v1Types) ...<Widget>[
-                          NodeListHeader(
-                            type: type,
-                            lastUpdated: nodeTypeToLastUpdated[type],
-                            nodesCount: nodeTypeToNodes[type]?.length ?? 0,
-                          ),
-                          if (nodeTypeToNodes[type]?.isNotEmpty ?? false)
-                            NodeListWidget(
-                              nodes: nodeTypeToNodes[type]!,
-                              type: type,
-                              currentBlock:
-                                  nodeTypeToNodes[type]![0].currentBlock,
-                            ),
-                        ],
                     ],
                   ),
                 ),

@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:ui';
 
-import 'package:durt/durt.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:polkadart_keyring/polkadart_keyring.dart';
@@ -13,6 +12,7 @@ import 'data/models/legacy_wallet.dart';
 import 'data/models/stored_account.dart';
 import 'data/models/wallet_themes.dart';
 import 'g1/api.dart';
+import 'g1/crypto/cesium_wallet.dart';
 import 'g1/g1_helper.dart';
 import 'g1/g1_v2_helper.dart';
 import 'secure_crypto_helper.dart';

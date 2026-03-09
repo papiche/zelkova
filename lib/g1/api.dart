@@ -12,7 +12,6 @@ import 'package:duniter_indexer/duniter_indexer_client.dart';
 import 'package:duniter_indexer/graphql/schema/__generated__/duniter-indexer-queries.data.gql.dart';
 import 'package:duniter_indexer/graphql/schema/__generated__/duniter-indexer-queries.req.gql.dart';
 import 'package:duniter_indexer/graphql/schema/__generated__/duniter-indexer-queries.var.gql.dart';
-import 'package:durt/durt.dart';
 import 'package:ferry/ferry.dart' as ferry;
 import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
@@ -28,20 +27,18 @@ import '../data/models/node_lists_default.dart';
 import '../data/models/node_manager.dart';
 import '../data/models/node_type.dart';
 import '../data/models/transaction_state.dart';
-import '../data/models/utxo.dart';
 import '../env.dart';
 import '../shared_prefs_helper.dart';
 import '../ui/contacts_cache.dart';
 import '../ui/logger.dart';
 import '../ui/ui_helpers.dart';
+import 'crypto/cesium_wallet.dart';
 import 'duniter_endpoint_helper.dart';
 import 'g1_helper.dart';
 import 'g1_v2_helper.dart';
 import 'no_nodes_exception.dart';
 import 'node_check_result.dart';
 import 'pay_result.dart';
-import 'proxyfy_node_stub.dart'
-    if (dart.library.js_interop) 'proxyfy_node_web.dart';
 import 'service_manager.dart';
 import 'v2_peers.dart';
 
@@ -63,17 +60,6 @@ const String expectedG1GenesisHash =
 final Map<String, List<Completer<Tuple2<Node, http.Response>>>> _cPlusInFlight =
     <String, List<Completer<Tuple2<Node, http.Response>>>>{};
 
-Future<String> getTxHistory(String publicKey) async {
-  final Response response =
-      (await requestWithRetry(NodeType.duniter, '/tx/history/$publicKey'))
-          .item2;
-  if (response.statusCode == 200) {
-    return response.body;
-  } else {
-    throw Exception('Failed to load tx history');
-  }
-}
-
 Future<List<dynamic>> getPeers(NodeType type, {bool debug = true}) async {
   // const Duration timeout = Duration(seconds: 10);
   // Prevent concurrent modification
@@ -83,38 +69,35 @@ Future<List<dynamic>> getPeers(NodeType type, {bool debug = true}) async {
   }
   List<dynamic> currentPeers = <dynamic>[];
   for (final Node node in nodes) {
-    if (type == NodeType.duniter || type == NodeType.gva) {
-      String nodeUrl = node.url;
-      nodeUrl = nodeUrl.replaceAll(RegExp(r'/gva$'), '');
-      nodeUrl = '$nodeUrl/network/peers';
+    String nodeUrl = node.url;
+    nodeUrl = '$nodeUrl/network/peers';
+    if (debug) {
+      loggerDev('Fetching $nodeUrl');
+    }
+    try {
+      final Response response = await getWithTimeout(Uri.parse(nodeUrl));
+      if (response.statusCode == 200) {
+        // Try decode
+        final Map<String, dynamic> peerList =
+            jsonDecode(response.body) as Map<String, dynamic>;
+        final List<dynamic> peers = (peerList['peers'] as List<dynamic>)
+            .where((dynamic peer) =>
+                (peer as Map<String, dynamic>)['currency'] == currency)
+            .where((dynamic peer) =>
+                (peer as Map<String, dynamic>)['version'] == 10)
+            .where((dynamic peer) =>
+                (peer as Map<String, dynamic>)['status'] == 'UP')
+            .toList();
+        if (currentPeers.length < peers.length) {
+          // sometimes getPeers returns a small list of nodes (sometimes even one)
+          currentPeers = peers;
+        }
+      }
+    } catch (e) {
       if (debug) {
-        loggerDev('Fetching $nodeUrl');
+        loggerDev('Error retrieving $nodeUrl ($e)');
       }
-      try {
-        final Response response = await getWithTimeout(Uri.parse(nodeUrl));
-        if (response.statusCode == 200) {
-          // Try decode
-          final Map<String, dynamic> peerList =
-              jsonDecode(response.body) as Map<String, dynamic>;
-          final List<dynamic> peers = (peerList['peers'] as List<dynamic>)
-              .where((dynamic peer) =>
-                  (peer as Map<String, dynamic>)['currency'] == currency)
-              .where((dynamic peer) =>
-                  (peer as Map<String, dynamic>)['version'] == 10)
-              .where((dynamic peer) =>
-                  (peer as Map<String, dynamic>)['status'] == 'UP')
-              .toList();
-          if (currentPeers.length < peers.length) {
-            // sometimes getPeers returns a small list of nodes (sometimes even one)
-            currentPeers = peers;
-          }
-        }
-      } catch (e) {
-        if (debug) {
-          loggerDev('Error retrieving $nodeUrl ($e)');
-        }
-        // Ignore
-      }
+      // Ignore
     }
   }
   return currentPeers;
@@ -276,109 +259,6 @@ Future<Tuple2<Set<Node>, Set<Node>>> getV2Peers({
   );
 }
 
-Future<List<Contact>> searchProfilesV1(
-    {required String searchTermLower,
-    required String searchTerm,
-    required String searchTermCapitalized,
-    bool quickMode = false}) async {
-  final String query =
-      '/user/profile/_search?q=title:$searchTermLower OR issuer:$searchTerm OR title:$searchTermCapitalized OR title:$searchTerm';
-
-  final Response response = (await requestCPlusWithRetry(query,
-          retryWith404: false, quickMode: quickMode))
-      .item2;
-  final List<Contact> searchResult = <Contact>[];
-  if (response.statusCode != 404) {
-    // Add cplus users
-    final List<dynamic> hits = ((const JsonDecoder().convert(response.body)
-            as Map<String, dynamic>)['hits'] as Map<String, dynamic>)['hits']
-        as List<dynamic>;
-    for (final dynamic hit in hits) {
-      final Contact c = await contactFromResultSearch(
-        hit as Map<String, dynamic>,
-      );
-      logger('Contact retrieved in c+ search $c');
-      ContactsCache().addContact(c);
-      searchResult.add(c);
-    }
-  }
-  return searchResult;
-}
-
-Future<Contact> getProfileV1(String pubKeyRaw,
-    {bool onlyCPlusProfile = false, bool resize = true}) async {
-  final String pubKey = extractPublicKey(pubKeyRaw);
-  try {
-    final Response cPlusResponse =
-        (await requestCPlusWithRetry('/user/profile/$pubKey')).item2;
-    final Map<String, dynamic> result =
-        const JsonDecoder().convert(cPlusResponse.body) as Map<String, dynamic>;
-    Contact c;
-    if (result['found'] == false) {
-      c = Contact(pubKey: pubKey);
-    } else {
-      final Map<String, dynamic> profile = const JsonDecoder()
-          .convert(cPlusResponse.body) as Map<String, dynamic>;
-      c = await contactFromResultSearch(profile, resize: resize);
-    }
-    if (!onlyCPlusProfile) {
-      // This penalize the gva rate limit
-      // final String? nick = await gvaNick(pubKey);
-      final List<Contact> wotList = await searchWotV1(pubKey);
-      if (wotList.isNotEmpty) {
-        final Contact cWot = wotList[0];
-        c = c.merge(cWot);
-        // c.copyWith(nick: c.nick);
-      }
-    }
-    logger('Contact retrieved in getProfile $c (c+ only $onlyCPlusProfile)');
-    return c;
-  } catch (e) {
-    logger('Error in getProfile $e');
-    return Contact(pubKey: pubKey);
-  }
-}
-
-/*
-http://doc.e-is.pro/cesium-plus-pod/REST_API.html#userprofile
-Not found sample:
-{
-"_index": "user",
-"_type": "profile",
-"_id": "H97or89hW4kzKcvpmFPAAvc1znJrbJWJSYS9XnW37JrM",
-"found": false
-}
- */
-Future<List<Contact>> searchWotV1(String initialSearchTerm) async {
-  final String searchTerm = normalizeQuery(initialSearchTerm);
-  final Response response = (await requestDuniterWithRetry(
-          '/wot/lookup/$searchTerm',
-          retryWith404: false))
-      .item2;
-  // Will be better to analyze the 404 response (to detect faulty node)
-  final List<Contact> contacts = <Contact>[];
-  if (response.statusCode == HttpStatus.ok) {
-    final Map<String, dynamic> data =
-        json.decode(response.body) as Map<String, dynamic>;
-    final List<dynamic> results = data['results'] as List<dynamic>;
-    // logger('Returning wot results ${results.length}');
-    if (results.isNotEmpty) {
-      for (final dynamic result in results) {
-        final Map<String, dynamic> resultMap = result as Map<String, dynamic>;
-        final String pubKey = resultMap['pubkey'] as String;
-        // ignore: avoid_dynamic_calls
-        final String nick = resultMap['uids'][0]['uid']! as String;
-        contacts.add(Contact(nick: nick, pubKey: pubKey));
-      }
-    }
-  }
-  logger('Returning wot contact ${contacts.length}');
-  if (contacts.isNotEmpty) {
-    logger('First: ${contacts.first}');
-  }
-  return contacts;
-}
-
 Future<void> fetchNodesIfNotReady(
     {required bool v2Only, bool isProduction = false}) async {
   final List<Future<void>> fetchFutures = <Future<void>>[];
@@ -391,11 +271,10 @@ Future<void> fetchNodesIfNotReady(
           NodeType.cesiumPlus,
         ]
       : <NodeType>[
-          // V1 needs these
-          NodeType.gva,
-          NodeType.duniter,
+          // V1 needs these (now uses endpoints and indexer instead of duniter nodes)
+          NodeType.endpoint,
+          NodeType.duniterIndexer,
           NodeType.cesiumPlus,
-          // NodeType.ipfsGateway
         ];
 
   for (final NodeType type in nodesToFetch) {
@@ -412,12 +291,6 @@ Future<void> fetchNodes(NodeType type, bool force,
     final List<Future<void>> fetchFutures = <Future<void>>[];
 
     switch (type) {
-      case NodeType.duniter:
-        fetchFutures.add(_fetchDuniterNodes(force: force));
-        break;
-      case NodeType.gva:
-        fetchFutures.add(_fetchGvaNodes(force: force));
-        break;
       case NodeType.cesiumPlus:
         fetchFutures.add(_fetchCesiumPlusNodes(force: force));
         break;
@@ -446,36 +319,6 @@ Future<void> fetchNodes(NodeType type, bool force,
     await Sentry.captureException(e, stackTrace: stacktrace);
     NodeManager().loading = false;
   }
-}
-
-Future<void> _fetchDuniterNodes({bool force = false}) async {
-  const NodeType type = NodeType.duniter;
-  NodeManager().loading = true;
-  final bool forceOrFewNodes =
-      force || (NodeManager().nodesWorking(type) < NodeManager.maxNodes);
-  if (forceOrFewNodes) {
-    defaultDuniterNodes.shuffle();
-    NodeManager().updateNodes(type, defaultDuniterNodes);
-  }
-  logger(
-      'Fetching (forced: $force) ${type.name} nodes, we have ${NodeManager().nodesWorking(type)}');
-  final List<Node> nodes = await _fetchDuniterNodesFromPeers(type);
-  NodeManager().updateNodes(type, nodes);
-  NodeManager().loading = false;
-}
-
-Future<void> _fetchGvaNodes({bool force = false}) async {
-  NodeManager().loading = true;
-  const NodeType type = NodeType.gva;
-  if (force) {
-    NodeManager().updateNodes(type, defaultGvaNodes);
-    logger('Fetching gva nodes forced');
-  } else {
-    logger('Fetching gva nodes, we have ${NodeManager().nodesWorking(type)}');
-  }
-  final List<Node> nodes = await _fetchDuniterNodesFromPeers(type);
-  NodeManager().updateNodes(type, nodes);
-  NodeManager().loading = false;
 }
 
 // https://github.com/duniter/cesium/blob/467ec68114be650cd1b306754c3142fc4020164c/www/js/config.js#L96
@@ -655,90 +498,6 @@ Future<void> _fetchIpfsGateways({required bool force}) async {
   NodeManager().loading = false;
 }
 
-Future<List<Node>> _fetchDuniterNodesFromPeers(NodeType type,
-    {bool debug = false}) async {
-  logger('Fetching ${type.name} nodes from peers');
-  final List<Node> lNodes = <Node>[];
-  final String apyType = (type == NodeType.duniter) ? 'BMAS' : 'GVA S';
-  try {
-    final List<dynamic> peers = await getPeers(type);
-    peers.shuffle();
-
-    // Collect all endpoints to check
-    final List<String> endpointsToCheck = <String>[];
-    for (final dynamic peerR in peers) {
-      final Map<String, dynamic> peer = peerR as Map<String, dynamic>;
-      if (peer['endpoints'] != null) {
-        final List<String> endpoints =
-            List<String>.from(peer['endpoints'] as List<dynamic>);
-        for (int j = 0; j < endpoints.length; j++) {
-          if (endpoints[j].startsWith(apyType)) {
-            final String endpointUnParsed = endpoints[j];
-            final String? endpoint = parseHost(endpointUnParsed);
-            if (endpoint != null && !endpoint.contains('localhost')) {
-              endpointsToCheck.add(endpoint);
-              if (kReleaseMode &&
-                  endpointsToCheck.length >= NodeManager.maxNodes) {
-                break;
-              }
-            }
-          }
-        }
-        if (kReleaseMode && endpointsToCheck.length >= NodeManager.maxNodes) {
-          break;
-        }
-      }
-    }
-
-    // Parallelize all endpoint checks
-    final List<Future<Node?>> nodeFutures =
-        endpointsToCheck.map((String endpoint) async {
-      try {
-        final NodeCheckResult nodeCheck = await _pingNode(endpoint, type);
-        final Duration latency = nodeCheck.latency;
-        loggerD(debug,
-            'Evaluating node: $endpoint, latency ${latency.inMicroseconds} currentBlock: ${nodeCheck.currentBlock} version: ${nodeCheck.version}');
-        final Node node = Node(
-            url: endpoint,
-            latency: latency.inMicroseconds,
-            currentBlock: nodeCheck.currentBlock,
-            version: nodeCheck.version);
-        // Use the new method that handles insertion based on latency
-        NodeManager().addNodeSortedByLatency(type, node, notify: false);
-        return node;
-      } catch (e) {
-        logger('Error fetching $endpoint, error: $e');
-        return null;
-      }
-    }).toList();
-
-    // Wait for all checks to complete in parallel
-    final List<Node?> results = await Future.wait(nodeFutures);
-
-    // Filter out null results and add to list
-    lNodes.addAll(results.whereType<Node>());
-
-    // Notify once after all updates
-    if (lNodes.isNotEmpty) {
-      NodeManager().notifyObserver();
-    }
-
-    logger(
-        'Fetched ${lNodes.length} ${type.name} nodes ordered by latency ${lNodes.isNotEmpty ? '(first: ${lNodes.first.url})' : '(zero nodes)'}');
-  } catch (e, stacktrace) {
-    await Sentry.captureException(e, stackTrace: stacktrace);
-    logger('General error in fetch ${type.name} nodes: $e');
-    logger(stacktrace);
-  }
-  lNodes.sort((Node a, Node b) => a.latency.compareTo(b.latency));
-  if (lNodes.isNotEmpty) {
-    logger('First node in list ${lNodes.first.url}');
-  } else {
-    logger('No nodes in list');
-  }
-  return lNodes;
-}
-
 void loggerD(bool debug, String message) {
   if (debug) {
     logger(message);
@@ -813,9 +572,7 @@ Future<NodeCheckResult> _pingNode(String node, NodeType type,
           Future<NodeCheckResult> Function(String node, Duration timeout)>
       testFunctions = <NodeType,
           Future<NodeCheckResult> Function(String node, Duration timeout)>{
-    NodeType.duniter: testDuniterV1Node,
     NodeType.cesiumPlus: testCPlusV1Node,
-    NodeType.gva: testGVAV1Node,
     NodeType.endpoint: testEndPointV2,
     NodeType.duniterIndexer: testDuniterIndexerV2,
     NodeType.datapodEndpoint: testDuniterDatapodV2,
@@ -836,8 +593,7 @@ Future<NodeCheckResult> _pingNode(String node, NodeType type,
       logger(
           'Node $node does not respond to ping: ${removeNewlines(e.toString())}');
     }
-    return NodeCheckResult(
-        latency: wrongNodeDuration, currentBlock: 0, genesisHash: null);
+    return NodeCheckResult(latency: wrongNodeDuration, currentBlock: 0);
   }
 }
 
@@ -850,11 +606,6 @@ void _logNodePing(
 Future<Tuple2<Node, http.Response>> requestWithRetry(NodeType type, String path,
     {bool dontRecord = false, bool retryWith404 = true}) async {
   return _requestWithRetry(type, path, dontRecord, retryWith404);
-}
-
-Future<Tuple2<Node, http.Response>> requestDuniterWithRetry(String path,
-    {bool retryWith404 = true}) async {
-  return _requestWithRetry(NodeType.duniter, path, true, retryWith404);
 }
 
 Future<Tuple2<Node, http.Response>> requestCPlusWithRetry(String path,
@@ -909,16 +660,6 @@ Future<Tuple2<Node, http.Response>> requestCPlusWithRetry(String path,
     }
     rethrow;
   }
-}
-
-Future<Tuple2<Node, http.Response>> requestGvaWithRetry(String path,
-    {bool retryWith404 = true,
-    HttpType httpType = HttpType.get,
-    Map<String, String>? headers,
-    Object? body,
-    Encoding? encoding}) async {
-  return _requestWithRetry(NodeType.gva, path, true, retryWith404,
-      httpType: httpType, headers: headers, body: body, encoding: encoding);
 }
 
 enum HttpType { get, post, delete }
@@ -1051,263 +792,6 @@ Future<Tuple2<Node, http.Response>> _requestWithRetry(
       'Cannot make the request to any of the ${nodes.length} nodes');
 }
 
-Future<PayResult> payV1(
-    {required List<String> to, required double amount, String? comment}) async {
-  try {
-    final Tuple2<String, Node> selected = getGvaNode();
-
-    final String nodeUrl = selected.item1;
-    try {
-      final Gva gva = Gva(node: nodeUrl);
-      final CesiumWallet wallet =
-          await SharedPreferencesHelper().getCesiumWallet();
-      logger(
-          'Trying $nodeUrl to send $amount to $to with comment ${comment ?? ''}');
-      String response;
-      if (to.length == 1) {
-        response = await gva.pay(
-            recipient: extractPublicKey(to[0]),
-            amount: amount,
-            comment: comment ?? '',
-            cesiumSeed: wallet.seed,
-            useMempool: true,
-            raiseException: true);
-      } else {
-        response = await gva.complexPay(
-            recipients: to
-                .map((String recipient) => extractPublicKey(recipient))
-                .toList(),
-            amounts: List<double>.filled(to.length, amount),
-            totalAmount: amount * to.length,
-            comment: comment ?? '',
-            cesiumSeed: wallet.seed,
-            useMempool: true,
-            raiseException: true);
-      }
-      logger('GVA replied with "$response"');
-      return PayResult(message: response, node: selected.item2);
-    } catch (e, stacktrace) {
-      if (e is GraphQLException) {
-        final List<String> eCause = e.cause.split('message:');
-        final String eCauseWithoutTitle = eCause.isNotEmpty
-            ? eCause[eCause.length > 1 ? 1 : 0]
-            : 'Unknown error';
-        final String rawMessage = eCauseWithoutTitle.contains(',')
-            ? eCauseWithoutTitle.split(',')[0]
-            : eCauseWithoutTitle;
-        if (rawMessage.contains('nsufficient balance')) {
-          return PayResult(
-              node: selected.item2,
-              message: 'Insufficient balance in your wallet');
-        }
-        return PayResult(
-            node: selected.item2,
-            message: eCause.isNotEmpty
-                ? rawMessage
-                : 'Transaction failed for unknown reason');
-      }
-      await Sentry.captureException(e, stackTrace: stacktrace);
-      logger(e);
-      logger(stacktrace);
-      return PayResult(
-          node: selected.item2,
-          message: "Something didn't work as expected ($e)");
-    }
-  } catch (e) {
-    return PayResult(
-        message: "Something didn't work as expected retrieving the nodes ($e)");
-  }
-}
-
-Tuple2<String, Node> getGvaNode() {
-  final List<Node> nodes = NodeManager().getBestNodes(NodeType.gva);
-
-  if (nodes.isEmpty) {
-    throw Exception(
-        'Sorry: I cannot find a working node to send the transaction');
-  }
-
-  final Node? currentGvaNode = NodeManager().getCurrentGvaNode();
-
-  // Check if the current node is in the list and has no errors
-  final bool currentIsHealthy = currentGvaNode != null &&
-      currentGvaNode.errors == 0 &&
-      nodes.contains(currentGvaNode);
-
-  // It's in the list but has some errors
-  final bool currentIsFallback =
-      currentGvaNode != null && nodes.contains(currentGvaNode);
-
-  final Node selectedNode = currentIsHealthy
-      ? currentGvaNode
-      : nodes.firstWhere((Node node) => node.errors == 0,
-          orElse: () => currentIsFallback ? currentGvaNode : nodes.first);
-
-  loggerDev(
-    'Selected GVA node ${selectedNode.url}, '
-    'previous: ${currentGvaNode?.url ?? "none"}, '
-    'errors: ${selectedNode.errors}',
-  );
-
-  return Tuple2<String, Node>(proxyfyNode(selectedNode.url), selectedNode);
-}
-
-Tuple2<String, Node> getGvaNodeOld() {
-  final List<Node> nodes = NodeManager().getBestNodes(NodeType.gva);
-  if (nodes.isNotEmpty) {
-    final Node? currentGvaNode = NodeManager().getCurrentGvaNode();
-    final bool currentIsInBest = nodes.contains(currentGvaNode);
-
-    final Node newNode =
-        currentIsInBest ? currentGvaNode ?? nodes.first : nodes.first;
-    loggerDev(
-        'New GVA node ${newNode.url} and currentGva ${currentGvaNode ?? const Node(url: "No node").url} is in best nodes: $currentIsInBest');
-    NodeManager().setCurrentGvaNode(newNode);
-    loggerDev('New GVA node ${newNode.url}');
-    return Tuple2<String, Node>(proxyfyNode(newNode.url), newNode);
-  } else {
-    throw Exception(
-        'Sorry: I cannot find a working node to send the transaction');
-  }
-}
-
-Future<Tuple2<Map<String, dynamic>?, Node>> getHistoryAndBalanceV1(
-    String pubKeyRaw,
-    {int? pageSize,
-    int? from,
-    int? to,
-    String? cursor,
-    required bool isConnected}) async {
-  logger(
-      'Get tx history (page size: $pageSize: cursor $cursor, from: $from, to: $to)');
-  final String pubKey = extractPublicKey(pubKeyRaw);
-  return gvaFunctionWrapper<Map<String, dynamic>>((Gva gva) => gva
-      .history(pubKey, pageSize: pageSize, cursor: cursor, from: from, to: to));
-}
-
-Future<Tuple2<double?, Node>> gvaBalance(String pubKey) async {
-  return gvaFunctionWrapper<double>((Gva gva) => gva.balance(pubKey));
-}
-
-Future<Tuple2<String?, Node>> gvaNick(String pubKey) async {
-  return gvaFunctionWrapper<String>(
-      (Gva gva) => gva.getUsername(extractPublicKey(pubKey)));
-}
-
-Future<Tuple2<Map<String, dynamic>?, Node>> getCurrentBlockGVA() async {
-  return gvaFunctionWrapper<Map<String, dynamic>>(
-      (Gva gva) => gva.getCurrentBlockExtended());
-}
-
-Future<Tuple2<T?, Node>> gvaFunctionWrapper<T>(
-    Future<T?> Function(Gva) specificFunction) async {
-  final List<Node> nodes = NodeManager().getBestNodes(NodeType.gva);
-
-  // Try first the current GVA node
-  final Node? currentGvaNode = NodeManager().getCurrentGvaNode();
-  if (currentGvaNode != null) {
-    // Try to put the current Node first
-    final bool currentBlockSynced = nodes.isNotEmpty &&
-        currentGvaNode.currentBlock >= nodes.first.currentBlock;
-    if (currentBlockSynced) {
-      nodes.remove(currentGvaNode);
-      nodes.insert(0, currentGvaNode);
-    }
-  }
-
-  for (int i = 0; i < nodes.length; i++) {
-    final Node node = nodes[i];
-    try {
-      final Gva gva = Gva(node: proxyfyNode(node.url));
-      logger('Trying to use gva ${node.url}');
-      final T? result = await specificFunction(gva)
-          .timeout(const Duration(seconds: 10), onTimeout: () {
-        throw Exception('Timeout');
-      });
-      logger('Returning results from ${node.url}');
-      return Tuple2<T?, Node>(result, node);
-    } catch (e) {
-      await Sentry.captureMessage(
-          'Error trying to use gva node ${node.url} $e');
-      logger('Error trying ${node.url} $e');
-      NodeManager().increaseNodeErrors(NodeType.gva, node,
-          cause: 'GVA request failed: $e');
-      continue;
-    }
-  }
-  throw Exception('Sorry: I cannot find a working gva node');
-}
-
-// http://doc.e-is.pro/cesium-plus-pod/REST_API.html#userprofile
-// https://git.p2p.legal/axiom-team/jaklis/src/branch/master/lib/cesiumCommon.py
-// Get an profile, by public key: user/profile/<pubkey>
-// Add a new profile: user/profile (POST)
-// Update an existing profile: user/profile/_update (POST)
-// Delete an existing profile: user/profile/_delete (DELETE?)
-Future<bool> createOrUpdateProfileV1(String name) async {
-  final CesiumWallet wallet = await SharedPreferencesHelper().getCesiumWallet();
-  final String pubKey = extractPublicKey(wallet.pubkey);
-
-  // Check if the user exists
-  final String? userName = await getProfileUserName(pubKey);
-
-  // Prepare the user profile data
-  final Map<String, dynamic> userProfile = <String, dynamic>{
-    'version': 2,
-    'issuer': pubKey,
-    'title': name,
-    'geoPoint': null,
-    'time': DateTime.now().millisecondsSinceEpoch ~/
-        1000, // current time in seconds
-    'tags': <String>[],
-  };
-
-  hashAndSign(userProfile, wallet);
-
-  // Convert the user profile data into a JSON string again, now including hash and signature
-  final String userProfileJsonWithHashAndSignature = jsonEncode(userProfile);
-
-  if (userName != null) {
-    logger('User exists, update the user profile');
-    final http.Response updateResponse = (await _requestWithRetry(
-            NodeType.cesiumPlus,
-            '/user/profile/$pubKey/_update?pubkey=$pubKey',
-            false,
-            true,
-            httpType: HttpType.post,
-            headers: _defCPlusHeaders(),
-            body: userProfileJsonWithHashAndSignature))
-        .item2;
-    if (updateResponse.statusCode == 200) {
-      logger('User profile updated successfully.');
-      return true;
-    } else {
-      logger(
-          'Failed to update user profile. Status code: ${updateResponse.statusCode}');
-      logger('Response body: ${updateResponse.body}');
-      return false;
-    }
-  } else if (userName == null) {
-    logger('User does not exist, create a new user profile');
-    final http.Response createResponse = (await _requestWithRetry(
-            NodeType.cesiumPlus, '/user/profile', false, false,
-            httpType: HttpType.post,
-            headers: _defCPlusHeaders(),
-            body: userProfileJsonWithHashAndSignature))
-        .item2;
-
-    if (createResponse.statusCode == 200) {
-      logger('User profile created successfully.');
-      return true;
-    } else {
-      logger(
-          'Failed to create user profile. Status code: ${createResponse.statusCode}');
-      return false;
-    }
-  }
-  return false;
-}
-
 Map<String, String> _defCPlusHeaders() {
   return <String, String>{
     'Accept': 'application/json, text/plain, */*',
@@ -1315,7 +799,17 @@ Map<String, String> _defCPlusHeaders() {
   };
 }
 
-void hashAndSign(Map<String, dynamic> data, CesiumWallet wallet) {
+/// Sign data with V1 CesiumWallet for Cesium Plus profiles
+void hashAndSignV1Profile(Map<String, dynamic> data, CesiumWallet wallet) {
+  final String dataJson = jsonEncode(data);
+  final String hash = calculateHash(dataJson);
+  final String signature = wallet.sign(hash);
+  data['hash'] = hash;
+  data['signature'] = signature;
+}
+
+/// Sign data with V1 CesiumWallet for BMA transactions
+void hashAndSignV1Transaction(Map<String, Object> data, CesiumWallet wallet) {
   final String dataJson = jsonEncode(data);
   final String hash = calculateHash(dataJson);
   final String signature = wallet.sign(hash);
@@ -1504,35 +998,6 @@ Future<bool> createOrUpdateProfileV2cPlusExtended({
   return false;
 }
 
-Future<String?> getProfileUserNameV1(String pubKey) async {
-  final Contact c =
-      await getProfile(pubKey, onlyProfile: true, complete: false);
-  return c.name;
-}
-
-Future<bool> deleteProfileV1() async {
-  final CesiumWallet wallet = await SharedPreferencesHelper().getCesiumWallet();
-  final String pubKey = extractPublicKey(wallet.pubkey);
-  final Map<String, dynamic> userProfile = <String, dynamic>{
-    'version': 2,
-    'id': pubKey,
-    'issuer': pubKey,
-    'index': 'user',
-    'type': 'profile',
-    'time': DateTime.now().millisecondsSinceEpoch ~/
-        1000, // current time in seconds
-  };
-  hashAndSign(userProfile, wallet);
-
-  final http.Response delResponse = (await _requestWithRetry(
-          NodeType.cesiumPlus, '/history/delete', false, false,
-          httpType: HttpType.post,
-          headers: _defCPlusHeaders(),
-          body: jsonEncode(userProfile)))
-      .item2;
-  return delResponse.statusCode == 200;
-}
-
 Future<bool> deleteProfileV2cPlus() async {
   final KeyPair wallet = await SharedPreferencesHelper().getKeyPair();
   // Cesium Plus expects V1 pubkey format, so convert from V2 address
@@ -1688,139 +1153,6 @@ String calculateHash(String input) {
   return digest.toString().toUpperCase();
 }
 
-Future<Tuple2<Map<String, dynamic>?, Node>> gvaFetchUtxosOfScript(
-    {required String pubKeyRaw,
-    int pageSize = 100,
-    String? cursor,
-    int? amount}) {
-  final String pubKey = extractPublicKey(pubKeyRaw);
-  return gvaFunctionWrapper<Map<String, dynamic>>((Gva gva) =>
-      gva.fetchUtxosOfScript(
-          script: pubKey, pageSize: pageSize, amount: amount, cursor: cursor));
-}
-
-Future<PayResult> payWithBMA({
-  required CesiumWallet wallet,
-  required List<Utxo> utxos,
-  required String destPub,
-  required double amount,
-  required String blockNumber,
-  required String blockHash,
-  String? comment,
-}) async {
-  try {
-    final String issuer = wallet.pubkey;
-    // Change back address == issuer
-    final String restPub = issuer;
-
-    final List<List<Utxo>> utxoSlices = sliceUtxos(utxos);
-    Response? finalResponse;
-    Node? node;
-    for (final List<Utxo> utxoSlice in utxoSlices) {
-      final Map<String, Object> transaction = <String, Object>{
-        'Version': 10,
-        'Currency': currency,
-        'Blockstamp': '$blockNumber-$blockHash',
-        'Locktime': 0,
-        'Issuers': <String>[issuer],
-        'Comment': comment ?? ''
-      };
-
-      // Inputs
-      final List<String> inputs = <String>[];
-      for (final Utxo utxo in utxoSlice) {
-        // if D (DU) : AMOUNT:BASE:D:PUBLIC_KEY:BLOCK_ID
-        // if T (TX) : AMOUNT:BASE:T:T_HASH:T_INDEX
-        inputs.add(
-            '${utxo.amount}:${utxo.base}:T:${utxo.txHash}:${utxo.outputIndex}');
-      }
-      transaction['Inputs'] = inputs;
-      // Unlocks
-      final List<String> unlocks = <String>[];
-      for (int i = 0; i < utxos.length; i++) {
-        // INPUT_INDEX:UNLOCK_CONDITION
-        unlocks.add('$i:SIG(0)');
-      }
-      transaction['Unlocks'] = unlocks;
-
-      final List<String> outputs = <String>[];
-
-      // AMOUNT:BASE:CONDITIONS
-      double rest = amount;
-      final int maxBase =
-          utxos.fold(0, (int prev, Utxo utxo) => max(prev, utxo.base));
-      final double inputsAmount =
-          utxos.fold(0, (double prev, Utxo utxo) => prev + utxo.amount);
-      int outputBase = maxBase;
-      int outputOffset = 0;
-      final List<Map<String, dynamic>> newSources = <Map<String, dynamic>>[];
-
-      if (destPub != issuer) {
-        while (rest > 0) {
-          double outputAmount = truncBase(rest, outputBase);
-          rest -= outputAmount;
-          if (outputAmount > 0) {
-            outputAmount = outputBase == 0
-                ? outputAmount
-                : outputAmount / pow(10, outputBase);
-            outputs.add('$outputAmount:$outputBase:SIG($destPub)');
-            outputOffset++;
-          }
-          outputBase--;
-        }
-        rest = inputsAmount - amount;
-        outputBase = maxBase;
-      }
-
-      while (rest > 0) {
-        double outputAmount = truncBase(rest, outputBase);
-        rest -= outputAmount;
-        if (outputAmount > 0) {
-          outputAmount = outputBase == 0
-              ? outputAmount
-              : outputAmount / pow(10, outputBase);
-          outputs.add('$outputAmount:$outputBase:SIG($restPub)');
-          if (issuer == restPub) {
-            newSources.add(<String, dynamic>{
-              'type': 'T',
-              'noffset': outputOffset,
-              'amount': outputAmount,
-              'base': outputBase,
-              'conditions': 'SIG($restPub)',
-              'consumed': false,
-            });
-          }
-          outputOffset++;
-        }
-        outputBase--;
-      }
-      transaction['Outputs'] = outputs;
-
-      hashAndSign(transaction, wallet);
-      final String transactionJson = jsonEncode(transaction);
-
-      // final List<int> bytes = utf8.encode(transactionJson);
-      logger(transactionJson);
-
-      final Tuple2<Node, http.Response> response = await _requestWithRetry(
-          NodeType.duniter, '/tx/processTesting', false, false,
-          httpType: HttpType.post,
-          // headers: ??
-          body: transactionJson);
-      finalResponse = response.item2;
-      node = response.item1;
-      if (response.item2.statusCode != 200) {
-        return PayResult(
-            node: response.item1,
-            message: "Something didn't work as expected ($e)");
-      }
-    }
-    return PayResult(message: finalResponse!.body, node: node);
-  } catch (e) {
-    return PayResult(message: "Something didn't work as expected ($e)");
-  }
-}
-
 Future<NodeCheckResult> testDuniterIndexerV2(
     String node, Duration timeout) async {
   NodeCheckResult result;
@@ -1851,17 +1183,13 @@ Future<NodeCheckResult> testDuniterIndexerV2(
     loggerDev(
         'Node $node has errors: ${removeNewlines(response.linkException!.toString())}');
     result = NodeCheckResult(
-        currentBlock: 0,
-        latency: wrongNodeDuration,
-        version: version,
-        genesisHash: null);
+        currentBlock: 0, latency: wrongNodeDuration, version: version);
   } else {
     final int currentBlock = response.data?.blocks?.nodes.first.height ?? 0;
     result = NodeCheckResult(
         currentBlock: currentBlock,
         latency: currentBlock > 0 ? stopwatch.elapsed : wrongNodeDuration,
-        version: version,
-        genesisHash: null);
+        version: version);
   }
   return result;
 }
@@ -1899,22 +1227,6 @@ Future<NodeCheckResult> testIpfsGateway(String node, Duration timeout) async {
   final Duration latency =
       response.statusCode == 200 ? stopwatch.elapsed : wrongNodeDuration;
   final int currentBlock = response.statusCode;
-  final NodeCheckResult result = NodeCheckResult(
-      latency: latency, currentBlock: currentBlock, genesisHash: null);
-  return result;
-}
-
-Future<NodeCheckResult> testGVAV1Node(String node, Duration timeout) async {
-  final Stopwatch stopwatch = Stopwatch()..start();
-  // Test GVA with a query
-  final Gva gva = Gva(node: proxyfyNode(node));
-  final int currentBlock = await gva.getCurrentBlock().timeout(timeout);
-//      NodeManager().updateNode(type, node.copyWith(latency: newLatency));
-  stopwatch.stop();
-  final double balance = await gva
-      .balance('78ZwwgpgdH5uLZLbThUQH7LKwPgjMunYfLiCfUCySkM8')
-      .timeout(timeout);
-  final Duration latency = balance >= 0 ? stopwatch.elapsed : wrongNodeDuration;
   final NodeCheckResult result = NodeCheckResult(
       latency: latency, currentBlock: currentBlock, genesisHash: null);
   return result;
@@ -2046,4 +1358,33 @@ Future<bool> deleteProfile() {
 Future<http.Response> getWithTimeout(Uri uri,
     {Duration timeout = const Duration(seconds: 10)}) {
   return http.get(uri).timeout(timeout);
+}
+
+Future<List<Contact>> searchProfilesV1(
+    {required String searchTermLower,
+    required String searchTerm,
+    required String searchTermCapitalized,
+    bool quickMode = false}) async {
+  final String query =
+      '/user/profile/_search?q=title:$searchTermLower OR issuer:$searchTerm OR title:$searchTermCapitalized OR title:$searchTerm';
+
+  final Response response = (await requestCPlusWithRetry(query,
+          retryWith404: false, quickMode: quickMode))
+      .item2;
+  final List<Contact> searchResult = <Contact>[];
+  if (response.statusCode != 404) {
+    // Add cplus users
+    final List<dynamic> hits = ((const JsonDecoder().convert(response.body)
+            as Map<String, dynamic>)['hits'] as Map<String, dynamic>)['hits']
+        as List<dynamic>;
+    for (final dynamic hit in hits) {
+      final Contact c = await contactFromResultSearch(
+        hit as Map<String, dynamic>,
+      );
+      logger('Contact retrieved in c+ search $c');
+      ContactsCache().addContact(c);
+      searchResult.add(c);
+    }
+  }
+  return searchResult;
 }

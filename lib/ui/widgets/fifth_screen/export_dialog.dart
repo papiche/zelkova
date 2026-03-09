@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:durt/durt.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
@@ -20,6 +19,7 @@ import '../../../data/models/contact.dart';
 import '../../../data/models/contact_cubit.dart';
 import '../../../data/models/legacy_wallet.dart';
 import '../../../data/models/stored_account.dart';
+import '../../../g1/crypto/cesium_wallet.dart';
 import '../../../g1/g1_export_auth_utils.dart';
 import '../../../g1/g1_helper.dart';
 import '../../../g1/g1_v2_helper.dart';

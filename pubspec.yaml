@@ -40,10 +40,6 @@ dependencies:
   qr_flutter: ^4.0.0
   introduction_screen: ^4.0.0
   responsive_framework: ^1.5.1
-  durt:
-    # path: ../durt
-    git:
-      url: https://git.duniter.org/libs/durt
   shared_preferences: ^2.0.18
   vibration: ^3.1.3
   json_annotation: ^4.9.0
@@ -73,6 +69,7 @@ dependencies:
   fast_image_resizer: ^0.0.2
   toggle_switch: ^2.1.0
   fast_base58: ^0.2.1
+  bip32_ed25519: ^0.6.2
   crypto: ^3.0.3
   # Requires minSdk 26
   #flutter_nfc_kit: ^3.5.2

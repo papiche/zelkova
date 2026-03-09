@@ -263,11 +263,15 @@ void main() async {
     await hiveInit();
 
     // PWA install hook.
-    PWAInstall().setup(
-      installCallback: () {
-        logger('APP INSTALLED!');
-      },
-    );
+    try {
+      PWAInstall().setup(
+        installCallback: () {
+          logger('APP INSTALLED!');
+        },
+      );
+    } catch (e) {
+      logger.warning('PWA Install setup failed: $e');
+    }
 
     // Bloc observer for debugging.
     Bloc.observer = AppBlocObserver();

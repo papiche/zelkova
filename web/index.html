@@ -45,23 +45,57 @@
         }
 
     </style>
-    <!-- Capture PWA install prompt event -->
+    <!-- Capture PWA install prompt event and define callbacks required by pwa_install package -->
     <script>
         let deferredPrompt;
 
+        // Placeholder callback functions for pwa_install package
+        // These must be defined BEFORE the package tries to use them
+        function appInstalled() {
+          console.log('[PWA] App installed');
+        }
+
+        function appLaunchedInBrowser() {
+          console.log('[PWA] Launched in browser');
+        }
+
+        function appLaunchedAsPWA() {
+          console.log('[PWA] Launched as PWA');
+        }
+
+        function appLaunchedAsTWA() {
+          console.log('[PWA] Launched as TWA (Android)');
+        }
+
+        // Track how PWA was launched (either from browser or as PWA)
+        // This function is called by the pwa_install Dart package
+        function getLaunchMode() {
+          const isStandalone = window.matchMedia('(display-mode: standalone)').matches;
+          if (document.referrer.startsWith('android-app://')) {
+            appLaunchedAsTWA();
+          } else if (navigator.standalone || isStandalone) {
+            appLaunchedAsPWA();
+          } else {
+            appLaunchedInBrowser();
+          }
+        }
+
+        function promptInstall(){
+           if (deferredPrompt) {
+             deferredPrompt.prompt();
+           }
+        }
+
+        // Listen for beforeinstallprompt event
         window.addEventListener('beforeinstallprompt', (e) => {
           deferredPrompt = e;
         });
 
-        function promptInstall(){
-           deferredPrompt.prompt();
-        }
-
         // Listen for app install event
         window.addEventListener('appinstalled', () => {
           deferredPrompt = null;
+          appInstalled();
         });
-
     </script>
 </head>
 <body>

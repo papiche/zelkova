@@ -876,6 +876,7 @@ class SharedPreferencesHelperV2
   @override
   void accountsClear() {
     accounts.clear();
+    _currentPubKey = null;
   }
 
   @override

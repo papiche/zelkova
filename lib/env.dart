@@ -11,7 +11,7 @@ abstract class Env {
   @EnviedField(varName: 'CURRENCY')
   static const String currency = _Env.currency;
   @EnviedField(varName: 'GENESIS_HASH')
-  static final String? genesisHash = _Env.genesisHash;
+  static const String genesisHash = _Env.genesisHash;
   @EnviedField(varName: 'SENTRY_DSN', obfuscate: true)
   static final String? sentryDsn = _Env.sentryDsn;
 

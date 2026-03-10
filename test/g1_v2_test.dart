@@ -254,4 +254,82 @@ void main() {
     final KeyPair derived0b = await deriveKeyPairWithPath(devMnemonic, 0);
     expect(derived0.address, equals(derived0b.address));
   });
+
+  group('French and English mnemonics with accented characters', () {
+    // Test cases: French mnemonics with accented characters (sécréter, succès)
+    // These are real BIP39 valid mnemonics with their English equivalents
+    final List<Map<String, String>> testCases = <Map<String, String>>[
+      <String, String>{
+        'name': 'Original - contains rare accented words (sécréter, succès)',
+        'french':
+            'reprise horizon flore fongible sécréter pelouse rigide prudence succès manuel heureux ferveur',
+        'english':
+            'snake knife harvest health suit rely source seminar toilet noise key grace',
+        'accentedWords': 'sécréter, succès',
+      },
+    ];
+
+    for (final Map<String, String> testData in testCases) {
+      test(
+        'French mnemonic generates same wallet as English (${testData['name']!})',
+        () async {
+          final String frenchMnemonic = testData['french']!;
+          final String englishMnemonic = testData['english']!;
+          final String accentedWords = testData['accentedWords'] ?? '';
+
+          print('\n=== French ↔ English Mnemonic Test ===');
+          print('Name: ${testData['name']}');
+          print('Accented words: $accentedWords');
+
+          // Verify both mnemonics are valid
+          expect(isValidMnemonic(frenchMnemonic), isTrue,
+              reason: 'French mnemonic should be valid BIP39');
+          expect(isValidMnemonic(englishMnemonic), isTrue,
+              reason: 'English mnemonic should be valid BIP39');
+
+          // Detect languages
+          final Language? frenchLang = detectMnemonicLanguage(frenchMnemonic);
+          final Language? englishLang = detectMnemonicLanguage(englishMnemonic);
+
+          expect(frenchLang, Language.french,
+              reason: 'Should detect as French');
+          expect(englishLang, Language.english,
+              reason: 'Should detect as English');
+
+          // Verify conversion works
+          final String convertedToEnglish = toEnglishMnemonic(frenchMnemonic);
+          expect(convertedToEnglish, equals(englishMnemonic),
+              reason:
+                  'French mnemonic should convert to same English equivalent');
+
+          // Both should generate the same keypair
+          final KeyPair frenchKeyPair =
+              await deriveKeyPairCompat(frenchMnemonic);
+          final KeyPair englishKeyPair =
+              await deriveKeyPairCompat(englishMnemonic);
+
+          // Verify they generate the same address
+          expect(frenchKeyPair.address, equals(englishKeyPair.address),
+              reason:
+                  'French and English mnemonics with same entropy must generate same address');
+
+          // Verify they generate the same public key bytes
+          expect(frenchKeyPair.publicKey.bytes,
+              equals(englishKeyPair.publicKey.bytes),
+              reason:
+                  'French and English mnemonics with same entropy must generate same public key');
+
+          // Print results
+          print('✓ Language detection: OK');
+          print('✓ Mnemonic conversion: OK');
+          print('✓ Keypair generation: IDENTICAL');
+          print('✓ Generated address: ${frenchKeyPair.address}');
+          print('');
+          print('French:  $frenchMnemonic');
+          print('English: $englishMnemonic');
+          print('=====================================');
+        },
+      );
+    }
+  });
 }

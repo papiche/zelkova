@@ -297,7 +297,8 @@ class MultiWalletTransactionCubit
               currentUd: appCubit.currentUd,
               comment: tx.comment,
               from: from.title,
-              isG1: isG1);
+              isG1: isG1,
+              walletPubKey: pubKey);
           currentModifiedState = currentModifiedState.copyWith(
               latestReceivedNotification: tx.time);
           // Emit state immediately after notification to prevent duplicates
@@ -315,7 +316,8 @@ class MultiWalletTransactionCubit
               to: humanizeContacts(
                   publicAddress: tx.from.pubKey,
                   contacts: tx.recipientsWithoutCashBack),
-              isG1: isG1);
+              isG1: isG1,
+              walletPubKey: pubKey);
           currentModifiedState =
               currentModifiedState.copyWith(latestSentNotification: tx.time);
           // Emit state immediately after notification to prevent duplicates

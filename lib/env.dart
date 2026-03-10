@@ -10,6 +10,8 @@ part 'env.g.dart';
 abstract class Env {
   @EnviedField(varName: 'CURRENCY')
   static const String currency = _Env.currency;
+  @EnviedField(varName: 'GENESIS_HASH')
+  static const String genesisHash = _Env.genesisHash;
   @EnviedField(varName: 'SENTRY_DSN', obfuscate: true)
   static final String? sentryDsn = _Env.sentryDsn;
 

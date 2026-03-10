@@ -701,7 +701,7 @@ class _GinkgoAppState extends State<GinkgoApp> {
     SharedPreferencesHelper.configure(useV2: true);
     GetIt.instance<ServiceManager>().updateService(true);
     ContactsCache().clear();
-    fetchNodesIfNotReady(v2Only: true, isProduction: true);
+    fetchNodesIfNotReady(v2Only: true);
     logger('Auto-activated V2 production mode');
   }
 

@@ -13,19 +13,11 @@ import '../data/models/node.dart';
 import '../data/models/node_manager.dart';
 import '../data/models/node_type.dart';
 import '../data/models/stored_account.dart';
-import '../generated/gtest/gtest.dart';
-import '../generated/gtest/types/frame_system/account_info.dart';
-import '../generated/gtest/types/gtest_runtime/runtime_call.dart';
-import '../generated/gtest/types/pallet_certification/types/idty_cert_meta.dart';
-import '../generated/gtest/types/pallet_identity/types/idty_value.dart';
-import '../generated/gtest/types/primitive_types/h256.dart';
-import '../generated/gtest/types/sp_membership/membership_data.dart';
-import '../generated/gtest/types/sp_runtime/multi_signature.dart';
-import '../generated/gtest/types/sp_runtime/multiaddress/multi_address.dart';
-import '../generated/gtest/types/tuples.dart' as tuples;
 import '../shared_prefs_helper.dart';
 import '../ui/logger.dart';
 import 'g1_v2_helper.dart';
+import 'network_types.dart' as tuples;
+import 'network_types.dart';
 import 'node_check_result.dart';
 import 'pay_result.dart';
 import 'sign_and_send.dart';
@@ -47,7 +39,7 @@ Future<NodeCheckResult> testEndPointV2(String node,
   try {
     // Neutralize orphaned future to prevent uncaught state errors after timeout
     await provider.connect().catchError((Object e) {
-      loggerDev('Handled orphaned connection error in testEndPointV2: $e');
+      // loggerDev('Handled orphaned connection error in testEndPointV2: $e');
     }).timeout(timeout);
 
     final Gtest polkadot = Gtest(provider);
@@ -67,6 +59,9 @@ Future<NodeCheckResult> testEndPointV2(String node,
         currentBlock: currentBlockNumber,
         genesisHash: genesisHash);
     return nodeCheckResult;
+  } catch (e) {
+    loggerDev('⚠ testEndPointV2 failed for $node: $e');
+    rethrow;
   } finally {
     try {
       await provider.disconnect();
@@ -105,13 +100,13 @@ Future<T> executeOnPolkadotNodes<T>(
     }
 
     try {
-      loggerDev('executeOnPolkadotNode: Connecting to ${node.url}...');
+      // loggerDev('executeOnPolkadotNode: Connecting to ${node.url}...');
       // Neutralize orphaned future to prevent uncaught state errors after timeout
       await provider.connect().catchError((Object e) {
-        loggerDev(
-            'Handled orphaned connection error in executeOnPolkadotNode: $e');
+        // loggerDev(
+        //     'Handled orphaned connection error in executeOnPolkadotNode: $e');
       }).timeout(timeout);
-      loggerDev('executeOnPolkadotNode: Connected to ${node.url}');
+      // loggerDev('executeOnPolkadotNode: Connected to ${node.url}');
 
       final Gtest polkadot = Gtest(provider);
       loggerDev('executeOnPolkadotNode: Starting operation on ${node.url}');

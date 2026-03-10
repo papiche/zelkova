@@ -51,9 +51,52 @@ const String currencyDotEnv = Env.currency;
 final String currency = currencyDotEnv.isEmpty ? 'g1' : currencyDotEnv;
 
 // G1 production V2 genesis hash - used to validate discovered RPC nodes
-// Obtained from: https://get-g1-genesis-hash.p2p.legal
-const String expectedG1GenesisHash =
-    '0xfeb770bbb0344dabc8366b0d1f889a8e4e6ca09b914006655fe795920deb6d56';
+// Obtained from .env file and https://get-g1-genesis-hash.p2p.legal
+const String expectedG1GenesisHash = Env.genesisHash;
+
+/// Normalizes genesis hashes for comparison (strips '0x' prefix, lowercase)
+String _normalizeHash(String hash) {
+  return hash
+      .replaceFirst(RegExp(r'^0x', caseSensitive: false), '')
+      .toLowerCase();
+}
+
+/// Compares two genesis hashes, handling '0x' prefix variations
+bool _genesisHashesMatch(String? nodeHash, String expectedHash) {
+  if (nodeHash == null) return false;
+  return _normalizeHash(nodeHash) == _normalizeHash(expectedHash);
+}
+
+/// Extracts just the error message without full stack traces (max 50 chars)
+String _getShortErrorMessage(String errorString) {
+  // Take first 50 chars max - just the essential error message
+  if (errorString.length > 50) {
+    return '${errorString.substring(0, 50)}...';
+  }
+  return errorString;
+}
+
+/// Compares two semantic versions (descending: higher first, with version before without)
+int _compareVersions(String? v1, String? v2) {
+  // Both have versions: compare them (descending)
+  if (v1 != null && v1.isNotEmpty && v2 != null && v2.isNotEmpty) {
+    final List<int> p1 =
+        v1.split('.').map(int.tryParse).whereType<int>().toList();
+    final List<int> p2 =
+        v2.split('.').map(int.tryParse).whereType<int>().toList();
+    for (int i = 0; i < (p1.length > p2.length ? p1.length : p2.length); i++) {
+      final int part1 = i < p1.length ? p1[i] : 0;
+      final int part2 = i < p2.length ? p2[i] : 0;
+      if (part1 != part2) return part2 - part1; // Descending
+    }
+    return 0;
+  }
+  // v1 has version, v2 doesn't: v1 comes first
+  if (v1 != null && v1.isNotEmpty) return -1;
+  if (v2 != null && v2.isNotEmpty) return 1;
+  // Neither has version
+  return 0;
+}
 
 // Deduplication map for Cesium+ requests - tracks in-flight requests
 // Maps request path to list of Completers waiting for the result
@@ -150,8 +193,8 @@ Future<Tuple2<Set<Node>, Set<Node>>> getV2Peers({
             // Only add if the node responded successfully
             if (nodeCheck.latency != wrongNodeDuration) {
               // Validate genesis hash for RPC endpoints
-              if (nodeCheck.genesisHash != null &&
-                  nodeCheck.genesisHash != expectedG1GenesisHash) {
+              if (!_genesisHashesMatch(
+                  nodeCheck.genesisHash, expectedG1GenesisHash)) {
                 if (debug) {
                   loggerDev(
                       'Rejecting endpoint $url: genesis hash mismatch. Expected: $expectedG1GenesisHash, Got: ${nodeCheck.genesisHash}');
@@ -244,7 +287,13 @@ Future<Tuple2<Set<Node>, Set<Node>>> getV2Peers({
   final List<Node> sortedEndpoints = discoveredEndpointNodes.toList()
     ..sort((Node a, Node b) => a.latency.compareTo(b.latency));
   final List<Node> sortedIndexers = discoveredIndexerNodes.toList()
-    ..sort((Node a, Node b) => a.latency.compareTo(b.latency));
+    ..sort((Node a, Node b) {
+      // First compare by version (higher versions first, then those with version)
+      final int versionCmp = _compareVersions(a.version, b.version);
+      if (versionCmp != 0) return versionCmp;
+      // If same version, sort by latency
+      return a.latency.compareTo(b.latency);
+    });
 
   if (debug) {
     loggerDev(
@@ -591,7 +640,7 @@ Future<NodeCheckResult> _pingNode(String node, NodeType type,
   } catch (e) {
     if (debug) {
       logger(
-          'Node $node does not respond to ping: ${removeNewlines(e.toString())}');
+          'Node $node does not respond to ping: ${_getShortErrorMessage(e.toString())}');
     }
     return NodeCheckResult(latency: wrongNodeDuration, currentBlock: 0);
   }
@@ -1166,11 +1215,18 @@ Future<NodeCheckResult> testDuniterIndexerV2(
     final ferry.OperationResponse<GIndexerVersionData, GIndexerVersionVars>
         versionResponse =
         await client.request(GIndexerVersionReq()).first.timeout(timeout);
-    if (!versionResponse.hasErrors && versionResponse.data?.version != null) {
-      version = versionResponse.data!.version.version;
-      loggerDev('Node $node has indexer version: $version');
-    } else {
+    if (!versionResponse.hasErrors && versionResponse.data != null) {
+      final String? versionString = versionResponse.data!.version.version;
+      if (versionString != null && versionString.isNotEmpty) {
+        version = versionString;
+        loggerDev('Node $node has indexer version: $version');
+      } else {
+        loggerDev('Node $node: version query returned empty version');
+      }
+    } else if (versionResponse.hasErrors) {
       loggerDev('Node $node returned errors when getting version');
+    } else {
+      loggerDev('Node $node: version response has null data');
     }
   } catch (e) {
     loggerDev('Could not get version from node $node: $e');
@@ -1181,7 +1237,7 @@ Future<NodeCheckResult> testDuniterIndexerV2(
       await client.request(GLastBlockReq()).first.timeout(timeout);
   if (response.hasErrors) {
     loggerDev(
-        'Node $node has errors: ${removeNewlines(response.linkException!.toString())}');
+        'Node $node has errors: ${_getShortErrorMessage(response.linkException!.toString())}');
     result = NodeCheckResult(
         currentBlock: 0, latency: wrongNodeDuration, version: version);
   } else {
@@ -1206,7 +1262,7 @@ Future<NodeCheckResult> testDuniterDatapodV2(
       await client.request(GGetProfileCountReq()).first.timeout(timeout);
   if (response.hasErrors) {
     loggerDev(
-        'Node $node has errors: ${removeNewlines(response.linkException!.originalException.toString())}');
+        'Node $node has errors: ${_getShortErrorMessage(response.linkException!.originalException.toString())}');
     result = NodeCheckResult(
         currentBlock: 0, latency: wrongNodeDuration, genesisHash: null);
   } else {
@@ -1250,7 +1306,8 @@ Future<NodeCheckResult> testCPlusV1Node(String node, Duration timeout) async {
               as Map<String, dynamic>)['docs'] as Map<String, dynamic>)['count']
           as int;
     } catch (e) {
-      loggerDev('Cannot parse node/stats ${removeNewlines(e.toString())}');
+      loggerDev(
+          'Cannot parse node/stats ${_getShortErrorMessage(e.toString())}');
     }
   } else {
     latency = wrongNodeDuration;

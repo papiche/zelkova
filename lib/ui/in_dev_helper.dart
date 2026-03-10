@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 
-import '../generated/gtest/pallets/certification.dart' as cert;
+import '../g1/network_types.dart';
 
 bool get onlyInDevelopment => !inProduction;
 
@@ -22,5 +22,5 @@ int getMaxByIssuer() {
   if (inDevelopment && testMaxByIssuerLimit) {
     return testMaxByIssuerValue;
   }
-  return cert.Constants().maxByIssuer;
+  return Constants().certification.maxByIssuer;
 }

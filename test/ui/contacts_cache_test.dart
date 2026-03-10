@@ -132,7 +132,7 @@ void main() {
           contacts.map((Contact c) => cache.addContact(c)).toList();
 
       // Dispose while operations are in flight
-      await Future<Duration>.delayed(const Duration(milliseconds: 10));
+      await Future<Duration?>.delayed(const Duration(milliseconds: 10));
       await cache.dispose();
 
       // Wait for all operations to complete

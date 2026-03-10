@@ -41,7 +41,7 @@ void main() {
         appCubit.setUd(testUd);
 
         // Give the emit a chance to complete
-        await Future<Duration>.delayed(const Duration(milliseconds: 10));
+        await Future<Duration?>.delayed(const Duration(milliseconds: 10));
 
         // Verify the state has been updated to the test UD
         expect(appCubit.state.currentUd, equals(testUd));
@@ -83,7 +83,7 @@ void main() {
         );
 
         // Close while operations might be in flight
-        await Future<Duration>.delayed(const Duration(milliseconds: 5));
+        await Future<Duration?>.delayed(const Duration(milliseconds: 5));
         await appCubit.close();
 
         // Wait for all operations to complete
@@ -99,7 +99,7 @@ void main() {
         appCubit.setUd(testUd);
 
         // Give the emit a chance to complete
-        await Future<Duration>.delayed(const Duration(milliseconds: 10));
+        await Future<Duration?>.delayed(const Duration(milliseconds: 10));
 
         expect(appCubit.currentUd, equals(testUd));
       });
@@ -111,7 +111,7 @@ void main() {
         appCubit.setUd(testUd);
 
         // Give the emit a chance to complete
-        await Future<Duration>.delayed(const Duration(milliseconds: 10));
+        await Future<Duration?>.delayed(const Duration(milliseconds: 10));
 
         final DateTime? updateTime = appCubit.currentUdLastUpdate;
         expect(updateTime, isNotNull);
@@ -154,7 +154,7 @@ void main() {
         appCubit.setUd(testUd);
 
         // Give the emit a chance to complete
-        await Future<Duration>.delayed(const Duration(milliseconds: 10));
+        await Future<Duration?>.delayed(const Duration(milliseconds: 10));
 
         expect(appCubit.shouldUpdateUd(), isFalse);
       });
@@ -165,7 +165,7 @@ void main() {
         appCubit.setG1Currency();
 
         // Give the emit a chance to complete
-        await Future<Duration>.delayed(const Duration(milliseconds: 10));
+        await Future<Duration?>.delayed(const Duration(milliseconds: 10));
 
         expect(appCubit.currency, equals(Currency.G1));
       });
@@ -174,7 +174,7 @@ void main() {
         appCubit.setDUCurrency();
 
         // Give the emit a chance to complete
-        await Future<Duration>.delayed(const Duration(milliseconds: 10));
+        await Future<Duration?>.delayed(const Duration(milliseconds: 10));
 
         expect(appCubit.currency, equals(Currency.DU));
       });
@@ -185,7 +185,7 @@ void main() {
         appCubit.setV2Mode(true);
 
         // Give the emit a chance to complete
-        await Future<Duration>.delayed(const Duration(milliseconds: 10));
+        await Future<Duration?>.delayed(const Duration(milliseconds: 10));
 
         expect(appCubit.isV2, isTrue);
       });
@@ -194,7 +194,7 @@ void main() {
         appCubit.autoActivateV2();
 
         // Give the emit a chance to complete
-        await Future<Duration>.delayed(const Duration(milliseconds: 10));
+        await Future<Duration?>.delayed(const Duration(milliseconds: 10));
 
         expect(appCubit.isV2, isTrue);
         expect(appCubit.isV2AutoActivated, isTrue);
@@ -202,10 +202,10 @@ void main() {
 
       test('should deactivate auto V2', () async {
         appCubit.autoActivateV2();
-        await Future<Duration>.delayed(const Duration(milliseconds: 10));
+        await Future<Duration?>.delayed(const Duration(milliseconds: 10));
 
         appCubit.deactivateAutoV2();
-        await Future<Duration>.delayed(const Duration(milliseconds: 10));
+        await Future<Duration?>.delayed(const Duration(milliseconds: 10));
 
         expect(appCubit.isV2, isFalse);
         expect(appCubit.isV2AutoActivated, isFalse);

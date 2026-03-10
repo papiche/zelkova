@@ -49,9 +49,7 @@ Future<NodeCheckResult> testEndPointV2(String node,
     // Retrieve genesis hash (block 0)
     final H256 genesisHashH256 =
         await polkadot.query.system.blockHash(0).timeout(timeout);
-    final String genesisHash = genesisHashH256
-        .map((int byte) => byte.toRadixString(16).padLeft(2, '0'))
-        .join();
+    final String genesisHash = u8aToHex(genesisHashH256);
 
     stopwatch.stop();
     final NodeCheckResult nodeCheckResult = NodeCheckResult(
@@ -523,9 +521,7 @@ Future<SignAndSendResult> revokeIdentity(int idtyIndex,
       (Node node, Provider provider, Gtest polkadot) async {
     final Uint8List pubkeyBytes = Address.decode(wallet.address).pubkey;
     final H256 genesisHashH256 = await polkadot.query.system.blockHash(0);
-    final String genesisHashHex = genesisHashH256
-        .map((int byte) => byte.toRadixString(16).padLeft(2, '0'))
-        .join();
+    final String genesisHashHex = u8aToHex(genesisHashH256);
     final Uint8List genesisHash = hexToU8a(genesisHashHex);
     // Domain separation
     final List<int> prefix = 'revo'.codeUnits;
@@ -593,9 +589,7 @@ Future<SignAndSendResult> changeOwnerKey(String newOwnerAddress,
 
       // Get genesis hash for the payload
       final H256 genesisHashH256 = await polkadot.query.system.blockHash(0);
-      final String genesisHashHex = genesisHashH256
-          .map((int byte) => byte.toRadixString(16).padLeft(2, '0'))
-          .join();
+      final String genesisHashHex = u8aToHex(genesisHashH256);
       final Uint8List genesisHash = hexToU8a(genesisHashHex);
 
       // Create the message that the NEW owner must sign

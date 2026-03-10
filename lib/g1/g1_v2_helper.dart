@@ -41,6 +41,44 @@ bool isHex(String value, [int bitLength = -1]) {
       (bitLength == -1 || value.length == 2 + bitLength ~/ 4);
 }
 
+/// Convert bytes (Uint8List or List<int>) to hex string
+///
+/// Parameters:
+/// - [bytes]: The byte array to convert
+/// - [includePrefix]: Whether to include '0x' prefix (default: false)
+///
+/// Returns: Hex string representation (e.g., "2f0f5e2a5660ab28...")
+///
+/// Example:
+/// ```dart
+/// final bytes = Uint8List.fromList([47, 15, 94, 42]);
+/// print(u8aToHex(bytes)); // "2f0f5e2a"
+/// print(u8aToHex(bytes, includePrefix: true)); // "0x2f0f5e2a"
+/// ```
+String u8aToHex(List<int> bytes, {bool includePrefix = false}) {
+  final String hex =
+      bytes.map((int byte) => byte.toRadixString(16).padLeft(2, '0')).join();
+  return includePrefix ? '0x$hex' : hex;
+}
+
+/// Convert Base58-encoded public key to hex string
+///
+/// Parameters:
+/// - [base58Pubkey]: Base58-encoded public key (44 chars for Ed25519)
+///
+/// Returns: Hex string representation without '0x' prefix
+///
+/// Example:
+/// ```dart
+/// final pubkey = '4AhkgiN3eoa9o8WmTHpRe4Jyjr1XmouoXeSY5tTh6VDR';
+/// print(pubkeyToHex(pubkey));
+/// // "2f0f5e2a5660ab28a72edf01b93a7e10e2490b29b6c0c06bb8dfaaf9403ec808"
+/// ```
+String pubkeyToHex(String base58Pubkey) {
+  final List<int> bytes = Base58Decode(base58Pubkey);
+  return u8aToHex(bytes);
+}
+
 String addressFromV1Pubkey(String pubkey) {
   final Keyring keyring = Keyring();
   final List<int> pubkeyByte = Base58Decode(pubkey);

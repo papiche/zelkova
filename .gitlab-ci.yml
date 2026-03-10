@@ -21,6 +21,11 @@ cache:
     - .packages
     - $PUB_CACHE
 
+# Global before_script - runs for all jobs
+before_script:
+  - export PATH="$PATH:$PUB_CACHE/bin"
+  - cp dot.env.sample .env
+
 # Pipeline stages
 stages:
   - test
@@ -35,9 +40,6 @@ test:unit:
   image: ghcr.io/cirruslabs/flutter:${FLUTTER_VERSION}
   
   before_script:
-    # Setup pub cache
-    - export PATH="$PATH:$PUB_CACHE/bin"
-    
     # Copy ast.json to es-AST.json (required by translations)
     - cp assets/translations/ast.json assets/translations/es-AST.json
   
@@ -82,7 +84,6 @@ test:integration-patrol:
   image: ghcr.io/cirruslabs/flutter:${FLUTTER_VERSION}
   
   before_script:
-    - export PATH="$PATH:$PUB_CACHE/bin"
     - cp assets/translations/ast.json assets/translations/es-AST.json
   
   script:
@@ -113,7 +114,6 @@ build:web:
   image: ghcr.io/cirruslabs/flutter:${FLUTTER_VERSION}
   
   before_script:
-    - export PATH="$PATH:$PUB_CACHE/bin"
     - cp assets/translations/ast.json assets/translations/es-AST.json
   
   script:
@@ -153,7 +153,6 @@ build:android:
   image: ghcr.io/cirruslabs/flutter:${FLUTTER_VERSION}
   
   before_script:
-    - export PATH="$PATH:$PUB_CACHE/bin"
     - cp assets/translations/ast.json assets/translations/es-AST.json
   
   script:
@@ -199,7 +198,6 @@ build:linux:
     - apt-get install -y -qq patchelf jq binutils
     
     # Install flutter_to_debian for .deb packaging
-    - export PATH="$PATH:$PUB_CACHE/bin"
     - dart pub global activate flutter_to_debian
     
     # Copy translation file

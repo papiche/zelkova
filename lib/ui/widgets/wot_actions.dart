@@ -950,7 +950,7 @@ Future<SignAndSendResult> _confirmAndChangeOwnerKey(
       return _returnAuthFailed();
     }
 
-    // Mostrar mensaje más específico según el tipo de error
+    // Show more specific message according to error type
     String errorMessage = tr('error_occurred');
     if (e.toString().contains('not available in your accounts') ||
         e.toString().contains('not in your accounts')) {

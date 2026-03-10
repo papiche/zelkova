@@ -1,25 +1,25 @@
-/// Identificadores de redes Duniter soportadas
+/// Identifiers for supported Duniter networks
 enum NetworkId {
-  g1, // Red de producción Ğ1
-  g1Test, // Red de pruebas gtest
+  g1, // G1 production network
+  g1Test, // G1 test network (gtest)
 }
 
-/// Configuración de una red Duniter
+/// Duniter network configuration
 ///
-/// Define cómo se comporta la aplicación para una red específica:
-/// - Nodos a conectar
-/// - Genesis hash para validación
-/// - URLs remotas para fetch de nodos
-/// - Comportamiento en diferentes plataformas (web, mobile, desktop)
+/// Defines how the application behaves for a specific network:
+/// - Nodes to connect to
+/// - Genesis hash for validation
+/// - Remote URLs for node fetching
+/// - Behavior on different platforms (web, mobile, desktop)
 class NetworkConfig {
   final NetworkId id;
-  final String displayName; // "Ğ1 (Producción)" o "Ğ1-Test (gtest)"
+  final String displayName; // "Ğ1 (Production)" or "Ğ1-Test (gtest)"
   final String currency; // 'g1', 'g1-test', etc.
-  final String genesisHash; // Hash único de la red (ej: 0xfeb770bb...)
-  final bool fetchRemoteInWeb; // Si intentar fetch en web (CORS)
-  final String? remoteNodesUrl; // URL JSON con lista de nodos (opcional)
+  final String genesisHash; // Unique network hash (e.g.: 0xfeb770bb...)
+  final bool fetchRemoteInWeb; // Whether to attempt fetch on web (CORS)
+  final String? remoteNodesUrl; // JSON URL with node list (optional)
 
-  // Para futuro selector UI
+  // For future UI selector
   final String description;
   final bool isProduction;
 
@@ -34,14 +34,14 @@ class NetworkConfig {
     this.isProduction = false,
   });
 
-  /// Crea configuración desde variables de entorno (.env)
+  /// Creates configuration from environment variables (.env)
   ///
-  /// Detecta automáticamente la red basándose en la variable CURRENCY del .env
+  /// Automatically detects the network based on the CURRENCY variable from .env
   factory NetworkConfig.fromEnv({
     required String currency,
     required String genesisHash,
   }) {
-    // Detectar red basándose en currency
+    // Detect network based on currency
     final String currencyLower = currency.toLowerCase();
 
     if (currencyLower == 'g1-test' || currencyLower == 'gtest') {
@@ -53,21 +53,21 @@ class NetworkConfig {
         remoteNodesUrl:
             'https://git.duniter.org/nodes/networks/-/raw/master/gtest.json',
         fetchRemoteInWeb: false,
-        description: 'Red de pruebas para desarrollo',
+        description: 'Test network for development',
         isProduction: false,
       );
     }
 
-    // Default: G1 producción
+    // Default: G1 production
     return NetworkConfig(
       id: NetworkId.g1,
-      displayName: 'Ğ1 (Producción)',
+      displayName: 'Ğ1 (Production)',
       currency: currency,
       genesisHash: genesisHash,
       remoteNodesUrl:
           'https://git.duniter.org/nodes/networks/-/raw/master/g1.json',
       fetchRemoteInWeb: false,
-      description: 'Red de producción de la moneda libre Ğ1',
+      description: 'G1 free currency production network',
       isProduction: true,
     );
   }

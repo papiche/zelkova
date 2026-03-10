@@ -322,8 +322,8 @@ class _ContactPageState extends State<ContactPage> with RouteAware {
                   leading: const Icon(Symbols.editor_choice),
                   title: Text('@${contact.nick}'),
                 )),
-          // Mostrar nombre interno si existe y difiere de lo que se muestra en el título
-          // El título en la sección del avatar usa la lógica: si name != nick, muestra "name (nick)", sino solo name o nick
+          // Show internal name if it exists and differs from what is shown in the title
+          // The title in the avatar section uses the logic: if name != nick, shows "name (nick)", otherwise only name or nick
           if (contact.name != null &&
               contact.name!.isNotEmpty &&
               contact.nick != null &&

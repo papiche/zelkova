@@ -63,7 +63,7 @@ class _ContactSearchPageState extends State<ContactSearchPage> {
   final int minSearchLength = 3;
   late bool _isV2;
 
-  // Getter para compatibilidad con código existente
+  // Getter for compatibility with existing code
   List<Contact> get _results => <Contact>[..._localResults, ..._networkResults];
 
   Future<void> _search() async {

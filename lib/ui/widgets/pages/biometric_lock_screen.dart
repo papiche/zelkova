@@ -25,7 +25,7 @@ class _BiometricLockScreenState extends State<BiometricLockScreen> {
   @override
   void initState() {
     super.initState();
-    _startAuth(); // inicia autenticación al construir
+    _startAuth(); // starts authentication on build
   }
 
   Future<void> _startAuth() async {

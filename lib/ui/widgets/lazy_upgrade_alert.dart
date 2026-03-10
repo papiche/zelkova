@@ -8,26 +8,26 @@ import '../../ui/in_dev_helper.dart';
 import '../../ui/logger.dart';
 import 'upgrader_localization.dart';
 
-/// LazyUpgradeAlert - Inicialización perezosa y segura del Upgrader
+/// LazyUpgradeAlert - Lazy and safe Upgrader initialization
 ///
-/// Este widget encapsula la inicialización del `UpgradeAlert` para asegurar que:
-/// 1. El Upgrader no se instancia hasta que sea realmente necesario
-/// 2. Solo funciona en plataformas soportadas (Android/iOS nativos)
-/// 3. Se limpia correctamente en modo desarrollo
+/// This widget encapsulates the initialization of `UpgradeAlert` to ensure that:
+/// 1. The Upgrader is not instantiated until it is really needed
+/// 2. It only works on supported platforms (native Android/iOS)
+/// 3. It is cleaned up correctly in development mode
 ///
-/// **Plataformas soportadas:**
-/// - ✅ Android nativo (scraping Play Store)
-/// - ✅ iOS nativo (integración App Store)
-/// - ❌ Web (no necesario, se actualiza automáticamente)
-/// - ❌ Desktop (Linux/macOS/Windows - sin mecanismo de distribución)
+/// **Supported platforms:**
+/// - ✅ Native Android (Play Store scraping)
+/// - ✅ Native iOS (App Store integration)
+/// - ❌ Web (not needed, updates automatically)
+/// - ❌ Desktop (Linux/macOS/Windows - no distribution mechanism)
 ///
-/// **Problema que soluciona:**
-/// El `UpgradeAlert` original podía bloquear eventos globales o causar interferencias
-/// con widgets en construcción. Al usar lazy loading, garantizamos que solo se
-/// inicializa cuando el usuario ya ha pasado el intro. Además, evitamos mostrar
-/// el upgrader en plataformas donde no es aplicable.
+/// **Problem it solves:**
+/// The original `UpgradeAlert` could block global events or cause interference
+/// with widgets under construction. By using lazy loading, we ensure that it only
+/// initializes when the user has already passed the intro. Additionally, we avoid showing
+/// the upgrader on platforms where it is not applicable.
 ///
-/// **Uso:**
+/// **Usage:**
 /// ```dart
 /// LazyUpgradeAlert(
 ///   child: FeedbackAndSkeletonScreen(),
@@ -62,14 +62,14 @@ class _LazyUpgradeAlertState extends State<LazyUpgradeAlert> {
         messages: GinkgoUpgraderMessages(),
       );
 
-      // En desarrollo, limpiar settings para evitar estados corruptos
-      // esto fuerza re-evaluación del estado del upgrader
+      // In development, clear settings to avoid corrupted states
+      // this forces re-evaluation of the upgrader state
       if (inDevelopment) {
         await Upgrader.clearSavedSettings();
         logger('Upgrader: Settings cleared (development mode)');
       }
 
-      // Log de información útil
+      // Log useful information
       if (inDevelopment) {
         final String platformName = kIsWeb
             ? 'Web'
@@ -100,7 +100,7 @@ class _LazyUpgradeAlertState extends State<LazyUpgradeAlert> {
 
   @override
   Widget build(BuildContext context) {
-    // Si aún no se ha inicializado, mostrar solo el widget hijo
+    // If not yet initialized, show only the child widget
     if (!_isInitialized) {
       return widget.child;
     }

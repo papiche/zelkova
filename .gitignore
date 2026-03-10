@@ -52,3 +52,4 @@ lib/env.g.dart
 
 /android/local.properties
 android/app/.cxx/
+test_bundle.dart

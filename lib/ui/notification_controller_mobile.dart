@@ -7,8 +7,12 @@ import 'package:desktop_notifications/desktop_notifications.dart' as dn;
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../data/models/bottom_nav_cubit.dart';
+import '../g1/g1_helper.dart';
 import '../main.dart';
+import '../shared_prefs_helper.dart';
 import 'logger.dart';
 import 'notif_utils.dart';
 
@@ -121,12 +125,40 @@ class NotificationController {
 
   static Future<void> onActionReceivedImplementationMethod(
       dynamic receivedAction) async {
-    // FIXME (vjrj): go to transactions tab
+    // Extract wallet pubKey from notification payload
+    final String? walletPubKey =
+        receivedAction.payload?['walletPubKey'] as String?;
+
+    // If we have a wallet pubKey, switch to it
+    if (walletPubKey != null && walletPubKey.isNotEmpty) {
+      try {
+        final String currentPubKey = SharedPreferencesHelper().getPubKey();
+        if (extractPublicKey(walletPubKey) != extractPublicKey(currentPubKey)) {
+          // Switch to the correct wallet
+          await SharedPreferencesHelper().selectCurrentWallet(walletPubKey);
+          logger('Switched to wallet $walletPubKey from notification');
+        }
+      } catch (e) {
+        logger('Error switching wallet from notification: $e');
+      }
+    }
+
+    // Navigate to notifications page (this should actually go to transactions tab)
+    // FIXME (vjrj): Consider navigating directly to transactions tab instead
     GinkgoApp.navigatorKey.currentState?.pushNamedAndRemoveUntil(
         '/notification-page',
         (Route<dynamic> route) =>
             (route.settings.name != '/notification-page') || route.isFirst,
         arguments: receivedAction);
+
+    // Switch to transactions tab (SecondScreen - index 1)
+    try {
+      final BottomNavCubit? navCubit =
+          GinkgoApp.navigatorKey.currentContext?.read<BottomNavCubit>();
+      navCubit?.getSecondScreen();
+    } catch (e) {
+      logger('Error switching to transactions tab from notification: $e');
+    }
   }
 
   ///  *********************************************
@@ -219,7 +251,8 @@ class NotificationController {
       String? from,
       String? comment = '',
       required bool isG1,
-      required double currentUd}) async {
+      required double currentUd,
+      String? walletPubKey}) async {
     final String title =
         buildTxNotifTitle(from, languageCode: locale.languageCode);
     final String desc = buildTxNotifDescription(
@@ -231,11 +264,14 @@ class NotificationController {
       isG1: isG1,
       currentUd: currentUd,
     );
-    await notify(title: title, desc: desc, id: id);
+    await notify(title: title, desc: desc, id: id, walletPubKey: walletPubKey);
   }
 
   static Future<void> notify(
-      {required String title, required String desc, required String id}) async {
+      {required String title,
+      required String desc,
+      required String id,
+      String? walletPubKey}) async {
     if (kIsWeb) {
       // dart:html cannot be used in Android
     } else if (!kIsWeb && Platform.isLinux) {
@@ -259,10 +295,14 @@ class NotificationController {
               body: desc,
               largeIcon:
                   'https://git.duniter.org/vjrj/ginkgo/-/raw/master/assets/img/coin.png',
-              bigPicture: 'https://git.duniter.org/vjrj/ginkgo/-/raw/master/assets/img/gbrevedot_color.svg',
+              bigPicture:
+                  'https://git.duniter.org/vjrj/ginkgo/-/raw/master/assets/img/gbrevedot_color.svg',
               //'asset://assets/images/balloons-in-sky.jpg',
               notificationLayout: NotificationLayout.BigPicture,
-              payload: <String, String>{'notificationId': id}),
+              payload: <String, String>{
+                'notificationId': id,
+                if (walletPubKey != null) 'walletPubKey': walletPubKey,
+              }),
           actionButtons: <NotificationActionButton>[
             NotificationActionButton(
                 key: 'notification_open', label: tr('notification_open')),

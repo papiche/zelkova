@@ -2,9 +2,14 @@ import 'dart:js_interop';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:web/web.dart' as web;
 
+import '../data/models/bottom_nav_cubit.dart';
+import '../g1/g1_helper.dart';
 import '../main.dart';
+import '../shared_prefs_helper.dart';
+import 'logger.dart';
 import 'notif_utils.dart';
 import 'ui_helpers.dart';
 
@@ -138,7 +143,8 @@ class NotificationController {
       String? from,
       String? comment = '',
       required double currentUd,
-      required bool isG1}) async {
+      required bool isG1,
+      String? walletPubKey}) async {
     final String title =
         buildTxNotifTitle(from, languageCode: locale.languageCode);
     final String desc = buildTxNotifDescription(
@@ -151,11 +157,14 @@ class NotificationController {
       currentUd: currentUd,
     );
 
-    await notify(title: title, desc: desc, id: '');
+    await notify(title: title, desc: desc, id: '', walletPubKey: walletPubKey);
   }
 
   static Future<void> notify(
-      {required String title, required String desc, required String id}) async {
+      {required String title,
+      required String desc,
+      required String id,
+      String? walletPubKey}) async {
     try {
       final String dedupeKey = '$title|$desc';
       if (_recentNotificationIds.contains(dedupeKey)) {
@@ -174,16 +183,16 @@ class NotificationController {
         final web.NotificationOptions options = web.NotificationOptions(
           body: desc,
           icon: ginkgoNetIcon,
+          tag: walletPubKey ?? 'notification',
         );
         final web.Notification notification = web.Notification(title, options);
 
-        // Add click listener
+        // Add click listener to handle wallet switching and tab navigation
         notification.addEventListener(
             'click',
             (JSAny event) {
-              // context.read<BottomNavCubit>().updateIndex(0);
-            }
-                .toJS);
+              _handleNotificationClick(walletPubKey);
+            }.toJS);
       }
     } catch (e) {
       // Try this way
@@ -197,12 +206,42 @@ class NotificationController {
           final web.NotificationOptions options = web.NotificationOptions(
             body: desc,
             icon: ginkgoNetIcon,
+            tag: walletPubKey ?? 'notification',
           );
           await swReg.showNotification(title, options).toDart;
         }
       } catch (e2) {
         // Silently fail if notifications are not supported
       }
+    }
+  }
+
+  /// Handle notification click: switch wallet and navigate to transactions tab
+  static void _handleNotificationClick(String? walletPubKey) {
+    // Extract wallet pubKey if available
+    if (walletPubKey != null && walletPubKey.isNotEmpty) {
+      try {
+        final String currentPubKey = SharedPreferencesHelper().getPubKey();
+        if (extractPublicKey(walletPubKey) != extractPublicKey(currentPubKey)) {
+          // Switch to the correct wallet
+          SharedPreferencesHelper().selectCurrentWallet(walletPubKey).then((_) {
+            logger('Switched to wallet $walletPubKey from notification');
+          }).catchError((Object e) {
+            logger('Error switching wallet from notification: $e');
+          });
+        }
+      } catch (e) {
+        logger('Error handling notification click: $e');
+      }
+    }
+
+    // Switch to transactions tab (SecondScreen - index 1)
+    try {
+      final BottomNavCubit? navCubit =
+          GinkgoApp.navigatorKey.currentContext?.read<BottomNavCubit>();
+      navCubit?.getSecondScreen();
+    } catch (e) {
+      logger('Error switching to transactions tab from notification: $e');
     }
   }
 }

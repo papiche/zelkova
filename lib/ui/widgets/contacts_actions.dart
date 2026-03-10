@@ -42,8 +42,8 @@ void onDeleteContact(BuildContext context, Contact contact) {
 void onShowContactQr(BuildContext context, Contact contact) {
   showQrDialog(
       context: context,
-      isV2: false,
-      pubKeyOrAddress: contact.pubKey,
+      isV2: true,
+      pubKeyOrAddress: contact.address,
       noTitle: true,
       feedbackText: 'some_key_copied_to_clipboard');
 }

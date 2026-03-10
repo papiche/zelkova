@@ -11,12 +11,12 @@ abstract class Env {
   @EnviedField(varName: 'CURRENCY')
   static const String currency = _Env.currency;
   @EnviedField(varName: 'GENESIS_HASH')
-  static const String genesisHash = _Env.genesisHash;
+  static final String? genesisHash = _Env.genesisHash;
   @EnviedField(varName: 'SENTRY_DSN', obfuscate: true)
   static final String? sentryDsn = _Env.sentryDsn;
 
   @EnviedField(varName: 'GITLAB_TOKEN', obfuscate: true)
-  static final String gitLabToken = _Env.gitLabToken;
+  static final String? gitLabToken = _Env.gitLabToken;
 
   // Nodes
   // v1

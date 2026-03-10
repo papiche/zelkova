@@ -2261,10 +2261,10 @@ packages:
     dependency: "direct main"
     description:
       name: upgrader
-      sha256: "6997d84f49120d6179f6d839a87f0d9595b50641d17e058d8e0fc5f4bdf673fe"
+      sha256: "3fae4eb861c7e8567f91412d9ca4a287e024e58d6f79f98da79e3f6d78da74ba"
       url: "https://pub.dev"
     source: hosted
-    version: "11.5.1"
+    version: "12.5.0"
   uri:
     dependency: transitive
     description:

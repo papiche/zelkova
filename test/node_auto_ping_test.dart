@@ -45,9 +45,12 @@ void main() {
 
     test('shuffle should distribute default nodes randomly', () {
       final List<Node> original = <Node>[
-        Node(url: 'https://node1.com'),
-        Node(url: 'https://node2.com'),
-        Node(url: 'https://node3.com'),
+        const Node(url: 'https://node1.com'),
+        const Node(url: 'https://node2.com'),
+        const Node(url: 'https://node3.com'),
+        const Node(url: 'https://node4.com'),
+        const Node(url: 'https://node5.com'),
+        const Node(url: 'https://node6.com'),
       ];
 
       final List<Node> shuffled1 = <Node>[...original]..shuffle();
@@ -74,10 +77,10 @@ void main() {
 
       // Can't directly set endpointNodes as it's final, so test the counting logic
       final List<Node> testNodes = <Node>[
-        Node(url: 'https://good1.com', errors: 0),
-        Node(url: 'https://good2.com', errors: 2),
-        Node(url: 'https://bad1.com', errors: 5),
-        Node(url: 'https://bad2.com', errors: 10),
+        const Node(url: 'https://good1.com', errors: 0),
+        const Node(url: 'https://good2.com', errors: 2),
+        const Node(url: 'https://bad1.com', errors: 5),
+        const Node(url: 'https://bad2.com', errors: 10),
       ];
 
       // Filter nodes with errors < 5
@@ -87,14 +90,14 @@ void main() {
     });
 
     test('node with latency < 99999 should be considered pinged', () {
-      final Node defaultNode = Node(
+      const Node defaultNode = Node(
         url: 'https://example.com',
         latency: 99999,
         errors: 0,
         currentBlock: 0,
       );
 
-      final Node pinggedNode = Node(
+      const Node pinggedNode = Node(
         url: 'https://example.com',
         latency: 245000, // Real latency in microseconds
         errors: 0,
@@ -109,10 +112,10 @@ void main() {
 
     test('node shuffle preserves all nodes (no duplicates/loss)', () {
       final List<Node> original = <Node>[
-        Node(url: 'https://node1.com'),
-        Node(url: 'https://node2.com'),
-        Node(url: 'https://node3.com'),
-        Node(url: 'https://node4.com'),
+        const Node(url: 'https://node1.com'),
+        const Node(url: 'https://node2.com'),
+        const Node(url: 'https://node3.com'),
+        const Node(url: 'https://node4.com'),
       ];
 
       final int originalCount = original.length;
@@ -131,12 +134,12 @@ void main() {
     test('404 error handling distinction from connection errors', () {
       // 404 = resource not found (valid response for missing profiles)
       // Connection error = timeout, DNS fail, etc (invalid response)
-      final Node node404 = Node(
+      const Node node404 = Node(
         url: 'https://example.com',
         errors: 1, // 404 increments errors
       );
 
-      final Node nodeTimeout = Node(
+      const Node nodeTimeout = Node(
         url: 'https://example.com',
         errors: 1, // Timeout increments errors
       );

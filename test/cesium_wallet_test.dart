@@ -19,11 +19,11 @@ void main() {
     });
 
     test('Create wallet from seed', () {
-      final List<int> seedList = List.generate(32, (i) => i);
-      final wallet1 =
+      final List<int> seedList = List<int>.generate(32, (int i) => i);
+      final CesiumWallet wallet1 =
           CesiumWallet.fromSeed(Uint8List.fromList(List<int>.from(seedList)));
 
-      final wallet2 =
+      final CesiumWallet wallet2 =
           CesiumWallet.fromSeed(Uint8List.fromList(List<int>.from(seedList)));
 
       expect(wallet1.pubkey, equals(wallet2.pubkey));
@@ -72,8 +72,8 @@ void main() {
     test('Signature verification fails for modified document', () {
       const String salt = 'testuser';
       const String password = 'testpass';
-      final String document = 'Original document';
-      final String modifiedDocument = 'Modified document';
+      const String document = 'Original document';
+      const String modifiedDocument = 'Modified document';
 
       final CesiumWallet wallet = CesiumWallet(salt, password);
       final String signature = wallet.sign(document);

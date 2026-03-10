@@ -6,7 +6,6 @@ import 'package:polkadart/scale_codec.dart';
 import 'package:polkadart_keyring/polkadart_keyring.dart';
 
 import '../data/models/node.dart';
-import '../generated/g1/g1.dart';
 import '../generated/g1/types/frame_system/event_record.dart'
     as system_event_record;
 import '../generated/g1/types/frame_system/pallet/event.dart' as system_event;
@@ -15,9 +14,9 @@ import '../generated/g1/types/g1_runtime/runtime_call.dart';
 import '../generated/g1/types/g1_runtime/runtime_event.dart' as runtime_event;
 import '../generated/g1/types/primitive_types/h256.dart';
 import '../generated/g1/types/sp_runtime/dispatch_error.dart' as sp_runtime;
-import 'network_types.dart' show Gtest;
 import '../ui/logger.dart';
 import 'duniter_endpoint_helper.dart';
+import 'network_types.dart' show Gtest;
 
 class SignAndSendResult {
   SignAndSendResult({

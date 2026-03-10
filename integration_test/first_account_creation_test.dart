@@ -45,7 +45,7 @@ void main() {
         (Widget widget) =>
             widget is Dialog &&
             widget.child is Center &&
-            (widget.child as Center).child is Column,
+            (widget.child! as Center).child is Column,
       );
 
       // Should NOT find an error dialog (no RangeError should occur)
@@ -112,7 +112,6 @@ void main() {
       await tester.pumpAndSettle(const Duration(seconds: 5));
 
       final SharedPreferencesHelper helper1 = SharedPreferencesHelper();
-      final String firstPubKey = helper1.getPubKey();
       expect(helper1.length, 1, reason: 'First launch should have 1 account');
 
       // Reset app (in practice this would be a new app launch)
@@ -147,7 +146,7 @@ void main() {
           reason: 'Should reach FirstScreen without crash');
 
       // Verify no unhandled exceptions occurred
-      addTearDown(tester.binding.window.clearPhysicalSizeTestValue);
+      addTearDown(tester.view.resetPhysicalSize);
     });
 
     testWidgets(

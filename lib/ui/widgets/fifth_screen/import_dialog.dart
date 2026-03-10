@@ -55,13 +55,11 @@ void _showGlobalSnackBar(
     String message, Color textColor, Color backgroundColor) {
   globalMessengerKey.currentState?.showSnackBar(
     SnackBar(
-      content: Text(
-        message,
-        style: TextStyle(color: textColor),
-      ),
-      backgroundColor: backgroundColor,
-      duration: const Duration(seconds: 4),
-    ),
+        content: Text(
+          message,
+          style: TextStyle(color: textColor),
+        ),
+        backgroundColor: backgroundColor),
   );
 }
 
@@ -345,8 +343,7 @@ class _ImportDialogState extends State<ImportDialog> {
     late final Color backgroundColor;
 
     try {
-      final bool isDarkMode =
-          Theme.of(parentContext).brightness == Brightness.dark;
+      // Theme.of(parentContext).brightness == Brightness.dark;
       successTextColor = _getSuccessTextColor(parentContext);
       errorTextColor = _getErrorTextColor(parentContext);
       backgroundColor = _getSnackBarBackgroundColor(parentContext);

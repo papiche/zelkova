@@ -37,7 +37,7 @@ List<Node> defaultIpfsGateways = <Node>{
 /// Gets hardcoded endpoint nodes based on the current network
 /// Returns G1 or gtest nodes as fallback for offline mode or fetch failures
 List<Node> getHardcodedEndpointNodes() {
-  final config = NetworkRegistry.getConfig();
+  final NetworkConfig config = NetworkRegistry.getConfig();
   switch (config.id) {
     case NetworkId.g1:
       return nodeListsG1Endpoints;
@@ -49,7 +49,7 @@ List<Node> getHardcodedEndpointNodes() {
 /// Gets hardcoded duniter indexer nodes based on the current network
 /// Returns G1 or gtest nodes as fallback for offline mode or fetch failures
 List<Node> getHardcodedDuniterIndexerNodes() {
-  final config = NetworkRegistry.getConfig();
+  final NetworkConfig config = NetworkRegistry.getConfig();
   switch (config.id) {
     case NetworkId.g1:
       return nodeListsG1DuniterIndexer;

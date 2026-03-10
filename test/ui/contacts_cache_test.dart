@@ -119,7 +119,7 @@ void main() {
     test('should handle concurrent addContact and disposal', () async {
       await cache.init(true);
 
-      final List<Contact> contacts = List.generate(
+      final List<Contact> contacts = List<Contact>.generate(
         5,
         (int i) => Contact(
           pubKey: i == 0 ? validPubKey1 : validPubKey2,
@@ -132,7 +132,7 @@ void main() {
           contacts.map((Contact c) => cache.addContact(c)).toList();
 
       // Dispose while operations are in flight
-      await Future.delayed(const Duration(milliseconds: 10));
+      await Future<Duration>.delayed(const Duration(milliseconds: 10));
       await cache.dispose();
 
       // Wait for all operations to complete

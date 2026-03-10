@@ -286,24 +286,6 @@ class _SettingsPageState extends State<SettingsPage> {
     );
   }
 
-  void _showTestNetworkDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(tr('test_network_dialog_title')),
-          content: Text(tr('test_network_dialog_message')),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: Text(tr('ok')),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
   Future<bool> _isNotificationAllowed() async {
     // Import awesome_notifications in notification_controller
     // This is a simple check for notification permission status

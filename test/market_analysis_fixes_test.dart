@@ -21,7 +21,7 @@ void main() {
             double totalSent,
             int totalReceivedNumber,
             int totalSentNumber,
-            Set other,
+            Set<dynamic> other,
             String md) {
           capturedTotalReceived = totalReceived;
           capturedTotalSent = totalSent;
@@ -36,7 +36,7 @@ void main() {
         const int expectedSentCount = 2;
 
         onResultCallback(expectedTotalReceived, expectedTotalSent,
-            expectedReceivedCount, expectedSentCount, {}, '');
+            expectedReceivedCount, expectedSentCount, <dynamic>{}, '');
 
         // Verify parameters are in correct order
         expect(capturedTotalReceived, equals(expectedTotalReceived),
@@ -56,25 +56,25 @@ void main() {
         late int sentNumber;
 
         void correctOrder(double _, double __, int recvNum, int sentNum,
-            Set ___, String ____) {
+            Set<void> ___, String ____) {
           receivedNumber = recvNum;
           sentNumber = sentNum;
         }
 
         void incorrectOrder(double _, double __, int sentNum, int recvNum,
-            Set ___, String ____) {
+            Set<void> ___, String ____) {
           // This would be the buggy order (what we fixed)
           receivedNumber = recvNum;
           sentNumber = sentNum;
         }
 
         // With correct order
-        correctOrder(0, 0, 5, 3, {}, '');
+        correctOrder(0, 0, 5, 3, <dynamic>{}, '');
         expect(receivedNumber, equals(5));
         expect(sentNumber, equals(3));
 
         // With incorrect order (simulating the bug)
-        incorrectOrder(0, 0, 3, 5, {}, '');
+        incorrectOrder(0, 0, 3, 5, <dynamic>{}, '');
         expect(receivedNumber, equals(5)); // Would be swapped!
         expect(sentNumber, equals(3));
       });
@@ -231,7 +231,7 @@ void main() {
       test('Null handling in GraphQL variable passing', () {
         // Test that null values are handled correctly in variable passing
         const int? from = null;
-        const int? to = 1772928000;
+        const int to = 1772928000;
 
         String? timestampFrom;
         String? timestampTo;

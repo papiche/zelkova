@@ -63,7 +63,9 @@ String _normalizeHash(String hash) {
 
 /// Compares two genesis hashes, handling '0x' prefix variations
 bool _genesisHashesMatch(String? nodeHash, String expectedHash) {
-  if (nodeHash == null) return false;
+  if (nodeHash == null) {
+    return false;
+  }
   return _normalizeHash(nodeHash) == _normalizeHash(expectedHash);
 }
 
@@ -87,13 +89,19 @@ int _compareVersions(String? v1, String? v2) {
     for (int i = 0; i < (p1.length > p2.length ? p1.length : p2.length); i++) {
       final int part1 = i < p1.length ? p1[i] : 0;
       final int part2 = i < p2.length ? p2[i] : 0;
-      if (part1 != part2) return part2 - part1; // Descending
+      if (part1 != part2) {
+        return part2 - part1; // Descending
+      }
     }
     return 0;
   }
   // v1 has version, v2 doesn't: v1 comes first
-  if (v1 != null && v1.isNotEmpty) return -1;
-  if (v2 != null && v2.isNotEmpty) return 1;
+  if (v1 != null && v1.isNotEmpty) {
+    return -1;
+  }
+  if (v2 != null && v2.isNotEmpty) {
+    return 1;
+  }
   // Neither has version
   return 0;
 }
@@ -290,7 +298,9 @@ Future<Tuple2<Set<Node>, Set<Node>>> getV2Peers({
     ..sort((Node a, Node b) {
       // First compare by version (higher versions first, then those with version)
       final int versionCmp = _compareVersions(a.version, b.version);
-      if (versionCmp != 0) return versionCmp;
+      if (versionCmp != 0) {
+        return versionCmp;
+      }
       // If same version, sort by latency
       return a.latency.compareTo(b.latency);
     });
@@ -1216,7 +1226,7 @@ Future<NodeCheckResult> testDuniterIndexerV2(
         versionResponse =
         await client.request(GIndexerVersionReq()).first.timeout(timeout);
     if (!versionResponse.hasErrors && versionResponse.data != null) {
-      final String? versionString = versionResponse.data!.version.version;
+      final String versionString = versionResponse.data!.version.version;
       if (versionString != null && versionString.isNotEmpty) {
         version = versionString;
         loggerDev('Node $node has indexer version: $version');
@@ -1263,15 +1273,13 @@ Future<NodeCheckResult> testDuniterDatapodV2(
   if (response.hasErrors) {
     loggerDev(
         'Node $node has errors: ${_getShortErrorMessage(response.linkException!.originalException.toString())}');
-    result = NodeCheckResult(
-        currentBlock: 0, latency: wrongNodeDuration, genesisHash: null);
+    result = NodeCheckResult(currentBlock: 0, latency: wrongNodeDuration);
   } else {
     final int currentBlock =
         response.data?.profiles_aggregate.aggregate?.count ?? 0;
     result = NodeCheckResult(
         currentBlock: currentBlock,
-        latency: currentBlock > 0 ? stopwatch.elapsed : wrongNodeDuration,
-        genesisHash: null);
+        latency: currentBlock > 0 ? stopwatch.elapsed : wrongNodeDuration);
   }
   return result;
 }
@@ -1283,8 +1291,8 @@ Future<NodeCheckResult> testIpfsGateway(String node, Duration timeout) async {
   final Duration latency =
       response.statusCode == 200 ? stopwatch.elapsed : wrongNodeDuration;
   final int currentBlock = response.statusCode;
-  final NodeCheckResult result = NodeCheckResult(
-      latency: latency, currentBlock: currentBlock, genesisHash: null);
+  final NodeCheckResult result =
+      NodeCheckResult(latency: latency, currentBlock: currentBlock);
   return result;
 }
 
@@ -1312,8 +1320,7 @@ Future<NodeCheckResult> testCPlusV1Node(String node, Duration timeout) async {
   } else {
     latency = wrongNodeDuration;
   }
-  return NodeCheckResult(
-      latency: latency, currentBlock: currentBlock, genesisHash: null);
+  return NodeCheckResult(latency: latency, currentBlock: currentBlock);
 }
 
 Future<NodeCheckResult> testDuniterV1Node(String node, Duration timeout) async {
@@ -1331,8 +1338,7 @@ Future<NodeCheckResult> testDuniterV1Node(String node, Duration timeout) async {
   } else {
     latency = wrongNodeDuration;
   }
-  return NodeCheckResult(
-      latency: latency, currentBlock: currentBlock, genesisHash: null);
+  return NodeCheckResult(latency: latency, currentBlock: currentBlock);
 }
 
 Future<Contact> getProfile(String pubKeyRaw,

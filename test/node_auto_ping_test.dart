@@ -57,34 +57,32 @@ void main() {
       final List<Node> shuffled2 = <Node>[...original]..shuffle();
 
       // Verify all nodes are present (same set)
-      expect(shuffled1.map((n) => n.url).toSet(),
-          original.map((n) => n.url).toSet(),
+      expect(shuffled1.map((Node n) => n.url).toSet(),
+          original.map((Node n) => n.url).toSet(),
           reason: 'Shuffled list should contain all original nodes');
 
-      expect(shuffled2.map((n) => n.url).toSet(),
-          original.map((n) => n.url).toSet(),
+      expect(shuffled2.map((Node n) => n.url).toSet(),
+          original.map((Node n) => n.url).toSet(),
           reason: 'Shuffled list should contain all original nodes');
 
       // At least one shuffle should produce a different order (with high probability)
-      final bool orderDifferent = shuffled1.map((n) => n.url).join(',') !=
-          shuffled2.map((n) => n.url).join(',');
+      final bool orderDifferent = shuffled1.map((Node n) => n.url).join(',') !=
+          shuffled2.map((Node n) => n.url).join(',');
       expect(orderDifferent || shuffled1.length <= 1, true,
           reason: 'Shuffle should randomize order');
     });
 
     test('NodeManager.nodesWorking should count nodes with errors < 5', () {
-      final NodeManager nm = NodeManager();
-
       // Can't directly set endpointNodes as it's final, so test the counting logic
       final List<Node> testNodes = <Node>[
-        const Node(url: 'https://good1.com', errors: 0),
+        const Node(url: 'https://good1.com'),
         const Node(url: 'https://good2.com', errors: 2),
         const Node(url: 'https://bad1.com', errors: 5),
         const Node(url: 'https://bad2.com', errors: 10),
       ];
 
       // Filter nodes with errors < 5
-      final int workingCount = testNodes.where((n) => n.errors < 5).length;
+      final int workingCount = testNodes.where((Node n) => n.errors < 5).length;
 
       expect(workingCount, 2, reason: 'Should count 2 nodes with errors < 5');
     });
@@ -92,15 +90,11 @@ void main() {
     test('node with latency < 99999 should be considered pinged', () {
       const Node defaultNode = Node(
         url: 'https://example.com',
-        latency: 99999,
-        errors: 0,
-        currentBlock: 0,
       );
 
       const Node pinggedNode = Node(
         url: 'https://example.com',
         latency: 245000, // Real latency in microseconds
-        errors: 0,
         currentBlock: 12345,
       );
 
@@ -124,8 +118,8 @@ void main() {
       expect(shuffled.length, originalCount,
           reason: 'Shuffle should preserve node count');
 
-      final Set<String> originalUrls = original.map((n) => n.url).toSet();
-      final Set<String> shuffledUrls = shuffled.map((n) => n.url).toSet();
+      final Set<String> originalUrls = original.map((Node n) => n.url).toSet();
+      final Set<String> shuffledUrls = shuffled.map((Node n) => n.url).toSet();
 
       expect(shuffledUrls, originalUrls,
           reason: 'Shuffle should preserve all node URLs');
@@ -152,15 +146,15 @@ void main() {
     test('summary log should show success/failure ratio', () {
       const int totalCandidates = 10;
       const int successCount = 7;
-      final int failCount = totalCandidates - successCount;
+      const int failCount = totalCandidates - successCount;
 
       expect(failCount, 3);
 
-      final bool isSuccess = successCount >= totalCandidates / 2;
+      const bool isSuccess = successCount >= totalCandidates / 2;
       expect(isSuccess, true,
           reason: '7/10 should be considered success (>= 50%)');
 
-      final bool isFail = successCount < totalCandidates / 2;
+      const bool isFail = successCount < totalCandidates / 2;
       expect(isFail, false, reason: '7/10 should not be failure');
     });
 
@@ -217,10 +211,10 @@ void main() {
       // V2 after fix: ALWAYS fetches
 
       final List<Node> manyNodes = <Node>[
-        for (int i = 0; i < 10; i++) Node(url: 'https://node$i.com', errors: 0)
+        for (int i = 0; i < 10; i++) Node(url: 'https://node$i.com')
       ];
 
-      final int workingCount = manyNodes.where((n) => n.errors < 5).length;
+      final int workingCount = manyNodes.where((Node n) => n.errors < 5).length;
 
       // Even with 10 working nodes, new logic would STILL attempt fetch/ping
       // This ensures we always get real latencies, not dummy 99999
@@ -234,10 +228,10 @@ void main() {
 
   group('Security Improvements (V2)', () {
     test('localhost should be filtered from P2P discovery', () {
-      final String localhost1 = 'http://localhost:8080';
-      final String localhost2 = 'http://127.0.0.1:8080';
-      final String ipv6loopback = 'http://[::1]:8080';
-      final String validNode = 'https://g1.node1.com';
+      const String localhost1 = 'http://localhost:8080';
+      const String localhost2 = 'http://127.0.0.1:8080';
+      const String ipv6loopback = 'http://[::1]:8080';
+      const String validNode = 'https://g1.node1.com';
 
       expect(localhost1.contains('localhost'), true);
       expect(localhost2.contains('127.0.0.1'), true);
@@ -253,7 +247,7 @@ void main() {
       ];
 
       final List<String> filtered = nodes
-          .where((n) =>
+          .where((String n) =>
               !n.contains('localhost') &&
               !n.contains('127.0.0.1') &&
               !n.contains('::1'))
@@ -272,7 +266,9 @@ void main() {
       // Apply maxNodes limit (V1 pattern, now in v2_peers.dart)
       final List<String> limited = <String>[];
       for (final String endpoint in discoveredEndpoints) {
-        if (limited.length >= maxNodes) break;
+        if (limited.length >= maxNodes) {
+          break;
+        }
         limited.add(endpoint);
       }
 
@@ -283,9 +279,9 @@ void main() {
     test('node discovery respects genesis_hash validation', () {
       // Genesis hash validation prevents mixing nodes from different chains
       // (e.g., G1 with gtest nodes)
-      final String g1Hash =
+      const String g1Hash =
           '0xfeb770bb4c3a433e1eb1d3e95ccb02a5eaf82c86e95e3fc46d32dc2f8ff5505';
-      final String gtestHash =
+      const String gtestHash =
           '0x7e2f25b8c8cfea4a0b71c31c97dd8bfda4e3a97b7cb8c32d4a15c2c0f3d4e5';
 
       // Nodes from different chains should be rejected
@@ -297,8 +293,8 @@ void main() {
 
       // Filter to only G1 nodes
       final List<String> g1Nodes = nodesByHash.entries
-          .where((e) => e.value == g1Hash)
-          .map((e) => e.key)
+          .where((MapEntry<String, String> e) => e.value == g1Hash)
+          .map((MapEntry<String, String> e) => e.key)
           .toList();
 
       expect(g1Nodes.length, 2, reason: 'Should have 2 G1 nodes');
@@ -317,7 +313,7 @@ void main() {
       const int bestLatency = 120;
 
       // Format: "✓ endpoint: 7/10 online (avg: 245ms, best: 120ms) | 3 failed"
-      final String summary =
+      const String summary =
           '✓ endpoint: $successCount/$totalCandidates online '
           '(avg: ${avgLatency}ms, best: ${bestLatency}ms) | $failCount failed';
 
@@ -332,7 +328,7 @@ void main() {
       const int consecutive404s = 2;
 
       // Format: "ℹ️ Resource not found: /user/profile/pubkey123 (404 from 2 nodes)"
-      final String logMessage =
+      const String logMessage =
           'ℹ️ Resource not found: $path (404 from $consecutive404s nodes)';
 
       expect(logMessage.contains('Resource not found'), true);
@@ -345,12 +341,8 @@ void main() {
       // OLD: 10 individual logs like "Error fetching https://node1.com: TimeoutException"
       // NEW: 1 summary log like "⚠ endpoint: 2/10 online (...) | 8 failed"
 
-      const int totalNodes = 10;
-      const int failedCount = 8;
-      const int successCount = totalNodes - failedCount;
-
       // Only 1 log message (summary)
-      final int logCount = 1;
+      const int logCount = 1;
 
       expect(logCount, 1,
           reason:

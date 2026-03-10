@@ -1,11 +1,8 @@
-import 'dart:convert';
 import 'dart:typed_data';
 
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:ginkgo/data/models/stored_account.dart';
 import 'package:ginkgo/shared_prefs_helper.dart';
-import 'package:ginkgo/storage_keys.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'secure_storage_mock.dart' show registerMockSecureStorage;
@@ -92,7 +89,7 @@ void main() {
     test(
         'Current pubKey selection is preserved after createDefWalletIfNotExist',
         () async {
-      final StoredAccount account1 = await helper.createDefWalletIfNotExist();
+      await helper.createDefWalletIfNotExist();
       expect(helper.isEmpty, false);
 
       final String currentPubKey1 = helper.getPubKey();
@@ -138,7 +135,7 @@ void main() {
         'CreateDefWalletIfNotExist with existing accounts does not trigger save',
         () async {
       // Create initial account
-      final StoredAccount account1 = await helper.createDefWalletIfNotExist();
+      await helper.createDefWalletIfNotExist();
       expect(helper.length, 1);
 
       // Get current state
@@ -187,8 +184,7 @@ void main() {
         'Manually imported accounts are not affected by createDefWalletIfNotExist',
         () async {
       // Create default account
-      final StoredAccount default1 = await helper.createDefWalletIfNotExist();
-      final String defaultPubKey = default1.pubKey;
+      await helper.createDefWalletIfNotExist();
       expect(helper.length, 1);
 
       // Store account info before calling createDefWalletIfNotExist again
@@ -227,10 +223,10 @@ void main() {
     test(
         'Contact and profile data is not corrupted by createDefWalletIfNotExist',
         () async {
-      final StoredAccount created = await helper.createDefWalletIfNotExist();
+      await helper.createDefWalletIfNotExist();
 
       // Update the contact name
-      final String newName = 'My Account';
+      const String newName = 'My Account';
       helper.setName(name: newName, notify: false);
 
       // Get the updated account
@@ -247,7 +243,7 @@ void main() {
 
     test('Theme setting is not corrupted by createDefWalletIfNotExist',
         () async {
-      final StoredAccount created = await helper.createDefWalletIfNotExist();
+      await helper.createDefWalletIfNotExist();
 
       // Get the theme
       final dynamic themeBefore = helper.getTheme();
@@ -264,7 +260,7 @@ void main() {
       expect(helper.isEmpty, true);
 
       // Call createDefWalletIfNotExist once
-      final StoredAccount account = await helper.createDefWalletIfNotExist();
+      await helper.createDefWalletIfNotExist();
       expect(helper.isEmpty, false);
       expect(helper.length, 1);
 

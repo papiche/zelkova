@@ -1,9 +1,9 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
-import 'package:ginkgo/g1/crypto/cesium_wallet.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:ginkgo/data/models/wallet_themes.dart';
+import 'package:ginkgo/g1/crypto/cesium_wallet.dart';
 import 'package:ginkgo/g1/g1_helper.dart';
 import 'package:ginkgo/g1/g1_v2_helper.dart';
 import 'package:polkadart_keyring/polkadart_keyring.dart';

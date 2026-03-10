@@ -8,8 +8,7 @@ import '../generated/g1/g1.dart';
 
 export '../generated/g1/g1.dart'
     show G1, Constants, Queries, Extrinsics, Registry, Rpc;
-export '../generated/g1/pallets/certification.dart'
-    hide Queries, MdError, Constants;
+export '../generated/g1/pallets/certification.dart' hide Queries, Constants;
 export '../generated/g1/types/frame_system/account_info.dart';
 export '../generated/g1/types/frame_system/event_record.dart';
 export '../generated/g1/types/frame_system/pallet/event.dart';

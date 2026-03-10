@@ -4,8 +4,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:ginkgo/data/models/app_cubit.dart';
 import 'package:ginkgo/data/models/app_state.dart';
 import 'package:ginkgo/g1/currency.dart';
-import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:hive_ce/hive.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
 
 void main() {
   group('AppCubit', () {
@@ -22,7 +22,7 @@ void main() {
     });
 
     tearDownAll(() async {
-      await HydratedBloc.storage!.clear();
+      await HydratedBloc.storage.clear();
       await Hive.deleteBoxFromDisk('AppCubit');
     });
 
@@ -36,12 +36,12 @@ void main() {
 
     group('setUd()', () {
       test('should emit new state when setUd is called before close', () async {
-        final double testUd = 11.48;
+        const double testUd = 11.48;
 
         appCubit.setUd(testUd);
 
         // Give the emit a chance to complete
-        await Future.delayed(const Duration(milliseconds: 10));
+        await Future<Duration>.delayed(const Duration(milliseconds: 10));
 
         // Verify the state has been updated to the test UD
         expect(appCubit.state.currentUd, equals(testUd));
@@ -58,7 +58,7 @@ void main() {
       });
 
       test('should not change state when cubit is already closed', () async {
-        final double testUd = 11.48;
+        const double testUd = 11.48;
 
         // Get the initial state
         final AppState initialState = appCubit.state;
@@ -74,16 +74,16 @@ void main() {
       });
 
       test('should handle concurrent setUd calls and disposal', () async {
-        final double testUd = 11.48;
+        const double testUd = 11.48;
 
         // Start a setUd call that completes after close
-        final Future<void> future1 = Future.delayed(
+        final Future<void> future1 = Future<void>.delayed(
           const Duration(milliseconds: 10),
           () => appCubit.setUd(testUd),
         );
 
         // Close while operations might be in flight
-        await Future.delayed(const Duration(milliseconds: 5));
+        await Future<Duration>.delayed(const Duration(milliseconds: 5));
         await appCubit.close();
 
         // Wait for all operations to complete
@@ -94,24 +94,24 @@ void main() {
       });
 
       test('should preserve UD value when successfully emitted', () async {
-        final double testUd = 11.50;
+        const double testUd = 11.50;
 
         appCubit.setUd(testUd);
 
         // Give the emit a chance to complete
-        await Future.delayed(const Duration(milliseconds: 10));
+        await Future<Duration>.delayed(const Duration(milliseconds: 10));
 
         expect(appCubit.currentUd, equals(testUd));
       });
 
       test('should update currentUdLastUpdate when UD is set', () async {
-        final double testUd = 11.48;
+        const double testUd = 11.48;
         final DateTime beforeUpdate = DateTime.now();
 
         appCubit.setUd(testUd);
 
         // Give the emit a chance to complete
-        await Future.delayed(const Duration(milliseconds: 10));
+        await Future<Duration>.delayed(const Duration(milliseconds: 10));
 
         final DateTime? updateTime = appCubit.currentUdLastUpdate;
         expect(updateTime, isNotNull);
@@ -123,7 +123,7 @@ void main() {
       });
 
       test('should skip setUd when isClosed is true', () async {
-        final double testUd = 12.0; // Use a different value
+        const double testUd = 12.0; // Use a different value
         final double stateBeforeClose = appCubit.state.currentUd;
 
         // Close the cubit
@@ -149,12 +149,12 @@ void main() {
 
       test('should return false when UD was updated less than 24 hours ago',
           () async {
-        final double testUd = 11.49;
+        const double testUd = 11.49;
 
         appCubit.setUd(testUd);
 
         // Give the emit a chance to complete
-        await Future.delayed(const Duration(milliseconds: 10));
+        await Future<Duration>.delayed(const Duration(milliseconds: 10));
 
         expect(appCubit.shouldUpdateUd(), isFalse);
       });
@@ -165,7 +165,7 @@ void main() {
         appCubit.setG1Currency();
 
         // Give the emit a chance to complete
-        await Future.delayed(const Duration(milliseconds: 10));
+        await Future<Duration>.delayed(const Duration(milliseconds: 10));
 
         expect(appCubit.currency, equals(Currency.G1));
       });
@@ -174,7 +174,7 @@ void main() {
         appCubit.setDUCurrency();
 
         // Give the emit a chance to complete
-        await Future.delayed(const Duration(milliseconds: 10));
+        await Future<Duration>.delayed(const Duration(milliseconds: 10));
 
         expect(appCubit.currency, equals(Currency.DU));
       });
@@ -185,7 +185,7 @@ void main() {
         appCubit.setV2Mode(true);
 
         // Give the emit a chance to complete
-        await Future.delayed(const Duration(milliseconds: 10));
+        await Future<Duration>.delayed(const Duration(milliseconds: 10));
 
         expect(appCubit.isV2, isTrue);
       });
@@ -194,7 +194,7 @@ void main() {
         appCubit.autoActivateV2();
 
         // Give the emit a chance to complete
-        await Future.delayed(const Duration(milliseconds: 10));
+        await Future<Duration>.delayed(const Duration(milliseconds: 10));
 
         expect(appCubit.isV2, isTrue);
         expect(appCubit.isV2AutoActivated, isTrue);
@@ -202,10 +202,10 @@ void main() {
 
       test('should deactivate auto V2', () async {
         appCubit.autoActivateV2();
-        await Future.delayed(const Duration(milliseconds: 10));
+        await Future<Duration>.delayed(const Duration(milliseconds: 10));
 
         appCubit.deactivateAutoV2();
-        await Future.delayed(const Duration(milliseconds: 10));
+        await Future<Duration>.delayed(const Duration(milliseconds: 10));
 
         expect(appCubit.isV2, isFalse);
         expect(appCubit.isV2AutoActivated, isFalse);

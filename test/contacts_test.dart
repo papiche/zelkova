@@ -4,7 +4,6 @@ import 'dart:typed_data';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:ginkgo/data/models/contact.dart';
 import 'package:ginkgo/data/models/contact_cubit.dart';
-import 'package:ginkgo/data/models/contact_state.dart';
 import 'package:ginkgo/g1/g1_v2_helper.dart';
 import 'package:ginkgo/ui/contacts_cache.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
@@ -190,8 +189,6 @@ void main() {
 
     test('Search by partial v2 address finds contact', () {
       const String v1Pubkey = '6DrGg8cftpkgffv4Y4Lse9HSjgc8coEQor3yvMPHAnVH';
-      const String v2Address =
-          'g1LjVbmvZVx7QxgAW9Q7NSS4jKHXo51M44zUwbkG3UsA7UZVM';
 
       final Contact contact = Contact(
         pubKey: v1Pubkey,

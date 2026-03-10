@@ -126,8 +126,17 @@ class NotificationController {
   static Future<void> onActionReceivedImplementationMethod(
       dynamic receivedAction) async {
     // Extract wallet pubKey from notification payload
-    final String? walletPubKey =
-        receivedAction.payload?['walletPubKey'] as String?;
+    String? walletPubKey;
+    try {
+      final Map<String, dynamic> actionMap =
+          receivedAction as Map<String, dynamic>;
+      final Map<String, dynamic>? payload =
+          actionMap['payload'] as Map<String, dynamic>?;
+      walletPubKey = payload?['walletPubKey'] as String?;
+    } catch (e) {
+      logger('Error extracting payload from notification: $e');
+      walletPubKey = null;
+    }
 
     // If we have a wallet pubKey, switch to it
     if (walletPubKey != null && walletPubKey.isNotEmpty) {

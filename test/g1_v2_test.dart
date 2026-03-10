@@ -1,6 +1,6 @@
 import 'dart:convert';
-import 'dart:typed_data';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:ginkgo/g1/crypto/cesium_wallet.dart';
 import 'package:ginkgo/g1/g1_v2_helper.dart';
@@ -277,9 +277,9 @@ void main() {
           final String englishMnemonic = testData['english']!;
           final String accentedWords = testData['accentedWords'] ?? '';
 
-          print('\n=== French ↔ English Mnemonic Test ===');
-          print('Name: ${testData['name']}');
-          print('Accented words: $accentedWords');
+          debugPrint('\n=== French ↔ English Mnemonic Test ===');
+          debugPrint('Name: ${testData['name']}');
+          debugPrint('Accented words: $accentedWords');
 
           // Verify both mnemonics are valid
           expect(isValidMnemonic(frenchMnemonic), isTrue,
@@ -320,14 +320,14 @@ void main() {
                   'French and English mnemonics with same entropy must generate same public key');
 
           // Print results
-          print('✓ Language detection: OK');
-          print('✓ Mnemonic conversion: OK');
-          print('✓ Keypair generation: IDENTICAL');
-          print('✓ Generated address: ${frenchKeyPair.address}');
-          print('');
-          print('French:  $frenchMnemonic');
-          print('English: $englishMnemonic');
-          print('=====================================');
+          debugPrint('✓ Language detection: OK');
+          debugPrint('✓ Mnemonic conversion: OK');
+          debugPrint('✓ Keypair generation: IDENTICAL');
+          debugPrint('✓ Generated address: ${frenchKeyPair.address}');
+          debugPrint('');
+          debugPrint('French:  $frenchMnemonic');
+          debugPrint('English: $englishMnemonic');
+          debugPrint('=====================================');
         },
       );
     }

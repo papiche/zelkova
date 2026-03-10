@@ -32,7 +32,6 @@
 /// SPDX-License-Identifier: AGPL-3.0-or-later
 
 import 'dart:convert';
-import 'dart:typed_data';
 
 import 'package:bip32_ed25519/api.dart';
 import 'package:fast_base58/fast_base58.dart';
@@ -53,19 +52,6 @@ import 'package:pointycastle/pointycastle.dart' as pc;
 /// final signature = wallet.sign('document to sign');
 /// ```
 class CesiumWallet {
-  /// The seed derived from salt and password (32 bytes)
-  final Uint8List seed;
-
-  /// The Ed25519 signing key derived from seed
-  final SigningKey rootKey;
-
-  /// The Base58-encoded public key (44 characters for G1 blockchain)
-  final String pubkey;
-
-  /// Root private constructor used by CesiumWallet factories.
-  CesiumWallet._(
-      {required this.seed, required this.rootKey, required this.pubkey});
-
   /// Main factory constructor which generates seed and rootKey for the given Cesium salt and password
   ///
   /// Uses Scrypt key derivation to convert salt and password into a 32-byte seed,
@@ -77,7 +63,7 @@ class CesiumWallet {
   ///
   /// Note: Unicode characters (like em-dash —) are preserved and affect the derivation
   factory CesiumWallet(String salt, String password) {
-    var scrypt = pc.KeyDerivator('scrypt');
+    final pc.KeyDerivator scrypt = pc.KeyDerivator('scrypt');
     scrypt.init(
       pc.ScryptParameters(
         4096,
@@ -87,9 +73,14 @@ class CesiumWallet {
         Uint8List.fromList(utf8.encode(salt)),
       ),
     );
-    var seed = scrypt.process(Uint8List.fromList(utf8.encode(password)));
+    final Uint8List seed =
+        scrypt.process(Uint8List.fromList(utf8.encode(password)));
     return CesiumWallet.fromSeed(seed);
   }
+
+  /// Root private constructor used by CesiumWallet factories.
+  CesiumWallet._(
+      {required this.seed, required this.rootKey, required this.pubkey});
 
   /// Generate wallet from an existing seed (32 bytes)
   ///
@@ -98,10 +89,19 @@ class CesiumWallet {
   /// - Importing from seed-based formats
   /// - Testing and key derivation verification
   factory CesiumWallet.fromSeed(Uint8List seed) {
-    SigningKey rootKey = SigningKey(seed: seed);
-    String pubkey = Base58Encode(rootKey.publicKey);
+    final SigningKey rootKey = SigningKey(seed: seed);
+    final String pubkey = Base58Encode(rootKey.publicKey);
     return CesiumWallet._(seed: seed, rootKey: rootKey, pubkey: pubkey);
   }
+
+  /// The seed derived from salt and password (32 bytes)
+  final Uint8List seed;
+
+  /// The Ed25519 signing key derived from seed
+  final SigningKey rootKey;
+
+  /// The Base58-encoded public key (44 characters for G1 blockchain)
+  final String pubkey;
 
   /// Generate a valid signature from the wallet's keypair for any message or text document
   ///
@@ -125,7 +125,8 @@ class CesiumWallet {
   /// Returns: true if signature is valid, false otherwise
   bool verifySign(String document, String signature) {
     try {
-      SignatureBase formattedSignature = Signature(base64Decode(signature));
+      final SignatureBase formattedSignature =
+          Signature(base64Decode(signature));
       rootKey.verifyKey.verify(
           signature: formattedSignature,
           message: document.codeUnits.toUint8List());

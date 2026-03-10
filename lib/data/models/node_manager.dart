@@ -59,7 +59,9 @@ class NodeManager {
   /// Check if a node is temporarily disabled due to recent errors (backoff)
   /// Returns true if node should not be tried right now
   bool isNodeTemporarilyDisabled(Node node) {
-    if (node.lastErrorTime == null) return false;
+    if (node.lastErrorTime == null) {
+      return false;
+    }
 
     // Calculate backoff duration based on consecutive errors
     final Duration backoff = node.consecutiveErrors <= 2

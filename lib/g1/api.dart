@@ -519,7 +519,7 @@ Future<Tuple2<List<Node>, List<Node>>> _fetchNodesFromNetworkJson(
 /// If fetching fails, returns empty lists to allow the application to continue
 Future<Tuple2<List<Node>, List<Node>>> _fetchNodesFromGtestJson() async {
   const String gtestUrl =
-      'https://git.duniter.org/nodes/networks/-/raw/master/gtest.json?ref_type=heads';
+      'https://git.duniter.org/nodes/networks/-/raw/master/gtest.json';
   return _fetchNodesFromNetworkJson(gtestUrl, 'gtest.json');
 }
 
@@ -528,7 +528,7 @@ Future<Tuple2<List<Node>, List<Node>>> _fetchNodesFromGtestJson() async {
 /// If fetching fails, returns empty lists to allow the application to continue
 Future<Tuple2<List<Node>, List<Node>>> _fetchNodesFromG1Json() async {
   const String g1Url =
-      'https://git.duniter.org/nodes/networks/-/raw/master/g1.json?ref_type=heads';
+      'https://git.duniter.org/nodes/networks/-/raw/master/g1.json';
   return _fetchNodesFromNetworkJson(g1Url, 'g1.json');
 }
 

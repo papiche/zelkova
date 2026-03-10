@@ -1,0 +1,6 @@
+Welcome to Duniter 2.0!
+
+Improvements in this release:
+- Enhanced app stability and performance
+- Better handling of network transitions
+- Improved user interface responsiveness

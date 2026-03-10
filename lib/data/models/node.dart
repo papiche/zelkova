@@ -13,7 +13,9 @@ class Node extends Equatable {
       this.latency = 99999,
       this.errors = 0,
       this.currentBlock = 0,
-      this.version});
+      this.version,
+      this.lastErrorTime,
+      this.consecutiveErrors = 0});
 
   factory Node.fromJson(Map<String, dynamic> json) => _$NodeFromJson(json);
 
@@ -22,19 +24,48 @@ class Node extends Equatable {
   final int errors;
   final int currentBlock;
   final String? version;
+  final DateTime? lastErrorTime;
+  final int consecutiveErrors;
 
   Node copyWith(
       {String? url,
       int? latency,
       int? errors,
       int? currentBlock,
-      String? version}) {
+      String? version,
+      DateTime? lastErrorTime,
+      int? consecutiveErrors}) {
     return Node(
       url: url ?? this.url,
       latency: latency ?? this.latency,
       errors: errors ?? this.errors,
       currentBlock: currentBlock ?? this.currentBlock,
       version: version ?? this.version,
+      lastErrorTime: lastErrorTime ?? this.lastErrorTime,
+      consecutiveErrors: consecutiveErrors ?? this.consecutiveErrors,
+    );
+  }
+
+  /// Copy with support for explicitly setting null values
+  /// Use this when you need to reset fields to null (e.g., lastErrorTime)
+  Node copyWithNullable({
+    String? url,
+    int? latency,
+    int? errors,
+    int? currentBlock,
+    String? version,
+    DateTime? Function()? lastErrorTime,
+    int? consecutiveErrors,
+  }) {
+    return Node(
+      url: url ?? this.url,
+      latency: latency ?? this.latency,
+      errors: errors ?? this.errors,
+      currentBlock: currentBlock ?? this.currentBlock,
+      version: version ?? this.version,
+      lastErrorTime:
+          lastErrorTime != null ? lastErrorTime() : this.lastErrorTime,
+      consecutiveErrors: consecutiveErrors ?? this.consecutiveErrors,
     );
   }
 
@@ -54,5 +85,5 @@ class Node extends Equatable {
   bool get hasVersion => version != null && version!.isNotEmpty;
 
   @override
-  List<Object?> get props => <dynamic>[url];
+  List<Object?> get props => <dynamic>[url, lastErrorTime, consecutiveErrors];
 }

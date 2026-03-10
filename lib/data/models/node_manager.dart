@@ -19,6 +19,11 @@ class NodeManager {
   static int absoluteMaxErrors = 10; // Absolute max before discarding node
   static int minutesToWait = 45;
 
+  // Backoff durations for temporary node disabling
+  static const Duration backoffDuration1_2Errors = Duration(minutes: 2);
+  static const Duration backoffDuration3_4Errors = Duration(minutes: 10);
+  static const Duration backoffDuration5PlusErrors = Duration(minutes: 30);
+
   static final NodeManager _singleton = NodeManager._internal();
 
   final List<Node> cesiumPlusNodes = <Node>[];
@@ -50,6 +55,31 @@ class NodeManager {
 
   /// Get the pinned node URL for a type, if any
   String? getPinnedNodeUrl(NodeType type) => pinnedNodes[type];
+
+  /// Check if a node is temporarily disabled due to recent errors (backoff)
+  /// Returns true if node should not be tried right now
+  bool isNodeTemporarilyDisabled(Node node) {
+    if (node.lastErrorTime == null) return false;
+
+    // Calculate backoff duration based on consecutive errors
+    final Duration backoff = node.consecutiveErrors <= 2
+        ? backoffDuration1_2Errors
+        : node.consecutiveErrors <= 4
+            ? backoffDuration3_4Errors
+            : backoffDuration5PlusErrors;
+
+    final DateTime disabledUntil = node.lastErrorTime!.add(backoff);
+    final bool isDisabled = DateTime.now().isBefore(disabledUntil);
+
+    if (isDisabled) {
+      final Duration remainingTime = disabledUntil.difference(DateTime.now());
+      loggerDev(
+          'Node ${node.url} is temporarily disabled for ${remainingTime.inSeconds}s '
+          '(consecutive errors: ${node.consecutiveErrors})');
+    }
+
+    return isDisabled;
+  }
 
   /*
   void loadFromCubit(NodeListCubit cubit) {
@@ -170,6 +200,14 @@ class NodeManager {
         );
     if (currentNode != null) {
       final int newErrors = currentNode.errors + 1;
+      final int newConsecutiveErrors = currentNode.consecutiveErrors + 1;
+
+      // Calculate backoff duration based on consecutive errors
+      final Duration backoff = newConsecutiveErrors <= 2
+          ? backoffDuration1_2Errors
+          : newConsecutiveErrors <= 4
+              ? backoffDuration3_4Errors
+              : backoffDuration5PlusErrors;
 
       // If node exceeds absolute max errors, mark as offline with high latency
       // instead of removing it (to keep history)
@@ -178,14 +216,26 @@ class NodeManager {
             'Node ${node.url} has reached $newErrors errors (limit: ${NodeManager.absoluteMaxErrors}). '
             'Marking as offline with high latency. Last cause: $cause');
         updateNode(
-            type, currentNode.copyWith(errors: newErrors, latency: wrongNode),
+            type,
+            currentNode.copyWith(
+                errors: newErrors,
+                latency: wrongNode,
+                lastErrorTime: DateTime.now(),
+                consecutiveErrors: newConsecutiveErrors),
             notify: notify);
         return;
       }
 
       logger(
-          'Increasing node errors of ${node.url} to $newErrors. Cause: $cause');
-      updateNode(type, currentNode.copyWith(errors: newErrors), notify: notify);
+          'Increasing node errors of ${node.url} to $newErrors (consecutive: $newConsecutiveErrors). '
+          'Backoff: ${backoff.inMinutes} min. Cause: $cause');
+      updateNode(
+          type,
+          currentNode.copyWith(
+              errors: newErrors,
+              lastErrorTime: DateTime.now(),
+              consecutiveErrors: newConsecutiveErrors),
+          notify: notify);
     } else {
       // The node does not exist in the list, this should not happen normally
       logger(
@@ -236,8 +286,13 @@ class NodeManager {
   void cleanErrorStats({bool notify = true}) {
     for (final NodeType type in NodeType.values) {
       final List<Node> nodes = _getList(type);
-      final List<Node> newList =
-          nodes.map((Node node) => node.copyWith(errors: 0)).toList();
+      final List<Node> newList = nodes
+          .map((Node node) => node.copyWithNullable(
+                errors: 0,
+                consecutiveErrors: 0,
+                lastErrorTime: () => null,
+              ))
+          .toList();
       nodes.clear();
       nodes.addAll(newList);
     }
@@ -315,7 +370,8 @@ class NodeManager {
           (Node node) =>
               node.url == 'https://g1.data.e-is.pro' &&
               node.isOk &&
-              node.errors < NodeManager.absoluteMaxErrors,
+              node.errors < NodeManager.absoluteMaxErrors &&
+              !isNodeTemporarilyDisabled(node),
         );
       } catch (_) {
         preferredNode = null;
@@ -328,10 +384,12 @@ class NodeManager {
       }
     }
 
-    // Filter out nodes with huge latency (offline nodes) AND excessive errors
+    // Filter out nodes with huge latency (offline nodes), excessive errors, AND temporary disabling
     final List<Node> onlineNodes = allNodes
         .where((Node node) =>
-            node.isOk && node.errors < NodeManager.absoluteMaxErrors)
+            node.isOk &&
+            node.errors < NodeManager.absoluteMaxErrors &&
+            !isNodeTemporarilyDisabled(node))
         .toList();
 
     if (onlineNodes.isEmpty) {

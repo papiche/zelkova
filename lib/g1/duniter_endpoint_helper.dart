@@ -83,45 +83,40 @@ Future<T> executeOnPolkadotNodes<T>(
     // If true (default), the provider is disconnected in the finally block.
     bool disconnectAfter = true}) async {
   final List<Node> nodes = NodeManager().getBestNodes(NodeType.endpoint);
-  loggerDev('executeOnPolkadotNodes: Found ${nodes.length} nodes to try');
+  loggerDev('executeOnPolkadotNodes: Trying ${nodes.length} nodes');
   Exception? lastError;
 
-  for (final Node node in nodes) {
-    loggerDev('executeOnPolkadotNode: Trying ${node.url}');
+  for (int i = 0; i < nodes.length; i++) {
+    final Node node = nodes[i];
+    final int nodesLeft = nodes.length - i;
+    loggerDev('executeOnPolkadotNode: ${node.url} ($nodesLeft remaining)');
     final Uri uri = parseNodeUrl(node.url);
     final Provider provider;
     if (uri.scheme == 'ws' || uri.scheme == 'wss') {
-      loggerDev('executeOnPolkadotNode: Creating WsProvider for ${node.url}');
       provider = WsProvider(uri, autoConnect: false);
     } else {
-      loggerDev(
-          'executeOnPolkadotNode: Creating HTTP Provider for ${node.url}');
       provider = Provider.fromUri(uri);
     }
 
     try {
-      // loggerDev('executeOnPolkadotNode: Connecting to ${node.url}...');
       // Neutralize orphaned future to prevent uncaught state errors after timeout
       await provider.connect().catchError((Object e) {
-        // loggerDev(
-        //     'Handled orphaned connection error in executeOnPolkadotNode: $e');
+        // Silently handle orphaned connection errors
       }).timeout(timeout);
-      // loggerDev('executeOnPolkadotNode: Connected to ${node.url}');
 
       final Gtest polkadot = Gtest(provider);
-      loggerDev('executeOnPolkadotNode: Starting operation on ${node.url}');
 
       final T result =
           await operation(node, provider, polkadot).timeout(timeout);
-      loggerDev(
-          'executeOnPolkadotNode: Operation completed successfully on ${node.url}');
+      loggerDev('executeOnPolkadotNode: Success on ${node.url}');
       return result; // If the operation is successful, return the result
-    } catch (e, stacktrace) {
+    } catch (e) {
       lastError = Exception(e.toString());
       NodeManager().increaseNodeErrors(NodeType.endpoint, node,
           cause: 'Endpoint operation failed: $e');
-      loggerDev('executeOnPolkadotNode: Error in node ${node.url}',
-          error: e, stackTrace: stacktrace);
+      loggerDev(
+          'executeOnPolkadotNode: Failed - ${node.url}. Trying next node...',
+          error: e);
       if (!retry) {
         loggerDev('executeOnPolkadotNode: Retry disabled, rethrowing error');
         rethrow;
@@ -132,25 +127,19 @@ Future<T> executeOnPolkadotNodes<T>(
       // the stream closes and signAndSend calls its own safeDisconnect.
       if (disconnectAfter) {
         try {
-          loggerDev('executeOnPolkadotNode: Disconnecting from ${node.url}');
           await provider.disconnect();
         } catch (_) {}
-      } else {
-        loggerDev(
-            'executeOnPolkadotNode: Keeping connection alive for ${node.url}');
       }
     }
   }
 
   // Throw the last error if available, otherwise a generic message
   if (lastError != null) {
-    loggerDev(
-        'executeOnPolkadotNodes: All nodes failed, throwing last error: $lastError');
+    loggerDev('executeOnPolkadotNodes: All nodes failed');
     throw lastError;
   }
   loggerDev('executeOnPolkadotNodes: All nodes failed with no error captured');
   throw Exception('All nodes failed to execute the operation: $operation');
-  // If all nodes fail, throw an exception
 }
 
 Future<IdtyValue?> polkadotIdentity(Contact contact) async {

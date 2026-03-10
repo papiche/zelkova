@@ -21,10 +21,11 @@ cache:
     - .packages
     - $PUB_CACHE
 
-# Global before_script - runs for all jobs
+# Global before_script - runs for all jobs FIRST
 before_script:
-  - export PATH="$PATH:$PUB_CACHE/bin"
   - cp dot.env.sample .env
+  - cp dot.env.sample .env.dev
+  - export PATH="$PATH:$PUB_CACHE/bin"
 
 # Pipeline stages
 stages:
@@ -44,6 +45,9 @@ test:unit:
     - cp assets/translations/ast.json assets/translations/es-AST.json
   
   script:
+    # Clean build artifacts
+    - flutter clean
+    
     # Install dependencies
     - flutter pub get
     
@@ -87,6 +91,9 @@ test:integration-patrol:
     - cp assets/translations/ast.json assets/translations/es-AST.json
   
   script:
+    # Clean build artifacts
+    - flutter clean
+    
     # Install dependencies
     - flutter pub get
     - cd packages/duniter_datapod && flutter pub get && cd ../..
@@ -117,6 +124,9 @@ build:web:
     - cp assets/translations/ast.json assets/translations/es-AST.json
   
   script:
+    # Clean build artifacts
+    - flutter clean
+    
     # Install dependencies
     - flutter pub get
     - cd packages/duniter_datapod && flutter pub get && cd ../..
@@ -156,6 +166,9 @@ build:android:
     - cp assets/translations/ast.json assets/translations/es-AST.json
   
   script:
+    # Clean build artifacts
+    - flutter clean
+    
     # Install dependencies
     - flutter pub get
     - cd packages/duniter_datapod && flutter pub get && cd ../..
@@ -204,6 +217,9 @@ build:linux:
     - cp assets/translations/ast.json assets/translations/es-AST.json
   
   script:
+    # Clean build artifacts
+    - flutter clean
+    
     # Install dependencies
     - flutter pub get
     - cd packages/duniter_datapod && flutter pub get && cd ../..

@@ -6,17 +6,17 @@ import 'package:ginkgo/g1/g1_v2_helper.dart';
 void main() {
   group('u8aToHex() - Bytes to hex string conversion', () {
     test('Convert simple byte array to hex', () {
-      final Uint8List bytes = Uint8List.fromList([0x2F, 0x0F, 0x5E, 0x2A]);
+      final Uint8List bytes = Uint8List.fromList(<int>[0x2F, 0x0F, 0x5E, 0x2A]);
       expect(u8aToHex(bytes), equals('2f0f5e2a'));
     });
 
     test('Convert byte array with leading zeros to hex', () {
-      final Uint8List bytes = Uint8List.fromList([0x00, 0x01, 0x02, 0x0F]);
+      final Uint8List bytes = Uint8List.fromList(<int>[0x00, 0x01, 0x02, 0x0F]);
       expect(u8aToHex(bytes), equals('0001020f'));
     });
 
     test('Convert bytes to hex with 0x prefix', () {
-      final Uint8List bytes = Uint8List.fromList([0xAB, 0xCD, 0xEF]);
+      final Uint8List bytes = Uint8List.fromList(<int>[0xAB, 0xCD, 0xEF]);
       expect(u8aToHex(bytes, includePrefix: true), equals('0xabcdef'));
     });
 
@@ -33,7 +33,7 @@ void main() {
     });
 
     test('Handle empty byte array', () {
-      final Uint8List bytes = Uint8List.fromList([]);
+      final Uint8List bytes = Uint8List.fromList(<int>[]);
       expect(u8aToHex(bytes), equals(''));
     });
   });

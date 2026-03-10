@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+
 import 'package:flutter_test/flutter_test.dart';
 
 /// Tests for translation JSON files validation
@@ -15,7 +16,7 @@ void main() {
   group('Translation JSON Validation', () {
     // Allowed template arguments in translation strings
     // This whitelist ensures consistency and prevents malformed translations
-    final allowedArgs = [
+    final List<String> allowedArgs = <String>[
       '{nick}',
       '{days}',
       '{amount}',
@@ -37,12 +38,12 @@ void main() {
       '{name}',
       '{currentAppStoreVersion}',
       '{currentInstalledVersion}',
-      '{\$}',
+      r'{$}',
       '{}',
     ];
 
     // All supported languages
-    final languages = [
+    final List<String> languages = <String>[
       'ast',
       'ca',
       'da',
@@ -59,9 +60,9 @@ void main() {
       'pt',
     ];
 
-    for (final lang in languages) {
+    for (final String lang in languages) {
       test('$lang.json has valid JSON syntax', () {
-        final file = File('assets/translations/$lang.json');
+        final File file = File('assets/translations/$lang.json');
         expect(
           file.existsSync(),
           isTrue,
@@ -69,7 +70,7 @@ void main() {
         );
 
         // Parse JSON to verify syntax
-        final content = file.readAsStringSync();
+        final String content = file.readAsStringSync();
         expect(
           () => jsonDecode(content),
           returnsNormally,
@@ -83,18 +84,18 @@ void main() {
           return;
         }
 
-        final file = File('assets/translations/$lang.json');
-        final content = file.readAsStringSync();
-        final lines = content.split('\n');
+        final File file = File('assets/translations/$lang.json');
+        final String content = file.readAsStringSync();
+        final List<String> lines = content.split('\n');
 
-        final invalidLines = <String>[];
+        final List<String> invalidLines = <String>[];
 
-        for (final line in lines) {
+        for (final String line in lines) {
           // Check lines containing template arguments
           if (line.contains('{')) {
             // Skip if line contains any allowed argument
             bool hasValidArg = false;
-            for (final arg in allowedArgs) {
+            for (final String arg in allowedArgs) {
               if (line.contains(arg)) {
                 hasValidArg = true;
                 break;
@@ -104,7 +105,7 @@ void main() {
             // If line has '{' but no valid arg, it's invalid
             if (!hasValidArg && line.trim().isNotEmpty) {
               // Skip JSON structure characters
-              final trimmed = line.trim();
+              final String trimmed = line.trim();
               if (trimmed != '{' &&
                   trimmed != '}' &&
                   !trimmed.startsWith('//')) {
@@ -126,7 +127,7 @@ void main() {
     test('ast.json exists as source for es-AST.json', () {
       // es-AST.json is created by copying ast.json during build
       // This test ensures the source file exists
-      final astFile = File('assets/translations/ast.json');
+      final File astFile = File('assets/translations/ast.json');
       expect(
         astFile.existsSync(),
         isTrue,

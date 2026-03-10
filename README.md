@@ -222,9 +222,57 @@ In order to do gva operations, you should disable cors in the flutter run config
 
 ![cors disable](./assets/img/cors.png 'CORS disabled')
 
+### Linux Build
+
+#### Prerequisites
+
+Install `patchelf` before building Linux packages (required to fix [Flutter issue #65400](https://github.com/flutter/flutter/issues/65400)):
+
+```sh
+sudo apt-get install patchelf
+```
+
+#### Build Linux bundle and Debian package
+
+```sh
+./build.sh linux
+```
+
+This will:
+1. Build the Linux release bundle
+2. Fix RPATH in plugin libraries (Flutter bug #65400)
+3. Create a tarball at `../builds-ginkgo/ginkgo-linux-$VERSION.tgz`
+4. Build a Debian package at `../builds-ginkgo/g1nkgo-$VERSION-amd64.deb`
+
+#### Known Issues
+
+**Flutter bug #65400**: Flutter Linux builds embed the developer's absolute build path in plugin libraries. Without the RPATH fix, the application would only work on the build machine. Our build script automatically fixes this using `patchelf`.
+
 ### Debian package
 
-We use this https://pub.dev/documentation/flutter_to_debian/latest/
+We use [flutter_to_debian](https://pub.dev/documentation/flutter_to_debian/latest/)
+
+**Note:** Use `./build.sh linux` to build the Debian package with automatic RPATH fixes. Manual builds can be done with:
+
+```sh
+flutter_to_debian
+```
+
+Expected output:
+
+```
+checking for debian 📦 in root project...  ✅
+
+start building debian package... ♻️  ♻️  ♻️
+
+No skeleton found
+🔥🔥🔥 (debian 📦) build done successfully  ✅
+
+😎 find your .deb at
+build/linux/x64/release/debian/g1nkgo_2.0.3_amd64.deb
+```
+
+The version number in the filename will vary based on your current application version.
 
 ### Easy Localization
 

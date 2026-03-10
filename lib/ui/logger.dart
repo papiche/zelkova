@@ -1,5 +1,6 @@
 // logs
 import 'package:easy_logger/easy_logger.dart';
+import 'package:flutter/foundation.dart';
 import 'package:logger/logger.dart';
 
 import 'in_dev_helper.dart';
@@ -30,8 +31,12 @@ void loggerDev(Object? message, {Object? error, StackTrace? stackTrace}) {
       if (error != null) {
         buffer.write(' | Error: $error');
       }
-      if (stackTrace != null) {
-        buffer.write(' | StackTrace: $stackTrace');
+      if (stackTrace != null && !kReleaseMode) {
+        // Only include minimal stack trace info in debug mode
+        final List<String> lines = stackTrace.toString().split('\n');
+        if (lines.isNotEmpty) {
+          buffer.write(' | Stack: ${lines.first}');
+        }
       }
       logger(buffer.toString());
     } else {

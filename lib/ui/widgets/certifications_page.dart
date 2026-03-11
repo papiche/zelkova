@@ -1,0 +1,101 @@
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/material.dart';
+
+import '../../data/models/cert.dart';
+import '../../data/models/contact.dart';
+import '../contact_list_item.dart';
+import '../ui_helpers.dart';
+import 'contacts_actions.dart';
+
+class CertificationsPage extends StatelessWidget {
+  const CertificationsPage(
+      {super.key,
+      required this.title,
+      required this.subtitle,
+      required this.certifications,
+      required this.currentBlockHeight,
+      required this.issued});
+
+  final String title;
+  final String subtitle;
+  final bool issued;
+  final int currentBlockHeight;
+  final List<Cert> certifications;
+  static const int limit = 201600;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        appBar: AppBar(title: Text(title)),
+        body: SingleChildScrollView(
+            child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+              ListTile(
+                tileColor: Theme.of(context).colorScheme.primaryContainer,
+                title: Text(
+                  '$subtitle (${certifications.length})',
+                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                        color:
+                            Theme.of(context).colorScheme.onSecondaryContainer,
+                      ),
+                ),
+                contentPadding: const EdgeInsets.symmetric(horizontal: 16.0),
+              ),
+              SizedBox(
+                height: MediaQuery.of(context).size.height - kToolbarHeight,
+                child: ListView.builder(
+                  itemCount: certifications.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    final Cert cert = certifications[index];
+                    final Contact contact =
+                        issued ? cert.receiverId : cert.issuerId;
+                    final bool isExpired = cert.expireOn <= currentBlockHeight;
+                    final bool isExpiringSoon = cert.isActive &&
+                        (cert.expireOn - currentBlockHeight < limit);
+                    final bool isMember = contact.isMember ?? false;
+
+                    // Calculate time until expiration in seconds
+                    final int secondsUntilExpire =
+                        (cert.expireOn - currentBlockHeight) *
+                            6; // 6 seconds per block
+                    final String expirationTime = humanizeTimeFuture(
+                          context.locale.languageCode,
+                          secondsUntilExpire,
+                        ) ??
+                        'Unknown';
+                    final String expiredStatus = isExpired ? '❌ ' : '';
+                    final String expiringStatus = isExpiringSoon ? '⏰ ' : '';
+                    final String expirationSubtitle =
+                        '$expiredStatus$expiringStatus${tr('expires_in')} $expirationTime';
+
+                    final String statusMsg =
+                        tr('idty_status_${contact.status!.name}');
+                    return ContactListItem(
+                        contact: contact,
+                        subtitleExtra: expirationSubtitle,
+                        index: index,
+                        isV2: true,
+                        onTap: () {
+                          showContactPage(context, contact);
+                        },
+                        trailing: Tooltip(
+                            message: statusMsg,
+                            child: Icon(
+                              isMember
+                                  ? isExpiringSoon
+                                      ? Icons.timelapse
+                                      : Icons.check_circle_outline
+                                  : Icons.warning_amber_outlined,
+                              color: isMember
+                                  ? isExpiringSoon
+                                      ? Colors.orange.shade300
+                                      : Theme.of(context).colorScheme.primary
+                                  : Colors.red.shade300,
+                            )));
+                  },
+                ),
+              )
+            ])));
+  }
+}

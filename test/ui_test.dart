@@ -1,8 +1,13 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:ginkgo/data/models/contact.dart';
+import 'package:ginkgo/ui/currency_helper.dart';
 import 'package:ginkgo/ui/ui_helpers.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 void main() {
+  const String testPubKey = '7wnDh2FPdwNW8Dd5JyoJTbspuu8b9QJKps2xAYenefsu';
+  const String otherTestPubKey = '7XtCpQSj8HRQxAD7rjZrMJ1knxBm6yx317R7sYzu3Hy6';
+
   test('localizedParseToDouble parses a localized double string correctly', () {
     const String doubleString = '1.234,56';
     final double parsedDouble =
@@ -49,6 +54,30 @@ void main() {
   test('Valid decimal number - es_ES', () {
     final String? result =
         validateDecimal(sep: ',', locale: 'es_ES', amount: '123,45', tr: tr);
+    expect(result, null);
+  });
+
+  test('Valid long decimal number - es_ES', () {
+    final String? result =
+        validateDecimal(sep: ',', locale: 'es_ES', amount: '12345', tr: tr);
+    expect(result, null);
+  });
+
+  test('Valid other long decimal number - es_ES', () {
+    final String? result =
+        validateDecimal(sep: ',', locale: 'es_ES', amount: '12.345', tr: tr);
+    expect(result, null);
+  });
+
+  test('Valid long decimal number - en_US', () {
+    final String? result =
+        validateDecimal(sep: ',', locale: 'en_US', amount: '12345', tr: tr);
+    expect(result, null);
+  });
+
+  test('Valid other long decimal number - en_US', () {
+    final String? result =
+        validateDecimal(sep: ',', locale: 'en_US', amount: '12,345', tr: tr);
     expect(result, null);
   });
 
@@ -101,8 +130,8 @@ void main() {
   });
   group('humanizeContact', () {
     test('Should return "your_wallet" if pubKey matches publicAddress', () {
-      const String publicAddress = 'your_public_address';
-      const Contact contact = Contact(pubKey: 'your_public_address');
+      const String publicAddress = testPubKey;
+      final Contact contact = Contact(pubKey: testPubKey);
       final String result =
           humanizeContact(publicAddress, contact, false, false, tr);
       expect(result, 'your_wallet');
@@ -110,57 +139,55 @@ void main() {
 
     test('Should return contact title if pubKey does not match publicAddress',
         () {
-      const String publicAddress = 'your_public_address';
-      const Contact contact =
-          Contact(pubKey: 'other_public_address', name: 'John Doe');
+      const String publicAddress = testPubKey;
+      final Contact contact =
+          Contact(pubKey: otherTestPubKey, name: 'John Doe');
       final String result = humanizeContact(publicAddress, contact);
       expect(result, 'John Doe');
     });
 
     test('Should return contact title with pubKey if addKey is true', () {
-      const String publicAddress = 'your_public_address';
-      const Contact contact =
-          Contact(pubKey: 'other_public_address', name: 'John Doe');
+      const String publicAddress = testPubKey;
+      final Contact contact =
+          Contact(pubKey: otherTestPubKey, name: 'John Doe');
       final String result = humanizeContact(publicAddress, contact, true);
-      expect(result, 'John Doe (🔑 othe…ress)');
+      expect(result, 'John Doe (🗝 7XtC…3Hy6)');
     });
 
     test(
         'Should return pubKey if addKey is true but title is the same as pubKey',
         () {
-      const String publicAddress = 'other_public_address';
-      const Contact contact = Contact(pubKey: 'your_public_address');
+      const String publicAddress = otherTestPubKey;
+      final Contact contact = Contact(pubKey: testPubKey);
       final String result = humanizeContact(publicAddress, contact, true);
-      expect(result, '🔑 your…ress');
+      expect(result, '🗝 7wnD…efsu');
     });
   });
 
   group('Contact', () {
     test('Should return correct title when name and nick are both provided',
         () {
-      const Contact contact =
-          Contact(pubKey: 'your_public_address', name: 'John', nick: 'JD');
+      final Contact contact =
+          Contact(pubKey: testPubKey, name: 'John', nick: 'JD');
       final String result = contact.title;
       expect(result, 'John (JD)');
     });
 
     test('Should return name when name and nick are the same', () {
-      const Contact contact =
-          Contact(pubKey: 'your_public_address', name: 'John', nick: 'John');
+      final Contact contact =
+          Contact(pubKey: testPubKey, name: 'John', nick: 'John');
       final String result = contact.title;
       expect(result, 'John');
     });
 
     test('Should return name when name is provided and nick is null', () {
-      const Contact contact =
-          Contact(pubKey: 'your_public_address', name: 'John');
+      final Contact contact = Contact(pubKey: testPubKey, name: 'John');
       final String result = contact.title;
       expect(result, 'John');
     });
 
     test('Should return nick when nick is provided and name is null', () {
-      const Contact contact =
-          Contact(pubKey: 'your_public_address', nick: 'JD');
+      final Contact contact = Contact(pubKey: testPubKey, nick: 'JD');
       final String result = contact.title;
       expect(result, 'JD');
     });
@@ -168,23 +195,55 @@ void main() {
     test(
         'Should return humanized pubKey when neither name nor nick is provided',
         () {
-      const Contact contact = Contact(pubKey: 'your_public_address');
+      final Contact contact = Contact(pubKey: testPubKey);
       final String result = contact.title;
-      expect(result, '🔑 your…ress');
+      expect(result, '🗝 7wnD…efsu');
     });
 
     test('Should return subtitle when nick or name is provided', () {
-      const Contact contact =
-          Contact(pubKey: 'your_public_address', nick: 'JD');
+      final Contact contact = Contact(pubKey: testPubKey, nick: 'JD');
       final String? result = contact.subtitle;
-      expect(result, '🔑 your…ress');
+      expect(result, '🗝 7wnD…efsu');
     });
 
     test('Should return null subtitle when neither nick nor name is provided',
         () {
-      const Contact contact = Contact(pubKey: 'your_public_address');
+      final Contact contact = Contact(pubKey: testPubKey);
       final String? result = contact.subtitle;
       expect(result, isNull);
+    });
+
+    test('Correct time representation', () async {
+      expect(
+          humanizeTime(
+              DateTime.fromMillisecondsSinceEpoch(1731098308 * 1000,
+                  isUtc: true),
+              'es',
+              DateTime.parse('2024-11-08T20:38:28Z').toLocal()),
+          'hace un momento');
+      expect(
+          humanizeTime(
+              DateTime.fromMillisecondsSinceEpoch(1731098308 * 1000,
+                  isUtc: true),
+              'es',
+              DateTime.parse('2024-11-08T20:40:00Z').toLocal()),
+          'hace 2 minutos');
+      await initializeDateFormatting('es'); // Inicializa el locale 'es'
+
+      // Calculate expected time based on current timezone
+      // UTC timestamp: 2024-11-08T20:38:28Z converts to local time
+      final utcDateTime =
+          DateTime.fromMillisecondsSinceEpoch(1731098308 * 1000, isUtc: true);
+      final localDateTime = utcDateTime.toLocal();
+      final expectedTime =
+          '${localDateTime.day}/${localDateTime.month}/${localDateTime.year} ${localDateTime.hour.toString().padLeft(2, '0')}:${localDateTime.minute.toString().padLeft(2, '0')}';
+
+      expect(
+          humanizeTimeFull(
+            utcDateTime: utcDateTime,
+            locale: 'es',
+          ),
+          expectedTime);
     });
   });
 }

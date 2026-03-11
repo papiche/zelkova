@@ -1,0 +1,5 @@
+Welcome to Duniter 2.0!
+
+What's new:
+- Better app startup experience
+- Improve dark mode

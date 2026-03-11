@@ -1,0 +1,3 @@
+Welcome Duniter 2.0!
+- Fixed initialization issue when v1 doesn't exist
+- Fixed test node cache issue

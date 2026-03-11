@@ -76,14 +76,25 @@ flutter pub get
 ### Launch all the tests
 
 ```sh
+# Unit tests
 flutter test
+
+# Integration tests (requires Patrol CLI)
+patrol test
+
+# Integration test for specific file
+patrol test integration_test/app_smoke_test.dart
 ```
+
+**Note:** Integration tests use the [Patrol](https://pub.dev/packages/patrol) framework. See [integration_test/README.md](./integration_test/README.md) for detailed instructions.
 
 ### Build & deploy
 
 #### Prerequisites
 
 Create a `.env` configuration file (and `.env-dev` for development) in the root of the project. Use the `dot.env.sample` file as template.
+
+See [this issue](https://github.com/frencojobs/envify/issues/6#issuecomment-966892148) if you try to change the `.env` and somehow is cached.
 
 #### Build for web
 
@@ -137,6 +148,56 @@ source ~/.bashrc
 rsync --progress=info2 --delete -aH build/web/ youruser@yourserver:/var/www/ginkgo/
 ```
 
+#### Build and deploy Android to Google Play
+
+##### Prerequisites
+
+Set up fastlane:
+
+```sh
+cd android
+fastlane init
+```
+
+Configure your Google Play API key at `/home/vjrj/etc/ginkgo_play_api_key.json` or update the path in `android/fastlane/Fastfile`.
+
+##### Build and upload to production
+
+Build the app bundle (with 16KB page size support for Android 15+):
+
+```sh
+flutter clean
+flutter pub get
+flutter build appbundle --release
+```
+
+Then deploy to Google Play production track:
+
+```sh
+cd android
+fastlane deploy_production_upload
+```
+
+This will upload the AAB to the production track with all metadata and assets.
+
+##### Alternative: Deploy to internal testing first
+
+To test on internal track before production:
+
+```sh
+cd android
+fastlane deploy_internal
+```
+
+##### Validate Google Play API connection
+
+To verify your API key is working:
+
+```sh
+cd android
+fastlane validate
+```
+
 ### Run dev environment
 
 Run the app via command line or through your development environment. It will run the default built version.
@@ -160,6 +221,58 @@ In order to do gva operations, you should disable cors in the flutter run config
 ```
 
 ![cors disable](./assets/img/cors.png 'CORS disabled')
+
+### Linux Build
+
+#### Prerequisites
+
+Install `patchelf` before building Linux packages (required to fix [Flutter issue #65400](https://github.com/flutter/flutter/issues/65400)):
+
+```sh
+sudo apt-get install patchelf
+```
+
+#### Build Linux bundle and Debian package
+
+```sh
+./build.sh linux
+```
+
+This will:
+1. Build the Linux release bundle
+2. Fix RPATH in plugin libraries (Flutter bug #65400)
+3. Create a tarball at `../builds-ginkgo/ginkgo-linux-$VERSION.tgz`
+4. Build a Debian package at `../builds-ginkgo/g1nkgo-$VERSION-amd64.deb`
+
+#### Known Issues
+
+**Flutter bug #65400**: Flutter Linux builds embed the developer's absolute build path in plugin libraries. Without the RPATH fix, the application would only work on the build machine. Our build script automatically fixes this using `patchelf`.
+
+### Debian package
+
+We use [flutter_to_debian](https://pub.dev/documentation/flutter_to_debian/latest/)
+
+**Note:** Use `./build.sh linux` to build the Debian package with automatic RPATH fixes. Manual builds can be done with:
+
+```sh
+flutter_to_debian
+```
+
+Expected output:
+
+```
+checking for debian 📦 in root project...  ✅
+
+start building debian package... ♻️  ♻️  ♻️
+
+No skeleton found
+🔥🔥🔥 (debian 📦) build done successfully  ✅
+
+😎 find your .deb at
+build/linux/x64/release/debian/g1nkgo_2.0.3_amd64.deb
+```
+
+The version number in the filename will vary based on your current application version.
 
 ### Easy Localization
 
@@ -209,20 +322,37 @@ DropdownMenuItem<Locale>(
 4. And in last resort, you can try to delete the `pubspec.lock` file and run `flutter pub get` again.
 5. Finally, there is a troubleshooting command in flutter: `flutter doctor -v`.
 
+### Android 16KB Page Size Support
+
+Since November 1st, 2025, Google Play requires all new and updated apps targeting Android 15+ devices to support 16KB memory page sizes. 
+
+The app uses Flutter 3.41.2+, which includes automatic support for 16KB page size alignment. The build process handles this automatically when building with `flutter build appbundle --release`.
+
+To verify 16KB alignment in the generated AAB:
+
+```sh
+/path/to/android-sdk/build-tools/36.0.0/zipalign -v -c -P 16 4 build/app/outputs/bundle/release/app-release.aab
+```
+
+A successful verification shows "Verification successful" at the end.
+
 ## Credits
 
 ### Translations
 
 - ast: dixebral
 - ca: calbasi
-- de: Andreas Wahlen and FW
-- eo: flodef
-- eu: Anna Ayala Alcalá
-- fr: flodef, Hugo, Maaltir, poka and vincentux
-- gl: Vijitâtman
-- it: Anna Ayala Alcalá
+- da: Gerhard Pischinger
+- de: anfeichtinger, Christophe Parot, FW, Ruten Rolf, Wahlen
+- en: anfeichtinger, Daniel Bañobre Dopico
+- eo: flodef, Solaiye, Yves Bachimont
+- es: Aldara ES
+- eu: Anna Ayala Alcalá, Gobtous, Goiztizar, Solaiye
+- fr: Christophe Parot, Cristina Abella, d0p1, flodef, Gobtous, Hugo Trentesaux, italpaola, Maaltir, Michel_du_64, niko, Olivier Michel, poka, Solaiye, vincentux
+- gl: Daniel Bañobre Dopico, Vijitâtman
+- it: Alis0r, Anna Ayala Alcalá, italpaola
 - nl: Maria Rosa Costa i Alandi
-- pt: Carlos Neto
+- pt: Carlos Neto, Christophe Parot
 
 Thanks!
 
@@ -233,6 +363,14 @@ Thanks!
 - Chipcard https://commons.wikimedia.org/wiki/File:Chipcard.svg under the Creative Commons
   Attribution-Share Alike 3.0 Unported license.
 - [POS svg from wikimedia](https://commons.wikimedia.org/wiki/File:Card_Terminal_POS_Flat_Icon_Vector.svg) CC-BY-SA 4.0
+- Open Sans: Copyright 2020 The Open Sans Project Authors (https://github.com/googlefonts/opensans) under the SIL Open Font License, Version 1.1.
+- NotoEmoji: Copyright 2013 Google LLC under the SIL Open Font License, Version 1.1.
+- Dejavu are (c) Bitstream  DejaVu changes are in public domain.
+
+-----------------------------------------------------------
+SIL OPEN FONT LICENSE Version 1.1 - 26 February 2007
+-----------------------------------------------------------
+
 
 ### Pub packages used
 

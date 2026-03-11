@@ -1,0 +1,97 @@
+# npx get-graphql-schema https://datapod.gyroi.de/v1/graphql > duniter-datapod.schema.graphql
+query GetProfileByAddress($pubkey: String!) {
+    profiles(where: { pubkey: { _eq: $pubkey } }) {
+        avatar
+        pubkey
+        description
+        title
+        city
+        data_cid
+        geoloc
+        index_request_cid
+        pubkey
+        socials
+        time
+        title
+    }
+}
+
+query GetProfilesByAddress($pubkeys: [String!]!) {
+    profiles(where: { pubkey: { _in: $pubkeys } }) {
+        avatar
+        pubkey
+        description
+        title
+        city
+        data_cid
+        geoloc
+        index_request_cid
+        pubkey
+        socials
+        time
+        title
+    }
+}
+
+query GetProfileCount {
+    profiles_aggregate {
+        aggregate {
+            count
+        }
+    }
+}
+
+query SearchProfileByTerm($pattern: String!) {
+    profiles(
+        where: {
+            _or: [
+                { title: { _iregex: $pattern } }
+                { description: { _iregex: $pattern } }
+                { pubkey: { _iregex: $pattern } }
+            ]
+        }
+    ) {
+        avatar
+        pubkey
+        description
+        title
+        city
+        data_cid
+        geoloc
+        index_request_cid
+        pubkey
+        socials
+        time
+        title
+    }
+}
+
+query SearchProfiles(
+    $searchTermLower: String!
+    $searchTerm: String!
+    $searchTermCapitalized: String!
+) {
+    profiles(
+        where: {
+            _or: [
+                { title: { _iregex: $searchTermLower } }
+                { title: { _iregex: $searchTerm } }
+                { title: { _iregex: $searchTermCapitalized } }
+                { description: { _iregex: $searchTermLower } }
+                { description: { _iregex: $searchTerm } }
+                { description: { _iregex: $searchTermCapitalized } }
+            ]
+        }
+    ) {
+        avatar
+        pubkey
+        description
+        title
+        city
+        data_cid
+        geoloc
+        index_request_cid
+        socials
+        time
+    }
+}

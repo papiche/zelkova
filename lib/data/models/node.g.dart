@@ -11,6 +11,11 @@ Node _$NodeFromJson(Map<String, dynamic> json) => Node(
       latency: (json['latency'] as num?)?.toInt() ?? 99999,
       errors: (json['errors'] as num?)?.toInt() ?? 0,
       currentBlock: (json['currentBlock'] as num?)?.toInt() ?? 0,
+      version: json['version'] as String?,
+      lastErrorTime: json['lastErrorTime'] == null
+          ? null
+          : DateTime.parse(json['lastErrorTime'] as String),
+      consecutiveErrors: (json['consecutiveErrors'] as num?)?.toInt() ?? 0,
     );
 
 Map<String, dynamic> _$NodeToJson(Node instance) => <String, dynamic>{
@@ -18,4 +23,7 @@ Map<String, dynamic> _$NodeToJson(Node instance) => <String, dynamic>{
       'latency': instance.latency,
       'errors': instance.errors,
       'currentBlock': instance.currentBlock,
+      'version': instance.version,
+      'lastErrorTime': instance.lastErrorTime?.toIso8601String(),
+      'consecutiveErrors': instance.consecutiveErrors,
     };

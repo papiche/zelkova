@@ -32,10 +32,12 @@ analyzer:
     # Turned off until null-safe rollout is complete.
     unnecessary_null_comparison: ignore
   exclude:
-    - "bin/cache/**"
+    - 'bin/cache/**'
     # Ignore protoc generated files
-    - "dev/conductor/lib/proto/*"
-    - "lib/data/models/*g.dart"
+    - 'dev/conductor/lib/proto/*'
+    - 'lib/data/models/*g.dart'
+    - 'lib/generated/**'
+    - 'build/**'
 
 linter:
   rules:
@@ -137,7 +139,6 @@ linter:
     # - one_member_abstracts # too many false positives
     - only_throw_errors # this does get disabled in a few places where we have legacy code that uses strings et al
     - overridden_fields
-    - package_api_docs
     - package_names
     - package_prefixed_library_names
     # - parameter_assignments # we do this commonly
@@ -220,7 +221,6 @@ linter:
     - unnecessary_string_interpolations
     - unnecessary_this
     - unrelated_type_equality_checks
-    - unsafe_html
     - use_build_context_synchronously
     # - use_colored_box # not yet tested
     # - use_decorated_box # not yet tested
@@ -241,3 +241,7 @@ linter:
     # - use_to_and_as_if_applicable # has false positives, so we prefer to catch this by code-review
     - valid_regexps
     - void_checks
+include: package:bloc_lint/recommended.yaml
+bloc:
+  rules:
+    - avoid_flutter_imports

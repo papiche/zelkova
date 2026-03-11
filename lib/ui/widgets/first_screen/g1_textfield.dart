@@ -7,7 +7,91 @@ import '../../../data/models/app_cubit.dart';
 import '../../../data/models/payment_cubit.dart';
 import '../../../data/models/payment_state.dart';
 import '../../../g1/currency.dart';
+import '../../currency_helper.dart';
+import '../../locale_helper.dart';
 import '../../ui_helpers.dart';
+
+class _ShadowToggleSwitch extends StatelessWidget {
+  const _ShadowToggleSwitch({
+    required this.minWidth,
+    required this.radiusStyle,
+    required this.initialLabelIndex,
+    required this.cornerRadius,
+    required this.activeFgColor,
+    required this.inactiveBgColor,
+    required this.inactiveFgColor,
+    required this.totalSwitches,
+    required this.labels,
+    required this.iconSize,
+    required this.borderWidth,
+    required this.borderColor,
+    required this.activeBgColors,
+    required this.onToggle,
+    required this.toggleKey,
+  });
+
+  final double minWidth;
+  final bool radiusStyle;
+  final int initialLabelIndex;
+  final double cornerRadius;
+  final Color activeFgColor;
+  final Color? inactiveBgColor;
+  final Color inactiveFgColor;
+  final int totalSwitches;
+  final List<String> labels;
+  final double iconSize;
+  final double borderWidth;
+  final List<Color> borderColor;
+  final List<List<Color>> activeBgColors;
+  final Function(int?) onToggle;
+  final String toggleKey;
+
+  @override
+  Widget build(BuildContext context) {
+    return ToggleSwitch(
+      key: ValueKey<String>(toggleKey),
+      minWidth: minWidth,
+      radiusStyle: radiusStyle,
+      initialLabelIndex: initialLabelIndex,
+      cornerRadius: cornerRadius,
+      activeFgColor: activeFgColor,
+      inactiveBgColor: inactiveBgColor,
+      inactiveFgColor: inactiveFgColor,
+      totalSwitches: totalSwitches,
+      labels: labels,
+      iconSize: iconSize,
+      fontSize: 12.0,
+      borderWidth: borderWidth,
+      borderColor: borderColor,
+      activeBgColors: activeBgColors,
+      customTextStyles: <TextStyle>[
+        TextStyle(
+          color: activeFgColor,
+          fontSize: 14.0,
+          shadows: const <Shadow>[
+            Shadow(
+              offset: Offset(0.5, 0.5),
+              blurRadius: 1.0,
+              color: Color.fromARGB(150, 255, 255, 255),
+            ),
+          ],
+        ),
+        TextStyle(
+          color: inactiveFgColor,
+          fontSize: 14.0,
+          shadows: const <Shadow>[
+            Shadow(
+              offset: Offset(0.5, 0.5),
+              blurRadius: 1.0,
+              color: Color.fromARGB(150, 255, 255, 255),
+            ),
+          ],
+        ),
+      ],
+      onToggle: onToggle,
+    );
+  }
+}
 
 class G1PayAmountField extends StatefulWidget {
   const G1PayAmountField({super.key});
@@ -18,14 +102,35 @@ class G1PayAmountField extends StatefulWidget {
 
 class _G1PayAmountFieldState extends State<G1PayAmountField> {
   final TextEditingController _controller = TextEditingController();
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>(
+    debugLabel: 'g1PayAmountField',
+  );
   late String sep;
   late String locale;
+  late Currency _paymentCurrency;
 
   @override
   void initState() {
     super.initState();
     _controller.addListener(_onAmountChanged);
+    // Initialize payment currency from PaymentCubit (independent from display currency)
+    _paymentCurrency = context.read<PaymentCubit>().state.currency;
+  }
+
+  void _switchPaymentCurrency() {
+    setState(() {
+      _paymentCurrency =
+          _paymentCurrency == Currency.G1 ? Currency.DU : Currency.G1;
+
+      // Update the payment state with the new currency if there's an amount
+      final PaymentCubit paymentCubit = context.read<PaymentCubit>();
+      if (paymentCubit.state.amount != null) {
+        paymentCubit.selectAmountWithCurrency(
+          paymentCubit.state.amount,
+          _paymentCurrency,
+        );
+      }
+    });
   }
 
   @override
@@ -43,15 +148,20 @@ class _G1PayAmountFieldState extends State<G1PayAmountField> {
         newValue.isNotEmpty &&
         validate) {
       final double newAmount = parseToDoubleLocalized(
-          locale: context.locale.toLanguageTag(), number: newValue);
+        locale: context.locale.toLanguageTag(),
+        number: newValue,
+      );
       if (newAmount != context.read<PaymentCubit>().state.amount) {
-        context.read<PaymentCubit>().selectAmount(newAmount);
+        context
+            .read<PaymentCubit>()
+            .selectAmountWithCurrency(newAmount, _paymentCurrency);
       }
     } else {
-      final double? newAmount =
-          newValue == null ? null : double.tryParse(newValue);
+      final double? newAmount = double.tryParse(newValue);
       if (newAmount != context.read<PaymentCubit>().state.amount) {
-        context.read<PaymentCubit>().selectAmount(newAmount);
+        context
+            .read<PaymentCubit>()
+            .selectAmountWithCurrency(newAmount, _paymentCurrency);
       }
     }
   }
@@ -68,7 +178,8 @@ class _G1PayAmountFieldState extends State<G1PayAmountField> {
           if (_controller.text != amountFormatted) {
             _controller.text = amountFormatted;
             _controller.selection = TextSelection.fromPosition(
-                TextPosition(offset: _controller.text.length));
+              TextPosition(offset: _controller.text.length),
+            );
           }
         } else {
           if (state.status == PaymentStatus.isSent) {
@@ -77,7 +188,10 @@ class _G1PayAmountFieldState extends State<G1PayAmountField> {
             context.read<PaymentCubit>().selectAmount(null);
           }
         }
-        final Currency currentCurrency = context.watch<AppCubit>().currency;
+
+        final bool expertMode = context.read<AppCubit>().isExpertMode;
+        final bool enableCurrencies = expertMode;
+        final Currency currentCurrency = _paymentCurrency;
 
         return Form(
           key: _formKey,
@@ -93,35 +207,41 @@ class _G1PayAmountFieldState extends State<G1PayAmountField> {
                   value != null &&
                   value.isNotEmpty &&
                   validate) {
-                context.read<PaymentCubit>().selectAmount(
-                    parseToDoubleLocalized(
-                        locale: context.locale.toLanguageTag(), number: value));
-              } else {
-                context.read<PaymentCubit>().selectAmount(
-                    value == null ? null : double.tryParse(value));
+                context.read<PaymentCubit>().selectAmountWithCurrency(
+                      parseToDoubleLocalized(
+                        locale: context.locale.toLanguageTag(),
+                        number: value,
+                      ),
+                      _paymentCurrency,
+                    );
               }
             },
             decoration: InputDecoration(
               labelText: tr('g1_amount'),
-              hintText: 'g1_amount_hint'.tr(namedArgs: <String, String>{
-                'currency': currentCurrency.name()
-              }),
+              hintText: 'g1_amount_hint'.tr(
+                namedArgs: <String, String>{'currency': currentCurrency.name()},
+              ),
               contentPadding: const EdgeInsets.fromLTRB(16, 0, 10, 10),
               border: const OutlineInputBorder(),
               suffix: Padding(
                 padding: const EdgeInsets.only(bottom: 20),
-                child: ToggleSwitch(
+                child: _ShadowToggleSwitch(
+                  toggleKey: 'toggle_${currentCurrency.name()}',
                   minWidth: 40.0,
                   radiusStyle: true,
-                  // initialLabelIndex: 0,
+                  initialLabelIndex: enableCurrencies
+                      ? currentCurrency == Currency.G1
+                          ? 0
+                          : 1
+                      : 0,
                   cornerRadius: 20.0,
                   activeFgColor: Colors.black,
                   inactiveBgColor: Colors.grey[400],
-                  inactiveFgColor: Colors.white,
-                  totalSwitches: 1,
-                  labels: <String>[
-                    if (currentCurrency == Currency.G1) 'Ğ1' else 'DU'
-                  ],
+                  inactiveFgColor: Colors.black,
+                  totalSwitches: enableCurrencies ? 2 : 1,
+                  labels: enableCurrencies
+                      ? const <String>['Ğ1', 'DU']
+                      : const <String>['Ğ1'],
                   iconSize: 30.0,
                   borderWidth: 1.0,
                   borderColor: const <Color>[Colors.grey],
@@ -130,7 +250,7 @@ class _G1PayAmountFieldState extends State<G1PayAmountField> {
                     <Color>[Color(0xFFFFD949)],
                   ],
                   onToggle: (int? index) {
-                    // context.read<AppCubit>().switchCurrency();
+                    _switchPaymentCurrency();
                   },
                 ),
               ),
@@ -145,10 +265,15 @@ class _G1PayAmountFieldState extends State<G1PayAmountField> {
     if (_controller.text.startsWith(sep)) {
       _controller.text = '0${_controller.text}';
       _controller.selection = TextSelection.fromPosition(
-          TextPosition(offset: _controller.text.length));
+        TextPosition(offset: _controller.text.length),
+      );
       value = _controller.text;
     }
     return validateDecimal(
-        sep: sep, locale: locale, amount: value, tr: (String s) => tr(s));
+      sep: sep,
+      locale: locale,
+      amount: value,
+      tr: (String s) => tr(s),
+    );
   }
 }

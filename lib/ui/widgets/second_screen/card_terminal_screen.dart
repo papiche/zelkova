@@ -4,6 +4,7 @@ import 'package:qr_flutter/qr_flutter.dart';
 
 import '../../../g1/g1_helper.dart';
 import '../../../shared_prefs_helper.dart';
+import '../../clipboard_helper.dart';
 import '../../tutorial_keys.dart';
 import '../../ui_helpers.dart';
 import '../connectivity_widget_wrapper_wrapper.dart';
@@ -87,7 +88,7 @@ class CardTerminalScreen extends StatelessWidget {
                               Shadow(
                                 offset: const Offset(1, 1),
                                 blurRadius: 3,
-                                color: Colors.black.withOpacity(0.4),
+                                color: Colors.black.withValues(alpha: 0.4),
                               ),
                             ],
                           ),

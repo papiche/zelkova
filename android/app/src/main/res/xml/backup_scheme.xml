@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<full-backup-content>
+    <!-- Include SharedPreferences from all contexts -->
+    <include domain="sharedpref" path="." />
+    
+    <!-- Include app files -->
+    <include domain="file" path="." />
+    
+    <!-- Include database files -->
+    <include domain="database" path="." />
+    
+    <!-- Exclude temporary files that shouldn't be backed up -->
+    <exclude domain="sharedpref" path="flutter." />
+</full-backup-content>

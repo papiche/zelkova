@@ -43,10 +43,11 @@ class GridItem extends StatelessWidget {
             Text(
               tr(title),
               textAlign: TextAlign.center,
+              softWrap: true,
               style: Theme.of(context)
                   .textTheme
                   .titleMedium!
-                  .apply(fontWeightDelta: 2, fontSizeDelta: -2),
+                  .apply(fontSizeDelta: -4),
             ),
             if (subtitle != null)
               Padding(

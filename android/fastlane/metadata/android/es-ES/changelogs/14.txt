@@ -1,0 +1,2 @@
+- Solución de problemas de intro y paste (gracias sandrisha)
+- Clipboard fallback cuando falla export a fichero

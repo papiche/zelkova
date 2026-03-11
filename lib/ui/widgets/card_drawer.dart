@@ -1,106 +1,139 @@
 import 'dart:convert';
 
 import 'package:easy_localization/easy_localization.dart';
-import 'package:feedback_gitlab/feedback_gitlab.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart' as http;
-import 'package:package_info_plus/package_info_plus.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 
-import '../../data/models/cesium_card.dart';
-import '../../data/models/node_manager.dart';
-import '../../env.dart';
-import '../../main.dart';
-import '../../shared_prefs_helper.dart';
+import '../../data/models/app_cubit.dart';
+import '../../data/models/app_state.dart';
+import '../in_dev_helper.dart';
 import '../screens/sandbox.dart';
 import '../ui_helpers.dart';
+import 'backup_reminder_dialog.dart';
 import 'first_screen/card_stack.dart';
+import 'lazy_about_info.dart';
+import 'market_analysis/market_analysis_page.dart';
+import 'pages/settings_page.dart';
 
 typedef IssueCreatedCallback = void Function(
     String? issueUrl, Map<String, dynamic> issueData, bool isSuccess);
 
-class CardDrawer extends StatelessWidget {
+class CardDrawer extends StatefulWidget {
   const CardDrawer({super.key});
 
   @override
+  State<CardDrawer> createState() => _CardDrawerState();
+}
+
+class _CardDrawerState extends State<CardDrawer> {
+  // ignore: unused_field
+  bool _isLogoLongPressed = false;
+
+  @override
   Widget build(BuildContext context) {
-    final List<CesiumCard> cards = SharedPreferencesHelper().cesiumCards;
-    return FutureBuilder<PackageInfo>(
-      future: PackageInfo.fromPlatform(),
-      builder: (BuildContext context, AsyncSnapshot<PackageInfo> snapshot) {
-        if (snapshot.hasData) {
-          return Drawer(
-            child: ListView(
-              // Important: Remove any padding from the ListView.
-              padding: EdgeInsets.zero,
-              children: <Widget>[
-                DrawerHeader(
-                  /* decoration: BoxDecoration(
-                    color: Theme.of(context).primaryColor,
-                  ), */
-                  child: Column(
-                    children: <Widget>[
-                      GestureDetector(
-                          onTap: () => tryCatch(),
-                          onLongPress: () => tryCatch(),
-                          child: Image.asset(
+    return BlocBuilder<AppCubit, AppState>(
+        builder: (BuildContext context, AppState state) {
+      return Drawer(
+        child: ListView(
+          // Important: Remove any padding from the ListView.
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+            GestureDetector(
+                // onTap: () => tryCatch(),
+                // onLongPress: () => tryCatch(),
+                child: SizedBox(
+                    height: 140.0,
+                    child: DrawerHeader(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Column(
+                        children: <Widget>[
+                          Image.asset(
                             'assets/img/logo.png',
                             fit: BoxFit.scaleDown,
                             height: 80.0,
-                          )),
-                      // const SizedBox(height: 20.0),
-                      /* Text(tr('app_name'),
-                          style: const TextStyle(
-                            fontSize: 24.0,
-                            color: Colors.white,
-                          )), */
-                    ],
-                  ),
+                          ),
+                        ],
+                      ),
+                    ))),
+            if (!state.hasRecentExport)
+              ListTile(
+                tileColor: Colors.red[100],
+                leading: const Icon(
+                  Icons.warning_rounded,
+                  color: Colors.redAccent,
                 ),
-                if (inDevelopment)
-                  ListTile(
-                      leading: const Text('Last gva node'),
-                      title: Text(NodeManager().getCurrentGvaNode() != null
-                          ? NodeManager().getCurrentGvaNode()!.url
-                          : 'None')),
-                SizedBox(
-                  height: (cards.length * 70) + 50,
-                  child: const Center(
-                    child: CardStack(),
+                // color de link ,
+                title: Text(tr('export_reminder_title'),
+                    style: const TextStyle(
+                      color: Colors.blue,
+                      // decoration: TextDecoration.underline,
+                    )),
+                onTap: () => showBackupReminderDialog(context),
+              ),
+            const CardStack(),
+            ListTile(
+              leading: const Icon(Icons.settings),
+              title: Text(tr('settings_title')),
+              onTap: () {
+                Navigator.pop(context); // Close drawer first
+                Navigator.push(
+                  context,
+                  MaterialPageRoute<dynamic>(
+                    builder: (BuildContext context) => const SettingsPage(),
                   ),
-                ),
-                if (inDevelopment)
-                  ListTile(
-                    leading: const Icon(Icons.build),
-                    title: const Text('Sandbox'),
-                    onTap: () {
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return const Sandbox();
-                        },
-                      );
+                );
+              },
+            ),
+            if (inDevelopment)
+              ListTile(
+                leading: const Icon(Icons.build),
+                title: const Text('Sandbox'),
+                onTap: () {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return const Sandbox();
                     },
-                  ),
-                ListTile(
-                  leading: const Icon(Icons.telegram_outlined),
-                  title: Text(tr('telegram_group')),
-                  onTap: () async {
-                    final Locale locale = context.locale;
-                    if (locale == const Locale('es') ||
-                        locale == const Locale('ca') ||
-                        locale == const Locale('gl') ||
-                        locale == const Locale('eu') ||
-                        locale == const Locale('ast')) {
-                      await openUrl('https://t.me/g1nkgoES');
-                    }
-                    if (locale == const Locale('fr')) {
-                      await openUrl('https://t.me/g1nkgoFR');
-                    } else {
-                      await openUrl('https://t.me/g1nkgoEN');
-                    }
-                  },
-                ),
+                  );
+                },
+              ),
+            if (!kIsWeb || state.v2mode)
+              ListTile(
+                leading: const Icon(Icons.analytics),
+                title: Text(tr('market_analysis')),
+                onTap: () {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return const MarketAnalysisPage();
+                    },
+                  );
+                },
+              ),
+            ListTile(
+              leading: const Icon(Icons.telegram_outlined),
+              title: Text(tr('telegram_group')),
+              onTap: () async {
+                final Locale locale = context.locale;
+                if (locale == const Locale('es') ||
+                    locale == const Locale('ca') ||
+                    locale == const Locale('gl') ||
+                    locale == const Locale('eu') ||
+                    locale == const Locale('ast')) {
+                  await openUrl('https://t.me/g1nkgoES');
+                } else if (locale == const Locale('fr')) {
+                  await openUrl('https://t.me/g1nkgoFR');
+                } else {
+                  await openUrl('https://t.me/g1nkgoEN');
+                }
+              },
+            ),
+            /*
+                Until this is solved, we comment the feedback functionality
+                https://github.com/ueman/feedback/issues/317
                 ListTile(
                   leading: const Icon(Icons.feedback),
                   title: Text(tr('feedback')),
@@ -166,30 +199,48 @@ class CardDrawer extends StatelessWidget {
                         apiToken: gitLabToken,
                         gitlabUrl: 'git.duniter.org',
                         client: client);
-                    /* BetterFeedback.of(context).showAndUploadToSentry(
-                      // name: 'Foo Bar',
-                      // email: 'foo_bar@example.com',
-                    ); */
                   },
                 ),
-                AboutListTile(
-                    icon: g1nkgoIcon,
-                    applicationName: tr('app_name'),
-                    applicationVersion: 'Version: ${snapshot.data!.version}',
-                    applicationIcon: g1nkgoIcon,
-                    applicationLegalese:
-                        '© ${DateTime.now().year.toString() == '2023' ? '2023' : '2023-${DateTime.now().year}'} Comunes Association, under AGPLv3',
-                    aboutBoxChildren: const <Widget>[
-                      SizedBox(height: 10.0),
-                    ]),
+                */
+            LazyAboutListTile(
+              icon: g1nkgoIcon,
+              applicationName: tr('app_name'),
+              applicationIcon: g1nkgoIcon,
+              applicationLegalese:
+                  '© ${DateTime.now().year.toString() == '2023' ? '2023' : '2023-${DateTime.now().year}'} Comunes Association, under AGPLv3',
+              aboutBoxChildren: const <Widget>[
+                SizedBox(height: 10.0),
               ],
+
+              // versionLabelPrefix: 'Version: ',
+              // fallbackVersion: 'dev',
             ),
-          );
-        } else {
-          return const Center(child: CircularProgressIndicator());
-        }
-      },
-    );
+            /* AboutListTile(
+                      icon: g1nkgoIcon,
+                      applicationName: tr('app_name'),
+                      applicationVersion: 'Version: ${snapshot.data!.version}',
+                      applicationIcon: g1nkgoIcon,
+                      applicationLegalese:
+                          '© ${DateTime.now().year.toString() == '2023' ? '2023' : '2023-${DateTime.now().year}'} Comunes Association, under AGPLv3',
+                      aboutBoxChildren: const <Widget>[
+                        SizedBox(height: 10.0),
+                      ]), */
+          ],
+        ),
+      );
+    });
+  }
+
+  void bonusTrack(BuildContext context) {
+    if (kIsWeb) {
+      return;
+    }
+    setState(() {
+      _isLogoLongPressed = true;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Bonus track!')),
+      );
+    });
   }
 }
 

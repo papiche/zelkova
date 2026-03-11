@@ -13,6 +13,8 @@ abstract class _$PaymentStateCWProxy {
 
   PaymentState amount(double? amount);
 
+  PaymentState currency(Currency currency);
+
   PaymentState status(PaymentStatus status);
 
   /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `PaymentState(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
@@ -23,9 +25,10 @@ abstract class _$PaymentStateCWProxy {
   /// ````
   PaymentState call({
     List<Contact>? contacts,
-    String? comment,
+    String comment,
     double? amount,
-    PaymentStatus? status,
+    Currency currency,
+    PaymentStatus status,
   });
 }
 
@@ -45,6 +48,9 @@ class _$PaymentStateCWProxyImpl implements _$PaymentStateCWProxy {
   PaymentState amount(double? amount) => this(amount: amount);
 
   @override
+  PaymentState currency(Currency currency) => this(currency: currency);
+
+  @override
   PaymentState status(PaymentStatus status) => this(status: status);
 
   @override
@@ -59,6 +65,7 @@ class _$PaymentStateCWProxyImpl implements _$PaymentStateCWProxy {
     Object? contacts = const $CopyWithPlaceholder(),
     Object? comment = const $CopyWithPlaceholder(),
     Object? amount = const $CopyWithPlaceholder(),
+    Object? currency = const $CopyWithPlaceholder(),
     Object? status = const $CopyWithPlaceholder(),
   }) {
     return PaymentState(
@@ -66,7 +73,7 @@ class _$PaymentStateCWProxyImpl implements _$PaymentStateCWProxy {
           ? _value.contacts
           // ignore: cast_nullable_to_non_nullable
           : contacts as List<Contact>?,
-      comment: comment == const $CopyWithPlaceholder() || comment == null
+      comment: comment == const $CopyWithPlaceholder()
           ? _value.comment
           // ignore: cast_nullable_to_non_nullable
           : comment as String,
@@ -74,7 +81,11 @@ class _$PaymentStateCWProxyImpl implements _$PaymentStateCWProxy {
           ? _value.amount
           // ignore: cast_nullable_to_non_nullable
           : amount as double?,
-      status: status == const $CopyWithPlaceholder() || status == null
+      currency: currency == const $CopyWithPlaceholder()
+          ? _value.currency
+          // ignore: cast_nullable_to_non_nullable
+          : currency as Currency,
+      status: status == const $CopyWithPlaceholder()
           ? _value.status
           // ignore: cast_nullable_to_non_nullable
           : status as PaymentStatus,
@@ -98,6 +109,8 @@ PaymentState _$PaymentStateFromJson(Map<String, dynamic> json) => PaymentState(
           .toList(),
       comment: json['comment'] as String? ?? '',
       amount: (json['amount'] as num?)?.toDouble(),
+      currency: $enumDecodeNullable(_$CurrencyEnumMap, json['currency']) ??
+          Currency.G1,
       status: $enumDecodeNullable(_$PaymentStatusEnumMap, json['status']) ??
           PaymentStatus.notSent,
     );
@@ -107,8 +120,14 @@ Map<String, dynamic> _$PaymentStateToJson(PaymentState instance) =>
       'contacts': instance.contacts,
       'comment': instance.comment,
       'amount': instance.amount,
+      'currency': _$CurrencyEnumMap[instance.currency]!,
       'status': _$PaymentStatusEnumMap[instance.status]!,
     };
+
+const _$CurrencyEnumMap = {
+  Currency.G1: 'G1',
+  Currency.DU: 'DU',
+};
 
 const _$PaymentStatusEnumMap = {
   PaymentStatus.notSent: 'notSent',

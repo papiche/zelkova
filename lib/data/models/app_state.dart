@@ -1,68 +1,88 @@
+import 'package:copy_with_extension/copy_with_extension.dart';
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 import '../../g1/currency.dart';
+import '../../g1/distance_precompute.dart';
+import 'contact_wot_info.dart';
 import 'is_json_serializable.dart';
 
 part 'app_state.g.dart';
 
 @JsonSerializable()
+@CopyWith()
 class AppState extends Equatable implements IsJsonSerializable<AppState> {
   AppState(
       {this.introViewed = false,
       this.warningViewed = false,
       this.warningBrowserViewed = false,
+      this.warningBraveViewed = false,
       this.expertMode = false,
+      bool? walletCreatedViewed,
+      this.v2mode = false,
       Currency? currency,
       double? currentUd,
-      Map<String, bool>? tutorials})
+      this.currentUdLastUpdate,
+      Map<String, bool>? tutorials,
+      bool? hasRecentExport,
+      int? recentExportReminderInDays,
+      this.distancePrecompute,
+      this.wotInfo,
+      this.v2AutoActivated = false})
       : tutorials = tutorials ?? <String, bool>{},
         currency = currency ?? Currency.G1,
-        currentUd = currentUd ?? 10.68; // as 14/05/2023
+        walletCreatedViewed = walletCreatedViewed ?? introViewed,
+        currentUd = currentUd ?? 11.48,
+        hasRecentExport = hasRecentExport ?? false,
+        recentExportReminderInDays = recentExportReminderInDays ?? 7;
 
   factory AppState.fromJson(Map<String, dynamic> json) =>
       _$AppStateFromJson(json);
 
   final bool introViewed;
+  final bool hasRecentExport;
+  final int recentExportReminderInDays;
+  final bool walletCreatedViewed;
   final bool warningViewed;
   final bool warningBrowserViewed;
+  final bool warningBraveViewed;
   final bool expertMode;
+  final bool v2mode;
   final Currency currency;
   final double currentUd;
+  @JsonKey(includeIfNull: false)
+  final DateTime? currentUdLastUpdate;
   final Map<String, bool> tutorials;
-
-  AppState copyWith(
-      {bool? introViewed,
-      bool? warningViewed,
-      bool? warningBrowserViewed,
-      bool? expertMode,
-      Currency? currency,
-      double? currentUd,
-      Map<String, bool>? tutorials}) {
-    return AppState(
-        introViewed: introViewed ?? this.introViewed,
-        warningViewed: warningViewed ?? this.warningViewed,
-        warningBrowserViewed: warningBrowserViewed ?? this.warningBrowserViewed,
-        expertMode: expertMode ?? this.expertMode,
-        currency: currency ?? this.currency,
-        currentUd: currentUd ?? this.currentUd,
-        tutorials: tutorials ?? this.tutorials);
-  }
+  @JsonKey(includeIfNull: false)
+  final DistancePrecompute? distancePrecompute;
+  @JsonKey(includeToJson: false, includeFromJson: false)
+  final ContactWotInfo? wotInfo;
+  @JsonKey(includeToJson: false, includeFromJson: false)
+  final bool v2AutoActivated;
 
   @override
-  AppState fromJson(Map<String, dynamic> json) => AppState.fromJson(json);
+  AppState fromJson(Map<String, dynamic> json) => _$AppStateFromJson(json);
 
   @override
   Map<String, dynamic> toJson() => _$AppStateToJson(this);
 
   @override
-  List<Object?> get props => <Object>[
+  List<Object?> get props => <Object?>[
         introViewed,
         warningViewed,
         expertMode,
         warningBrowserViewed,
+        warningBraveViewed,
+        walletCreatedViewed,
         tutorials,
         currency,
-        currentUd
+        currentUd,
+        currentUdLastUpdate,
+        v2mode,
+        distancePrecompute,
+        recentExportReminderInDays,
+        hasRecentExport,
+        wotInfo,
+        v2AutoActivated
       ];
 }

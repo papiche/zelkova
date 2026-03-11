@@ -24,6 +24,14 @@ abstract class _$TransactionStateCWProxy {
 
   TransactionState endCursor(String? endCursor);
 
+  TransactionState hasNextPage(bool hasNextPage);
+
+  TransactionState udTransactions(List<Transaction> udTransactions);
+
+  TransactionState udEndCursor(String? udEndCursor);
+
+  TransactionState udHasNextPage(bool udHasNextPage);
+
   /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `TransactionState(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
   ///
   /// Usage
@@ -31,14 +39,18 @@ abstract class _$TransactionStateCWProxy {
   /// TransactionState(...).copyWith(id: 12, name: "My name")
   /// ````
   TransactionState call({
-    List<Transaction>? transactions,
-    List<Transaction>? pendingTransactions,
-    double? balance,
+    List<Transaction> transactions,
+    List<Transaction> pendingTransactions,
+    double balance,
     double? currentUd,
-    DateTime? lastChecked,
+    DateTime lastChecked,
     DateTime? latestSentNotification,
     DateTime? latestReceivedNotification,
     String? endCursor,
+    bool hasNextPage,
+    List<Transaction> udTransactions,
+    String? udEndCursor,
+    bool udHasNextPage,
   });
 }
 
@@ -79,6 +91,22 @@ class _$TransactionStateCWProxyImpl implements _$TransactionStateCWProxy {
   TransactionState endCursor(String? endCursor) => this(endCursor: endCursor);
 
   @override
+  TransactionState hasNextPage(bool hasNextPage) =>
+      this(hasNextPage: hasNextPage);
+
+  @override
+  TransactionState udTransactions(List<Transaction> udTransactions) =>
+      this(udTransactions: udTransactions);
+
+  @override
+  TransactionState udEndCursor(String? udEndCursor) =>
+      this(udEndCursor: udEndCursor);
+
+  @override
+  TransactionState udHasNextPage(bool udHasNextPage) =>
+      this(udHasNextPage: udHasNextPage);
+
+  @override
 
   /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `TransactionState(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
   ///
@@ -95,20 +123,21 @@ class _$TransactionStateCWProxyImpl implements _$TransactionStateCWProxy {
     Object? latestSentNotification = const $CopyWithPlaceholder(),
     Object? latestReceivedNotification = const $CopyWithPlaceholder(),
     Object? endCursor = const $CopyWithPlaceholder(),
+    Object? hasNextPage = const $CopyWithPlaceholder(),
+    Object? udTransactions = const $CopyWithPlaceholder(),
+    Object? udEndCursor = const $CopyWithPlaceholder(),
+    Object? udHasNextPage = const $CopyWithPlaceholder(),
   }) {
     return TransactionState(
-      transactions:
-          transactions == const $CopyWithPlaceholder() || transactions == null
-              ? _value.transactions
-              // ignore: cast_nullable_to_non_nullable
-              : transactions as List<Transaction>,
-      pendingTransactions:
-          pendingTransactions == const $CopyWithPlaceholder() ||
-                  pendingTransactions == null
-              ? _value.pendingTransactions
-              // ignore: cast_nullable_to_non_nullable
-              : pendingTransactions as List<Transaction>,
-      balance: balance == const $CopyWithPlaceholder() || balance == null
+      transactions: transactions == const $CopyWithPlaceholder()
+          ? _value.transactions
+          // ignore: cast_nullable_to_non_nullable
+          : transactions as List<Transaction>,
+      pendingTransactions: pendingTransactions == const $CopyWithPlaceholder()
+          ? _value.pendingTransactions
+          // ignore: cast_nullable_to_non_nullable
+          : pendingTransactions as List<Transaction>,
+      balance: balance == const $CopyWithPlaceholder()
           ? _value.balance
           // ignore: cast_nullable_to_non_nullable
           : balance as double,
@@ -116,11 +145,10 @@ class _$TransactionStateCWProxyImpl implements _$TransactionStateCWProxy {
           ? _value.currentUd
           // ignore: cast_nullable_to_non_nullable
           : currentUd as double?,
-      lastChecked:
-          lastChecked == const $CopyWithPlaceholder() || lastChecked == null
-              ? _value.lastChecked
-              // ignore: cast_nullable_to_non_nullable
-              : lastChecked as DateTime,
+      lastChecked: lastChecked == const $CopyWithPlaceholder()
+          ? _value.lastChecked
+          // ignore: cast_nullable_to_non_nullable
+          : lastChecked as DateTime,
       latestSentNotification:
           latestSentNotification == const $CopyWithPlaceholder()
               ? _value.latestSentNotification
@@ -135,6 +163,22 @@ class _$TransactionStateCWProxyImpl implements _$TransactionStateCWProxy {
           ? _value.endCursor
           // ignore: cast_nullable_to_non_nullable
           : endCursor as String?,
+      hasNextPage: hasNextPage == const $CopyWithPlaceholder()
+          ? _value.hasNextPage
+          // ignore: cast_nullable_to_non_nullable
+          : hasNextPage as bool,
+      udTransactions: udTransactions == const $CopyWithPlaceholder()
+          ? _value.udTransactions
+          // ignore: cast_nullable_to_non_nullable
+          : udTransactions as List<Transaction>,
+      udEndCursor: udEndCursor == const $CopyWithPlaceholder()
+          ? _value.udEndCursor
+          // ignore: cast_nullable_to_non_nullable
+          : udEndCursor as String?,
+      udHasNextPage: udHasNextPage == const $CopyWithPlaceholder()
+          ? _value.udHasNextPage
+          // ignore: cast_nullable_to_non_nullable
+          : udHasNextPage as bool,
     );
   }
 }
@@ -167,6 +211,13 @@ TransactionState _$TransactionStateFromJson(Map<String, dynamic> json) =>
           ? null
           : DateTime.parse(json['latestReceivedNotification'] as String),
       endCursor: json['endCursor'] as String?,
+      hasNextPage: json['hasNextPage'] as bool? ?? false,
+      udTransactions: (json['udTransactions'] as List<dynamic>?)
+              ?.map((e) => Transaction.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          const <Transaction>[],
+      udEndCursor: json['udEndCursor'] as String?,
+      udHasNextPage: json['udHasNextPage'] as bool? ?? false,
     );
 
 Map<String, dynamic> _$TransactionStateToJson(TransactionState instance) =>
@@ -181,4 +232,8 @@ Map<String, dynamic> _$TransactionStateToJson(TransactionState instance) =>
       'latestReceivedNotification':
           instance.latestReceivedNotification.toIso8601String(),
       'endCursor': instance.endCursor,
+      'hasNextPage': instance.hasNextPage,
+      'udTransactions': instance.udTransactions,
+      'udEndCursor': instance.udEndCursor,
+      'udHasNextPage': instance.udHasNextPage,
     };

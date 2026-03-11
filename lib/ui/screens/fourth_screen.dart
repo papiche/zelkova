@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../widgets/fourth_screen/transactions_and_balance_widget.dart';
+import '../widgets/fourth_screen/transactions_list/transactions_list_widget.dart';
 
 class FourthScreen extends StatefulWidget {
   const FourthScreen({super.key});
@@ -12,6 +12,6 @@ class FourthScreen extends StatefulWidget {
 class _FourthScreenState extends State<FourthScreen> {
   @override
   Widget build(BuildContext context) {
-    return const TransactionsAndBalanceWidget();
+    return const TransactionsListWidget();
   }
 }

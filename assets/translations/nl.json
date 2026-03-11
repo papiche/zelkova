@@ -133,5 +133,8 @@
   "form_contact_title": "Contact bewerken",
   "form_contact_name": "Naam",
   "form_contact_name_validation": "Voer een naam in",
-  "form_contact_notes": "Opmerkingen"
+  "form_contact_notes": "Opmerkingen",
+  "nodes_list_title": "{type} Knooppunten ({count})",
+  "nodes_list_last_updated": "Laatst bijgewerkt: {time}",
+  "use_biometric": "Gebruik biometrie"
 }

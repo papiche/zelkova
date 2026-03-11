@@ -1,20 +1,28 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="org.comunes.ginkgo">
+    xmlns:tools="http://schemas.android.com/tools"
+    package="org.comunes.g1nkgo">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.NFC" />
 
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_INTERNAL_STORAGE" />
+    
+    <!-- By awesome notifications -->
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
+    <!-- screen_brightness uses per-app window brightness; no WRITE_SETTINGS needed -->
+
+    <!-- Biometric auth -->
+    <uses-permission android:name="android.permission.USE_BIOMETRIC"/>
 
     <application
-        android:requestLegacyExternalStorage="true"
+        android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher"
-        android:label="Ginkgo">
+        android:label="G1nkgo"
+        android:supportsRtl="true"
+        android:allowBackup="true"
+        android:fullBackupContent="@xml/backup_scheme"
+        tools:targetApi="35">
         <activity
             android:name=".MainActivity"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
@@ -23,6 +31,7 @@
             android:launchMode="singleTop"
             android:theme="@style/LaunchTheme"
             android:windowSoftInputMode="adjustResize">
+            <meta-data android:name="flutter_deeplinking_enabled" android:value="false" />
             <!-- Specifies an Android theme to apply to this Activity as soon as
                  the Android process has started. This theme is visible to the user
                  while the Flutter UI initializes. After that, this theme continues
@@ -41,9 +50,11 @@
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="june" />
+
+                <data android:scheme="june" android:host="org.comunes.g1nkgo" />
             </intent-filter>
         </activity>
         <!-- Don't delete the meta-data below.

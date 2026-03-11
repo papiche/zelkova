@@ -14,12 +14,20 @@ import '../../../data/models/transaction_type.dart';
 import '../../../g1/g1_helper.dart';
 import '../../../shared_prefs_helper.dart';
 import '../../contacts_cache.dart';
+import '../../contacts_helper.dart';
+import '../../currency_helper.dart';
+import '../../in_dev_helper.dart';
+import '../../locale_helper.dart';
+import '../../logger.dart';
 import '../../pay_helper.dart';
 import '../../ui_helpers.dart';
+import '../avatar_badge.dart';
+import '../avatar_dialog.dart';
 import '../contact_menu.dart';
 import '../contacts_actions.dart';
+import 'transaction_item_time.dart';
 
-class TransactionListItem extends StatelessWidget {
+class TransactionListItem extends StatefulWidget {
   TransactionListItem(
       {super.key,
       required this.pubKey,
@@ -30,10 +38,11 @@ class TransactionListItem extends StatelessWidget {
       required this.currentSymbol,
       required this.isCurrencyBefore,
       required this.isExternalAccount,
+      this.customPositiveAmountColor = positiveAmountColor,
       this.afterCancel,
       this.afterRetry});
 
-  final GlobalKey _menuKey = GlobalKey();
+  final GlobalKey _menuKey = GlobalKey(debugLabel: 'txListItem-menu');
   final String pubKey;
   final Transaction transaction;
   final int index;
@@ -42,39 +51,103 @@ class TransactionListItem extends StatelessWidget {
   final String currentSymbol;
   final bool isCurrencyBefore;
   final bool isExternalAccount;
+  final Color customPositiveAmountColor;
 
   final VoidCallback? afterCancel;
   final VoidCallback? afterRetry;
   static const Color grey = Colors.grey;
 
   @override
-  Widget build(BuildContext context) {
-    return FutureBuilder<Transaction>(
-      future: _enrichTransaction(context, transaction),
-      builder: (BuildContext context, AsyncSnapshot<Transaction> snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return _buildTransactionItem(
-              context: context,
-              origTransaction: transaction,
-              transaction: transaction);
-        } else if (snapshot.hasError) {
-          return _buildTransactionItem(
-              context: context,
-              origTransaction: transaction,
-              transaction: transaction);
-        } else {
-          final Transaction enrichedTx = snapshot.data!;
-          return BlocBuilder<MultiWalletTransactionCubit,
-                  MultiWalletTransactionState>(
-              builder: (BuildContext context,
-                      MultiWalletTransactionState transBalanceState) =>
-                  _buildTransactionItem(
-                      context: context,
-                      origTransaction: transaction,
-                      transaction: enrichedTx));
-        }
-      },
+  State<TransactionListItem> createState() => _TransactionListItemState();
+}
+
+class _TransactionListItemState extends State<TransactionListItem> {
+  late Transaction _displayTransaction;
+  bool _isEnriching = false;
+
+  @override
+  void initState() {
+    super.initState();
+    // Enrich immediately synchronously from cache
+    _displayTransaction = _enrichTransactionSync(widget.transaction);
+    // Enrich in background if necessary
+    _enrichTransactionAsync();
+  }
+
+  @override
+  void didUpdateWidget(TransactionListItem oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.transaction != widget.transaction) {
+      _displayTransaction = _enrichTransactionSync(widget.transaction);
+      _enrichTransactionAsync();
+    }
+  }
+
+  Transaction _enrichTransactionSync(Transaction tx) {
+    final ContactsCache cache = ContactsCache();
+    final String fromKey = tx.from.pubKey;
+    final Contact? fromContact = cache.getCachedContact(fromKey, false, true);
+
+    final List<Contact> recipients = <Contact>[];
+    for (final Contact recipient in tx.recipients) {
+      final Contact? recipientCached =
+          cache.getCachedContact(recipient.pubKey, false, true);
+      recipients.add(recipientCached ?? recipient);
+    }
+
+    return tx.copyWith(
+      from: fromContact ?? tx.from,
+      recipients: recipients.isNotEmpty ? recipients : tx.recipients,
     );
+  }
+
+  Future<void> _enrichTransactionAsync() async {
+    if (_isEnriching) {
+      return;
+    }
+    _isEnriching = true;
+
+    try {
+      final ContactsCubit contactsCubit = context.read<ContactsCubit>();
+      final String fromKey = widget.transaction.from.pubKey;
+      final Contact fromContact = fromKey.isNotEmpty
+          ? await retrieveContactFromCubitOrCache(contactsCubit, fromKey)
+          : widget.transaction.from;
+
+      final List<Contact> recipients = <Contact>[];
+      for (final Contact recipient in widget.transaction.recipients) {
+        if (recipient.pubKey.isNotEmpty) {
+          final Contact recipientNew = await retrieveContactFromCubitOrCache(
+              contactsCubit, recipient.pubKey);
+          recipients.add(recipientNew);
+        } else {
+          recipients.add(recipient);
+        }
+      }
+
+      if (mounted) {
+        setState(() {
+          _displayTransaction = widget.transaction.copyWith(
+            from: fromContact,
+            recipients: recipients,
+          );
+        });
+      }
+    } finally {
+      _isEnriching = false;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<MultiWalletTransactionCubit,
+            MultiWalletTransactionState>(
+        builder: (BuildContext context,
+                MultiWalletTransactionState transBalanceState) =>
+            _buildTransactionItem(
+                context: context,
+                origTransaction: widget.transaction,
+                transaction: _displayTransaction));
   }
 
   Widget _buildTransactionItem(
@@ -92,8 +165,8 @@ class TransactionListItem extends StatelessWidget {
     final String amountWithSymbol = formatKAmountInView(
         context: context,
         amount: transaction.amount,
-        isG1: isG1,
-        currentUd: currentUd,
+        isG1: widget.isG1,
+        currentUd: widget.currentUd,
         useSymbol: false);
     final String amountS =
         '${transaction.amount < 0 ? "" : "+"}$amountWithSymbol';
@@ -109,7 +182,7 @@ class TransactionListItem extends StatelessWidget {
     switch (transaction.type) {
       case TransactionType.waitingNetwork:
         icon = Icons.schedule_send;
-        iconColor = grey;
+        iconColor = TransactionListItem.grey;
         break;
       case TransactionType.pending:
         icon = Icons.flight_takeoff;
@@ -117,15 +190,19 @@ class TransactionListItem extends StatelessWidget {
         break;
       case TransactionType.sending:
         icon = Icons.flight_takeoff;
-        iconColor = grey;
+        iconColor = TransactionListItem.grey;
         break;
       case TransactionType.receiving:
         icon = Icons.flight_land;
-        iconColor = grey;
+        iconColor = TransactionListItem.grey;
         break;
       case TransactionType.failed:
         icon = Icons.warning_amber_rounded;
         iconColor = Colors.red;
+        break;
+      case TransactionType.dividendReceived:
+        icon = Icons.water_drop_outlined;
+        iconColor = TransactionListItem.grey;
         break;
       case TransactionType.sent:
         break;
@@ -135,7 +212,9 @@ class TransactionListItem extends StatelessWidget {
     final String myPubKey = SharedPreferencesHelper().getPubKey();
 
     final ContactsCubit contactsCubit = context.read<ContactsCubit>();
-    final Contact to = transaction.recipientsWithoutCashBack[0];
+    final Contact to = transaction.recipientsWithoutCashBack.isNotEmpty
+        ? transaction.recipientsWithoutCashBack[0]
+        : Contact.empty();
 
     const double txFontSize = 14.0;
 
@@ -144,13 +223,284 @@ class TransactionListItem extends StatelessWidget {
     final Color fromToColor = Theme.of(context).hintColor;
     final Color linkColor = Theme.of(context).colorScheme.primary;
 
-    return Slidable(
-        // Specify a key if the Slidable is dismissible.
+    final TextStyle linkTextStyle = TextStyle(
+      fontSize: txFontSize,
+      color: linkColor,
+      decoration: TextDecoration.underline,
+      decorationStyle: TextDecorationStyle.dotted,
+      decorationThickness: 1,
+      decorationColor: linkColor,
+    );
 
-        key: ValueKey<int>(index),
-        // The end action pane is the one at the right or the bottom side.
-        startActionPane:
-            ActionPane(motion: const ScrollMotion(), children: <SlidableAction>[
+    final bool isDividend =
+        transaction.type == TransactionType.dividendReceived;
+
+    final Widget gestureDetectorWidget = GestureDetector(
+        onLongPress: () {
+          _showPopupMenu(
+              context: context,
+              origTransaction: origTransaction,
+              transaction: transaction);
+        },
+        // https://stackoverflow.com/questions/75577429/flutter-why-is-my-listtile-color-being-overwritten-by-the-container-color
+        child: Material(
+            elevation: 3.0,
+            child: ListTile(
+              leading: (icon != null &&
+                      transaction.type != TransactionType.dividendReceived)
+                  ? Padding(
+                      padding: const EdgeInsets.fromLTRB(10, 16, 0, 16),
+                      child: Icon(
+                        icon,
+                        color: iconColor,
+                      ))
+                  : null,
+              // Disable the tile color
+              // tileColor: tileColor(widget.index, context),
+              title: Row(
+                children: <Widget>[
+                  const SizedBox(width: 8.0),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          statusText,
+                          style: const TextStyle(
+                            fontSize: 12.0,
+                            color: TransactionListItem.grey,
+                          ),
+                        ),
+                        const SizedBox(height: 4.0),
+                        if (transaction.type ==
+                            TransactionType.dividendReceived)
+                          Row(
+                            children: <Widget>[
+                              Text(
+                                tr('transaction_dividendReceived_desc'),
+                                style: TextStyle(
+                                  fontSize: txFontSize, color: fromToColor,
+                                  // color: TransactionListItem.grey,
+                                  //   fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                              const SizedBox(width: 3.0),
+                              const Padding(
+                                  padding: EdgeInsetsGeometry.only(bottom: 2),
+                                  child: Icon(
+                                    Icons.water_drop,
+                                    // Symbols.water_do,
+                                    color: TransactionListItem.grey,
+                                    size: 16.0,
+                                  )),
+                            ],
+                          )
+                        else
+                          Text.rich(
+                            softWrap: true,
+                            TextSpan(
+                              children: <InlineSpan>[
+                                TextSpan(
+                                  text: tr('transaction_from'),
+                                  style: TextStyle(
+                                    fontSize: txFontSize,
+                                    fontWeight: fromToWeight,
+                                    fontStyle: fromToStyle,
+                                    color: fromToColor,
+                                  ),
+                                ),
+                                lineSeparator(),
+                                WidgetSpan(
+                                    alignment: PlaceholderAlignment.middle,
+                                    child: ConstrainedBox(
+                                      constraints:
+                                          const BoxConstraints(maxWidth: 200),
+                                      child: Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        spacing: 4,
+                                        children: <Widget>[
+                                          Flexible(
+                                            child: ContactMenu(
+                                              contact: transaction.from,
+                                              onEdit: () => onEditContact(
+                                                  context, transaction.from),
+                                              onSent: () => onSentContact(
+                                                  context, transaction.from),
+                                              onCopy: () => onShowContactQr(
+                                                  context, transaction.from),
+                                              onDelete: () => onDeleteContact(
+                                                  context, transaction.from),
+                                              parent: Text(
+                                                humanizeContact(
+                                                    myPubKey, transaction.from),
+                                                style: linkTextStyle,
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
+                                            ),
+                                          ),
+                                          AvatarBadge(
+                                            contact: transaction.from,
+                                            radius: 12,
+                                            onTap: transaction.from.hasAvatar
+                                                ? () {
+                                                    logger(
+                                                        '[TransactionItem] FROM avatar tapped');
+                                                    showAvatarDialog(
+                                                        context,
+                                                        transaction
+                                                            .from.avatar!);
+                                                  }
+                                                : null,
+                                          ),
+                                        ],
+                                      ),
+                                    )),
+                                tinyLineSeparator(),
+                                TextSpan(
+                                  text: tr('transaction_to').toLowerCase(),
+                                  style: TextStyle(
+                                    fontSize: txFontSize,
+                                    fontWeight: fromToWeight,
+                                    fontStyle: fromToStyle,
+                                    color: fromToColor,
+                                  ),
+                                ),
+                                tinyLineSeparator(),
+                                tinyLineSeparator(),
+                                WidgetSpan(
+                                    alignment: PlaceholderAlignment.middle,
+                                    child: ConstrainedBox(
+                                      constraints:
+                                          const BoxConstraints(maxWidth: 200),
+                                      child: Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        spacing: 4,
+                                        children: <Widget>[
+                                          Flexible(
+                                            child: ContactMenu(
+                                              contact: to,
+                                              onEdit: () =>
+                                                  onEditContact(context, to),
+                                              onSent: () =>
+                                                  onSentContact(context, to),
+                                              onCopy: () =>
+                                                  onShowContactQr(context, to),
+                                              onDelete: () {
+                                                return onDeleteContact(
+                                                    context, to);
+                                              },
+                                              disable: transaction.isToMultiple,
+                                              parent: Text(
+                                                humanizeContacts(
+                                                    publicAddress: myPubKey,
+                                                    contacts: transaction
+                                                        .recipientsWithoutCashBack),
+                                                style: linkTextStyle,
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
+                                            ),
+                                          ),
+                                          AvatarBadge(
+                                            contact: to,
+                                            radius: 12,
+                                            onTap: to.hasAvatar
+                                                ? () {
+                                                    logger(
+                                                        '[TransactionItem] TO avatar tapped');
+                                                    showAvatarDialog(
+                                                        context, to.avatar!);
+                                                  }
+                                                : null,
+                                          ),
+                                        ],
+                                      ),
+                                    )),
+                                const WidgetSpan(
+                                  alignment: PlaceholderAlignment.top,
+                                  child: SizedBox(width: 2.0),
+                                ),
+                              ],
+                            ),
+                          ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              subtitle: transaction.comment == '' ||
+                      transaction.type == TransactionType.dividendReceived
+                  ? null
+                  : Padding(
+                      padding: const EdgeInsets.fromLTRB(8, 6, 0, 5),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          const Icon(Icons.mode_comment_outlined,
+                              size: 18, color: TransactionListItem.grey),
+                          const SizedBox(width: 6),
+                          Expanded(
+                            child: Text(
+                              inDevelopment
+                                  ? '${transaction.comment}$debugText'
+                                  : transaction.comment,
+                              style: const TextStyle(
+                                color: TransactionListItem.grey,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+              trailing: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: <Widget>[
+                  Text.rich(TextSpan(
+                    children: <InlineSpan>[
+                      if (widget.isCurrencyBefore)
+                        currencyBalanceWidget(
+                            widget.isG1, widget.currentSymbol, txFontSize),
+                      if (widget.isCurrencyBefore) separatorSpan(),
+                      TextSpan(
+                        text: amountS,
+                        style: TextStyle(
+                          // fontWeight: FontWeight.bold,
+                          fontSize: txFontSize,
+                          color: transaction.type == TransactionType.received ||
+                                  transaction.type ==
+                                      TransactionType.receiving ||
+                                  transaction.type ==
+                                      TransactionType.dividendReceived
+                              ? widget.customPositiveAmountColor
+                              : negativeAmountColor,
+                        ),
+                      ),
+                      if (!widget.isCurrencyBefore) separatorSpan(),
+                      if (!widget.isCurrencyBefore)
+                        currencyBalanceWidget(
+                            widget.isG1, widget.currentSymbol, txFontSize)
+                    ],
+                  )),
+                  const SizedBox(height: 4.0),
+                  TransactionItemTime(
+                    transactionTime: transaction.time,
+                    locale: currentLocale(context),
+                  ),
+                ],
+              ),
+            )));
+
+    // If it's a dividend, return the widget directly without Slidable
+    if (isDividend) {
+      return gestureDetectorWidget;
+    }
+
+    // For other transaction types, wrap with Slidable
+    return Slidable(
+      key: ValueKey<int>(widget.index),
+      startActionPane: ActionPane(
+        motion: const ScrollMotion(),
+        children: <SlidableAction>[
           if (transaction.isPending)
             SlidableAction(
               onPressed: (BuildContext c) {
@@ -161,7 +511,8 @@ class TransactionListItem extends StatelessWidget {
               icon: Icons.delete,
               label: tr('cancel_payment'),
             ),
-          if (transaction.type == TransactionType.sent && !isExternalAccount)
+          if (transaction.type == TransactionType.sent &&
+              !widget.isExternalAccount)
             SlidableAction(
               onPressed: (BuildContext c) async {
                 _selectUserToPay(context, transaction);
@@ -171,217 +522,44 @@ class TransactionListItem extends StatelessWidget {
               icon: Icons.replay,
               label: tr('pay_again'),
             ),
-        ]),
-        endActionPane: ActionPane(
-          motion: const ScrollMotion(),
-          children: <SlidableAction>[
-            if (transaction.type == TransactionType.waitingNetwork)
-              SlidableAction(
-                onPressed: (BuildContext c) async {
-                  await _payAgain(context, transaction, true);
-                },
-                backgroundColor: Theme.of(context).primaryColorDark,
-                foregroundColor: Colors.white,
-                icon: Icons.replay,
-                label: tr('retry_payment'),
-              ),
-            if (transaction.type == TransactionType.failed)
-              SlidableAction(
-                onPressed: (BuildContext c) async {
-                  await _payAgain(context, transaction, true);
-                },
-                backgroundColor: Theme.of(context).primaryColorDark,
-                foregroundColor: Colors.white,
-                icon: Icons.replay,
-                label: tr('retry_payment'),
-              ),
+        ],
+      ),
+      endActionPane: ActionPane(
+        motion: const ScrollMotion(),
+        children: <SlidableAction>[
+          if (transaction.type == TransactionType.waitingNetwork)
             SlidableAction(
-              onPressed: (BuildContext c) {
-                _addContact(transaction, contactsCubit, context);
+              onPressed: (BuildContext c) async {
+                await _payAgain(context, transaction, true);
               },
-              backgroundColor: Theme.of(context).primaryColor,
+              backgroundColor: Theme.of(context).primaryColorDark,
               foregroundColor: Colors.white,
-              icon: Icons.contacts,
-              label: tr('add_contact'),
+              icon: Icons.replay,
+              label: tr('retry_payment'),
             ),
-          ],
-        ),
-        child: GestureDetector(
-            key: _menuKey,
-            onLongPress: () {
-              /* if (transaction.isFailed) {
-                _payAgain(context, transaction, true);
-              } */
-              _showPopupMenu(
-                  context: context,
-                  origTransaction: origTransaction,
-                  transaction: transaction);
+          if (transaction.type == TransactionType.failed)
+            SlidableAction(
+              onPressed: (BuildContext c) async {
+                await _payAgain(context, transaction, true);
+              },
+              backgroundColor: Theme.of(context).primaryColorDark,
+              foregroundColor: Colors.white,
+              icon: Icons.replay,
+              label: tr('retry_payment'),
+            ),
+          SlidableAction(
+            onPressed: (BuildContext c) {
+              _addContact(transaction, contactsCubit, context);
             },
-            // https://stackoverflow.com/questions/75577429/flutter-why-is-my-listtile-color-being-overwritten-by-the-container-color
-            child: Material(
-                elevation: 3.0,
-                child: ListTile(
-                  leading: (icon != null)
-                      ? Padding(
-                          padding: const EdgeInsets.fromLTRB(10, 16, 0, 16),
-                          child: Icon(
-                            icon,
-                            color: iconColor,
-                          ))
-                      : null,
-                  // tileColor: tileColor(index, context),
-                  title: Row(
-                    children: <Widget>[
-                      const SizedBox(width: 8.0),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Text(
-                              statusText,
-                              style: const TextStyle(
-                                fontSize: 12.0,
-                                color: grey,
-                              ),
-                            ),
-                            const SizedBox(height: 4.0),
-                            Text.rich(
-                              softWrap: true,
-                              TextSpan(
-                                children: <InlineSpan>[
-                                  TextSpan(
-                                    text: tr('transaction_from'),
-                                    style: TextStyle(
-                                      fontSize: txFontSize,
-                                      fontWeight: fromToWeight,
-                                      fontStyle: fromToStyle,
-                                      color: fromToColor,
-                                    ),
-                                  ),
-                                  lineSeparator(),
-                                  WidgetSpan(
-                                      alignment: PlaceholderAlignment.top,
-                                      child: ContactMenu(
-                                        contact: transaction.from,
-                                        onEdit: () => onEditContact(
-                                            context, transaction.from),
-                                        onSent: () => onSentContact(
-                                            context, transaction.from),
-                                        onCopy: () => onShowContactQr(
-                                            context, transaction.from),
-                                        onDelete: () => onDeleteContact(
-                                            context, transaction.from),
-                                        parent: Text(
-                                          humanizeContact(
-                                              myPubKey, transaction.from),
-                                          style: TextStyle(
-                                              fontSize: txFontSize,
-                                              color: linkColor
-                                              // fontWeight: FontWeight.bold,
-                                              ),
-                                        ),
-                                      )),
-                                  lineSeparator(),
-                                  TextSpan(
-                                    text: tr('transaction_to').toLowerCase(),
-                                    style: TextStyle(
-                                      fontSize: txFontSize,
-                                      fontWeight: fromToWeight,
-                                      fontStyle: fromToStyle,
-                                      color: fromToColor,
-                                    ),
-                                  ),
-                                  lineSeparator(),
-                                  WidgetSpan(
-                                      alignment: PlaceholderAlignment.top,
-                                      child: ContactMenu(
-                                        contact: to,
-                                        onEdit: () =>
-                                            onEditContact(context, to),
-                                        onSent: () =>
-                                            onSentContact(context, to),
-                                        onCopy: () =>
-                                            onShowContactQr(context, to),
-                                        onDelete: () {
-                                          return onDeleteContact(context, to);
-                                        },
-                                        disable: transaction.isToMultiple,
-                                        parent: Text(
-                                          humanizeContacts(
-                                              publicAddress: myPubKey,
-                                              contacts: transaction
-                                                  .recipientsWithoutCashBack),
-                                          style: TextStyle(
-                                              fontSize: txFontSize,
-                                              color: linkColor),
-                                        ),
-                                      ))
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                  subtitle: transaction.comment == ''
-                      ? null
-                      : Padding(
-                          padding: const EdgeInsets.fromLTRB(8, 6, 0, 5),
-                          child: Text(
-                              inDevelopment
-                                  ? '${transaction.comment}$debugText'
-                                  : transaction.comment,
-                              style: const TextStyle(
-                                fontStyle: FontStyle.italic,
-                                color: grey,
-                              )),
-                        ),
-                  trailing: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: <Widget>[
-                      Text.rich(TextSpan(
-                        children: <InlineSpan>[
-                          if (isCurrencyBefore)
-                            currencyBalanceWidget(
-                                isG1, currentSymbol, txFontSize),
-                          if (isCurrencyBefore) separatorSpan(),
-                          TextSpan(
-                            text: amountS,
-                            style: TextStyle(
-                              // fontWeight: FontWeight.bold,
-                              fontSize: txFontSize,
-                              color: transaction.type ==
-                                          TransactionType.received ||
-                                      transaction.type ==
-                                          TransactionType.receiving
-                                  ? positiveAmountColor
-                                  : negativeAmountColor,
-                            ),
-                          ),
-                          if (!isCurrencyBefore) separatorSpan(),
-                          if (!isCurrencyBefore)
-                            currencyBalanceWidget(
-                                isG1, currentSymbol, txFontSize)
-                        ],
-                      )),
-                      const SizedBox(height: 4.0),
-                      Tooltip(
-                          message: DateFormat.yMd(currentLocale(context))
-                              .add_Hm()
-                              .format(transaction.time),
-                          child: Text(
-                            humanizeTime(
-                                transaction.time, currentLocale(context))!,
-                            style: const TextStyle(
-                              fontSize: 12.0,
-                              color: grey,
-                            ),
-                          )),
-                    ],
-                  ),
-                ))));
+            backgroundColor: Theme.of(context).primaryColor,
+            foregroundColor: Colors.white,
+            icon: Icons.contacts,
+            label: tr('add_contact'),
+          ),
+        ],
+      ),
+      child: gestureDetectorWidget,
+    );
   }
 
   WidgetSpan lineSeparator() {
@@ -391,12 +569,19 @@ class TransactionListItem extends StatelessWidget {
     );
   }
 
+  WidgetSpan tinyLineSeparator() {
+    return const WidgetSpan(
+      alignment: PlaceholderAlignment.top,
+      child: SizedBox(width: 2.0),
+    );
+  }
+
   void _addContact(Transaction transaction, ContactsCubit contactsCubit,
       BuildContext context) {
     final Contact newContact = transaction.isIncoming
         ? transaction.from
         : transaction.recipientsWithoutCashBack[0];
-    addContact(contactsCubit, newContact, context);
+    addContact(context, newContact);
   }
 
   void _selectUserToPay(BuildContext context, Transaction transaction) {
@@ -416,7 +601,9 @@ class TransactionListItem extends StatelessWidget {
         duration: const Duration(seconds: 3),
       ),
     );
-    afterCancel!();
+    if (widget.afterCancel != null) {
+      widget.afterCancel!();
+    }
   }
 
   Future<void> _payAgain(
@@ -426,14 +613,15 @@ class TransactionListItem extends StatelessWidget {
     await payWithRetry(
         context: context,
         recipients: transaction.recipientsWithoutCashBack,
-        amount:
-            isG1 ? amount / 100 : ((amount / currentUd) / 100).toPrecision(3),
+        amount: widget.isG1
+            ? amount / 100
+            : ((amount / widget.currentUd) / 100).toPrecision(3),
         comment: transaction.comment,
-        isG1: isG1,
-        currentUd: currentUd,
+        isG1: widget.isG1,
+        currentUd: widget.currentUd,
         isRetry: isRetry);
-    if (afterRetry != null) {
-      afterRetry!();
+    if (widget.afterRetry != null) {
+      widget.afterRetry!();
     }
   }
 
@@ -444,7 +632,7 @@ class TransactionListItem extends StatelessWidget {
         text: currentSymbol,
         style: TextStyle(
           fontSize: txFontSize,
-          color: grey,
+          color: TransactionListItem.grey,
         ),
       ),
       if (!isG1)
@@ -457,7 +645,7 @@ class TransactionListItem extends StatelessWidget {
                     fontSize: 12,
                     // fontWeight: FontWeight.w500,
                     // fontFeatures: <FontFeature>[FontFeature.subscripts()],
-                    color: grey,
+                    color: TransactionListItem.grey,
                   ),
                 )))
     ]);
@@ -475,7 +663,7 @@ class TransactionListItem extends StatelessWidget {
       required Transaction origTransaction,
       required Transaction transaction}) {
     final RenderBox renderBox =
-        _menuKey.currentContext!.findRenderObject()! as RenderBox;
+        widget._menuKey.currentContext!.findRenderObject()! as RenderBox;
     final Offset position = renderBox.localToGlobal(Offset.zero);
     final double height = renderBox.size.height;
 
@@ -539,41 +727,19 @@ class TransactionListItem extends StatelessWidget {
       ));
     }
 
-    menuItems.add(PopupMenuItem<dynamic>(
-      child: ListTile(
-        leading: const Icon(Icons.contacts),
-        title: Text(tr('add_contact')),
-        onTap: () {
-          _addContact(transaction, context.read<ContactsCubit>(), context);
-          Navigator.pop(context);
-        },
-      ),
-    ));
+    if (transaction.type != TransactionType.dividendReceived) {
+      menuItems.add(PopupMenuItem<dynamic>(
+        child: ListTile(
+          leading: const Icon(Icons.contacts),
+          title: Text(tr('add_contact')),
+          onTap: () {
+            _addContact(transaction, context.read<ContactsCubit>(), context);
+            Navigator.pop(context);
+          },
+        ),
+      ));
+    }
 
     return menuItems;
-  }
-
-  Future<Transaction> _enrichTransaction(
-      BuildContext context, Transaction tx) async {
-    final ContactsCubit contactsCubit = context.read<ContactsCubit>();
-    final String fromKey = tx.from.pubKey;
-    final Contact fromContact = await retrieveContact(contactsCubit, fromKey);
-    final Contact toContact =
-        // ignore: deprecated_member_use_from_same_package
-        await retrieveContact(contactsCubit, tx.to.pubKey);
-    final List<Contact> recipients = <Contact>[];
-    for (final Contact recipient in tx.recipients) {
-      final Contact recipientNew =
-          await retrieveContact(contactsCubit, recipient.pubKey);
-      recipients.add(recipientNew);
-    }
-    return transaction.copyWith(
-        from: fromContact, to: toContact, recipients: recipients);
-  }
-
-  Future<Contact> retrieveContact(
-      ContactsCubit contactsCubit, String pubKey) async {
-    final Contact? cubitContact = contactsCubit.getContact(pubKey);
-    return cubitContact ?? await ContactsCache().getContact(pubKey);
   }
 }

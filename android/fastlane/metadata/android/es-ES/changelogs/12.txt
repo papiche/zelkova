@@ -1,0 +1,7 @@
+- Mejorada detección de compatibilidad con Brave Browser
+- Corregida funcionalidad de importación múltiple de tarjetas
+- Corregido orden de apilamiento del cajón de billetera - billetera actual ahora mostrada en la parte superior
+- Características de seguridad mejoradas para cuentas v2 sin contraseña
+- Mejoras en la calidad del código y correcciones de lint
+- Eliminada dependencia super_clipboard para mejor compatibilidad con Android
+- Correcciones de errores y mejoras

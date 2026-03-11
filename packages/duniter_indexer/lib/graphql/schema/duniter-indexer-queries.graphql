@@ -1,0 +1,349 @@
+# npx get-graphql-schema https://gt-squid.axiom-team.fr/v1/graphql > duniter-indexer.schema.graphql
+
+############ Fragments
+
+fragment CertFields on Cert {
+  id
+  issuerId
+  issuer {
+    ...IdentityBasicFields
+  }
+  receiverId
+  receiver {
+    ...IdentityBasicFields
+  }
+  createdOn
+  expireOn
+  isActive
+  updatedOn
+}
+
+fragment SmithCertFields on SmithCert {
+  id
+  issuerId
+  receiverId
+  createdOn
+}
+
+fragment SmithFields on Smith {
+  id
+  forged
+  index
+  lastChanged
+  lastForged
+  smithCertIssued(orderBy: [CREATED_ON_DESC]) {
+    totalCount
+    nodes {
+      ...SmithCertFields
+    }
+  }
+  smithCertReceived(orderBy: [CREATED_ON_DESC]) {
+    totalCount
+    nodes {
+      ...SmithCertFields
+    }
+  }
+}
+
+fragment OwnerKeyChangeFields on ChangeOwnerKey {
+  id
+  blockNumber
+  identityId
+  nextId
+  previousId
+}
+
+fragment IdentityBasicFields on Identity {
+  accountId
+  account {
+    createdOn
+  }
+  id
+  isMember
+  status
+  name
+  expireOn
+  index
+}
+
+fragment IdentityFields on Identity {
+  account {
+    createdOn
+  }
+  accountId
+  accountRemovedId
+
+  certIssued(orderBy: [UPDATED_ON_DESC], filter: { isActive: { equalTo: true } }) {
+    totalCount
+    nodes {
+      ...CertFields
+    }
+  }
+
+  certReceived(orderBy: [UPDATED_ON_DESC], filter: { isActive: { equalTo: true } }) {
+    totalCount
+    nodes {
+      ...CertFields
+    }
+  }
+
+  createdInId
+  createdOn
+  expireOn
+  id
+  index
+  isMember
+  lastChangeOn
+  status
+  name
+
+  membershipHistory(first: 50, orderBy: [BLOCK_NUMBER_DESC]) {
+    totalCount
+    nodes {
+      blockNumber
+      eventId
+      eventType
+      id
+      identityId
+    }
+  }
+
+  ownerKeyChange(first: 20, orderBy: [BLOCK_NUMBER_DESC]) {
+    totalCount
+    nodes {
+      ...OwnerKeyChangeFields
+    }
+  }
+
+  status
+  smith {
+    ...SmithFields
+  }
+}
+
+fragment CommentsIssued on TxComment {
+  authorId
+  blockNumber
+  eventId
+  hash
+  id
+  remark
+  remarkBytes
+  type
+}
+
+fragment AccountBasicFields on Account {
+  createdOn
+  id
+  balance
+  totalBalance
+  identity {
+    ...IdentityBasicFields
+  }
+  isActive
+}
+
+fragment AccountFields on Account {
+  createdOn
+  id
+  balance
+  totalBalance
+  isActive
+
+  transfersIssued: transfersIssued(first: $limit, after: $cursor, orderBy: [TIMESTAMP_DESC]) {
+    totalCount
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+    nodes {
+      ...TransferFields
+    }
+  }
+
+  transfersReceived: transfersReceived(first: $limit, after: $cursor, orderBy: [TIMESTAMP_DESC]) {
+    totalCount
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+    nodes {
+      ...TransferFields
+    }
+  }
+
+  wasIdentityPrev: changeOwnerKeysByNextId(first: 20, orderBy: [BLOCK_NUMBER_DESC]) {
+    totalCount
+    nodes {
+      ...OwnerKeyChangeFields
+    }
+  }
+
+  wasIdentityNext: changeOwnerKeysByNextId(first: 20, orderBy: [BLOCK_NUMBER_DESC]) {
+    totalCount
+    nodes {
+      ...OwnerKeyChangeFields
+    }
+  }
+
+  identity {
+    ...IdentityFields
+  }
+}
+
+fragment AccountTxsFields on Account {
+  createdOn
+  id
+  balance
+  totalBalance
+  isActive
+
+  comments: commentsIssued(first: $limit, orderBy: [BLOCK_NUMBER_DESC]) {
+    totalCount
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+    nodes {
+      ...CommentsIssued
+    }
+  }
+
+  transfersIssued: transfersIssued(first: $limit, after: $issuedCursor, orderBy: [TIMESTAMP_DESC], filter: { timestamp: { greaterThanOrEqualTo: $timestampFrom, lessThanOrEqualTo: $timestampTo } }) {
+    totalCount
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+    nodes {
+      ...TransferFields
+    }
+  }
+
+  transfersReceived: transfersReceived(first: $limit, after: $receivedCursor, orderBy: [TIMESTAMP_DESC], filter: { timestamp: { greaterThanOrEqualTo: $timestampFrom, lessThanOrEqualTo: $timestampTo } }) {
+    totalCount
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+    nodes {
+      ...TransferFields
+    }
+  }
+
+  transferWithUd(first: $limit, after: $udCursor, orderBy: TIMESTAMP_DESC, filter: { and: [{ isUd: { equalTo: true } }, { timestamp: { greaterThanOrEqualTo: $timestampFrom, lessThanOrEqualTo: $timestampTo } }] }) {
+    totalCount
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+    nodes {
+      timestamp
+      amount
+    }
+  }
+}
+
+fragment TransferFields on Transfer {
+  blockNumber
+  timestamp
+  amount
+  to {
+    id
+  }
+  from {
+    id
+  }
+  comment {
+    remark
+    remarkBytes
+  }
+}
+
+############ Queries
+
+query LastBlock {
+  blocks(first: 1, orderBy: [TIMESTAMP_DESC]) {
+    nodes {
+      height
+    }
+  }
+}
+query IdentitiesByNameOrPk($pattern: String) {
+  identities(
+    first: 50
+    filter: { or: [{ name: { includesInsensitive: $pattern } }, { accountId: { includesInsensitive: $pattern } }] }
+  ) {
+    nodes {
+      ...IdentityBasicFields
+    }
+  }
+}
+
+query IdentitiesByPk($pubKeys: [String!]!) {
+  identities(first: 200, filter: { accountId: { in: $pubKeys } }) {
+    nodes {
+      ...IdentityFields
+    }
+  }
+}
+
+query IdentitiesByName($pattern: String) {
+  identities(first: 100, filter: { name: { includesInsensitive: $pattern } }) {
+    nodes {
+      ...IdentityFields
+    }
+  }
+}
+
+query AccountByPk($id: String!, $limit: Int, $cursor: Cursor) {
+  accounts(filter: { id: { equalTo: $id } }) {
+    nodes {
+      ...AccountFields
+    }
+  }
+}
+
+query AccountsByPk($accountIds: [String!]!, $limit: Int, $cursor: Cursor) {
+  accounts(filter: { id: { in: $accountIds } }) {
+    nodes {
+      ...AccountFields
+    }
+  }
+}
+
+query AccountBasicByPk($id: String!) {
+  accounts(filter: { id: { equalTo: $id } }) {
+    nodes {
+      ...AccountBasicFields
+    }
+  }
+}
+
+query AccountsBasicByPk($accountIds: [String!]!) {
+  accounts(filter: { id: { in: $accountIds } }) {
+    nodes {
+      ...AccountBasicFields
+    }
+  }
+}
+
+query AccountTransactions($accountId: String!, $limit: Int, $issuedCursor: Cursor, $receivedCursor: Cursor, $udCursor: Cursor, $timestampFrom: Datetime, $timestampTo: Datetime) {
+  accounts(filter: { id: { equalTo: $accountId } }) {
+    nodes {
+      ...AccountTxsFields
+    }
+  }
+}
+
+query IndexerVersion {
+  version {
+    version
+    type
+  }
+  squidStatus {
+    name
+    height
+    hash
+  }
+}

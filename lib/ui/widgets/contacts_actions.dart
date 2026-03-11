@@ -6,19 +6,29 @@ import '../../data/models/bottom_nav_cubit.dart';
 import '../../data/models/contact.dart';
 import '../../data/models/contact_cubit.dart';
 import '../../data/models/payment_cubit.dart';
-import '../../g1/g1_helper.dart';
+import '../../shared_prefs_helper.dart';
 import '../contacts_cache.dart';
-import '../ui_helpers.dart';
+import '../qr_helper.dart';
+import 'contact_page.dart';
+import 'first_screen/contact_search_page.dart'
+    show ContactSearchPage, SearchUse;
 import 'third_screen/contact_form_dialog.dart';
 
 void onEditContact(BuildContext context, Contact contact) {
+  // Get the latest version of the contact from ContactsCubit
+  final ContactsCubit contactsCubit = context.read<ContactsCubit>();
+  final Contact? updatedContact = contactsCubit.state.contacts
+      .where((Contact c) => c.pubKey == contact.pubKey)
+      .firstOrNull;
+
   showDialog(
     context: context,
     builder: (BuildContext context) {
       return ContactFormDialog(
-          contact: contact,
+          // Use the updated contact from cubit if available, otherwise use the passed contact
+          contact: updatedContact ?? contact,
           onSave: (Contact c) {
-            context.read<ContactsCubit>().updateContact(c);
+            contactsCubit.updateContact(c);
             ContactsCache().saveContact(c);
           });
     },
@@ -32,33 +42,70 @@ void onDeleteContact(BuildContext context, Contact contact) {
 void onShowContactQr(BuildContext context, Contact contact) {
   showQrDialog(
       context: context,
-      publicKey: getFullPubKey(contact.pubKey),
+      isV2: true,
+      pubKeyOrAddress: contact.address,
       noTitle: true,
       feedbackText: 'some_key_copied_to_clipboard');
 }
 
-void onSentContact(BuildContext c, Contact contact) {
-  c.read<PaymentCubit>().selectUser(contact);
-  c.read<BottomNavCubit>().updateIndex(0);
+void showMyContactPage(BuildContext context) {
+  showContactPage(
+      context, Contact(pubKey: SharedPreferencesHelper().getPubKey()));
 }
 
-void addContact(
-    ContactsCubit contactsCubit, Contact newContact, BuildContext context) {
-  contactsCubit.addContact(newContact);
-  ScaffoldMessenger.of(context).showSnackBar(
-    SnackBar(
-      content: Text(tr('contact_added')),
-    ),
+void showContactPage(BuildContext context, Contact contact) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return ContactPage(contact: contact);
+    },
   );
+}
+
+void onSentContact(BuildContext context, Contact contact) {
+  context.read<PaymentCubit>().selectUser(contact);
+  Future<void>.delayed(const Duration(milliseconds: 100), () async {
+    if (!context.mounted) {
+      return;
+    }
+    if (Navigator.canPop(context)) {
+      Navigator.of(context, rootNavigator: true).pop();
+    }
+    context.read<BottomNavCubit>().updateIndex(0);
+  });
+}
+
+void addContact(BuildContext context, Contact newContact) {
+  final ContactsCubit contactsCubit = context.read<ContactsCubit>();
+  contactsCubit.addContact(newContact);
+  // Get ScaffoldMessenger before showing dialog to avoid using deactivated context
+  final ScaffoldMessengerState scaffoldMessenger =
+      ScaffoldMessenger.of(context);
   showDialog(
     context: context,
     builder: (BuildContext context) {
       return ContactFormDialog(
           contact: newContact,
           onSave: (Contact c) {
-            context.read<ContactsCubit>().updateContact(c);
+            contactsCubit.updateContact(c);
             ContactsCache().saveContact(c);
+            // Use the scaffoldMessenger reference instead of context
+            scaffoldMessenger.showSnackBar(
+              SnackBar(
+                content: Text(tr('contact_added')),
+              ),
+            );
           });
+    },
+  );
+}
+
+void searchForContactsGlobally(BuildContext context, {String? search}) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return ContactSearchPage(
+          searchUse: SearchUse.contactSearch, initialSearch: search);
     },
   );
 }

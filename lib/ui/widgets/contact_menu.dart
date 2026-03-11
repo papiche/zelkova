@@ -5,9 +5,8 @@ import 'package:material_symbols_icons/symbols.dart';
 
 import '../../data/models/contact.dart';
 import '../../data/models/contact_cubit.dart';
+import '../../g1/g1_helper.dart';
 import '../../shared_prefs_helper.dart';
-import '../ui_helpers.dart';
-import 'contact_page.dart';
 import 'contacts_actions.dart';
 
 class ContactMenu extends StatelessWidget {
@@ -20,6 +19,9 @@ class ContactMenu extends StatelessWidget {
       required this.onEdit,
       this.parent,
       this.disable = false});
+
+  static final ValueNotifier<MenuController?> _openMenuController =
+      ValueNotifier<MenuController?>(null);
 
   final VoidCallback onEdit;
   final VoidCallback onSent;
@@ -51,12 +53,7 @@ class ContactMenu extends StatelessWidget {
             MenuItemButton(
               leadingIcon: const Icon(Icons.list_alt),
               onPressed: () async {
-                showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return ContactPage(contact: contact);
-                  },
-                );
+                showContactPage(context, contact);
               },
               child: Text(tr('account_info')),
             ),
@@ -69,8 +66,7 @@ class ContactMenu extends StatelessWidget {
           if (!isContact && !me)
             MenuItemButton(
               leadingIcon: const Icon(Symbols.person_add),
-              onPressed: () =>
-                  addContact(context.read<ContactsCubit>(), contact, context),
+              onPressed: () => addContact(context, contact),
               child: Text(tr('add_contact')),
             ),
           if (isContact)
@@ -99,10 +95,18 @@ class ContactMenu extends StatelessWidget {
     if (disable) {
       return;
     }
-    if (controller.isOpen) {
-      controller.close();
-    } else {
-      controller.open();
-    }
+    Future<void>.delayed(const Duration(milliseconds: 50), () {
+      if (_openMenuController.value != null &&
+          _openMenuController.value != controller) {
+        _openMenuController.value!.close();
+      }
+      if (controller.isOpen) {
+        controller.close();
+        _openMenuController.value = null;
+      } else {
+        controller.open();
+        _openMenuController.value = controller;
+      }
+    });
   }
 }

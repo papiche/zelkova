@@ -1,0 +1,5 @@
+✨ Découverte plus rapide et meilleure gestion des nœuds pour v2
+• Amélioration de la découverte et sélection des nœuds v2 avec meilleure gestion des erreurs
+• Appuyez sur les notifications pour aller directement au portefeuille approprié
+• Copier l'adresse v2 depuis les menus
+• Actualiseur amélioré et désactivé sur le web

@@ -17,7 +17,7 @@ class TransactionContactWidget extends StatelessWidget {
 
     return Row(
       children: <Widget>[
-        avatar(contact.avatar, avatarSize: avatarSize),
+        avatar(contact, avatarSize: avatarSize),
         const SizedBox(width: 8.0),
         Expanded(
           child: Column(

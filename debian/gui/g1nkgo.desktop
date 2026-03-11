@@ -1,0 +1,10 @@
+[Desktop Entry]
+Version=1.0
+Name=G1nkgo
+GenericName=G1nkgo
+Comment=G1nkgo - A digital wallet based on Duniter for the G1 currency
+Terminal=false
+Type=Application
+Categories=Utility
+Keywords=Flutter;duniter;g1
+#Exec=/usr/local/lib/g1nkgo/ginkgo

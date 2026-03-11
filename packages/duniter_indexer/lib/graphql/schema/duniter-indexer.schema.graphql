@@ -1,0 +1,7388 @@
+"""Exposes a URL that specifies the behaviour of this scalar."""
+directive @specifiedBy(
+  """The URL that specifies the behaviour of this scalar."""
+  url: String!
+) on SCALAR
+
+type _IndexerInfo {
+  version: String!
+  type: String!
+}
+
+type _ProcessorStatus {
+  name: String!
+  height: Int!
+  hash: String!
+}
+
+type Account implements Node {
+  """
+  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+  """
+  nodeId: ID!
+  id: String!
+  createdOn: Int!
+  isActive: Boolean!
+  balance: BigInt!
+  linkedIdentityId: String
+
+  """Reads a single `Identity` that is related to this `Account`."""
+  linkedIdentity: Identity
+
+  """Reads and enables pagination through a set of `ChangeOwnerKey`."""
+  wasIdentity(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `ChangeOwnerKey`."""
+    orderBy: [ChangeOwnerKeysOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ChangeOwnerKeyCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: ChangeOwnerKeyFilter
+  ): ChangeOwnerKeysConnection!
+
+  """Reads and enables pagination through a set of `ChangeOwnerKey`."""
+  changeOwnerKeysByNextId(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `ChangeOwnerKey`."""
+    orderBy: [ChangeOwnerKeysOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ChangeOwnerKeyCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: ChangeOwnerKeyFilter
+  ): ChangeOwnerKeysConnection!
+
+  """Reads a single `Identity` that is related to this `Account`."""
+  identity: Identity
+
+  """Reads and enables pagination through a set of `Identity`."""
+  identitiesByAccountRemovedId(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `Identity`."""
+    orderBy: [IdentitiesOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: IdentityCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: IdentityFilter
+  ): IdentitiesConnection!
+
+  """Reads and enables pagination through a set of `TxComment`."""
+  commentsIssued(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `TxComment`."""
+    orderBy: [TxCommentsOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: TxCommentCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: TxCommentFilter
+  ): TxCommentsConnection!
+
+  """Reads and enables pagination through a set of `Transfer`."""
+  transfersIssued(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `Transfer`."""
+    orderBy: [TransfersOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: TransferCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: TransferFilter
+  ): TransfersConnection!
+
+  """Reads and enables pagination through a set of `Transfer`."""
+  transfersReceived(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `Transfer`."""
+    orderBy: [TransfersOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: TransferCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: TransferFilter
+  ): TransfersConnection!
+
+  """
+  Get total balance including ALL UDs (gcli style - no eligibility filter)
+  """
+  totalBalance: BigFloat
+
+  """Reads and enables pagination through a set of `TransferWithUd`."""
+  transferWithUd(
+    orderBy: TransferWithUdOrderBy
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: TransferWithUdFilter
+  ): TransferWithUdsConnection!
+}
+
+"""
+A condition to be used against `Account` object types. All fields are tested for equality and combined with a logical ‘and.’
+"""
+input AccountCondition {
+  """Checks for equality with the object’s `id` field."""
+  id: String
+
+  """Checks for equality with the object’s `createdOn` field."""
+  createdOn: Int
+
+  """Checks for equality with the object’s `isActive` field."""
+  isActive: Boolean
+
+  """Checks for equality with the object’s `balance` field."""
+  balance: BigFloat
+
+  """Checks for equality with the object’s `linkedIdentityId` field."""
+  linkedIdentityId: String
+}
+
+"""
+A filter to be used against `Account` object types. All fields are combined with a logical ‘and.’
+"""
+input AccountFilter {
+  """Filter by the object’s `id` field."""
+  id: StringFilter
+
+  """Filter by the object’s `createdOn` field."""
+  createdOn: IntFilter
+
+  """Filter by the object’s `isActive` field."""
+  isActive: BooleanFilter
+
+  """Filter by the object’s `balance` field."""
+  balance: BigFloatFilter
+
+  """Filter by the object’s `linkedIdentityId` field."""
+  linkedIdentityId: StringFilter
+
+  """Filter by the object’s `totalBalance` field."""
+  totalBalance: BigFloatFilter
+
+  """Filter by the object’s `wasIdentity` relation."""
+  wasIdentity: AccountToManyChangeOwnerKeyFilter
+
+  """Some related `wasIdentity` exist."""
+  wasIdentityExist: Boolean
+
+  """Filter by the object’s `changeOwnerKeysByNextId` relation."""
+  changeOwnerKeysByNextId: AccountToManyChangeOwnerKeyFilter
+
+  """Some related `changeOwnerKeysByNextId` exist."""
+  changeOwnerKeysByNextIdExist: Boolean
+
+  """Filter by the object’s `identity` relation."""
+  identity: IdentityFilter
+
+  """A related `identity` exists."""
+  identityExists: Boolean
+
+  """Filter by the object’s `identitiesByAccountRemovedId` relation."""
+  identitiesByAccountRemovedId: AccountToManyIdentityFilter
+
+  """Some related `identitiesByAccountRemovedId` exist."""
+  identitiesByAccountRemovedIdExist: Boolean
+
+  """Filter by the object’s `commentsIssued` relation."""
+  commentsIssued: AccountToManyTxCommentFilter
+
+  """Some related `commentsIssued` exist."""
+  commentsIssuedExist: Boolean
+
+  """Filter by the object’s `transfersIssued` relation."""
+  transfersIssued: AccountToManyTransferFilter
+
+  """Some related `transfersIssued` exist."""
+  transfersIssuedExist: Boolean
+
+  """Filter by the object’s `transfersReceived` relation."""
+  transfersReceived: AccountToManyTransferFilter
+
+  """Some related `transfersReceived` exist."""
+  transfersReceivedExist: Boolean
+
+  """Filter by the object’s `linkedIdentity` relation."""
+  linkedIdentity: IdentityFilter
+
+  """A related `linkedIdentity` exists."""
+  linkedIdentityExists: Boolean
+
+  """Checks for all expressions in this list."""
+  and: [AccountFilter!]
+
+  """Checks for any expressions in this list."""
+  or: [AccountFilter!]
+
+  """Negates the expression."""
+  not: AccountFilter
+}
+
+"""A connection to a list of `Account` values."""
+type AccountsConnection {
+  """A list of `Account` objects."""
+  nodes: [Account!]!
+
+  """
+  A list of edges which contains the `Account` and cursor to aid in pagination.
+  """
+  edges: [AccountsEdge!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `Account` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `Account` edge in the connection."""
+type AccountsEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `Account` at the end of the edge."""
+  node: Account!
+}
+
+"""Methods to use when ordering `Account`."""
+enum AccountsOrderBy {
+  NATURAL
+  ID_ASC
+  ID_DESC
+  CREATED_ON_ASC
+  CREATED_ON_DESC
+  IS_ACTIVE_ASC
+  IS_ACTIVE_DESC
+  BALANCE_ASC
+  BALANCE_DESC
+  LINKED_IDENTITY_ID_ASC
+  LINKED_IDENTITY_ID_DESC
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
+}
+
+"""
+A filter to be used against many `ChangeOwnerKey` object types. All fields are combined with a logical ‘and.’
+"""
+input AccountToManyChangeOwnerKeyFilter {
+  """
+  Every related `ChangeOwnerKey` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  every: ChangeOwnerKeyFilter
+
+  """
+  Some related `ChangeOwnerKey` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  some: ChangeOwnerKeyFilter
+
+  """
+  No related `ChangeOwnerKey` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  none: ChangeOwnerKeyFilter
+}
+
+"""
+A filter to be used against many `Identity` object types. All fields are combined with a logical ‘and.’
+"""
+input AccountToManyIdentityFilter {
+  """
+  Every related `Identity` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  every: IdentityFilter
+
+  """
+  Some related `Identity` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  some: IdentityFilter
+
+  """
+  No related `Identity` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  none: IdentityFilter
+}
+
+"""
+A filter to be used against many `Transfer` object types. All fields are combined with a logical ‘and.’
+"""
+input AccountToManyTransferFilter {
+  """
+  Every related `Transfer` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  every: TransferFilter
+
+  """
+  Some related `Transfer` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  some: TransferFilter
+
+  """
+  No related `Transfer` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  none: TransferFilter
+}
+
+"""
+A filter to be used against many `TxComment` object types. All fields are combined with a logical ‘and.’
+"""
+input AccountToManyTxCommentFilter {
+  """
+  Every related `TxComment` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  every: TxCommentFilter
+
+  """
+  Some related `TxComment` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  some: TxCommentFilter
+
+  """
+  No related `TxComment` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  none: TxCommentFilter
+}
+
+"""
+A floating point number that requires more precision than IEEE 754 binary 64
+"""
+scalar BigFloat
+
+"""
+A filter to be used against BigFloat fields. All fields are combined with a logical ‘and.’
+"""
+input BigFloatFilter {
+  """
+  Is null (if `true` is specified) or is not null (if `false` is specified).
+  """
+  isNull: Boolean
+
+  """Equal to the specified value."""
+  equalTo: BigFloat
+
+  """Not equal to the specified value."""
+  notEqualTo: BigFloat
+
+  """
+  Not equal to the specified value, treating null like an ordinary value.
+  """
+  distinctFrom: BigFloat
+
+  """Equal to the specified value, treating null like an ordinary value."""
+  notDistinctFrom: BigFloat
+
+  """Included in the specified list."""
+  in: [BigFloat!]
+
+  """Not included in the specified list."""
+  notIn: [BigFloat!]
+
+  """Less than the specified value."""
+  lessThan: BigFloat
+
+  """Less than or equal to the specified value."""
+  lessThanOrEqualTo: BigFloat
+
+  """Greater than the specified value."""
+  greaterThan: BigFloat
+
+  """Greater than or equal to the specified value."""
+  greaterThanOrEqualTo: BigFloat
+}
+
+"""
+A signed eight-byte integer. The upper big integer values are greater than the
+max value for a JavaScript number. Therefore all big integers will be output as
+strings and not numbers.
+"""
+scalar BigInt
+
+"""
+A filter to be used against BigInt fields. All fields are combined with a logical ‘and.’
+"""
+input BigIntFilter {
+  """
+  Is null (if `true` is specified) or is not null (if `false` is specified).
+  """
+  isNull: Boolean
+
+  """Equal to the specified value."""
+  equalTo: BigInt
+
+  """Not equal to the specified value."""
+  notEqualTo: BigInt
+
+  """
+  Not equal to the specified value, treating null like an ordinary value.
+  """
+  distinctFrom: BigInt
+
+  """Equal to the specified value, treating null like an ordinary value."""
+  notDistinctFrom: BigInt
+
+  """Included in the specified list."""
+  in: [BigInt!]
+
+  """Not included in the specified list."""
+  notIn: [BigInt!]
+
+  """Less than the specified value."""
+  lessThan: BigInt
+
+  """Less than or equal to the specified value."""
+  lessThanOrEqualTo: BigInt
+
+  """Greater than the specified value."""
+  greaterThan: BigInt
+
+  """Greater than or equal to the specified value."""
+  greaterThanOrEqualTo: BigInt
+}
+
+type Block implements Node {
+  """
+  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+  """
+  nodeId: ID!
+  id: String!
+  height: Int!
+  hash: String!
+  parentHash: String!
+  stateRoot: String!
+  extrinsicsicRoot: String!
+  specName: String!
+  specVersion: Int!
+  implName: String!
+  implVersion: Int!
+  timestamp: Datetime!
+  validator: String
+  extrinsicsCount: Int!
+  callsCount: Int!
+  eventsCount: Int!
+
+  """Reads and enables pagination through a set of `Event`."""
+  events(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `Event`."""
+    orderBy: [EventsOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: EventCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: EventFilter
+  ): EventsConnection!
+
+  """Reads and enables pagination through a set of `Call`."""
+  calls(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `Call`."""
+    orderBy: [CallsOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: CallCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: CallFilter
+  ): CallsConnection!
+
+  """Reads and enables pagination through a set of `Extrinsic`."""
+  extrinsics(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `Extrinsic`."""
+    orderBy: [ExtrinsicsOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ExtrinsicCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: ExtrinsicFilter
+  ): ExtrinsicsConnection!
+}
+
+"""
+A condition to be used against `Block` object types. All fields are tested for equality and combined with a logical ‘and.’
+"""
+input BlockCondition {
+  """Checks for equality with the object’s `id` field."""
+  id: String
+
+  """Checks for equality with the object’s `height` field."""
+  height: Int
+
+  """Checks for equality with the object’s `hash` field."""
+  hash: String
+
+  """Checks for equality with the object’s `parentHash` field."""
+  parentHash: String
+
+  """Checks for equality with the object’s `stateRoot` field."""
+  stateRoot: String
+
+  """Checks for equality with the object’s `extrinsicsicRoot` field."""
+  extrinsicsicRoot: String
+
+  """Checks for equality with the object’s `specName` field."""
+  specName: String
+
+  """Checks for equality with the object’s `specVersion` field."""
+  specVersion: Int
+
+  """Checks for equality with the object’s `implName` field."""
+  implName: String
+
+  """Checks for equality with the object’s `implVersion` field."""
+  implVersion: Int
+
+  """Checks for equality with the object’s `timestamp` field."""
+  timestamp: Datetime
+
+  """Checks for equality with the object’s `validator` field."""
+  validator: String
+
+  """Checks for equality with the object’s `extrinsicsCount` field."""
+  extrinsicsCount: Int
+
+  """Checks for equality with the object’s `callsCount` field."""
+  callsCount: Int
+
+  """Checks for equality with the object’s `eventsCount` field."""
+  eventsCount: Int
+}
+
+"""
+A filter to be used against `Block` object types. All fields are combined with a logical ‘and.’
+"""
+input BlockFilter {
+  """Filter by the object’s `id` field."""
+  id: StringFilter
+
+  """Filter by the object’s `height` field."""
+  height: IntFilter
+
+  """Filter by the object’s `specName` field."""
+  specName: StringFilter
+
+  """Filter by the object’s `specVersion` field."""
+  specVersion: IntFilter
+
+  """Filter by the object’s `implName` field."""
+  implName: StringFilter
+
+  """Filter by the object’s `implVersion` field."""
+  implVersion: IntFilter
+
+  """Filter by the object’s `timestamp` field."""
+  timestamp: DatetimeFilter
+
+  """Filter by the object’s `extrinsicsCount` field."""
+  extrinsicsCount: IntFilter
+
+  """Filter by the object’s `callsCount` field."""
+  callsCount: IntFilter
+
+  """Filter by the object’s `eventsCount` field."""
+  eventsCount: IntFilter
+
+  """Filter by the object’s `events` relation."""
+  events: BlockToManyEventFilter
+
+  """Some related `events` exist."""
+  eventsExist: Boolean
+
+  """Filter by the object’s `calls` relation."""
+  calls: BlockToManyCallFilter
+
+  """Some related `calls` exist."""
+  callsExist: Boolean
+
+  """Filter by the object’s `extrinsics` relation."""
+  extrinsics: BlockToManyExtrinsicFilter
+
+  """Some related `extrinsics` exist."""
+  extrinsicsExist: Boolean
+
+  """Checks for all expressions in this list."""
+  and: [BlockFilter!]
+
+  """Checks for any expressions in this list."""
+  or: [BlockFilter!]
+
+  """Negates the expression."""
+  not: BlockFilter
+}
+
+"""A connection to a list of `Block` values."""
+type BlocksConnection {
+  """A list of `Block` objects."""
+  nodes: [Block!]!
+
+  """
+  A list of edges which contains the `Block` and cursor to aid in pagination.
+  """
+  edges: [BlocksEdge!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `Block` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `Block` edge in the connection."""
+type BlocksEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `Block` at the end of the edge."""
+  node: Block!
+}
+
+"""Methods to use when ordering `Block`."""
+enum BlocksOrderBy {
+  NATURAL
+  ID_ASC
+  ID_DESC
+  HEIGHT_ASC
+  HEIGHT_DESC
+  HASH_ASC
+  HASH_DESC
+  PARENT_HASH_ASC
+  PARENT_HASH_DESC
+  STATE_ROOT_ASC
+  STATE_ROOT_DESC
+  EXTRINSICSIC_ROOT_ASC
+  EXTRINSICSIC_ROOT_DESC
+  SPEC_NAME_ASC
+  SPEC_NAME_DESC
+  SPEC_VERSION_ASC
+  SPEC_VERSION_DESC
+  IMPL_NAME_ASC
+  IMPL_NAME_DESC
+  IMPL_VERSION_ASC
+  IMPL_VERSION_DESC
+  TIMESTAMP_ASC
+  TIMESTAMP_DESC
+  VALIDATOR_ASC
+  VALIDATOR_DESC
+  EXTRINSICS_COUNT_ASC
+  EXTRINSICS_COUNT_DESC
+  CALLS_COUNT_ASC
+  CALLS_COUNT_DESC
+  EVENTS_COUNT_ASC
+  EVENTS_COUNT_DESC
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
+}
+
+"""
+A filter to be used against many `Call` object types. All fields are combined with a logical ‘and.’
+"""
+input BlockToManyCallFilter {
+  """
+  Every related `Call` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  every: CallFilter
+
+  """
+  Some related `Call` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  some: CallFilter
+
+  """
+  No related `Call` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  none: CallFilter
+}
+
+"""
+A filter to be used against many `Event` object types. All fields are combined with a logical ‘and.’
+"""
+input BlockToManyEventFilter {
+  """
+  Every related `Event` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  every: EventFilter
+
+  """
+  Some related `Event` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  some: EventFilter
+
+  """
+  No related `Event` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  none: EventFilter
+}
+
+"""
+A filter to be used against many `Extrinsic` object types. All fields are combined with a logical ‘and.’
+"""
+input BlockToManyExtrinsicFilter {
+  """
+  Every related `Extrinsic` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  every: ExtrinsicFilter
+
+  """
+  Some related `Extrinsic` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  some: ExtrinsicFilter
+
+  """
+  No related `Extrinsic` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  none: ExtrinsicFilter
+}
+
+"""
+A filter to be used against Boolean fields. All fields are combined with a logical ‘and.’
+"""
+input BooleanFilter {
+  """
+  Is null (if `true` is specified) or is not null (if `false` is specified).
+  """
+  isNull: Boolean
+
+  """Equal to the specified value."""
+  equalTo: Boolean
+
+  """Not equal to the specified value."""
+  notEqualTo: Boolean
+
+  """
+  Not equal to the specified value, treating null like an ordinary value.
+  """
+  distinctFrom: Boolean
+
+  """Equal to the specified value, treating null like an ordinary value."""
+  notDistinctFrom: Boolean
+
+  """Included in the specified list."""
+  in: [Boolean!]
+
+  """Not included in the specified list."""
+  notIn: [Boolean!]
+
+  """Less than the specified value."""
+  lessThan: Boolean
+
+  """Less than or equal to the specified value."""
+  lessThanOrEqualTo: Boolean
+
+  """Greater than the specified value."""
+  greaterThan: Boolean
+
+  """Greater than or equal to the specified value."""
+  greaterThanOrEqualTo: Boolean
+}
+
+type Call implements Node {
+  """
+  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+  """
+  nodeId: ID!
+  id: String!
+  address: [Int]!
+  success: Boolean!
+  error: JSON
+  pallet: String!
+  name: String!
+  args: JSON
+  argsStr: [String]
+  blockId: String
+  extrinsicId: String
+  parentId: String
+
+  """Reads a single `Block` that is related to this `Call`."""
+  block: Block
+
+  """Reads a single `Call` that is related to this `Call`."""
+  parent: Call
+
+  """Reads and enables pagination through a set of `Event`."""
+  events(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `Event`."""
+    orderBy: [EventsOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: EventCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: EventFilter
+  ): EventsConnection!
+
+  """Reads and enables pagination through a set of `Call`."""
+  childCalls(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `Call`."""
+    orderBy: [CallsOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: CallCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: CallFilter
+  ): CallsConnection!
+
+  """Reads and enables pagination through a set of `Extrinsic`."""
+  extrinsics(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `Extrinsic`."""
+    orderBy: [ExtrinsicsOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ExtrinsicCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: ExtrinsicFilter
+  ): ExtrinsicsConnection!
+}
+
+"""
+A condition to be used against `Call` object types. All fields are tested for equality and combined with a logical ‘and.’
+"""
+input CallCondition {
+  """Checks for equality with the object’s `id` field."""
+  id: String
+
+  """Checks for equality with the object’s `address` field."""
+  address: [Int]
+
+  """Checks for equality with the object’s `success` field."""
+  success: Boolean
+
+  """Checks for equality with the object’s `error` field."""
+  error: JSON
+
+  """Checks for equality with the object’s `pallet` field."""
+  pallet: String
+
+  """Checks for equality with the object’s `name` field."""
+  name: String
+
+  """Checks for equality with the object’s `args` field."""
+  args: JSON
+
+  """Checks for equality with the object’s `argsStr` field."""
+  argsStr: [String]
+
+  """Checks for equality with the object’s `blockId` field."""
+  blockId: String
+
+  """Checks for equality with the object’s `extrinsicId` field."""
+  extrinsicId: String
+
+  """Checks for equality with the object’s `parentId` field."""
+  parentId: String
+}
+
+"""
+A filter to be used against `Call` object types. All fields are combined with a logical ‘and.’
+"""
+input CallFilter {
+  """Filter by the object’s `id` field."""
+  id: StringFilter
+
+  """Filter by the object’s `address` field."""
+  address: IntListFilter
+
+  """Filter by the object’s `success` field."""
+  success: BooleanFilter
+
+  """Filter by the object’s `error` field."""
+  error: JSONFilter
+
+  """Filter by the object’s `pallet` field."""
+  pallet: StringFilter
+
+  """Filter by the object’s `name` field."""
+  name: StringFilter
+
+  """Filter by the object’s `args` field."""
+  args: JSONFilter
+
+  """Filter by the object’s `argsStr` field."""
+  argsStr: StringListFilter
+
+  """Filter by the object’s `blockId` field."""
+  blockId: StringFilter
+
+  """Filter by the object’s `extrinsicId` field."""
+  extrinsicId: StringFilter
+
+  """Filter by the object’s `parentId` field."""
+  parentId: StringFilter
+
+  """Filter by the object’s `events` relation."""
+  events: CallToManyEventFilter
+
+  """Some related `events` exist."""
+  eventsExist: Boolean
+
+  """Filter by the object’s `childCalls` relation."""
+  childCalls: CallToManyCallFilter
+
+  """Some related `childCalls` exist."""
+  childCallsExist: Boolean
+
+  """Filter by the object’s `extrinsics` relation."""
+  extrinsics: CallToManyExtrinsicFilter
+
+  """Some related `extrinsics` exist."""
+  extrinsicsExist: Boolean
+
+  """Filter by the object’s `block` relation."""
+  block: BlockFilter
+
+  """A related `block` exists."""
+  blockExists: Boolean
+
+  """Filter by the object’s `extrinsic` relation."""
+  extrinsic: ExtrinsicFilter
+
+  """A related `extrinsic` exists."""
+  extrinsicExists: Boolean
+
+  """Filter by the object’s `parent` relation."""
+  parent: CallFilter
+
+  """A related `parent` exists."""
+  parentExists: Boolean
+
+  """Checks for all expressions in this list."""
+  and: [CallFilter!]
+
+  """Checks for any expressions in this list."""
+  or: [CallFilter!]
+
+  """Negates the expression."""
+  not: CallFilter
+}
+
+"""A connection to a list of `Call` values."""
+type CallsConnection {
+  """A list of `Call` objects."""
+  nodes: [Call!]!
+
+  """
+  A list of edges which contains the `Call` and cursor to aid in pagination.
+  """
+  edges: [CallsEdge!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `Call` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `Call` edge in the connection."""
+type CallsEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `Call` at the end of the edge."""
+  node: Call!
+}
+
+"""Methods to use when ordering `Call`."""
+enum CallsOrderBy {
+  NATURAL
+  ID_ASC
+  ID_DESC
+  ADDRESS_ASC
+  ADDRESS_DESC
+  SUCCESS_ASC
+  SUCCESS_DESC
+  ERROR_ASC
+  ERROR_DESC
+  PALLET_ASC
+  PALLET_DESC
+  NAME_ASC
+  NAME_DESC
+  ARGS_ASC
+  ARGS_DESC
+  ARGS_STR_ASC
+  ARGS_STR_DESC
+  BLOCK_ID_ASC
+  BLOCK_ID_DESC
+  EXTRINSIC_ID_ASC
+  EXTRINSIC_ID_DESC
+  PARENT_ID_ASC
+  PARENT_ID_DESC
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
+}
+
+"""
+A filter to be used against many `Call` object types. All fields are combined with a logical ‘and.’
+"""
+input CallToManyCallFilter {
+  """
+  Every related `Call` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  every: CallFilter
+
+  """
+  Some related `Call` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  some: CallFilter
+
+  """
+  No related `Call` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  none: CallFilter
+}
+
+"""
+A filter to be used against many `Event` object types. All fields are combined with a logical ‘and.’
+"""
+input CallToManyEventFilter {
+  """
+  Every related `Event` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  every: EventFilter
+
+  """
+  Some related `Event` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  some: EventFilter
+
+  """
+  No related `Event` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  none: EventFilter
+}
+
+"""
+A filter to be used against many `Extrinsic` object types. All fields are combined with a logical ‘and.’
+"""
+input CallToManyExtrinsicFilter {
+  """
+  Every related `Extrinsic` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  every: ExtrinsicFilter
+
+  """
+  Some related `Extrinsic` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  some: ExtrinsicFilter
+
+  """
+  No related `Extrinsic` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  none: ExtrinsicFilter
+}
+
+type Cert implements Node {
+  """
+  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+  """
+  nodeId: ID!
+  id: String!
+  isActive: Boolean!
+  createdOn: Int!
+  updatedOn: Int!
+  expireOn: Int!
+  issuerId: String
+  receiverId: String
+  createdInId: String
+  updatedInId: String
+
+  """Reads a single `Identity` that is related to this `Cert`."""
+  issuer: Identity
+
+  """Reads a single `Identity` that is related to this `Cert`."""
+  receiver: Identity
+
+  """Reads a single `Event` that is related to this `Cert`."""
+  createdIn: Event
+
+  """Reads a single `Event` that is related to this `Cert`."""
+  updatedIn: Event
+
+  """Reads and enables pagination through a set of `CertEvent`."""
+  certHistory(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `CertEvent`."""
+    orderBy: [CertEventsOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: CertEventCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: CertEventFilter
+  ): CertEventsConnection!
+}
+
+"""
+A condition to be used against `Cert` object types. All fields are tested for equality and combined with a logical ‘and.’
+"""
+input CertCondition {
+  """Checks for equality with the object’s `id` field."""
+  id: String
+
+  """Checks for equality with the object’s `isActive` field."""
+  isActive: Boolean
+
+  """Checks for equality with the object’s `createdOn` field."""
+  createdOn: Int
+
+  """Checks for equality with the object’s `updatedOn` field."""
+  updatedOn: Int
+
+  """Checks for equality with the object’s `expireOn` field."""
+  expireOn: Int
+
+  """Checks for equality with the object’s `issuerId` field."""
+  issuerId: String
+
+  """Checks for equality with the object’s `receiverId` field."""
+  receiverId: String
+
+  """Checks for equality with the object’s `createdInId` field."""
+  createdInId: String
+
+  """Checks for equality with the object’s `updatedInId` field."""
+  updatedInId: String
+}
+
+type CertEvent implements Node {
+  """
+  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+  """
+  nodeId: ID!
+  id: String!
+  blockNumber: Int!
+  eventType: String!
+  certId: String
+  eventId: String
+
+  """Reads a single `Cert` that is related to this `CertEvent`."""
+  cert: Cert
+
+  """Reads a single `Event` that is related to this `CertEvent`."""
+  event: Event
+}
+
+"""
+A condition to be used against `CertEvent` object types. All fields are tested
+for equality and combined with a logical ‘and.’
+"""
+input CertEventCondition {
+  """Checks for equality with the object’s `id` field."""
+  id: String
+
+  """Checks for equality with the object’s `blockNumber` field."""
+  blockNumber: Int
+
+  """Checks for equality with the object’s `eventType` field."""
+  eventType: String
+
+  """Checks for equality with the object’s `certId` field."""
+  certId: String
+
+  """Checks for equality with the object’s `eventId` field."""
+  eventId: String
+}
+
+"""
+A filter to be used against `CertEvent` object types. All fields are combined with a logical ‘and.’
+"""
+input CertEventFilter {
+  """Filter by the object’s `id` field."""
+  id: StringFilter
+
+  """Filter by the object’s `blockNumber` field."""
+  blockNumber: IntFilter
+
+  """Filter by the object’s `eventType` field."""
+  eventType: StringFilter
+
+  """Filter by the object’s `certId` field."""
+  certId: StringFilter
+
+  """Filter by the object’s `eventId` field."""
+  eventId: StringFilter
+
+  """Filter by the object’s `cert` relation."""
+  cert: CertFilter
+
+  """A related `cert` exists."""
+  certExists: Boolean
+
+  """Filter by the object’s `event` relation."""
+  event: EventFilter
+
+  """A related `event` exists."""
+  eventExists: Boolean
+
+  """Checks for all expressions in this list."""
+  and: [CertEventFilter!]
+
+  """Checks for any expressions in this list."""
+  or: [CertEventFilter!]
+
+  """Negates the expression."""
+  not: CertEventFilter
+}
+
+"""A connection to a list of `CertEvent` values."""
+type CertEventsConnection {
+  """A list of `CertEvent` objects."""
+  nodes: [CertEvent!]!
+
+  """
+  A list of edges which contains the `CertEvent` and cursor to aid in pagination.
+  """
+  edges: [CertEventsEdge!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `CertEvent` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `CertEvent` edge in the connection."""
+type CertEventsEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `CertEvent` at the end of the edge."""
+  node: CertEvent!
+}
+
+"""Methods to use when ordering `CertEvent`."""
+enum CertEventsOrderBy {
+  NATURAL
+  ID_ASC
+  ID_DESC
+  BLOCK_NUMBER_ASC
+  BLOCK_NUMBER_DESC
+  EVENT_TYPE_ASC
+  EVENT_TYPE_DESC
+  CERT_ID_ASC
+  CERT_ID_DESC
+  EVENT_ID_ASC
+  EVENT_ID_DESC
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
+}
+
+"""
+A filter to be used against `Cert` object types. All fields are combined with a logical ‘and.’
+"""
+input CertFilter {
+  """Filter by the object’s `id` field."""
+  id: StringFilter
+
+  """Filter by the object’s `isActive` field."""
+  isActive: BooleanFilter
+
+  """Filter by the object’s `createdOn` field."""
+  createdOn: IntFilter
+
+  """Filter by the object’s `updatedOn` field."""
+  updatedOn: IntFilter
+
+  """Filter by the object’s `expireOn` field."""
+  expireOn: IntFilter
+
+  """Filter by the object’s `issuerId` field."""
+  issuerId: StringFilter
+
+  """Filter by the object’s `receiverId` field."""
+  receiverId: StringFilter
+
+  """Filter by the object’s `createdInId` field."""
+  createdInId: StringFilter
+
+  """Filter by the object’s `updatedInId` field."""
+  updatedInId: StringFilter
+
+  """Filter by the object’s `certHistory` relation."""
+  certHistory: CertToManyCertEventFilter
+
+  """Some related `certHistory` exist."""
+  certHistoryExist: Boolean
+
+  """Filter by the object’s `issuer` relation."""
+  issuer: IdentityFilter
+
+  """A related `issuer` exists."""
+  issuerExists: Boolean
+
+  """Filter by the object’s `receiver` relation."""
+  receiver: IdentityFilter
+
+  """A related `receiver` exists."""
+  receiverExists: Boolean
+
+  """Filter by the object’s `createdIn` relation."""
+  createdIn: EventFilter
+
+  """A related `createdIn` exists."""
+  createdInExists: Boolean
+
+  """Filter by the object’s `updatedIn` relation."""
+  updatedIn: EventFilter
+
+  """A related `updatedIn` exists."""
+  updatedInExists: Boolean
+
+  """Checks for all expressions in this list."""
+  and: [CertFilter!]
+
+  """Checks for any expressions in this list."""
+  or: [CertFilter!]
+
+  """Negates the expression."""
+  not: CertFilter
+}
+
+"""A connection to a list of `Cert` values."""
+type CertsConnection {
+  """A list of `Cert` objects."""
+  nodes: [Cert!]!
+
+  """
+  A list of edges which contains the `Cert` and cursor to aid in pagination.
+  """
+  edges: [CertsEdge!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `Cert` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `Cert` edge in the connection."""
+type CertsEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `Cert` at the end of the edge."""
+  node: Cert!
+}
+
+"""Methods to use when ordering `Cert`."""
+enum CertsOrderBy {
+  NATURAL
+  ID_ASC
+  ID_DESC
+  IS_ACTIVE_ASC
+  IS_ACTIVE_DESC
+  CREATED_ON_ASC
+  CREATED_ON_DESC
+  UPDATED_ON_ASC
+  UPDATED_ON_DESC
+  EXPIRE_ON_ASC
+  EXPIRE_ON_DESC
+  ISSUER_ID_ASC
+  ISSUER_ID_DESC
+  RECEIVER_ID_ASC
+  RECEIVER_ID_DESC
+  CREATED_IN_ID_ASC
+  CREATED_IN_ID_DESC
+  UPDATED_IN_ID_ASC
+  UPDATED_IN_ID_DESC
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
+}
+
+"""
+A filter to be used against many `CertEvent` object types. All fields are combined with a logical ‘and.’
+"""
+input CertToManyCertEventFilter {
+  """
+  Every related `CertEvent` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  every: CertEventFilter
+
+  """
+  Some related `CertEvent` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  some: CertEventFilter
+
+  """
+  No related `CertEvent` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  none: CertEventFilter
+}
+
+type ChangeOwnerKey implements Node {
+  """
+  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+  """
+  nodeId: ID!
+  id: String!
+  blockNumber: Int!
+  identityId: String
+  previousId: String
+  nextId: String
+
+  """Reads a single `Identity` that is related to this `ChangeOwnerKey`."""
+  identity: Identity
+
+  """Reads a single `Account` that is related to this `ChangeOwnerKey`."""
+  previous: Account
+
+  """Reads a single `Account` that is related to this `ChangeOwnerKey`."""
+  next: Account
+}
+
+"""
+A condition to be used against `ChangeOwnerKey` object types. All fields are
+tested for equality and combined with a logical ‘and.’
+"""
+input ChangeOwnerKeyCondition {
+  """Checks for equality with the object’s `id` field."""
+  id: String
+
+  """Checks for equality with the object’s `blockNumber` field."""
+  blockNumber: Int
+
+  """Checks for equality with the object’s `identityId` field."""
+  identityId: String
+
+  """Checks for equality with the object’s `previousId` field."""
+  previousId: String
+
+  """Checks for equality with the object’s `nextId` field."""
+  nextId: String
+}
+
+"""
+A filter to be used against `ChangeOwnerKey` object types. All fields are combined with a logical ‘and.’
+"""
+input ChangeOwnerKeyFilter {
+  """Filter by the object’s `id` field."""
+  id: StringFilter
+
+  """Filter by the object’s `blockNumber` field."""
+  blockNumber: IntFilter
+
+  """Filter by the object’s `identityId` field."""
+  identityId: StringFilter
+
+  """Filter by the object’s `previousId` field."""
+  previousId: StringFilter
+
+  """Filter by the object’s `nextId` field."""
+  nextId: StringFilter
+
+  """Filter by the object’s `identity` relation."""
+  identity: IdentityFilter
+
+  """A related `identity` exists."""
+  identityExists: Boolean
+
+  """Filter by the object’s `previous` relation."""
+  previous: AccountFilter
+
+  """A related `previous` exists."""
+  previousExists: Boolean
+
+  """Filter by the object’s `next` relation."""
+  next: AccountFilter
+
+  """A related `next` exists."""
+  nextExists: Boolean
+
+  """Checks for all expressions in this list."""
+  and: [ChangeOwnerKeyFilter!]
+
+  """Checks for any expressions in this list."""
+  or: [ChangeOwnerKeyFilter!]
+
+  """Negates the expression."""
+  not: ChangeOwnerKeyFilter
+}
+
+"""A connection to a list of `ChangeOwnerKey` values."""
+type ChangeOwnerKeysConnection {
+  """A list of `ChangeOwnerKey` objects."""
+  nodes: [ChangeOwnerKey!]!
+
+  """
+  A list of edges which contains the `ChangeOwnerKey` and cursor to aid in pagination.
+  """
+  edges: [ChangeOwnerKeysEdge!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `ChangeOwnerKey` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `ChangeOwnerKey` edge in the connection."""
+type ChangeOwnerKeysEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `ChangeOwnerKey` at the end of the edge."""
+  node: ChangeOwnerKey!
+}
+
+"""Methods to use when ordering `ChangeOwnerKey`."""
+enum ChangeOwnerKeysOrderBy {
+  NATURAL
+  ID_ASC
+  ID_DESC
+  BLOCK_NUMBER_ASC
+  BLOCK_NUMBER_DESC
+  IDENTITY_ID_ASC
+  IDENTITY_ID_DESC
+  PREVIOUS_ID_ASC
+  PREVIOUS_ID_DESC
+  NEXT_ID_ASC
+  NEXT_ID_DESC
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
+}
+
+"""A location in a connection that can be used for resuming pagination."""
+scalar Cursor
+
+"""
+A point in time as described by the [ISO
+8601](https://en.wikipedia.org/wiki/ISO_8601) standard. May or may not include a timezone.
+"""
+scalar Datetime
+
+"""
+A filter to be used against Datetime fields. All fields are combined with a logical ‘and.’
+"""
+input DatetimeFilter {
+  """
+  Is null (if `true` is specified) or is not null (if `false` is specified).
+  """
+  isNull: Boolean
+
+  """Equal to the specified value."""
+  equalTo: Datetime
+
+  """Not equal to the specified value."""
+  notEqualTo: Datetime
+
+  """
+  Not equal to the specified value, treating null like an ordinary value.
+  """
+  distinctFrom: Datetime
+
+  """Equal to the specified value, treating null like an ordinary value."""
+  notDistinctFrom: Datetime
+
+  """Included in the specified list."""
+  in: [Datetime!]
+
+  """Not included in the specified list."""
+  notIn: [Datetime!]
+
+  """Less than the specified value."""
+  lessThan: Datetime
+
+  """Less than or equal to the specified value."""
+  lessThanOrEqualTo: Datetime
+
+  """Greater than the specified value."""
+  greaterThan: Datetime
+
+  """Greater than or equal to the specified value."""
+  greaterThanOrEqualTo: Datetime
+}
+
+type Event implements Node {
+  """
+  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+  """
+  nodeId: ID!
+  id: String!
+  index: Int!
+  phase: String!
+  pallet: String!
+  name: String!
+  args: JSON
+  argsStr: [String]
+  blockId: String
+  extrinsicId: String
+  callId: String
+
+  """Reads a single `Block` that is related to this `Event`."""
+  block: Block
+
+  """Reads a single `Extrinsic` that is related to this `Event`."""
+  extrinsic: Extrinsic
+
+  """Reads a single `Call` that is related to this `Event`."""
+  call: Call
+
+  """Reads and enables pagination through a set of `CertEvent`."""
+  certEvents(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `CertEvent`."""
+    orderBy: [CertEventsOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: CertEventCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: CertEventFilter
+  ): CertEventsConnection!
+
+  """Reads and enables pagination through a set of `Cert`."""
+  certsByCreatedInId(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `Cert`."""
+    orderBy: [CertsOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: CertCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: CertFilter
+  ): CertsConnection!
+
+  """Reads and enables pagination through a set of `Cert`."""
+  certsByUpdatedInId(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `Cert`."""
+    orderBy: [CertsOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: CertCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: CertFilter
+  ): CertsConnection!
+
+  """Reads and enables pagination through a set of `MembershipEvent`."""
+  membershipEvents(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `MembershipEvent`."""
+    orderBy: [MembershipEventsOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: MembershipEventCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: MembershipEventFilter
+  ): MembershipEventsConnection!
+
+  """Reads and enables pagination through a set of `SmithEvent`."""
+  smithEvents(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `SmithEvent`."""
+    orderBy: [SmithEventsOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: SmithEventCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: SmithEventFilter
+  ): SmithEventsConnection!
+
+  """Reads and enables pagination through a set of `Identity`."""
+  identitiesByCreatedInId(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `Identity`."""
+    orderBy: [IdentitiesOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: IdentityCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: IdentityFilter
+  ): IdentitiesConnection!
+
+  """Reads and enables pagination through a set of `TxComment`."""
+  txComments(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `TxComment`."""
+    orderBy: [TxCommentsOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: TxCommentCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: TxCommentFilter
+  ): TxCommentsConnection!
+
+  """Reads and enables pagination through a set of `Transfer`."""
+  transfers(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `Transfer`."""
+    orderBy: [TransfersOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: TransferCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: TransferFilter
+  ): TransfersConnection!
+
+  """Reads and enables pagination through a set of `UniversalDividend`."""
+  universalDividends(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `UniversalDividend`."""
+    orderBy: [UniversalDividendsOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: UniversalDividendCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: UniversalDividendFilter
+  ): UniversalDividendsConnection!
+
+  """Reads and enables pagination through a set of `UdReeval`."""
+  udReevals(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `UdReeval`."""
+    orderBy: [UdReevalsOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: UdReevalCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: UdReevalFilter
+  ): UdReevalsConnection!
+}
+
+"""
+A condition to be used against `Event` object types. All fields are tested for equality and combined with a logical ‘and.’
+"""
+input EventCondition {
+  """Checks for equality with the object’s `id` field."""
+  id: String
+
+  """Checks for equality with the object’s `index` field."""
+  index: Int
+
+  """Checks for equality with the object’s `phase` field."""
+  phase: String
+
+  """Checks for equality with the object’s `pallet` field."""
+  pallet: String
+
+  """Checks for equality with the object’s `name` field."""
+  name: String
+
+  """Checks for equality with the object’s `args` field."""
+  args: JSON
+
+  """Checks for equality with the object’s `argsStr` field."""
+  argsStr: [String]
+
+  """Checks for equality with the object’s `blockId` field."""
+  blockId: String
+
+  """Checks for equality with the object’s `extrinsicId` field."""
+  extrinsicId: String
+
+  """Checks for equality with the object’s `callId` field."""
+  callId: String
+}
+
+"""
+A filter to be used against `Event` object types. All fields are combined with a logical ‘and.’
+"""
+input EventFilter {
+  """Filter by the object’s `id` field."""
+  id: StringFilter
+
+  """Filter by the object’s `index` field."""
+  index: IntFilter
+
+  """Filter by the object’s `phase` field."""
+  phase: StringFilter
+
+  """Filter by the object’s `pallet` field."""
+  pallet: StringFilter
+
+  """Filter by the object’s `name` field."""
+  name: StringFilter
+
+  """Filter by the object’s `args` field."""
+  args: JSONFilter
+
+  """Filter by the object’s `argsStr` field."""
+  argsStr: StringListFilter
+
+  """Filter by the object’s `blockId` field."""
+  blockId: StringFilter
+
+  """Filter by the object’s `extrinsicId` field."""
+  extrinsicId: StringFilter
+
+  """Filter by the object’s `callId` field."""
+  callId: StringFilter
+
+  """Filter by the object’s `certEvents` relation."""
+  certEvents: EventToManyCertEventFilter
+
+  """Some related `certEvents` exist."""
+  certEventsExist: Boolean
+
+  """Filter by the object’s `certsByCreatedInId` relation."""
+  certsByCreatedInId: EventToManyCertFilter
+
+  """Some related `certsByCreatedInId` exist."""
+  certsByCreatedInIdExist: Boolean
+
+  """Filter by the object’s `certsByUpdatedInId` relation."""
+  certsByUpdatedInId: EventToManyCertFilter
+
+  """Some related `certsByUpdatedInId` exist."""
+  certsByUpdatedInIdExist: Boolean
+
+  """Filter by the object’s `membershipEvents` relation."""
+  membershipEvents: EventToManyMembershipEventFilter
+
+  """Some related `membershipEvents` exist."""
+  membershipEventsExist: Boolean
+
+  """Filter by the object’s `smithEvents` relation."""
+  smithEvents: EventToManySmithEventFilter
+
+  """Some related `smithEvents` exist."""
+  smithEventsExist: Boolean
+
+  """Filter by the object’s `identitiesByCreatedInId` relation."""
+  identitiesByCreatedInId: EventToManyIdentityFilter
+
+  """Some related `identitiesByCreatedInId` exist."""
+  identitiesByCreatedInIdExist: Boolean
+
+  """Filter by the object’s `txComments` relation."""
+  txComments: EventToManyTxCommentFilter
+
+  """Some related `txComments` exist."""
+  txCommentsExist: Boolean
+
+  """Filter by the object’s `transfers` relation."""
+  transfers: EventToManyTransferFilter
+
+  """Some related `transfers` exist."""
+  transfersExist: Boolean
+
+  """Filter by the object’s `universalDividends` relation."""
+  universalDividends: EventToManyUniversalDividendFilter
+
+  """Some related `universalDividends` exist."""
+  universalDividendsExist: Boolean
+
+  """Filter by the object’s `udReevals` relation."""
+  udReevals: EventToManyUdReevalFilter
+
+  """Some related `udReevals` exist."""
+  udReevalsExist: Boolean
+
+  """Filter by the object’s `block` relation."""
+  block: BlockFilter
+
+  """A related `block` exists."""
+  blockExists: Boolean
+
+  """Filter by the object’s `extrinsic` relation."""
+  extrinsic: ExtrinsicFilter
+
+  """A related `extrinsic` exists."""
+  extrinsicExists: Boolean
+
+  """Filter by the object’s `call` relation."""
+  call: CallFilter
+
+  """A related `call` exists."""
+  callExists: Boolean
+
+  """Checks for all expressions in this list."""
+  and: [EventFilter!]
+
+  """Checks for any expressions in this list."""
+  or: [EventFilter!]
+
+  """Negates the expression."""
+  not: EventFilter
+}
+
+"""A connection to a list of `Event` values."""
+type EventsConnection {
+  """A list of `Event` objects."""
+  nodes: [Event!]!
+
+  """
+  A list of edges which contains the `Event` and cursor to aid in pagination.
+  """
+  edges: [EventsEdge!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `Event` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `Event` edge in the connection."""
+type EventsEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `Event` at the end of the edge."""
+  node: Event!
+}
+
+"""Methods to use when ordering `Event`."""
+enum EventsOrderBy {
+  NATURAL
+  ID_ASC
+  ID_DESC
+  INDEX_ASC
+  INDEX_DESC
+  PHASE_ASC
+  PHASE_DESC
+  PALLET_ASC
+  PALLET_DESC
+  NAME_ASC
+  NAME_DESC
+  ARGS_ASC
+  ARGS_DESC
+  ARGS_STR_ASC
+  ARGS_STR_DESC
+  BLOCK_ID_ASC
+  BLOCK_ID_DESC
+  EXTRINSIC_ID_ASC
+  EXTRINSIC_ID_DESC
+  CALL_ID_ASC
+  CALL_ID_DESC
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
+}
+
+"""
+A filter to be used against many `CertEvent` object types. All fields are combined with a logical ‘and.’
+"""
+input EventToManyCertEventFilter {
+  """
+  Every related `CertEvent` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  every: CertEventFilter
+
+  """
+  Some related `CertEvent` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  some: CertEventFilter
+
+  """
+  No related `CertEvent` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  none: CertEventFilter
+}
+
+"""
+A filter to be used against many `Cert` object types. All fields are combined with a logical ‘and.’
+"""
+input EventToManyCertFilter {
+  """
+  Every related `Cert` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  every: CertFilter
+
+  """
+  Some related `Cert` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  some: CertFilter
+
+  """
+  No related `Cert` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  none: CertFilter
+}
+
+"""
+A filter to be used against many `Identity` object types. All fields are combined with a logical ‘and.’
+"""
+input EventToManyIdentityFilter {
+  """
+  Every related `Identity` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  every: IdentityFilter
+
+  """
+  Some related `Identity` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  some: IdentityFilter
+
+  """
+  No related `Identity` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  none: IdentityFilter
+}
+
+"""
+A filter to be used against many `MembershipEvent` object types. All fields are combined with a logical ‘and.’
+"""
+input EventToManyMembershipEventFilter {
+  """
+  Every related `MembershipEvent` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  every: MembershipEventFilter
+
+  """
+  Some related `MembershipEvent` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  some: MembershipEventFilter
+
+  """
+  No related `MembershipEvent` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  none: MembershipEventFilter
+}
+
+"""
+A filter to be used against many `SmithEvent` object types. All fields are combined with a logical ‘and.’
+"""
+input EventToManySmithEventFilter {
+  """
+  Every related `SmithEvent` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  every: SmithEventFilter
+
+  """
+  Some related `SmithEvent` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  some: SmithEventFilter
+
+  """
+  No related `SmithEvent` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  none: SmithEventFilter
+}
+
+"""
+A filter to be used against many `Transfer` object types. All fields are combined with a logical ‘and.’
+"""
+input EventToManyTransferFilter {
+  """
+  Every related `Transfer` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  every: TransferFilter
+
+  """
+  Some related `Transfer` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  some: TransferFilter
+
+  """
+  No related `Transfer` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  none: TransferFilter
+}
+
+"""
+A filter to be used against many `TxComment` object types. All fields are combined with a logical ‘and.’
+"""
+input EventToManyTxCommentFilter {
+  """
+  Every related `TxComment` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  every: TxCommentFilter
+
+  """
+  Some related `TxComment` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  some: TxCommentFilter
+
+  """
+  No related `TxComment` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  none: TxCommentFilter
+}
+
+"""
+A filter to be used against many `UdReeval` object types. All fields are combined with a logical ‘and.’
+"""
+input EventToManyUdReevalFilter {
+  """
+  Every related `UdReeval` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  every: UdReevalFilter
+
+  """
+  Some related `UdReeval` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  some: UdReevalFilter
+
+  """
+  No related `UdReeval` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  none: UdReevalFilter
+}
+
+"""
+A filter to be used against many `UniversalDividend` object types. All fields are combined with a logical ‘and.’
+"""
+input EventToManyUniversalDividendFilter {
+  """
+  Every related `UniversalDividend` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  every: UniversalDividendFilter
+
+  """
+  Some related `UniversalDividend` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  some: UniversalDividendFilter
+
+  """
+  No related `UniversalDividend` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  none: UniversalDividendFilter
+}
+
+type Extrinsic implements Node {
+  """
+  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+  """
+  nodeId: ID!
+  id: String!
+  index: Int!
+  version: Int!
+  signature: JSON
+  tip: BigInt
+  fee: BigInt
+  success: Boolean
+  error: JSON
+  hash: String!
+  blockId: String
+  callId: String
+
+  """Reads a single `Block` that is related to this `Extrinsic`."""
+  block: Block
+
+  """Reads and enables pagination through a set of `Event`."""
+  events(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `Event`."""
+    orderBy: [EventsOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: EventCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: EventFilter
+  ): EventsConnection!
+
+  """Reads and enables pagination through a set of `Call`."""
+  calls(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `Call`."""
+    orderBy: [CallsOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: CallCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: CallFilter
+  ): CallsConnection!
+}
+
+"""
+A condition to be used against `Extrinsic` object types. All fields are tested
+for equality and combined with a logical ‘and.’
+"""
+input ExtrinsicCondition {
+  """Checks for equality with the object’s `id` field."""
+  id: String
+
+  """Checks for equality with the object’s `index` field."""
+  index: Int
+
+  """Checks for equality with the object’s `version` field."""
+  version: Int
+
+  """Checks for equality with the object’s `signature` field."""
+  signature: JSON
+
+  """Checks for equality with the object’s `tip` field."""
+  tip: BigFloat
+
+  """Checks for equality with the object’s `fee` field."""
+  fee: BigFloat
+
+  """Checks for equality with the object’s `success` field."""
+  success: Boolean
+
+  """Checks for equality with the object’s `error` field."""
+  error: JSON
+
+  """Checks for equality with the object’s `hash` field."""
+  hash: String
+
+  """Checks for equality with the object’s `blockId` field."""
+  blockId: String
+
+  """Checks for equality with the object’s `callId` field."""
+  callId: String
+}
+
+"""
+A filter to be used against `Extrinsic` object types. All fields are combined with a logical ‘and.’
+"""
+input ExtrinsicFilter {
+  """Filter by the object’s `id` field."""
+  id: StringFilter
+
+  """Filter by the object’s `index` field."""
+  index: IntFilter
+
+  """Filter by the object’s `version` field."""
+  version: IntFilter
+
+  """Filter by the object’s `signature` field."""
+  signature: JSONFilter
+
+  """Filter by the object’s `tip` field."""
+  tip: BigFloatFilter
+
+  """Filter by the object’s `fee` field."""
+  fee: BigFloatFilter
+
+  """Filter by the object’s `success` field."""
+  success: BooleanFilter
+
+  """Filter by the object’s `error` field."""
+  error: JSONFilter
+
+  """Filter by the object’s `blockId` field."""
+  blockId: StringFilter
+
+  """Filter by the object’s `callId` field."""
+  callId: StringFilter
+
+  """Filter by the object’s `events` relation."""
+  events: ExtrinsicToManyEventFilter
+
+  """Some related `events` exist."""
+  eventsExist: Boolean
+
+  """Filter by the object’s `calls` relation."""
+  calls: ExtrinsicToManyCallFilter
+
+  """Some related `calls` exist."""
+  callsExist: Boolean
+
+  """Filter by the object’s `block` relation."""
+  block: BlockFilter
+
+  """A related `block` exists."""
+  blockExists: Boolean
+
+  """Filter by the object’s `call` relation."""
+  call: CallFilter
+
+  """A related `call` exists."""
+  callExists: Boolean
+
+  """Checks for all expressions in this list."""
+  and: [ExtrinsicFilter!]
+
+  """Checks for any expressions in this list."""
+  or: [ExtrinsicFilter!]
+
+  """Negates the expression."""
+  not: ExtrinsicFilter
+}
+
+"""A connection to a list of `Extrinsic` values."""
+type ExtrinsicsConnection {
+  """A list of `Extrinsic` objects."""
+  nodes: [Extrinsic!]!
+
+  """
+  A list of edges which contains the `Extrinsic` and cursor to aid in pagination.
+  """
+  edges: [ExtrinsicsEdge!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `Extrinsic` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `Extrinsic` edge in the connection."""
+type ExtrinsicsEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `Extrinsic` at the end of the edge."""
+  node: Extrinsic!
+}
+
+"""Methods to use when ordering `Extrinsic`."""
+enum ExtrinsicsOrderBy {
+  NATURAL
+  ID_ASC
+  ID_DESC
+  INDEX_ASC
+  INDEX_DESC
+  VERSION_ASC
+  VERSION_DESC
+  SIGNATURE_ASC
+  SIGNATURE_DESC
+  TIP_ASC
+  TIP_DESC
+  FEE_ASC
+  FEE_DESC
+  SUCCESS_ASC
+  SUCCESS_DESC
+  ERROR_ASC
+  ERROR_DESC
+  HASH_ASC
+  HASH_DESC
+  BLOCK_ID_ASC
+  BLOCK_ID_DESC
+  CALL_ID_ASC
+  CALL_ID_DESC
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
+}
+
+"""
+A filter to be used against many `Call` object types. All fields are combined with a logical ‘and.’
+"""
+input ExtrinsicToManyCallFilter {
+  """
+  Every related `Call` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  every: CallFilter
+
+  """
+  Some related `Call` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  some: CallFilter
+
+  """
+  No related `Call` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  none: CallFilter
+}
+
+"""
+A filter to be used against many `Event` object types. All fields are combined with a logical ‘and.’
+"""
+input ExtrinsicToManyEventFilter {
+  """
+  Every related `Event` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  every: EventFilter
+
+  """
+  Some related `Event` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  some: EventFilter
+
+  """
+  No related `Event` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  none: EventFilter
+}
+
+"""A connection to a list of `Identity` values."""
+type IdentitiesConnection {
+  """A list of `Identity` objects."""
+  nodes: [Identity!]!
+
+  """
+  A list of edges which contains the `Identity` and cursor to aid in pagination.
+  """
+  edges: [IdentitiesEdge!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `Identity` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `Identity` edge in the connection."""
+type IdentitiesEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `Identity` at the end of the edge."""
+  node: Identity!
+}
+
+"""Methods to use when ordering `Identity`."""
+enum IdentitiesOrderBy {
+  NATURAL
+  ID_ASC
+  ID_DESC
+  INDEX_ASC
+  INDEX_DESC
+  NAME_ASC
+  NAME_DESC
+  STATUS_ASC
+  STATUS_DESC
+  CREATED_ON_ASC
+  CREATED_ON_DESC
+  LAST_CHANGE_ON_ASC
+  LAST_CHANGE_ON_DESC
+  IS_MEMBER_ASC
+  IS_MEMBER_DESC
+  EXPIRE_ON_ASC
+  EXPIRE_ON_DESC
+  FIRST_ELIGIBLE_UD_ASC
+  FIRST_ELIGIBLE_UD_DESC
+  ACCOUNT_ID_ASC
+  ACCOUNT_ID_DESC
+  ACCOUNT_REMOVED_ID_ASC
+  ACCOUNT_REMOVED_ID_DESC
+  CREATED_IN_ID_ASC
+  CREATED_IN_ID_DESC
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
+}
+
+type Identity implements Node {
+  """
+  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+  """
+  nodeId: ID!
+  id: String!
+  index: Int!
+  name: String!
+  status: String!
+  createdOn: Int!
+  lastChangeOn: Int!
+  isMember: Boolean!
+  expireOn: Int!
+  firstEligibleUd: Int
+  accountId: String
+  accountRemovedId: String
+  createdInId: String
+
+  """Reads a single `Account` that is related to this `Identity`."""
+  account: Account
+
+  """Reads a single `Account` that is related to this `Identity`."""
+  accountRemoved: Account
+
+  """Reads a single `Event` that is related to this `Identity`."""
+  createdIn: Event
+
+  """Reads and enables pagination through a set of `Cert`."""
+  certIssued(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `Cert`."""
+    orderBy: [CertsOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: CertCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: CertFilter
+  ): CertsConnection!
+
+  """Reads and enables pagination through a set of `Cert`."""
+  certReceived(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `Cert`."""
+    orderBy: [CertsOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: CertCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: CertFilter
+  ): CertsConnection!
+
+  """Reads and enables pagination through a set of `MembershipEvent`."""
+  membershipHistory(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `MembershipEvent`."""
+    orderBy: [MembershipEventsOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: MembershipEventCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: MembershipEventFilter
+  ): MembershipEventsConnection!
+
+  """Reads and enables pagination through a set of `ChangeOwnerKey`."""
+  ownerKeyChange(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `ChangeOwnerKey`."""
+    orderBy: [ChangeOwnerKeysOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ChangeOwnerKeyCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: ChangeOwnerKeyFilter
+  ): ChangeOwnerKeysConnection!
+
+  """Reads a single `Smith` that is related to this `Identity`."""
+  smith: Smith
+
+  """Reads and enables pagination through a set of `UdHistory`."""
+  udHistoryRecords(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `UdHistory`."""
+    orderBy: [UdHistoriesOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: UdHistoryCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: UdHistoryFilter
+  ): UdHistoriesConnection!
+
+  """Reads and enables pagination through a set of `Account`."""
+  accountsByLinkedIdentityId(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `Account`."""
+    orderBy: [AccountsOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: AccountCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: AccountFilter
+  ): AccountsConnection!
+
+  """Get UD history for an identity based on membership periods"""
+  udHistory(
+    orderBy: UdHistoryOrderBy
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: UdHistoryFilter
+  ): UdHistoriesConnection!
+}
+
+"""
+A condition to be used against `Identity` object types. All fields are tested
+for equality and combined with a logical ‘and.’
+"""
+input IdentityCondition {
+  """Checks for equality with the object’s `id` field."""
+  id: String
+
+  """Checks for equality with the object’s `index` field."""
+  index: Int
+
+  """Checks for equality with the object’s `name` field."""
+  name: String
+
+  """Checks for equality with the object’s `status` field."""
+  status: String
+
+  """Checks for equality with the object’s `createdOn` field."""
+  createdOn: Int
+
+  """Checks for equality with the object’s `lastChangeOn` field."""
+  lastChangeOn: Int
+
+  """Checks for equality with the object’s `isMember` field."""
+  isMember: Boolean
+
+  """Checks for equality with the object’s `expireOn` field."""
+  expireOn: Int
+
+  """Checks for equality with the object’s `firstEligibleUd` field."""
+  firstEligibleUd: Int
+
+  """Checks for equality with the object’s `accountId` field."""
+  accountId: String
+
+  """Checks for equality with the object’s `accountRemovedId` field."""
+  accountRemovedId: String
+
+  """Checks for equality with the object’s `createdInId` field."""
+  createdInId: String
+}
+
+"""
+A filter to be used against `Identity` object types. All fields are combined with a logical ‘and.’
+"""
+input IdentityFilter {
+  """Filter by the object’s `id` field."""
+  id: StringFilter
+
+  """Filter by the object’s `index` field."""
+  index: IntFilter
+
+  """Filter by the object’s `name` field."""
+  name: StringFilter
+
+  """Filter by the object’s `status` field."""
+  status: StringFilter
+
+  """Filter by the object’s `createdOn` field."""
+  createdOn: IntFilter
+
+  """Filter by the object’s `lastChangeOn` field."""
+  lastChangeOn: IntFilter
+
+  """Filter by the object’s `isMember` field."""
+  isMember: BooleanFilter
+
+  """Filter by the object’s `expireOn` field."""
+  expireOn: IntFilter
+
+  """Filter by the object’s `firstEligibleUd` field."""
+  firstEligibleUd: IntFilter
+
+  """Filter by the object’s `accountId` field."""
+  accountId: StringFilter
+
+  """Filter by the object’s `accountRemovedId` field."""
+  accountRemovedId: StringFilter
+
+  """Filter by the object’s `createdInId` field."""
+  createdInId: StringFilter
+
+  """Filter by the object’s `certIssued` relation."""
+  certIssued: IdentityToManyCertFilter
+
+  """Some related `certIssued` exist."""
+  certIssuedExist: Boolean
+
+  """Filter by the object’s `certReceived` relation."""
+  certReceived: IdentityToManyCertFilter
+
+  """Some related `certReceived` exist."""
+  certReceivedExist: Boolean
+
+  """Filter by the object’s `membershipHistory` relation."""
+  membershipHistory: IdentityToManyMembershipEventFilter
+
+  """Some related `membershipHistory` exist."""
+  membershipHistoryExist: Boolean
+
+  """Filter by the object’s `ownerKeyChange` relation."""
+  ownerKeyChange: IdentityToManyChangeOwnerKeyFilter
+
+  """Some related `ownerKeyChange` exist."""
+  ownerKeyChangeExist: Boolean
+
+  """Filter by the object’s `smith` relation."""
+  smith: SmithFilter
+
+  """A related `smith` exists."""
+  smithExists: Boolean
+
+  """Filter by the object’s `udHistoryRecords` relation."""
+  udHistoryRecords: IdentityToManyUdHistoryFilter
+
+  """Some related `udHistoryRecords` exist."""
+  udHistoryRecordsExist: Boolean
+
+  """Filter by the object’s `accountsByLinkedIdentityId` relation."""
+  accountsByLinkedIdentityId: IdentityToManyAccountFilter
+
+  """Some related `accountsByLinkedIdentityId` exist."""
+  accountsByLinkedIdentityIdExist: Boolean
+
+  """Filter by the object’s `account` relation."""
+  account: AccountFilter
+
+  """A related `account` exists."""
+  accountExists: Boolean
+
+  """Filter by the object’s `accountRemoved` relation."""
+  accountRemoved: AccountFilter
+
+  """A related `accountRemoved` exists."""
+  accountRemovedExists: Boolean
+
+  """Filter by the object’s `createdIn` relation."""
+  createdIn: EventFilter
+
+  """A related `createdIn` exists."""
+  createdInExists: Boolean
+
+  """Checks for all expressions in this list."""
+  and: [IdentityFilter!]
+
+  """Checks for any expressions in this list."""
+  or: [IdentityFilter!]
+
+  """Negates the expression."""
+  not: IdentityFilter
+}
+
+"""
+A filter to be used against many `Account` object types. All fields are combined with a logical ‘and.’
+"""
+input IdentityToManyAccountFilter {
+  """
+  Every related `Account` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  every: AccountFilter
+
+  """
+  Some related `Account` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  some: AccountFilter
+
+  """
+  No related `Account` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  none: AccountFilter
+}
+
+"""
+A filter to be used against many `Cert` object types. All fields are combined with a logical ‘and.’
+"""
+input IdentityToManyCertFilter {
+  """
+  Every related `Cert` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  every: CertFilter
+
+  """
+  Some related `Cert` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  some: CertFilter
+
+  """
+  No related `Cert` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  none: CertFilter
+}
+
+"""
+A filter to be used against many `ChangeOwnerKey` object types. All fields are combined with a logical ‘and.’
+"""
+input IdentityToManyChangeOwnerKeyFilter {
+  """
+  Every related `ChangeOwnerKey` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  every: ChangeOwnerKeyFilter
+
+  """
+  Some related `ChangeOwnerKey` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  some: ChangeOwnerKeyFilter
+
+  """
+  No related `ChangeOwnerKey` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  none: ChangeOwnerKeyFilter
+}
+
+"""
+A filter to be used against many `MembershipEvent` object types. All fields are combined with a logical ‘and.’
+"""
+input IdentityToManyMembershipEventFilter {
+  """
+  Every related `MembershipEvent` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  every: MembershipEventFilter
+
+  """
+  Some related `MembershipEvent` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  some: MembershipEventFilter
+
+  """
+  No related `MembershipEvent` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  none: MembershipEventFilter
+}
+
+"""
+A filter to be used against many `UdHistory` object types. All fields are combined with a logical ‘and.’
+"""
+input IdentityToManyUdHistoryFilter {
+  """
+  Every related `UdHistory` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  every: UdHistoryFilter
+
+  """
+  Some related `UdHistory` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  some: UdHistoryFilter
+
+  """
+  No related `UdHistory` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  none: UdHistoryFilter
+}
+
+"""
+A filter to be used against Int fields. All fields are combined with a logical ‘and.’
+"""
+input IntFilter {
+  """
+  Is null (if `true` is specified) or is not null (if `false` is specified).
+  """
+  isNull: Boolean
+
+  """Equal to the specified value."""
+  equalTo: Int
+
+  """Not equal to the specified value."""
+  notEqualTo: Int
+
+  """
+  Not equal to the specified value, treating null like an ordinary value.
+  """
+  distinctFrom: Int
+
+  """Equal to the specified value, treating null like an ordinary value."""
+  notDistinctFrom: Int
+
+  """Included in the specified list."""
+  in: [Int!]
+
+  """Not included in the specified list."""
+  notIn: [Int!]
+
+  """Less than the specified value."""
+  lessThan: Int
+
+  """Less than or equal to the specified value."""
+  lessThanOrEqualTo: Int
+
+  """Greater than the specified value."""
+  greaterThan: Int
+
+  """Greater than or equal to the specified value."""
+  greaterThanOrEqualTo: Int
+}
+
+"""
+A filter to be used against Int List fields. All fields are combined with a logical ‘and.’
+"""
+input IntListFilter {
+  """
+  Is null (if `true` is specified) or is not null (if `false` is specified).
+  """
+  isNull: Boolean
+
+  """Equal to the specified value."""
+  equalTo: [Int]
+
+  """Not equal to the specified value."""
+  notEqualTo: [Int]
+
+  """
+  Not equal to the specified value, treating null like an ordinary value.
+  """
+  distinctFrom: [Int]
+
+  """Equal to the specified value, treating null like an ordinary value."""
+  notDistinctFrom: [Int]
+
+  """Less than the specified value."""
+  lessThan: [Int]
+
+  """Less than or equal to the specified value."""
+  lessThanOrEqualTo: [Int]
+
+  """Greater than the specified value."""
+  greaterThan: [Int]
+
+  """Greater than or equal to the specified value."""
+  greaterThanOrEqualTo: [Int]
+
+  """Contains the specified list of values."""
+  contains: [Int]
+
+  """Contained by the specified list of values."""
+  containedBy: [Int]
+
+  """Overlaps the specified list of values."""
+  overlaps: [Int]
+
+  """Any array item is equal to the specified value."""
+  anyEqualTo: Int
+
+  """Any array item is not equal to the specified value."""
+  anyNotEqualTo: Int
+
+  """Any array item is less than the specified value."""
+  anyLessThan: Int
+
+  """Any array item is less than or equal to the specified value."""
+  anyLessThanOrEqualTo: Int
+
+  """Any array item is greater than the specified value."""
+  anyGreaterThan: Int
+
+  """Any array item is greater than or equal to the specified value."""
+  anyGreaterThanOrEqualTo: Int
+}
+
+type ItemsCounter implements Node {
+  """
+  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+  """
+  nodeId: ID!
+  id: String!
+  type: String!
+  level: String!
+  total: Int!
+}
+
+"""
+A condition to be used against `ItemsCounter` object types. All fields are
+tested for equality and combined with a logical ‘and.’
+"""
+input ItemsCounterCondition {
+  """Checks for equality with the object’s `id` field."""
+  id: String
+
+  """Checks for equality with the object’s `type` field."""
+  type: String
+
+  """Checks for equality with the object’s `level` field."""
+  level: String
+
+  """Checks for equality with the object’s `total` field."""
+  total: Int
+}
+
+"""
+A filter to be used against `ItemsCounter` object types. All fields are combined with a logical ‘and.’
+"""
+input ItemsCounterFilter {
+  """Filter by the object’s `id` field."""
+  id: StringFilter
+
+  """Filter by the object’s `type` field."""
+  type: StringFilter
+
+  """Filter by the object’s `level` field."""
+  level: StringFilter
+
+  """Filter by the object’s `total` field."""
+  total: IntFilter
+
+  """Checks for all expressions in this list."""
+  and: [ItemsCounterFilter!]
+
+  """Checks for any expressions in this list."""
+  or: [ItemsCounterFilter!]
+
+  """Negates the expression."""
+  not: ItemsCounterFilter
+}
+
+"""A connection to a list of `ItemsCounter` values."""
+type ItemsCountersConnection {
+  """A list of `ItemsCounter` objects."""
+  nodes: [ItemsCounter!]!
+
+  """
+  A list of edges which contains the `ItemsCounter` and cursor to aid in pagination.
+  """
+  edges: [ItemsCountersEdge!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `ItemsCounter` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `ItemsCounter` edge in the connection."""
+type ItemsCountersEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `ItemsCounter` at the end of the edge."""
+  node: ItemsCounter!
+}
+
+"""Methods to use when ordering `ItemsCounter`."""
+enum ItemsCountersOrderBy {
+  NATURAL
+  ID_ASC
+  ID_DESC
+  TYPE_ASC
+  TYPE_DESC
+  LEVEL_ASC
+  LEVEL_DESC
+  TOTAL_ASC
+  TOTAL_DESC
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
+}
+
+"""
+The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
+"""
+scalar JSON
+
+"""
+A filter to be used against JSON fields. All fields are combined with a logical ‘and.’
+"""
+input JSONFilter {
+  """
+  Is null (if `true` is specified) or is not null (if `false` is specified).
+  """
+  isNull: Boolean
+
+  """Equal to the specified value."""
+  equalTo: JSON
+
+  """Not equal to the specified value."""
+  notEqualTo: JSON
+
+  """
+  Not equal to the specified value, treating null like an ordinary value.
+  """
+  distinctFrom: JSON
+
+  """Equal to the specified value, treating null like an ordinary value."""
+  notDistinctFrom: JSON
+
+  """Included in the specified list."""
+  in: [JSON!]
+
+  """Not included in the specified list."""
+  notIn: [JSON!]
+
+  """Less than the specified value."""
+  lessThan: JSON
+
+  """Less than or equal to the specified value."""
+  lessThanOrEqualTo: JSON
+
+  """Greater than the specified value."""
+  greaterThan: JSON
+
+  """Greater than or equal to the specified value."""
+  greaterThanOrEqualTo: JSON
+
+  """Contains the specified JSON."""
+  contains: JSON
+
+  """Contains the specified key."""
+  containsKey: String
+
+  """Contains all of the specified keys."""
+  containsAllKeys: [String!]
+
+  """Contains any of the specified keys."""
+  containsAnyKeys: [String!]
+
+  """Contained by the specified JSON."""
+  containedBy: JSON
+}
+
+type MembershipEvent implements Node {
+  """
+  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+  """
+  nodeId: ID!
+  id: String!
+  eventType: String!
+  blockNumber: Int!
+  identityId: String
+  eventId: String
+
+  """Reads a single `Identity` that is related to this `MembershipEvent`."""
+  identity: Identity
+
+  """Reads a single `Event` that is related to this `MembershipEvent`."""
+  event: Event
+}
+
+"""
+A condition to be used against `MembershipEvent` object types. All fields are
+tested for equality and combined with a logical ‘and.’
+"""
+input MembershipEventCondition {
+  """Checks for equality with the object’s `id` field."""
+  id: String
+
+  """Checks for equality with the object’s `eventType` field."""
+  eventType: String
+
+  """Checks for equality with the object’s `blockNumber` field."""
+  blockNumber: Int
+
+  """Checks for equality with the object’s `identityId` field."""
+  identityId: String
+
+  """Checks for equality with the object’s `eventId` field."""
+  eventId: String
+}
+
+"""
+A filter to be used against `MembershipEvent` object types. All fields are combined with a logical ‘and.’
+"""
+input MembershipEventFilter {
+  """Filter by the object’s `id` field."""
+  id: StringFilter
+
+  """Filter by the object’s `eventType` field."""
+  eventType: StringFilter
+
+  """Filter by the object’s `blockNumber` field."""
+  blockNumber: IntFilter
+
+  """Filter by the object’s `identityId` field."""
+  identityId: StringFilter
+
+  """Filter by the object’s `eventId` field."""
+  eventId: StringFilter
+
+  """Filter by the object’s `identity` relation."""
+  identity: IdentityFilter
+
+  """A related `identity` exists."""
+  identityExists: Boolean
+
+  """Filter by the object’s `event` relation."""
+  event: EventFilter
+
+  """A related `event` exists."""
+  eventExists: Boolean
+
+  """Checks for all expressions in this list."""
+  and: [MembershipEventFilter!]
+
+  """Checks for any expressions in this list."""
+  or: [MembershipEventFilter!]
+
+  """Negates the expression."""
+  not: MembershipEventFilter
+}
+
+"""A connection to a list of `MembershipEvent` values."""
+type MembershipEventsConnection {
+  """A list of `MembershipEvent` objects."""
+  nodes: [MembershipEvent!]!
+
+  """
+  A list of edges which contains the `MembershipEvent` and cursor to aid in pagination.
+  """
+  edges: [MembershipEventsEdge!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """
+  The count of *all* `MembershipEvent` you could get from the connection.
+  """
+  totalCount: Int!
+}
+
+"""A `MembershipEvent` edge in the connection."""
+type MembershipEventsEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `MembershipEvent` at the end of the edge."""
+  node: MembershipEvent!
+}
+
+"""Methods to use when ordering `MembershipEvent`."""
+enum MembershipEventsOrderBy {
+  NATURAL
+  ID_ASC
+  ID_DESC
+  EVENT_TYPE_ASC
+  EVENT_TYPE_DESC
+  BLOCK_NUMBER_ASC
+  BLOCK_NUMBER_DESC
+  IDENTITY_ID_ASC
+  IDENTITY_ID_DESC
+  EVENT_ID_ASC
+  EVENT_ID_DESC
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
+}
+
+type Migration implements Node {
+  """
+  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+  """
+  nodeId: ID!
+  id: Int!
+  timestamp: BigInt!
+  name: String!
+}
+
+"""
+A condition to be used against `Migration` object types. All fields are tested
+for equality and combined with a logical ‘and.’
+"""
+input MigrationCondition {
+  """Checks for equality with the object’s `id` field."""
+  id: Int
+
+  """Checks for equality with the object’s `timestamp` field."""
+  timestamp: BigInt
+
+  """Checks for equality with the object’s `name` field."""
+  name: String
+}
+
+"""
+A filter to be used against `Migration` object types. All fields are combined with a logical ‘and.’
+"""
+input MigrationFilter {
+  """Filter by the object’s `id` field."""
+  id: IntFilter
+
+  """Filter by the object’s `timestamp` field."""
+  timestamp: BigIntFilter
+
+  """Filter by the object’s `name` field."""
+  name: StringFilter
+
+  """Checks for all expressions in this list."""
+  and: [MigrationFilter!]
+
+  """Checks for any expressions in this list."""
+  or: [MigrationFilter!]
+
+  """Negates the expression."""
+  not: MigrationFilter
+}
+
+"""A connection to a list of `Migration` values."""
+type MigrationsConnection {
+  """A list of `Migration` objects."""
+  nodes: [Migration!]!
+
+  """
+  A list of edges which contains the `Migration` and cursor to aid in pagination.
+  """
+  edges: [MigrationsEdge!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `Migration` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `Migration` edge in the connection."""
+type MigrationsEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `Migration` at the end of the edge."""
+  node: Migration!
+}
+
+"""Methods to use when ordering `Migration`."""
+enum MigrationsOrderBy {
+  NATURAL
+  ID_ASC
+  ID_DESC
+  TIMESTAMP_ASC
+  TIMESTAMP_DESC
+  NAME_ASC
+  NAME_DESC
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
+}
+
+"""An object with a globally unique `ID`."""
+interface Node {
+  """
+  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+  """
+  nodeId: ID!
+}
+
+"""Information about pagination in a connection."""
+type PageInfo {
+  """When paginating forwards, are there more items?"""
+  hasNextPage: Boolean!
+
+  """When paginating backwards, are there more items?"""
+  hasPreviousPage: Boolean!
+
+  """When paginating backwards, the cursor to continue."""
+  startCursor: Cursor
+
+  """When paginating forwards, the cursor to continue."""
+  endCursor: Cursor
+}
+
+"""A connection to a list of `PopulationHistory` values."""
+type PopulationHistoriesConnection {
+  """A list of `PopulationHistory` objects."""
+  nodes: [PopulationHistory!]!
+
+  """
+  A list of edges which contains the `PopulationHistory` and cursor to aid in pagination.
+  """
+  edges: [PopulationHistoriesEdge!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """
+  The count of *all* `PopulationHistory` you could get from the connection.
+  """
+  totalCount: Int!
+}
+
+"""A `PopulationHistory` edge in the connection."""
+type PopulationHistoriesEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `PopulationHistory` at the end of the edge."""
+  node: PopulationHistory!
+}
+
+"""Methods to use when ordering `PopulationHistory`."""
+enum PopulationHistoriesOrderBy {
+  NATURAL
+  ID_ASC
+  ID_DESC
+  SMITH_COUNT_ASC
+  SMITH_COUNT_DESC
+  MEMBER_COUNT_ASC
+  MEMBER_COUNT_DESC
+  ACTIVE_ACCOUNT_COUNT_ASC
+  ACTIVE_ACCOUNT_COUNT_DESC
+  BLOCK_NUMBER_ASC
+  BLOCK_NUMBER_DESC
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
+}
+
+type PopulationHistory implements Node {
+  """
+  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+  """
+  nodeId: ID!
+  id: String!
+  smithCount: Int!
+  memberCount: Int!
+  activeAccountCount: Int!
+  blockNumber: Int!
+}
+
+"""
+A condition to be used against `PopulationHistory` object types. All fields are
+tested for equality and combined with a logical ‘and.’
+"""
+input PopulationHistoryCondition {
+  """Checks for equality with the object’s `id` field."""
+  id: String
+
+  """Checks for equality with the object’s `smithCount` field."""
+  smithCount: Int
+
+  """Checks for equality with the object’s `memberCount` field."""
+  memberCount: Int
+
+  """Checks for equality with the object’s `activeAccountCount` field."""
+  activeAccountCount: Int
+
+  """Checks for equality with the object’s `blockNumber` field."""
+  blockNumber: Int
+}
+
+"""
+A filter to be used against `PopulationHistory` object types. All fields are combined with a logical ‘and.’
+"""
+input PopulationHistoryFilter {
+  """Filter by the object’s `id` field."""
+  id: StringFilter
+
+  """Filter by the object’s `smithCount` field."""
+  smithCount: IntFilter
+
+  """Filter by the object’s `memberCount` field."""
+  memberCount: IntFilter
+
+  """Filter by the object’s `activeAccountCount` field."""
+  activeAccountCount: IntFilter
+
+  """Filter by the object’s `blockNumber` field."""
+  blockNumber: IntFilter
+
+  """Checks for all expressions in this list."""
+  and: [PopulationHistoryFilter!]
+
+  """Checks for any expressions in this list."""
+  or: [PopulationHistoryFilter!]
+
+  """Negates the expression."""
+  not: PopulationHistoryFilter
+}
+
+"""The root query type which gives access points into the data universe."""
+type Query implements Node {
+  """
+  Exposes the root query type nested one level down. This is helpful for Relay 1
+  which can only query top level fields if they are in a particular form.
+  """
+  query: Query!
+
+  """
+  The root query type must be a `Node` to work well with Relay 1 mutations. This just resolves to `query`.
+  """
+  nodeId: ID!
+
+  """Fetches an object given its globally unique `ID`."""
+  node(
+    """The globally unique `ID`."""
+    nodeId: ID!
+  ): Node
+
+  """Reads and enables pagination through a set of `Account`."""
+  accounts(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `Account`."""
+    orderBy: [AccountsOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: AccountCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: AccountFilter
+  ): AccountsConnection
+
+  """Reads and enables pagination through a set of `Block`."""
+  blocks(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `Block`."""
+    orderBy: [BlocksOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: BlockCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: BlockFilter
+  ): BlocksConnection
+
+  """Reads and enables pagination through a set of `Call`."""
+  calls(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `Call`."""
+    orderBy: [CallsOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: CallCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: CallFilter
+  ): CallsConnection
+
+  """Reads and enables pagination through a set of `Cert`."""
+  certs(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `Cert`."""
+    orderBy: [CertsOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: CertCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: CertFilter
+  ): CertsConnection
+
+  """Reads and enables pagination through a set of `CertEvent`."""
+  certEvents(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `CertEvent`."""
+    orderBy: [CertEventsOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: CertEventCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: CertEventFilter
+  ): CertEventsConnection
+
+  """Reads and enables pagination through a set of `ChangeOwnerKey`."""
+  changeOwnerKeys(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `ChangeOwnerKey`."""
+    orderBy: [ChangeOwnerKeysOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ChangeOwnerKeyCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: ChangeOwnerKeyFilter
+  ): ChangeOwnerKeysConnection
+
+  """Reads and enables pagination through a set of `Event`."""
+  events(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `Event`."""
+    orderBy: [EventsOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: EventCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: EventFilter
+  ): EventsConnection
+
+  """Reads and enables pagination through a set of `Extrinsic`."""
+  extrinsics(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `Extrinsic`."""
+    orderBy: [ExtrinsicsOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ExtrinsicCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: ExtrinsicFilter
+  ): ExtrinsicsConnection
+
+  """Reads and enables pagination through a set of `Identity`."""
+  identities(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `Identity`."""
+    orderBy: [IdentitiesOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: IdentityCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: IdentityFilter
+  ): IdentitiesConnection
+
+  """Reads and enables pagination through a set of `ItemsCounter`."""
+  itemsCounters(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `ItemsCounter`."""
+    orderBy: [ItemsCountersOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ItemsCounterCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: ItemsCounterFilter
+  ): ItemsCountersConnection
+
+  """Reads and enables pagination through a set of `MembershipEvent`."""
+  membershipEvents(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `MembershipEvent`."""
+    orderBy: [MembershipEventsOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: MembershipEventCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: MembershipEventFilter
+  ): MembershipEventsConnection
+
+  """Reads and enables pagination through a set of `Migration`."""
+  migrations(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `Migration`."""
+    orderBy: [MigrationsOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: MigrationCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: MigrationFilter
+  ): MigrationsConnection
+
+  """Reads and enables pagination through a set of `PopulationHistory`."""
+  populationHistories(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `PopulationHistory`."""
+    orderBy: [PopulationHistoriesOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: PopulationHistoryCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: PopulationHistoryFilter
+  ): PopulationHistoriesConnection
+
+  """Reads and enables pagination through a set of `Smith`."""
+  smiths(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `Smith`."""
+    orderBy: [SmithsOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: SmithCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: SmithFilter
+  ): SmithsConnection
+
+  """Reads and enables pagination through a set of `SmithCert`."""
+  smithCerts(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `SmithCert`."""
+    orderBy: [SmithCertsOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: SmithCertCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: SmithCertFilter
+  ): SmithCertsConnection
+
+  """Reads and enables pagination through a set of `SmithEvent`."""
+  smithEvents(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `SmithEvent`."""
+    orderBy: [SmithEventsOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: SmithEventCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: SmithEventFilter
+  ): SmithEventsConnection
+
+  """Reads and enables pagination through a set of `Transfer`."""
+  transfers(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `Transfer`."""
+    orderBy: [TransfersOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: TransferCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: TransferFilter
+  ): TransfersConnection
+
+  """Reads and enables pagination through a set of `TxComment`."""
+  txComments(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `TxComment`."""
+    orderBy: [TxCommentsOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: TxCommentCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: TxCommentFilter
+  ): TxCommentsConnection
+
+  """Reads and enables pagination through a set of `UdHistory`."""
+  udHistories(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `UdHistory`."""
+    orderBy: [UdHistoriesOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: UdHistoryCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: UdHistoryFilter
+  ): UdHistoriesConnection
+
+  """Reads and enables pagination through a set of `UdReeval`."""
+  udReevals(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `UdReeval`."""
+    orderBy: [UdReevalsOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: UdReevalCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: UdReevalFilter
+  ): UdReevalsConnection
+
+  """Reads and enables pagination through a set of `UniversalDividend`."""
+  universalDividends(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `UniversalDividend`."""
+    orderBy: [UniversalDividendsOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: UniversalDividendCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: UniversalDividendFilter
+  ): UniversalDividendsConnection
+
+  """Reads and enables pagination through a set of `Validator`."""
+  validators(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `Validator`."""
+    orderBy: [ValidatorsOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ValidatorCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: ValidatorFilter
+  ): ValidatorsConnection
+  identityByAccountId(accountId: String!): Identity
+  smithByIdentityId(identityId: String!): Smith
+  udHistory(id: String!): UdHistory
+  squidStatus: _ProcessorStatus!
+  version: _IndexerInfo!
+}
+
+type Smith implements Node {
+  """
+  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+  """
+  nodeId: ID!
+  id: String!
+  index: Int!
+  smithStatus: String
+  lastChanged: Int
+  forged: Int!
+  lastForged: Int
+  identityId: String
+
+  """Reads a single `Identity` that is related to this `Smith`."""
+  identity: Identity
+
+  """Reads and enables pagination through a set of `SmithCert`."""
+  smithCertIssued(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `SmithCert`."""
+    orderBy: [SmithCertsOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: SmithCertCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: SmithCertFilter
+  ): SmithCertsConnection!
+
+  """Reads and enables pagination through a set of `SmithCert`."""
+  smithCertReceived(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `SmithCert`."""
+    orderBy: [SmithCertsOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: SmithCertCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: SmithCertFilter
+  ): SmithCertsConnection!
+
+  """Reads and enables pagination through a set of `SmithEvent`."""
+  smithHistory(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `SmithEvent`."""
+    orderBy: [SmithEventsOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: SmithEventCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: SmithEventFilter
+  ): SmithEventsConnection!
+}
+
+type SmithCert implements Node {
+  """
+  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+  """
+  nodeId: ID!
+  id: String!
+  createdOn: Int!
+  issuerId: String
+  receiverId: String
+
+  """Reads a single `Smith` that is related to this `SmithCert`."""
+  issuer: Smith
+
+  """Reads a single `Smith` that is related to this `SmithCert`."""
+  receiver: Smith
+}
+
+"""
+A condition to be used against `SmithCert` object types. All fields are tested
+for equality and combined with a logical ‘and.’
+"""
+input SmithCertCondition {
+  """Checks for equality with the object’s `id` field."""
+  id: String
+
+  """Checks for equality with the object’s `createdOn` field."""
+  createdOn: Int
+
+  """Checks for equality with the object’s `issuerId` field."""
+  issuerId: String
+
+  """Checks for equality with the object’s `receiverId` field."""
+  receiverId: String
+}
+
+"""
+A filter to be used against `SmithCert` object types. All fields are combined with a logical ‘and.’
+"""
+input SmithCertFilter {
+  """Filter by the object’s `id` field."""
+  id: StringFilter
+
+  """Filter by the object’s `createdOn` field."""
+  createdOn: IntFilter
+
+  """Filter by the object’s `issuerId` field."""
+  issuerId: StringFilter
+
+  """Filter by the object’s `receiverId` field."""
+  receiverId: StringFilter
+
+  """Filter by the object’s `issuer` relation."""
+  issuer: SmithFilter
+
+  """A related `issuer` exists."""
+  issuerExists: Boolean
+
+  """Filter by the object’s `receiver` relation."""
+  receiver: SmithFilter
+
+  """A related `receiver` exists."""
+  receiverExists: Boolean
+
+  """Checks for all expressions in this list."""
+  and: [SmithCertFilter!]
+
+  """Checks for any expressions in this list."""
+  or: [SmithCertFilter!]
+
+  """Negates the expression."""
+  not: SmithCertFilter
+}
+
+"""A connection to a list of `SmithCert` values."""
+type SmithCertsConnection {
+  """A list of `SmithCert` objects."""
+  nodes: [SmithCert!]!
+
+  """
+  A list of edges which contains the `SmithCert` and cursor to aid in pagination.
+  """
+  edges: [SmithCertsEdge!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `SmithCert` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `SmithCert` edge in the connection."""
+type SmithCertsEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `SmithCert` at the end of the edge."""
+  node: SmithCert!
+}
+
+"""Methods to use when ordering `SmithCert`."""
+enum SmithCertsOrderBy {
+  NATURAL
+  ID_ASC
+  ID_DESC
+  CREATED_ON_ASC
+  CREATED_ON_DESC
+  ISSUER_ID_ASC
+  ISSUER_ID_DESC
+  RECEIVER_ID_ASC
+  RECEIVER_ID_DESC
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
+}
+
+"""
+A condition to be used against `Smith` object types. All fields are tested for equality and combined with a logical ‘and.’
+"""
+input SmithCondition {
+  """Checks for equality with the object’s `id` field."""
+  id: String
+
+  """Checks for equality with the object’s `index` field."""
+  index: Int
+
+  """Checks for equality with the object’s `smithStatus` field."""
+  smithStatus: String
+
+  """Checks for equality with the object’s `lastChanged` field."""
+  lastChanged: Int
+
+  """Checks for equality with the object’s `forged` field."""
+  forged: Int
+
+  """Checks for equality with the object’s `lastForged` field."""
+  lastForged: Int
+
+  """Checks for equality with the object’s `identityId` field."""
+  identityId: String
+}
+
+type SmithEvent implements Node {
+  """
+  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+  """
+  nodeId: ID!
+  id: String!
+  eventType: String!
+  blockNumber: Int!
+  smithId: String
+  eventId: String
+
+  """Reads a single `Smith` that is related to this `SmithEvent`."""
+  smith: Smith
+
+  """Reads a single `Event` that is related to this `SmithEvent`."""
+  event: Event
+}
+
+"""
+A condition to be used against `SmithEvent` object types. All fields are tested
+for equality and combined with a logical ‘and.’
+"""
+input SmithEventCondition {
+  """Checks for equality with the object’s `id` field."""
+  id: String
+
+  """Checks for equality with the object’s `eventType` field."""
+  eventType: String
+
+  """Checks for equality with the object’s `blockNumber` field."""
+  blockNumber: Int
+
+  """Checks for equality with the object’s `smithId` field."""
+  smithId: String
+
+  """Checks for equality with the object’s `eventId` field."""
+  eventId: String
+}
+
+"""
+A filter to be used against `SmithEvent` object types. All fields are combined with a logical ‘and.’
+"""
+input SmithEventFilter {
+  """Filter by the object’s `id` field."""
+  id: StringFilter
+
+  """Filter by the object’s `eventType` field."""
+  eventType: StringFilter
+
+  """Filter by the object’s `blockNumber` field."""
+  blockNumber: IntFilter
+
+  """Filter by the object’s `smithId` field."""
+  smithId: StringFilter
+
+  """Filter by the object’s `eventId` field."""
+  eventId: StringFilter
+
+  """Filter by the object’s `smith` relation."""
+  smith: SmithFilter
+
+  """A related `smith` exists."""
+  smithExists: Boolean
+
+  """Filter by the object’s `event` relation."""
+  event: EventFilter
+
+  """A related `event` exists."""
+  eventExists: Boolean
+
+  """Checks for all expressions in this list."""
+  and: [SmithEventFilter!]
+
+  """Checks for any expressions in this list."""
+  or: [SmithEventFilter!]
+
+  """Negates the expression."""
+  not: SmithEventFilter
+}
+
+"""A connection to a list of `SmithEvent` values."""
+type SmithEventsConnection {
+  """A list of `SmithEvent` objects."""
+  nodes: [SmithEvent!]!
+
+  """
+  A list of edges which contains the `SmithEvent` and cursor to aid in pagination.
+  """
+  edges: [SmithEventsEdge!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `SmithEvent` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `SmithEvent` edge in the connection."""
+type SmithEventsEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `SmithEvent` at the end of the edge."""
+  node: SmithEvent!
+}
+
+"""Methods to use when ordering `SmithEvent`."""
+enum SmithEventsOrderBy {
+  NATURAL
+  ID_ASC
+  ID_DESC
+  EVENT_TYPE_ASC
+  EVENT_TYPE_DESC
+  BLOCK_NUMBER_ASC
+  BLOCK_NUMBER_DESC
+  SMITH_ID_ASC
+  SMITH_ID_DESC
+  EVENT_ID_ASC
+  EVENT_ID_DESC
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
+}
+
+"""
+A filter to be used against `Smith` object types. All fields are combined with a logical ‘and.’
+"""
+input SmithFilter {
+  """Filter by the object’s `id` field."""
+  id: StringFilter
+
+  """Filter by the object’s `index` field."""
+  index: IntFilter
+
+  """Filter by the object’s `smithStatus` field."""
+  smithStatus: StringFilter
+
+  """Filter by the object’s `lastChanged` field."""
+  lastChanged: IntFilter
+
+  """Filter by the object’s `forged` field."""
+  forged: IntFilter
+
+  """Filter by the object’s `lastForged` field."""
+  lastForged: IntFilter
+
+  """Filter by the object’s `identityId` field."""
+  identityId: StringFilter
+
+  """Filter by the object’s `smithCertIssued` relation."""
+  smithCertIssued: SmithToManySmithCertFilter
+
+  """Some related `smithCertIssued` exist."""
+  smithCertIssuedExist: Boolean
+
+  """Filter by the object’s `smithCertReceived` relation."""
+  smithCertReceived: SmithToManySmithCertFilter
+
+  """Some related `smithCertReceived` exist."""
+  smithCertReceivedExist: Boolean
+
+  """Filter by the object’s `smithHistory` relation."""
+  smithHistory: SmithToManySmithEventFilter
+
+  """Some related `smithHistory` exist."""
+  smithHistoryExist: Boolean
+
+  """Filter by the object’s `identity` relation."""
+  identity: IdentityFilter
+
+  """A related `identity` exists."""
+  identityExists: Boolean
+
+  """Checks for all expressions in this list."""
+  and: [SmithFilter!]
+
+  """Checks for any expressions in this list."""
+  or: [SmithFilter!]
+
+  """Negates the expression."""
+  not: SmithFilter
+}
+
+"""A connection to a list of `Smith` values."""
+type SmithsConnection {
+  """A list of `Smith` objects."""
+  nodes: [Smith!]!
+
+  """
+  A list of edges which contains the `Smith` and cursor to aid in pagination.
+  """
+  edges: [SmithsEdge!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `Smith` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `Smith` edge in the connection."""
+type SmithsEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `Smith` at the end of the edge."""
+  node: Smith!
+}
+
+"""Methods to use when ordering `Smith`."""
+enum SmithsOrderBy {
+  NATURAL
+  ID_ASC
+  ID_DESC
+  INDEX_ASC
+  INDEX_DESC
+  SMITH_STATUS_ASC
+  SMITH_STATUS_DESC
+  LAST_CHANGED_ASC
+  LAST_CHANGED_DESC
+  FORGED_ASC
+  FORGED_DESC
+  LAST_FORGED_ASC
+  LAST_FORGED_DESC
+  IDENTITY_ID_ASC
+  IDENTITY_ID_DESC
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
+}
+
+"""
+A filter to be used against many `SmithCert` object types. All fields are combined with a logical ‘and.’
+"""
+input SmithToManySmithCertFilter {
+  """
+  Every related `SmithCert` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  every: SmithCertFilter
+
+  """
+  Some related `SmithCert` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  some: SmithCertFilter
+
+  """
+  No related `SmithCert` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  none: SmithCertFilter
+}
+
+"""
+A filter to be used against many `SmithEvent` object types. All fields are combined with a logical ‘and.’
+"""
+input SmithToManySmithEventFilter {
+  """
+  Every related `SmithEvent` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  every: SmithEventFilter
+
+  """
+  Some related `SmithEvent` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  some: SmithEventFilter
+
+  """
+  No related `SmithEvent` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  none: SmithEventFilter
+}
+
+"""
+A filter to be used against String fields. All fields are combined with a logical ‘and.’
+"""
+input StringFilter {
+  """
+  Is null (if `true` is specified) or is not null (if `false` is specified).
+  """
+  isNull: Boolean
+
+  """Equal to the specified value."""
+  equalTo: String
+
+  """Not equal to the specified value."""
+  notEqualTo: String
+
+  """
+  Not equal to the specified value, treating null like an ordinary value.
+  """
+  distinctFrom: String
+
+  """Equal to the specified value, treating null like an ordinary value."""
+  notDistinctFrom: String
+
+  """Included in the specified list."""
+  in: [String!]
+
+  """Not included in the specified list."""
+  notIn: [String!]
+
+  """Less than the specified value."""
+  lessThan: String
+
+  """Less than or equal to the specified value."""
+  lessThanOrEqualTo: String
+
+  """Greater than the specified value."""
+  greaterThan: String
+
+  """Greater than or equal to the specified value."""
+  greaterThanOrEqualTo: String
+
+  """Contains the specified string (case-sensitive)."""
+  includes: String
+
+  """Does not contain the specified string (case-sensitive)."""
+  notIncludes: String
+
+  """Contains the specified string (case-insensitive)."""
+  includesInsensitive: String
+
+  """Does not contain the specified string (case-insensitive)."""
+  notIncludesInsensitive: String
+
+  """Starts with the specified string (case-sensitive)."""
+  startsWith: String
+
+  """Does not start with the specified string (case-sensitive)."""
+  notStartsWith: String
+
+  """Starts with the specified string (case-insensitive)."""
+  startsWithInsensitive: String
+
+  """Does not start with the specified string (case-insensitive)."""
+  notStartsWithInsensitive: String
+
+  """Ends with the specified string (case-sensitive)."""
+  endsWith: String
+
+  """Does not end with the specified string (case-sensitive)."""
+  notEndsWith: String
+
+  """Ends with the specified string (case-insensitive)."""
+  endsWithInsensitive: String
+
+  """Does not end with the specified string (case-insensitive)."""
+  notEndsWithInsensitive: String
+
+  """
+  Matches the specified pattern (case-sensitive). An underscore (_) matches any
+  single character; a percent sign (%) matches any sequence of zero or more characters.
+  """
+  like: String
+
+  """
+  Does not match the specified pattern (case-sensitive). An underscore (_)
+  matches any single character; a percent sign (%) matches any sequence of zero
+  or more characters.
+  """
+  notLike: String
+
+  """
+  Matches the specified pattern (case-insensitive). An underscore (_) matches
+  any single character; a percent sign (%) matches any sequence of zero or more characters.
+  """
+  likeInsensitive: String
+
+  """
+  Does not match the specified pattern (case-insensitive). An underscore (_)
+  matches any single character; a percent sign (%) matches any sequence of zero
+  or more characters.
+  """
+  notLikeInsensitive: String
+
+  """Equal to the specified value (case-insensitive)."""
+  equalToInsensitive: String
+
+  """Not equal to the specified value (case-insensitive)."""
+  notEqualToInsensitive: String
+
+  """
+  Not equal to the specified value, treating null like an ordinary value (case-insensitive).
+  """
+  distinctFromInsensitive: String
+
+  """
+  Equal to the specified value, treating null like an ordinary value (case-insensitive).
+  """
+  notDistinctFromInsensitive: String
+
+  """Included in the specified list (case-insensitive)."""
+  inInsensitive: [String!]
+
+  """Not included in the specified list (case-insensitive)."""
+  notInInsensitive: [String!]
+
+  """Less than the specified value (case-insensitive)."""
+  lessThanInsensitive: String
+
+  """Less than or equal to the specified value (case-insensitive)."""
+  lessThanOrEqualToInsensitive: String
+
+  """Greater than the specified value (case-insensitive)."""
+  greaterThanInsensitive: String
+
+  """Greater than or equal to the specified value (case-insensitive)."""
+  greaterThanOrEqualToInsensitive: String
+}
+
+"""
+A filter to be used against String List fields. All fields are combined with a logical ‘and.’
+"""
+input StringListFilter {
+  """
+  Is null (if `true` is specified) or is not null (if `false` is specified).
+  """
+  isNull: Boolean
+
+  """Equal to the specified value."""
+  equalTo: [String]
+
+  """Not equal to the specified value."""
+  notEqualTo: [String]
+
+  """
+  Not equal to the specified value, treating null like an ordinary value.
+  """
+  distinctFrom: [String]
+
+  """Equal to the specified value, treating null like an ordinary value."""
+  notDistinctFrom: [String]
+
+  """Less than the specified value."""
+  lessThan: [String]
+
+  """Less than or equal to the specified value."""
+  lessThanOrEqualTo: [String]
+
+  """Greater than the specified value."""
+  greaterThan: [String]
+
+  """Greater than or equal to the specified value."""
+  greaterThanOrEqualTo: [String]
+
+  """Contains the specified list of values."""
+  contains: [String]
+
+  """Contained by the specified list of values."""
+  containedBy: [String]
+
+  """Overlaps the specified list of values."""
+  overlaps: [String]
+
+  """Any array item is equal to the specified value."""
+  anyEqualTo: String
+
+  """Any array item is not equal to the specified value."""
+  anyNotEqualTo: String
+
+  """Any array item is less than the specified value."""
+  anyLessThan: String
+
+  """Any array item is less than or equal to the specified value."""
+  anyLessThanOrEqualTo: String
+
+  """Any array item is greater than the specified value."""
+  anyGreaterThan: String
+
+  """Any array item is greater than or equal to the specified value."""
+  anyGreaterThanOrEqualTo: String
+}
+
+"""
+The root subscription type: contains events and live queries you can subscribe to with the `subscription` operation.
+
+#### Live Queries
+
+Live query fields are differentiated by containing `(live)` at the end of their
+description, they are added for each field in the `Query` type. When you
+subscribe to a live query field, the selection set will be evaluated and sent to
+the client, and then most things\* that would cause the output of the selection
+set to change will trigger the selection set to be re-evaluated and the results
+to be re-sent to the client.
+
+_(\* Not everything: typically only changes to persisted data referenced by the query are detected, not computed fields.)_
+
+Live queries can be very expensive, so try and keep them small and focussed.
+
+#### Events
+
+Event fields will run their selection set when, and only when, the specified
+server-side event occurs. This makes them a lot more efficient than Live
+Queries, but it is still recommended that you keep payloads fairly small.
+"""
+type Subscription {
+  """
+  Exposes the root query type nested one level down. This is helpful for Relay 1
+  which can only query top level fields if they are in a particular form. (live)
+  """
+  query: Query!
+
+  """
+  The root query type must be a `Node` to work well with Relay 1 mutations. This just resolves to `query`. (live)
+  """
+  nodeId: ID!
+
+  """Fetches an object given its globally unique `ID`. (live)"""
+  node(
+    """The globally unique `ID`."""
+    nodeId: ID!
+  ): Node
+
+  """Reads and enables pagination through a set of `Account`. (live)"""
+  accounts(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `Account`."""
+    orderBy: [AccountsOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: AccountCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: AccountFilter
+  ): AccountsConnection
+
+  """Reads and enables pagination through a set of `Block`. (live)"""
+  blocks(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `Block`."""
+    orderBy: [BlocksOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: BlockCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: BlockFilter
+  ): BlocksConnection
+
+  """Reads and enables pagination through a set of `Call`. (live)"""
+  calls(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `Call`."""
+    orderBy: [CallsOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: CallCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: CallFilter
+  ): CallsConnection
+
+  """Reads and enables pagination through a set of `Cert`. (live)"""
+  certs(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `Cert`."""
+    orderBy: [CertsOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: CertCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: CertFilter
+  ): CertsConnection
+
+  """Reads and enables pagination through a set of `CertEvent`. (live)"""
+  certEvents(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `CertEvent`."""
+    orderBy: [CertEventsOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: CertEventCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: CertEventFilter
+  ): CertEventsConnection
+
+  """Reads and enables pagination through a set of `ChangeOwnerKey`. (live)"""
+  changeOwnerKeys(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `ChangeOwnerKey`."""
+    orderBy: [ChangeOwnerKeysOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ChangeOwnerKeyCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: ChangeOwnerKeyFilter
+  ): ChangeOwnerKeysConnection
+
+  """Reads and enables pagination through a set of `Event`. (live)"""
+  events(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `Event`."""
+    orderBy: [EventsOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: EventCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: EventFilter
+  ): EventsConnection
+
+  """Reads and enables pagination through a set of `Extrinsic`. (live)"""
+  extrinsics(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `Extrinsic`."""
+    orderBy: [ExtrinsicsOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ExtrinsicCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: ExtrinsicFilter
+  ): ExtrinsicsConnection
+
+  """Reads and enables pagination through a set of `Identity`. (live)"""
+  identities(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `Identity`."""
+    orderBy: [IdentitiesOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: IdentityCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: IdentityFilter
+  ): IdentitiesConnection
+
+  """Reads and enables pagination through a set of `ItemsCounter`. (live)"""
+  itemsCounters(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `ItemsCounter`."""
+    orderBy: [ItemsCountersOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ItemsCounterCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: ItemsCounterFilter
+  ): ItemsCountersConnection
+
+  """
+  Reads and enables pagination through a set of `MembershipEvent`. (live)
+  """
+  membershipEvents(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `MembershipEvent`."""
+    orderBy: [MembershipEventsOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: MembershipEventCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: MembershipEventFilter
+  ): MembershipEventsConnection
+
+  """Reads and enables pagination through a set of `Migration`. (live)"""
+  migrations(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `Migration`."""
+    orderBy: [MigrationsOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: MigrationCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: MigrationFilter
+  ): MigrationsConnection
+
+  """
+  Reads and enables pagination through a set of `PopulationHistory`. (live)
+  """
+  populationHistories(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `PopulationHistory`."""
+    orderBy: [PopulationHistoriesOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: PopulationHistoryCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: PopulationHistoryFilter
+  ): PopulationHistoriesConnection
+
+  """Reads and enables pagination through a set of `Smith`. (live)"""
+  smiths(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `Smith`."""
+    orderBy: [SmithsOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: SmithCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: SmithFilter
+  ): SmithsConnection
+
+  """Reads and enables pagination through a set of `SmithCert`. (live)"""
+  smithCerts(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `SmithCert`."""
+    orderBy: [SmithCertsOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: SmithCertCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: SmithCertFilter
+  ): SmithCertsConnection
+
+  """Reads and enables pagination through a set of `SmithEvent`. (live)"""
+  smithEvents(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `SmithEvent`."""
+    orderBy: [SmithEventsOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: SmithEventCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: SmithEventFilter
+  ): SmithEventsConnection
+
+  """Reads and enables pagination through a set of `Transfer`. (live)"""
+  transfers(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `Transfer`."""
+    orderBy: [TransfersOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: TransferCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: TransferFilter
+  ): TransfersConnection
+
+  """Reads and enables pagination through a set of `TxComment`. (live)"""
+  txComments(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `TxComment`."""
+    orderBy: [TxCommentsOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: TxCommentCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: TxCommentFilter
+  ): TxCommentsConnection
+
+  """Reads and enables pagination through a set of `UdHistory`. (live)"""
+  udHistories(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `UdHistory`."""
+    orderBy: [UdHistoriesOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: UdHistoryCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: UdHistoryFilter
+  ): UdHistoriesConnection
+
+  """Reads and enables pagination through a set of `UdReeval`. (live)"""
+  udReevals(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `UdReeval`."""
+    orderBy: [UdReevalsOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: UdReevalCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: UdReevalFilter
+  ): UdReevalsConnection
+
+  """
+  Reads and enables pagination through a set of `UniversalDividend`. (live)
+  """
+  universalDividends(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `UniversalDividend`."""
+    orderBy: [UniversalDividendsOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: UniversalDividendCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: UniversalDividendFilter
+  ): UniversalDividendsConnection
+
+  """Reads and enables pagination through a set of `Validator`. (live)"""
+  validators(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `Validator`."""
+    orderBy: [ValidatorsOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ValidatorCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: ValidatorFilter
+  ): ValidatorsConnection
+
+  """ (live)"""
+  identityByAccountId(accountId: String!): Identity
+
+  """ (live)"""
+  smithByIdentityId(identityId: String!): Smith
+
+  """ (live)"""
+  udHistory(id: String!): UdHistory
+
+  """ (live)"""
+  squidStatus: _ProcessorStatus!
+
+  """ (live)"""
+  version: _IndexerInfo!
+}
+
+type Transfer implements Node {
+  """
+  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+  """
+  nodeId: ID!
+  id: String!
+  blockNumber: Int!
+  timestamp: Datetime!
+  amount: BigInt!
+  fromId: String
+  toId: String
+  eventId: String
+  commentId: String
+
+  """Reads a single `Account` that is related to this `Transfer`."""
+  from: Account
+
+  """Reads a single `Account` that is related to this `Transfer`."""
+  to: Account
+
+  """Reads a single `Event` that is related to this `Transfer`."""
+  event: Event
+
+  """Reads a single `TxComment` that is related to this `Transfer`."""
+  comment: TxComment
+}
+
+"""
+A condition to be used against `Transfer` object types. All fields are tested
+for equality and combined with a logical ‘and.’
+"""
+input TransferCondition {
+  """Checks for equality with the object’s `id` field."""
+  id: String
+
+  """Checks for equality with the object’s `blockNumber` field."""
+  blockNumber: Int
+
+  """Checks for equality with the object’s `timestamp` field."""
+  timestamp: Datetime
+
+  """Checks for equality with the object’s `amount` field."""
+  amount: BigFloat
+
+  """Checks for equality with the object’s `fromId` field."""
+  fromId: String
+
+  """Checks for equality with the object’s `toId` field."""
+  toId: String
+
+  """Checks for equality with the object’s `eventId` field."""
+  eventId: String
+
+  """Checks for equality with the object’s `commentId` field."""
+  commentId: String
+}
+
+"""
+A filter to be used against `Transfer` object types. All fields are combined with a logical ‘and.’
+"""
+input TransferFilter {
+  """Filter by the object’s `id` field."""
+  id: StringFilter
+
+  """Filter by the object’s `blockNumber` field."""
+  blockNumber: IntFilter
+
+  """Filter by the object’s `timestamp` field."""
+  timestamp: DatetimeFilter
+
+  """Filter by the object’s `amount` field."""
+  amount: BigFloatFilter
+
+  """Filter by the object’s `fromId` field."""
+  fromId: StringFilter
+
+  """Filter by the object’s `toId` field."""
+  toId: StringFilter
+
+  """Filter by the object’s `eventId` field."""
+  eventId: StringFilter
+
+  """Filter by the object’s `commentId` field."""
+  commentId: StringFilter
+
+  """Filter by the object’s `from` relation."""
+  from: AccountFilter
+
+  """A related `from` exists."""
+  fromExists: Boolean
+
+  """Filter by the object’s `to` relation."""
+  to: AccountFilter
+
+  """A related `to` exists."""
+  toExists: Boolean
+
+  """Filter by the object’s `event` relation."""
+  event: EventFilter
+
+  """A related `event` exists."""
+  eventExists: Boolean
+
+  """Filter by the object’s `comment` relation."""
+  comment: TxCommentFilter
+
+  """A related `comment` exists."""
+  commentExists: Boolean
+
+  """Checks for all expressions in this list."""
+  and: [TransferFilter!]
+
+  """Checks for any expressions in this list."""
+  or: [TransferFilter!]
+
+  """Negates the expression."""
+  not: TransferFilter
+}
+
+"""A connection to a list of `Transfer` values."""
+type TransfersConnection {
+  """A list of `Transfer` objects."""
+  nodes: [Transfer!]!
+
+  """
+  A list of edges which contains the `Transfer` and cursor to aid in pagination.
+  """
+  edges: [TransfersEdge!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `Transfer` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `Transfer` edge in the connection."""
+type TransfersEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `Transfer` at the end of the edge."""
+  node: Transfer!
+}
+
+"""Methods to use when ordering `Transfer`."""
+enum TransfersOrderBy {
+  NATURAL
+  ID_ASC
+  ID_DESC
+  BLOCK_NUMBER_ASC
+  BLOCK_NUMBER_DESC
+  TIMESTAMP_ASC
+  TIMESTAMP_DESC
+  AMOUNT_ASC
+  AMOUNT_DESC
+  FROM_ID_ASC
+  FROM_ID_DESC
+  TO_ID_ASC
+  TO_ID_DESC
+  EVENT_ID_ASC
+  EVENT_ID_DESC
+  COMMENT_ID_ASC
+  COMMENT_ID_DESC
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
+}
+
+type TransferWithUd {
+  id: String
+  blockNumber: Int
+  timestamp: Datetime
+  fromId: String
+  toId: String
+  amount: BigInt
+  eventId: String
+  commentId: String
+  isUd: Boolean
+  udAmount: BigInt
+  udIdentityId: String
+}
+
+"""
+A filter to be used against `TransferWithUd` object types. All fields are combined with a logical ‘and.’
+"""
+input TransferWithUdFilter {
+  """Filter by the object’s `id` field."""
+  id: StringFilter
+
+  """Filter by the object’s `blockNumber` field."""
+  blockNumber: IntFilter
+
+  """Filter by the object’s `timestamp` field."""
+  timestamp: DatetimeFilter
+
+  """Filter by the object’s `fromId` field."""
+  fromId: StringFilter
+
+  """Filter by the object’s `toId` field."""
+  toId: StringFilter
+
+  """Filter by the object’s `amount` field."""
+  amount: BigFloatFilter
+
+  """Filter by the object’s `eventId` field."""
+  eventId: StringFilter
+
+  """Filter by the object’s `commentId` field."""
+  commentId: StringFilter
+
+  """Filter by the object’s `isUd` field."""
+  isUd: BooleanFilter
+
+  """Filter by the object’s `udAmount` field."""
+  udAmount: BigFloatFilter
+
+  """Filter by the object’s `udIdentityId` field."""
+  udIdentityId: StringFilter
+
+  """Checks for all expressions in this list."""
+  and: [TransferWithUdFilter!]
+
+  """Checks for any expressions in this list."""
+  or: [TransferWithUdFilter!]
+
+  """Negates the expression."""
+  not: TransferWithUdFilter
+}
+
+enum TransferWithUdOrderBy {
+  BLOCK_NUMBER_ASC
+  BLOCK_NUMBER_DESC
+  TIMESTAMP_ASC
+  TIMESTAMP_DESC
+  AMOUNT_ASC
+  AMOUNT_DESC
+}
+
+"""A connection to a list of `TransferWithUd` values."""
+type TransferWithUdsConnection {
+  """A list of `TransferWithUd` objects."""
+  nodes: [TransferWithUd!]!
+
+  """
+  A list of edges which contains the `TransferWithUd` and cursor to aid in pagination.
+  """
+  edges: [TransferWithUdsEdge!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `TransferWithUd` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `TransferWithUd` edge in the connection."""
+type TransferWithUdsEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `TransferWithUd` at the end of the edge."""
+  node: TransferWithUd!
+}
+
+type TxComment implements Node {
+  """
+  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+  """
+  nodeId: ID!
+  id: String!
+  blockNumber: Int!
+  remarkBytes: String!
+  remark: String!
+  hash: String!
+  type: String!
+  authorId: String
+  eventId: String
+
+  """Reads a single `Account` that is related to this `TxComment`."""
+  author: Account
+
+  """Reads a single `Event` that is related to this `TxComment`."""
+  event: Event
+
+  """Reads and enables pagination through a set of `Transfer`."""
+  transfersByCommentId(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `Transfer`."""
+    orderBy: [TransfersOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: TransferCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: TransferFilter
+  ): TransfersConnection!
+}
+
+"""
+A condition to be used against `TxComment` object types. All fields are tested
+for equality and combined with a logical ‘and.’
+"""
+input TxCommentCondition {
+  """Checks for equality with the object’s `id` field."""
+  id: String
+
+  """Checks for equality with the object’s `blockNumber` field."""
+  blockNumber: Int
+
+  """Checks for equality with the object’s `remarkBytes` field."""
+  remarkBytes: String
+
+  """Checks for equality with the object’s `remark` field."""
+  remark: String
+
+  """Checks for equality with the object’s `hash` field."""
+  hash: String
+
+  """Checks for equality with the object’s `type` field."""
+  type: String
+
+  """Checks for equality with the object’s `authorId` field."""
+  authorId: String
+
+  """Checks for equality with the object’s `eventId` field."""
+  eventId: String
+}
+
+"""
+A filter to be used against `TxComment` object types. All fields are combined with a logical ‘and.’
+"""
+input TxCommentFilter {
+  """Filter by the object’s `id` field."""
+  id: StringFilter
+
+  """Filter by the object’s `blockNumber` field."""
+  blockNumber: IntFilter
+
+  """Filter by the object’s `remark` field."""
+  remark: StringFilter
+
+  """Filter by the object’s `hash` field."""
+  hash: StringFilter
+
+  """Filter by the object’s `type` field."""
+  type: StringFilter
+
+  """Filter by the object’s `authorId` field."""
+  authorId: StringFilter
+
+  """Filter by the object’s `eventId` field."""
+  eventId: StringFilter
+
+  """Filter by the object’s `transfersByCommentId` relation."""
+  transfersByCommentId: TxCommentToManyTransferFilter
+
+  """Some related `transfersByCommentId` exist."""
+  transfersByCommentIdExist: Boolean
+
+  """Filter by the object’s `author` relation."""
+  author: AccountFilter
+
+  """A related `author` exists."""
+  authorExists: Boolean
+
+  """Filter by the object’s `event` relation."""
+  event: EventFilter
+
+  """A related `event` exists."""
+  eventExists: Boolean
+
+  """Checks for all expressions in this list."""
+  and: [TxCommentFilter!]
+
+  """Checks for any expressions in this list."""
+  or: [TxCommentFilter!]
+
+  """Negates the expression."""
+  not: TxCommentFilter
+}
+
+"""A connection to a list of `TxComment` values."""
+type TxCommentsConnection {
+  """A list of `TxComment` objects."""
+  nodes: [TxComment!]!
+
+  """
+  A list of edges which contains the `TxComment` and cursor to aid in pagination.
+  """
+  edges: [TxCommentsEdge!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `TxComment` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `TxComment` edge in the connection."""
+type TxCommentsEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `TxComment` at the end of the edge."""
+  node: TxComment!
+}
+
+"""Methods to use when ordering `TxComment`."""
+enum TxCommentsOrderBy {
+  NATURAL
+  ID_ASC
+  ID_DESC
+  BLOCK_NUMBER_ASC
+  BLOCK_NUMBER_DESC
+  REMARK_BYTES_ASC
+  REMARK_BYTES_DESC
+  REMARK_ASC
+  REMARK_DESC
+  HASH_ASC
+  HASH_DESC
+  TYPE_ASC
+  TYPE_DESC
+  AUTHOR_ID_ASC
+  AUTHOR_ID_DESC
+  EVENT_ID_ASC
+  EVENT_ID_DESC
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
+}
+
+"""
+A filter to be used against many `Transfer` object types. All fields are combined with a logical ‘and.’
+"""
+input TxCommentToManyTransferFilter {
+  """
+  Every related `Transfer` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  every: TransferFilter
+
+  """
+  Some related `Transfer` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  some: TransferFilter
+
+  """
+  No related `Transfer` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  none: TransferFilter
+}
+
+"""A connection to a list of `UdHistory` values."""
+type UdHistoriesConnection {
+  """A list of `UdHistory` objects."""
+  nodes: [UdHistory!]!
+
+  """
+  A list of edges which contains the `UdHistory` and cursor to aid in pagination.
+  """
+  edges: [UdHistoriesEdge!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `UdHistory` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `UdHistory` edge in the connection."""
+type UdHistoriesEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `UdHistory` at the end of the edge."""
+  node: UdHistory!
+}
+
+"""Methods to use when ordering `UdHistory`."""
+enum UdHistoriesOrderBy {
+  NATURAL
+  ID_ASC
+  ID_DESC
+  AMOUNT_ASC
+  AMOUNT_DESC
+  BLOCK_NUMBER_ASC
+  BLOCK_NUMBER_DESC
+  TIMESTAMP_ASC
+  TIMESTAMP_DESC
+  IDENTITY_ID_ASC
+  IDENTITY_ID_DESC
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
+}
+
+type UdHistory implements Node {
+  """
+  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+  """
+  nodeId: ID!
+  id: String!
+  amount: BigInt!
+  blockNumber: Int!
+  timestamp: Datetime!
+  identityId: String
+
+  """Reads a single `Identity` that is related to this `UdHistory`."""
+  identity: Identity
+}
+
+"""
+A condition to be used against `UdHistory` object types. All fields are tested
+for equality and combined with a logical ‘and.’
+"""
+input UdHistoryCondition {
+  """Checks for equality with the object’s `id` field."""
+  id: String
+
+  """Checks for equality with the object’s `amount` field."""
+  amount: BigFloat
+
+  """Checks for equality with the object’s `blockNumber` field."""
+  blockNumber: Int
+
+  """Checks for equality with the object’s `timestamp` field."""
+  timestamp: Datetime
+
+  """Checks for equality with the object’s `identityId` field."""
+  identityId: String
+}
+
+"""
+A filter to be used against `UdHistory` object types. All fields are combined with a logical ‘and.’
+"""
+input UdHistoryFilter {
+  """Filter by the object’s `id` field."""
+  id: StringFilter
+
+  """Filter by the object’s `amount` field."""
+  amount: BigFloatFilter
+
+  """Filter by the object’s `blockNumber` field."""
+  blockNumber: IntFilter
+
+  """Filter by the object’s `timestamp` field."""
+  timestamp: DatetimeFilter
+
+  """Filter by the object’s `identityId` field."""
+  identityId: StringFilter
+
+  """Filter by the object’s `identity` relation."""
+  identity: IdentityFilter
+
+  """A related `identity` exists."""
+  identityExists: Boolean
+
+  """Checks for all expressions in this list."""
+  and: [UdHistoryFilter!]
+
+  """Checks for any expressions in this list."""
+  or: [UdHistoryFilter!]
+
+  """Negates the expression."""
+  not: UdHistoryFilter
+}
+
+enum UdHistoryOrderBy {
+  BLOCK_NUMBER_ASC
+  BLOCK_NUMBER_DESC
+  TIMESTAMP_ASC
+  TIMESTAMP_DESC
+  AMOUNT_ASC
+  AMOUNT_DESC
+}
+
+type UdReeval implements Node {
+  """
+  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+  """
+  nodeId: ID!
+  id: String!
+  blockNumber: Int!
+  timestamp: Datetime!
+  newUdAmount: BigInt!
+  monetaryMass: BigInt!
+  membersCount: Int!
+  udIndex: Int!
+  eventId: String
+
+  """Reads a single `Event` that is related to this `UdReeval`."""
+  event: Event
+}
+
+"""
+A condition to be used against `UdReeval` object types. All fields are tested
+for equality and combined with a logical ‘and.’
+"""
+input UdReevalCondition {
+  """Checks for equality with the object’s `id` field."""
+  id: String
+
+  """Checks for equality with the object’s `blockNumber` field."""
+  blockNumber: Int
+
+  """Checks for equality with the object’s `timestamp` field."""
+  timestamp: Datetime
+
+  """Checks for equality with the object’s `newUdAmount` field."""
+  newUdAmount: BigFloat
+
+  """Checks for equality with the object’s `monetaryMass` field."""
+  monetaryMass: BigFloat
+
+  """Checks for equality with the object’s `membersCount` field."""
+  membersCount: Int
+
+  """Checks for equality with the object’s `udIndex` field."""
+  udIndex: Int
+
+  """Checks for equality with the object’s `eventId` field."""
+  eventId: String
+}
+
+"""
+A filter to be used against `UdReeval` object types. All fields are combined with a logical ‘and.’
+"""
+input UdReevalFilter {
+  """Filter by the object’s `id` field."""
+  id: StringFilter
+
+  """Filter by the object’s `blockNumber` field."""
+  blockNumber: IntFilter
+
+  """Filter by the object’s `timestamp` field."""
+  timestamp: DatetimeFilter
+
+  """Filter by the object’s `newUdAmount` field."""
+  newUdAmount: BigFloatFilter
+
+  """Filter by the object’s `monetaryMass` field."""
+  monetaryMass: BigFloatFilter
+
+  """Filter by the object’s `membersCount` field."""
+  membersCount: IntFilter
+
+  """Filter by the object’s `udIndex` field."""
+  udIndex: IntFilter
+
+  """Filter by the object’s `eventId` field."""
+  eventId: StringFilter
+
+  """Filter by the object’s `event` relation."""
+  event: EventFilter
+
+  """A related `event` exists."""
+  eventExists: Boolean
+
+  """Checks for all expressions in this list."""
+  and: [UdReevalFilter!]
+
+  """Checks for any expressions in this list."""
+  or: [UdReevalFilter!]
+
+  """Negates the expression."""
+  not: UdReevalFilter
+}
+
+"""A connection to a list of `UdReeval` values."""
+type UdReevalsConnection {
+  """A list of `UdReeval` objects."""
+  nodes: [UdReeval!]!
+
+  """
+  A list of edges which contains the `UdReeval` and cursor to aid in pagination.
+  """
+  edges: [UdReevalsEdge!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `UdReeval` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `UdReeval` edge in the connection."""
+type UdReevalsEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `UdReeval` at the end of the edge."""
+  node: UdReeval!
+}
+
+"""Methods to use when ordering `UdReeval`."""
+enum UdReevalsOrderBy {
+  NATURAL
+  ID_ASC
+  ID_DESC
+  BLOCK_NUMBER_ASC
+  BLOCK_NUMBER_DESC
+  TIMESTAMP_ASC
+  TIMESTAMP_DESC
+  NEW_UD_AMOUNT_ASC
+  NEW_UD_AMOUNT_DESC
+  MONETARY_MASS_ASC
+  MONETARY_MASS_DESC
+  MEMBERS_COUNT_ASC
+  MEMBERS_COUNT_DESC
+  UD_INDEX_ASC
+  UD_INDEX_DESC
+  EVENT_ID_ASC
+  EVENT_ID_DESC
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
+}
+
+type UniversalDividend implements Node {
+  """
+  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+  """
+  nodeId: ID!
+  id: String!
+  blockNumber: Int!
+  timestamp: Datetime!
+  amount: BigInt!
+  monetaryMass: BigInt!
+  membersCount: Int!
+  index: Int!
+  eventId: String
+
+  """Reads a single `Event` that is related to this `UniversalDividend`."""
+  event: Event
+}
+
+"""
+A condition to be used against `UniversalDividend` object types. All fields are
+tested for equality and combined with a logical ‘and.’
+"""
+input UniversalDividendCondition {
+  """Checks for equality with the object’s `id` field."""
+  id: String
+
+  """Checks for equality with the object’s `blockNumber` field."""
+  blockNumber: Int
+
+  """Checks for equality with the object’s `timestamp` field."""
+  timestamp: Datetime
+
+  """Checks for equality with the object’s `amount` field."""
+  amount: BigFloat
+
+  """Checks for equality with the object’s `monetaryMass` field."""
+  monetaryMass: BigFloat
+
+  """Checks for equality with the object’s `membersCount` field."""
+  membersCount: Int
+
+  """Checks for equality with the object’s `index` field."""
+  index: Int
+
+  """Checks for equality with the object’s `eventId` field."""
+  eventId: String
+}
+
+"""
+A filter to be used against `UniversalDividend` object types. All fields are combined with a logical ‘and.’
+"""
+input UniversalDividendFilter {
+  """Filter by the object’s `id` field."""
+  id: StringFilter
+
+  """Filter by the object’s `blockNumber` field."""
+  blockNumber: IntFilter
+
+  """Filter by the object’s `timestamp` field."""
+  timestamp: DatetimeFilter
+
+  """Filter by the object’s `amount` field."""
+  amount: BigFloatFilter
+
+  """Filter by the object’s `monetaryMass` field."""
+  monetaryMass: BigFloatFilter
+
+  """Filter by the object’s `membersCount` field."""
+  membersCount: IntFilter
+
+  """Filter by the object’s `index` field."""
+  index: IntFilter
+
+  """Filter by the object’s `eventId` field."""
+  eventId: StringFilter
+
+  """Filter by the object’s `event` relation."""
+  event: EventFilter
+
+  """A related `event` exists."""
+  eventExists: Boolean
+
+  """Checks for all expressions in this list."""
+  and: [UniversalDividendFilter!]
+
+  """Checks for any expressions in this list."""
+  or: [UniversalDividendFilter!]
+
+  """Negates the expression."""
+  not: UniversalDividendFilter
+}
+
+"""A connection to a list of `UniversalDividend` values."""
+type UniversalDividendsConnection {
+  """A list of `UniversalDividend` objects."""
+  nodes: [UniversalDividend!]!
+
+  """
+  A list of edges which contains the `UniversalDividend` and cursor to aid in pagination.
+  """
+  edges: [UniversalDividendsEdge!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """
+  The count of *all* `UniversalDividend` you could get from the connection.
+  """
+  totalCount: Int!
+}
+
+"""A `UniversalDividend` edge in the connection."""
+type UniversalDividendsEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `UniversalDividend` at the end of the edge."""
+  node: UniversalDividend!
+}
+
+"""Methods to use when ordering `UniversalDividend`."""
+enum UniversalDividendsOrderBy {
+  NATURAL
+  ID_ASC
+  ID_DESC
+  BLOCK_NUMBER_ASC
+  BLOCK_NUMBER_DESC
+  TIMESTAMP_ASC
+  TIMESTAMP_DESC
+  AMOUNT_ASC
+  AMOUNT_DESC
+  MONETARY_MASS_ASC
+  MONETARY_MASS_DESC
+  MEMBERS_COUNT_ASC
+  MEMBERS_COUNT_DESC
+  INDEX_ASC
+  INDEX_DESC
+  EVENT_ID_ASC
+  EVENT_ID_DESC
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
+}
+
+type Validator implements Node {
+  """
+  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+  """
+  nodeId: ID!
+  id: String!
+  index: Int!
+}
+
+"""
+A condition to be used against `Validator` object types. All fields are tested
+for equality and combined with a logical ‘and.’
+"""
+input ValidatorCondition {
+  """Checks for equality with the object’s `id` field."""
+  id: String
+
+  """Checks for equality with the object’s `index` field."""
+  index: Int
+}
+
+"""
+A filter to be used against `Validator` object types. All fields are combined with a logical ‘and.’
+"""
+input ValidatorFilter {
+  """Filter by the object’s `id` field."""
+  id: StringFilter
+
+  """Filter by the object’s `index` field."""
+  index: IntFilter
+
+  """Checks for all expressions in this list."""
+  and: [ValidatorFilter!]
+
+  """Checks for any expressions in this list."""
+  or: [ValidatorFilter!]
+
+  """Negates the expression."""
+  not: ValidatorFilter
+}
+
+"""A connection to a list of `Validator` values."""
+type ValidatorsConnection {
+  """A list of `Validator` objects."""
+  nodes: [Validator!]!
+
+  """
+  A list of edges which contains the `Validator` and cursor to aid in pagination.
+  """
+  edges: [ValidatorsEdge!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `Validator` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `Validator` edge in the connection."""
+type ValidatorsEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `Validator` at the end of the edge."""
+  node: Validator!
+}
+
+"""Methods to use when ordering `Validator`."""
+enum ValidatorsOrderBy {
+  NATURAL
+  ID_ASC
+  ID_DESC
+  INDEX_ASC
+  INDEX_DESC
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
+}
+

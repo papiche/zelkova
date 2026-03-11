@@ -13,6 +13,17 @@ class NodeListCubit extends HydratedCubit<NodeListState> {
 
   Node? get currentGvaNode => state.currentGvaNode;
 
+  @override
+  // ignore: must_call_super
+  Future<void> close() {
+    // Prevent to close de node list cubit
+    return Future<void>.value();
+  }
+
+  Future<void> closeCubit() async {
+    await super.close();
+  }
+
   void setCurrentGvaNode(Node node) {
     emit(state.copyWith(currentGvaNode: node));
   }
@@ -21,35 +32,41 @@ class NodeListCubit extends HydratedCubit<NodeListState> {
     emit(state.copyWith(isLoading: isLoading));
   }
 
-  void setDuniterNodes(List<Node> nodes) {
-    emit(state.copyWith(duniterNodes: nodes));
+  void setDuniterIndexerNodes(List<Node> nodes) {
+    emit(state.copyWith(
+        duniterIndexerNodes: nodes,
+        duniterIndexerNodesLastUpdate: DateTime.now()));
   }
 
-  void setDuniterIndexerNodes(List<Node> nodes) {
-    emit(state.copyWith(duniterIndexerNodes: nodes));
+  void setDuniterDataNodes(List<Node> nodes) {
+    emit(state.copyWith(
+        duniterDataNodes: nodes, duniterDataNodesLastUpdate: DateTime.now()));
+  }
+
+  void setIpfsGateways(List<Node> nodes) {
+    emit(state.copyWith(
+        ipfsGateways: nodes, ipfsGatewaysLastUpdate: DateTime.now()));
   }
 
   void setCesiumPlusNodes(List<Node> nodes) {
-    emit(state.copyWith(cesiumPlusNodes: nodes));
-  }
-
-  void setGvaNodes(List<Node> nodes) {
-    emit(state.copyWith(gvaNodes: nodes));
+    emit(state.copyWith(
+        cesiumPlusNodes: nodes, cesiumPlusNodesLastUpdate: DateTime.now()));
   }
 
   void setEndpointNodes(List<Node> nodes) {
-    emit(state.copyWith(endpointNodes: nodes));
+    emit(state.copyWith(
+        endpointNodes: nodes, endpointNodesLastUpdate: DateTime.now()));
   }
 
-  List<Node> get duniterNodes => state.duniterNodes;
-
   List<Node> get cesiumPlusNodes => state.cesiumPlusNodes;
-
-  List<Node> get gvaNodes => state.gvaNodes;
 
   List<Node> get endpointNodes => state.endpointNodes;
 
   List<Node> get duniterIndexerNodes => state.duniterIndexerNodes;
+
+  List<Node> get duniterDataNodes => state.duniterDataNodes;
+
+  List<Node> get ipfsGateways => state.ipfsGateways;
 
   @override
   NodeListState? fromJson(Map<String, dynamic> json) =>
@@ -62,11 +79,17 @@ class NodeListCubit extends HydratedCubit<NodeListState> {
 
   void resetCurrentGvaNode() {
     emit(NodeListState(
-        gvaNodes: state.gvaNodes,
-        duniterNodes: state.duniterNodes,
         cesiumPlusNodes: state.cesiumPlusNodes,
         endpointNodes: state.endpointNodes,
         duniterIndexerNodes: state.duniterIndexerNodes,
         isLoading: state.isLoading));
+  }
+
+  /// Clears V2 node cache (endpoint + duniter indexer nodes only).
+  /// Preserves all V1 nodes and other user data.
+  /// Used during migration to force reload from updated .env file.
+  void clearV2Nodes() {
+    emit(
+        state.copyWith(endpointNodes: <Node>[], duniterIndexerNodes: <Node>[]));
   }
 }

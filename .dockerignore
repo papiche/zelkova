@@ -1,0 +1,48 @@
+# Build artifacts (including nested in packages/)
+**/build/
+**/.dart_tool/
+.packages
+
+# IDE
+**/.idea/
+**/*.iml
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Git
+.git/
+.gitignore
+
+# Docker
+docker-compose*.yml
+
+# Android/iOS/Desktop/Linux (not needed for web build)
+android/
+ios/
+macos/
+windows/
+linux/
+
+# Tests (not needed for web build)
+test/
+integration_test/
+**/test/
+
+# Docs
+*.md
+LICENSE
+CHANGELOG
+
+# Env files are required at build time for Flutter assets
+
+# Flutter generated
+.flutter-plugins
+.flutter-plugins-dependencies
+.metadata
+
+# Old docker files
+proxy-gva.conf
+docker-compose-gva.yml

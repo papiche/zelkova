@@ -1,0 +1,348 @@
+# GitLab CI/CD Pipeline for Ginkgo - Ğ1 Wallet
+# Multi-platform Flutter builds (Android, Web, Linux)
+
+# Global variables
+variables:
+  FLUTTER_VERSION: "3.41.2"
+  PUB_CACHE: "$CI_PROJECT_DIR/.pub-cache"
+  
+  # Disable git shallow clone for better caching
+  GIT_DEPTH: 0
+
+# Cache strategy - shared across jobs for faster builds
+cache:
+  key:
+    files:
+      - pubspec.lock
+  paths:
+    - .dart_tool/
+    - .flutter-plugins
+    - .flutter-plugins-dependencies
+    - .packages
+    - $PUB_CACHE
+
+# Pipeline stages
+stages:
+  - test
+  - build
+
+#############################################
+# STAGE: TEST
+#############################################
+
+test:unit:
+  stage: test
+  image: ghcr.io/cirruslabs/flutter:${FLUTTER_VERSION}
+  
+  before_script:
+    # Copy .env files (required by envied for environment variables)
+    - cp dot.env.sample .env
+    - cp dot.env.sample .env.dev
+    # Copy ast.json to es-AST.json (required by translations)
+    - cp assets/translations/ast.json assets/translations/es-AST.json
+  
+  script:
+    # Clean build artifacts
+    - flutter clean
+    
+    # Install dependencies
+    - flutter pub get
+    
+    # Install dependencies for local packages
+    - cd packages/duniter_datapod && flutter pub get && cd ../..
+    - cd packages/duniter_indexer && flutter pub get && cd ../..
+    
+    # Generate code (envied, json_serializable, copy_with_extension, etc)
+    - dart run build_runner build --delete-conflicting-outputs
+    
+    # Run unit tests with coverage
+    - flutter test --coverage
+    
+    # Test local packages
+    - cd packages/duniter_datapod && flutter test
+    - cd ../duniter_indexer && flutter test
+  
+  # Extract coverage percentage for GitLab UI
+  coverage: '/lines\.*: \d+\.\d+%/'
+  
+  artifacts:
+    reports:
+      coverage_report:
+        coverage_format: cobertura
+        path: coverage/cobertura.xml
+    paths:
+      - coverage/
+    expire_in: 7 days
+    when: always
+  
+  # Run on all branches and MRs
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+    - if: '$CI_COMMIT_BRANCH'
+
+test:integration-patrol:
+  stage: test
+  image: ghcr.io/cirruslabs/flutter:${FLUTTER_VERSION}
+  
+  before_script:
+    # Copy .env files (required by envied for environment variables)
+    - cp dot.env.sample .env
+    - cp dot.env.sample .env.dev
+    # Copy ast.json to es-AST.json (required by translations)
+    - cp assets/translations/ast.json assets/translations/es-AST.json
+  
+  script:
+    # Clean build artifacts
+    - flutter clean
+    
+    # Install dependencies
+    - flutter pub get
+    - cd packages/duniter_datapod && flutter pub get && cd ../..
+    - cd packages/duniter_indexer && flutter pub get && cd ../..
+    
+    # Generate code
+    - dart run build_runner build --delete-conflicting-outputs
+    
+    # TODO: Enable Patrol integration tests in Phase 2
+    # Note: Patrol requires either:
+    # 1. Mobile device emulator (Android/iOS)
+    # 2. Proper web browser setup with Xvfb or headless Chrome
+    # For now, rely on comprehensive unit tests + local integration testing
+    # 
+    # To enable web tests, would need:
+    # - apt-get install chromium-browser xvfb
+    # - export DISPLAY=:99
+    # - dart pub global activate patrol_cli
+    # - patrol test integration_test/ --tags "web"
+  
+  # Only run on MRs and main branch to save CI minutes
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+
+#############################################
+# STAGE: BUILD
+#############################################
+
+build:web:
+  stage: build
+  image: ghcr.io/cirruslabs/flutter:${FLUTTER_VERSION}
+  
+  before_script:
+    # Copy .env files (required by envied for environment variables)
+    - cp dot.env.sample .env
+    - cp dot.env.sample .env.dev
+    # Copy ast.json to es-AST.json (required by translations)
+    - cp assets/translations/ast.json assets/translations/es-AST.json
+  
+  script:
+    # Clean build artifacts
+    - flutter clean
+    
+    # Install dependencies
+    - flutter pub get
+    - cd packages/duniter_datapod && flutter pub get && cd ../..
+    - cd packages/duniter_indexer && flutter pub get && cd ../..
+    
+    # Generate code
+    - dart run build_runner build --delete-conflicting-outputs
+    
+    # Build web
+    - flutter build web --release
+    
+    # Extract version from pubspec.yaml
+    - export VERSION=$(grep "^version:" pubspec.yaml | cut -d":" -f2 | tr -d ' ')
+    - echo "Building web version $VERSION"
+    
+    # Create tarball
+    - tar czf ginkgo-web-$VERSION.tgz -C build/web .
+    - echo "Created ginkgo-web-$VERSION.tgz"
+  
+  artifacts:
+    name: "ginkgo-web-${CI_COMMIT_REF_SLUG}-${CI_COMMIT_SHORT_SHA}"
+    paths:
+      - ginkgo-web-*.tgz
+      - build/web/
+    expire_in: 30 days
+  
+  # Only build on tags and main
+  rules:
+    - if: '$CI_COMMIT_TAG'
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+
+build:android:
+  stage: build
+  image: ghcr.io/cirruslabs/flutter:${FLUTTER_VERSION}
+  
+  before_script:
+    
+    # Copy .env files (required by envied for environment variables)
+    - cp dot.env.sample .env
+    - cp dot.env.sample .env.dev
+    # Copy ast.json to es-AST.json (required by translations)
+    - cp assets/translations/ast.json assets/translations/es-AST.json
+  
+  script:
+    # Clean build artifacts
+    - flutter clean
+    
+    # Install dependencies
+    - flutter pub get
+    - cd packages/duniter_datapod && flutter pub get && cd ../..
+    - cd packages/duniter_indexer && flutter pub get && cd ../..
+    
+    # Generate code
+    - dart run build_runner build --delete-conflicting-outputs
+    
+    # Build APK (production flavor)
+    # Note: This builds unsigned APK. For signed builds, configure keystore in CI/CD variables
+    - flutter build apk --flavor production -t lib/main.dart --release
+    
+    # Extract version
+    - export VERSION=$(grep "^version:" pubspec.yaml | cut -d":" -f2 | tr -d ' ')
+    - echo "Building Android version $VERSION"
+    
+    # Rename artifact with version
+    - cp build/app/outputs/flutter-apk/app-production-release.apk g1nkgo-$VERSION.apk
+    - echo "Created g1nkgo-$VERSION.apk"
+  
+  artifacts:
+    name: "g1nkgo-android-${CI_COMMIT_REF_SLUG}-${CI_COMMIT_SHORT_SHA}"
+    paths:
+      - g1nkgo-*.apk
+    expire_in: 30 days
+  
+  # Only build on tags and main
+  rules:
+    - if: '$CI_COMMIT_TAG'
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+
+build:linux:
+  stage: build
+  image: ghcr.io/cirruslabs/flutter:${FLUTTER_VERSION}
+  
+  before_script:
+    # Copy .env files (required by envied for environment variables)
+    - cp dot.env.sample .env
+    - cp dot.env.sample .env.dev
+    
+    # Install dependencies for Linux build
+    - apt-get update -qq
+    # Core build tools
+    - apt-get install -y -qq clang cmake ninja-build pkg-config build-essential binutils
+    # GTK and UI dependencies
+    - apt-get install -y -qq libgtk-3-dev mesa-utils
+    # Compression and archive tools
+    - apt-get install -y -qq liblzma-dev zip unzip
+    # Security and networking
+    - apt-get install -y -qq libsecret-1-dev libcurl4-openssl-dev
+    # Binary utilities and tools
+    - apt-get install -y -qq patchelf jq binutils
+    
+    # Install NDK build tools required for Android build
+    # LLVM/LLD linker tools - needed for native compilation
+    - apt-get install -y -qq llvm-18 lld-18 || apt-get install -y -qq llvm lld
+    
+    # Install flutter_to_debian for .deb packaging
+    - dart pub global activate flutter_to_debian
+    - export PATH="$PATH:$PUB_CACHE/bin"
+    
+    # Copy translation file
+    - cp assets/translations/ast.json assets/translations/es-AST.json
+  
+  script:
+    # Clean build artifacts
+    - flutter clean
+    
+    # Install dependencies
+    - flutter pub get
+    - cd packages/duniter_datapod && flutter pub get && cd ../..
+    - cd packages/duniter_indexer && flutter pub get && cd ../..
+    
+    # Generate code
+    - dart run build_runner build --delete-conflicting-outputs
+    
+    # Build Linux release
+    - flutter build linux --release
+    
+    # Fix RPATH in plugin libraries
+    # This fixes Flutter bug #65400 where plugins have hardcoded RUNPATH
+    # Without this, the app fails silently on other machines
+    - |
+      echo "Fixing RPATH in plugin libraries..."
+      for lib in build/linux/x64/release/bundle/lib/lib*_plugin.so; do
+        if [ -f "$lib" ]; then
+          echo "  Patching $(basename $lib)"
+          patchelf --set-rpath '$ORIGIN' "$lib" || {
+            echo "  ERROR: Failed to patch $(basename $lib)"
+            exit 1
+          }
+        fi
+      done
+    
+    # Verify RPATH fix was applied correctly
+    - |
+      echo "Verifying RPATH fix..."
+      FAILED=0
+      for lib in build/linux/x64/release/bundle/lib/lib*_plugin.so; do
+        if [ -f "$lib" ]; then
+          RPATH=$(readelf -d "$lib" | grep RUNPATH | cut -d'[' -f2 | cut -d']' -f1 || echo "none")
+          if [ "$RPATH" = "\$ORIGIN" ]; then
+            echo "  ✓ $(basename $lib): RUNPATH=$RPATH"
+          else
+            echo "  ✗ $(basename $lib): RUNPATH=$RPATH (expected \$ORIGIN)"
+            FAILED=1
+          fi
+        fi
+      done
+      if [ $FAILED -eq 1 ]; then
+        echo "ERROR: RPATH fix verification failed"
+        exit 1
+      fi
+    
+    # Extract version
+    - export VERSION=$(grep "^version:" pubspec.yaml | cut -d":" -f2 | tr -d ' ')
+    - echo "Building Linux version $VERSION"
+    
+    # Create tarball
+    - cd build/linux/x64/release/bundle
+    - tar czf ../../../../../g1nkgo-linux-$VERSION.tgz *
+    - cd -
+    - echo "Created g1nkgo-linux-$VERSION.tgz"
+    
+    # Build Debian package
+    - flutter_to_debian
+    - cp build/linux/x64/release/debian/*.deb g1nkgo-$VERSION-amd64.deb
+    - echo "Created g1nkgo-$VERSION-amd64.deb"
+  
+  artifacts:
+    name: "g1nkgo-linux-${CI_COMMIT_REF_SLUG}-${CI_COMMIT_SHORT_SHA}"
+    paths:
+      - g1nkgo-linux-*.tgz
+      - g1nkgo-*-amd64.deb
+    expire_in: 30 days
+  
+  # Only build on tags and main
+  rules:
+    - if: '$CI_COMMIT_TAG'
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+
+#############################################
+# FUTURE: Docker & Deployment (Phase 2)
+#############################################
+
+# Uncomment when ready for Docker-based deployment
+#
+# docker:build:
+#   stage: docker
+#   image: docker:latest
+#   services:
+#     - docker:dind
+#   script:
+#     - docker build -t ginkgo:$CI_COMMIT_SHORT_SHA .
+#     - docker tag ginkgo:$CI_COMMIT_SHORT_SHA $CI_REGISTRY_IMAGE:latest
+#     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+#     - docker push $CI_REGISTRY_IMAGE:latest
+#   rules:
+#     - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+#     - if: '$CI_COMMIT_TAG'

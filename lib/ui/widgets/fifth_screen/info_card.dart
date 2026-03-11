@@ -37,7 +37,7 @@ class InfoCard extends StatelessWidget {
           style: Theme.of(context)
               .textTheme
               .titleMedium!
-              .apply(fontWeightDelta: 2),
+              .apply(fontWeightDelta: -1),
         ),
       ),
     );

@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 
 import '../../g1/g1_helper.dart';
+import '../../g1/g1_v2_helper.dart';
 import '../../ui/contacts_cache.dart';
 import '../../ui/ui_helpers.dart';
 import 'contact.dart';
@@ -142,11 +143,30 @@ class ContactsCubit extends HydratedCubit<ContactsState> {
     final String queryLower = query.toLowerCase();
     final String queryUpper =
         queryLower[0].toUpperCase() + queryLower.substring(1);
+
+    // If query looks like a v2 address, also search by its v1 pubkey equivalent
+    String? queryAsV1Pubkey;
+    try {
+      if (isValidV2Address(query)) {
+        queryAsV1Pubkey = v1pubkeyFromAddress(query);
+      }
+    } catch (e) {
+      // If conversion fails, continue without v1 pubkey
+      queryAsV1Pubkey = null;
+    }
+
     final List<Contact> contacts = state.contacts.where((Contact c) {
       if (c.pubKey.contains(query)) {
         return true;
       }
+      if (c.address.contains(query)) {
+        return true;
+      }
       if (c.pubKey.contains(extractPublicKey(query))) {
+        return true;
+      }
+      // If query is a v2 address, also check against the v1 pubkey
+      if (queryAsV1Pubkey != null && c.pubKey.contains(queryAsV1Pubkey)) {
         return true;
       }
       if (c.nick != null &&

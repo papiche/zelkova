@@ -10,25 +10,26 @@ part 'env.g.dart';
 abstract class Env {
   @EnviedField(varName: 'CURRENCY')
   static const String currency = _Env.currency;
+  @EnviedField(varName: 'GENESIS_HASH')
+  static const String genesisHash = _Env.genesisHash;
   @EnviedField(varName: 'SENTRY_DSN', obfuscate: true)
   static final String? sentryDsn = _Env.sentryDsn;
 
   @EnviedField(varName: 'GITLAB_TOKEN', obfuscate: true)
-  static final String gitLabToken = _Env.gitLabToken;
+  static final String? gitLabToken = _Env.gitLabToken;
 
   // Nodes
   // v1
-  // @EnviedField(defaultValue: 'test_')
-  @EnviedField(varName: 'DUNITER_NODES')
-  static const String duniterNodes = _Env.duniterNodes;
   @EnviedField(varName: 'CESIUM_PLUS_NODES')
   static const String cesiumPlusNodes = _Env.cesiumPlusNodes;
-  @EnviedField(varName: 'GVA_NODES')
-  static const String gvaNodes = _Env.gvaNodes;
 
   // v2
   @EnviedField(varName: 'ENDPOINTS')
   static const String endPoints = _Env.endPoints;
   @EnviedField(varName: 'DUNITER_INDEXER_NODES')
   static const String duniterIndexerNodes = _Env.duniterIndexerNodes;
+  @EnviedField(varName: 'DATAPOD_ENDPOINTS')
+  static const String datapodEndpoints = _Env.datapodEndpoints;
+  @EnviedField(varName: 'IPFS_GATEWAYS')
+  static const String ipfsGateways = _Env.ipfsGateways;
 }

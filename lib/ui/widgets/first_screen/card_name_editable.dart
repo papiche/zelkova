@@ -1,25 +1,34 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
+import '../../../data/models/stored_account.dart';
 import '../../../g1/api.dart';
 import '../../../shared_prefs_helper.dart';
 import '../../logger.dart';
-import '../../ui_helpers.dart';
-import '../connectivity_widget_wrapper_wrapper.dart';
+import '../contacts_actions.dart';
 import 'card_text_style.dart';
 
+/// Displays the card name following this priority:
+///
+///   1. Identity nick → read-only (but tappable to open contact page)
+///   2. Cesium+ name  → editable
+///   3. defValue hint → editable (prompts user to set a C+ name)
+///
+/// All display state comes from the parent widget via props.
+/// There is no internal buffering of the fetched name; the parent
+/// (a Consumer<SharedPreferencesHelper>) is responsible for rebuilding
+/// this widget when the contact data changes.
 class CardNameEditable extends StatefulWidget {
-  const CardNameEditable(
-      {super.key,
-      required this.defValue,
-      required this.publicKey,
-      required this.cardName,
-      required this.isG1nkgoCard});
+  const CardNameEditable({
+    super.key,
+    required this.account,
+    required this.defValue,
+  });
 
+  final StoredAccount account;
+
+  /// Hint shown when neither nick nor C+ name is available.
   final String defValue;
-  final String publicKey;
-  final String cardName;
-  final bool isG1nkgoCard;
 
   @override
   State<CardNameEditable> createState() => _CardNameEditableState();
@@ -29,83 +38,33 @@ class _CardNameEditableState extends State<CardNameEditable> {
   bool _isEditingText = false;
   bool _isSubmitting = false;
   final TextEditingController _controller = TextEditingController();
-  late String currentText;
+
+  // Derived from widget.account.contact — never stored separately.
+  String? get _nick => (widget.account.contact.nick?.isNotEmpty ?? false)
+      ? widget.account.contact.nick
+      : null;
+  String? get _cPlusName => (widget.account.contact.name?.isNotEmpty ?? false)
+      ? widget.account.contact.name
+      : null;
+
+  // isMember != false covers both (true = member) and (null = still loading).
+  // When null we default to non-editable to avoid a brief editable flash.
+  bool get _hasIdentity =>
+      _nick != null || (widget.account.contact.isMember ?? true);
+  bool get _isEditable => !_hasIdentity;
+
+  /// The text currently shown on the card (not editing mode).
+  String get _displayText => _nick ?? _cPlusName ?? widget.defValue;
 
   @override
-  void initState() {
-    super.initState();
-    _initValue();
-  }
-
-  Future<void> _initValue() async {
-    final String localUsername = widget.cardName;
-    if (localUsername.isEmpty) {
-      setState(() {
-        currentText = widget.defValue;
-        _controller.text = currentText;
-      });
-    } else {
-      setState(() {
-        currentText = localUsername;
-        _controller.text = currentText;
-      });
-    }
-    await _fetchAndSetUsername();
-  }
-
-  @override
-  void didUpdateWidget(CardNameEditable oldWidget) {
-    super.didUpdateWidget(oldWidget);
-
-    if (widget.cardName != oldWidget.cardName) {
-      final String localUsername = widget.cardName;
-      if (localUsername.isEmpty) {
-        setState(() {
-          currentText = widget.defValue;
-          _controller.text = currentText;
-        });
-      } else {
-        setState(() {
-          currentText = localUsername;
-          _controller.text = currentText;
-        });
-      }
-      // Optionally
-      // _fetchAndSetUsername();
-    }
-  }
-
-  Future<void> _fetchAndSetUsername() async {
-    final bool isConnected = await ConnectivityWidgetWrapperWrapper.isConnected;
-    if (isConnected) {
-      try {
-        String? name = await getCesiumPlusUser(widget.publicKey);
-        if (name != null && name.isNotEmpty) {
-          name = name.replaceAll(g1nkgoUserNameSuffix, '');
-          setState(() {
-            _controller.text = name!;
-            currentText = name;
-          });
-          SharedPreferencesHelper().setName(name: name, notify: false);
-        } else {
-          setState(() {
-            _controller.text = '';
-            currentText = widget.defValue;
-          });
-          SharedPreferencesHelper().setName(name: '', notify: false);
-        }
-      } catch (e) {
-        logger('Error: $e');
-      }
-    }
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 
   Widget _buildEditingField() {
-    if (currentText == widget.defValue) {
-      _controller.text = '';
-    } else {
-      _controller.text = currentText;
-    }
+    // Pre-fill with existing C+ name if available, otherwise empty.
+    _controller.text = _cPlusName ?? '';
     return SizedBox(
       width: 150.0,
       child: SizedBox(
@@ -123,9 +82,9 @@ class _CardNameEditableState extends State<CardNameEditable> {
             focusedBorder: const OutlineInputBorder(
               borderSide: BorderSide(width: 2.0),
             ),
-            suffix: const Text('$g1nkgoUserNameSuffix  '),
             suffixIcon: _isSubmitting
-                ? const RefreshProgressIndicator()
+                ? const SizedBox(
+                    width: 24, height: 24, child: RefreshProgressIndicator())
                 : Row(
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
@@ -164,9 +123,14 @@ class _CardNameEditableState extends State<CardNameEditable> {
   }
 
   Widget _buildDisplayField() {
+    final bool isPlaceholder = _displayText == widget.defValue;
+
     return InkWell(
       onTap: () {
-        if (widget.isG1nkgoCard) {
+        if (_hasIdentity) {
+          // Tapping the identity nick opens the contact page.
+          showMyContactPage(context);
+        } else if (_isEditable) {
           setState(() {
             _isEditingText = true;
           });
@@ -178,9 +142,9 @@ class _CardNameEditableState extends State<CardNameEditable> {
         text: TextSpan(
           style: DefaultTextStyle.of(context).style,
           children: <InlineSpan>[
-            if (currentText == widget.defValue)
+            if (isPlaceholder)
               TextSpan(
-                text: currentText.toUpperCase(),
+                text: _displayText.toUpperCase(),
                 style: const TextStyle(
                   fontFamily: 'SourceCodePro',
                   color: Colors.grey,
@@ -192,25 +156,19 @@ class _CardNameEditableState extends State<CardNameEditable> {
                     ),
                   ],
                 ),
-              ),
-            if (currentText == widget.defValue)
-              const WidgetSpan(
-                child: Padding(
-                    padding: EdgeInsets.fromLTRB(3, 0, 0, 0),
-                    child: Icon(Icons.edit, size: 14.0, color: Colors.white)),
-              ),
-            if (currentText.isNotEmpty && currentText != widget.defValue)
+              )
+            else
               TextSpan(
-                text: currentText,
+                text: _displayText,
                 style: cardTextStyle(context, fontSize: 15),
               ),
-            // Suffix
-            if (currentText.isNotEmpty && currentText != widget.defValue)
-              TextSpan(
-                text: widget.isG1nkgoCard
-                    ? g1nkgoUserNameSuffix
-                    : protectedUserNameSuffix,
-                style: cardTextStyle(context, fontSize: 12),
+            // Show edit icon only when editable AND no name is set yet (placeholder).
+            if (_isEditable && isPlaceholder)
+              const WidgetSpan(
+                child: Padding(
+                  padding: EdgeInsets.fromLTRB(3, 0, 0, 0),
+                  child: Icon(Icons.edit, size: 14.0, color: Colors.white),
+                ),
               ),
           ],
         ),
@@ -221,10 +179,12 @@ class _CardNameEditableState extends State<CardNameEditable> {
   @override
   Widget build(BuildContext context) {
     loggerDev(
-        "Building CardNameEditable for ${widget.publicKey} '${widget.cardName}'");
+        'CardNameEditable build: nick=$_nick cPlus=$_cPlusName editable=$_isEditable');
     return GestureDetector(
       onTap: () {
-        if (widget.isG1nkgoCard) {
+        if (_hasIdentity) {
+          showMyContactPage(context);
+        } else if (_isEditable && !_isEditingText) {
           setState(() {
             _isEditingText = true;
           });
@@ -232,12 +192,6 @@ class _CardNameEditableState extends State<CardNameEditable> {
       },
       child: _isEditingText ? _buildEditingField() : _buildDisplayField(),
     );
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
   }
 
   Future<void> _updateValue(String newValue) async {
@@ -248,23 +202,33 @@ class _CardNameEditableState extends State<CardNameEditable> {
       _isSubmitting = true;
     });
     try {
-      if (_validate(newValue)) {
-        await createOrUpdateCesiumPlusUser(newValue);
-        SharedPreferencesHelper().setName(name: newValue, notify: false);
-        setState(() {
-          currentText = newValue;
-        });
+      final bool result = await createOrUpdateProfile(newValue);
+      if (!result) {
         if (!mounted) {
           return;
         }
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(tr('card_name_changed')),
-          ),
+          SnackBar(content: Text(tr('card_name_changed_failed'))),
+        );
+        // Do NOT update local state — keep old value.
+      } else {
+        // Update SharedPreferences so the parent rebuilds with the new name.
+        SharedPreferencesHelper().setName(name: newValue);
+        if (!mounted) {
+          return;
+        }
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(tr('card_name_changed'))),
         );
       }
     } catch (e) {
-      loggerDev(e.toString());
+      loggerDev('CardNameEditable._updateValue error: $e');
+      if (!mounted) {
+        return;
+      }
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(tr('card_name_changed_failed'))),
+      );
     }
     setState(() {
       _isEditingText = false;
@@ -277,72 +241,23 @@ class _CardNameEditableState extends State<CardNameEditable> {
       _isSubmitting = true;
     });
     try {
-      await deleteCesiumPlusUser();
-      SharedPreferencesHelper().setName(name: '');
-      setState(() {
-        _controller.text = '';
-        currentText = widget.defValue;
-      });
+      final bool result = await deleteProfile();
+      if (result) {
+        SharedPreferencesHelper().setName(name: '');
+      } else {
+        if (!mounted) {
+          return;
+        }
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(tr('card_name_changed_failed'))),
+        );
+      }
     } catch (e) {
-      logger('Error: $e');
+      logger('CardNameEditable._deleteValue error: $e');
     }
     setState(() {
       _isEditingText = false;
       _isSubmitting = false;
     });
-  }
-
-  bool _validate(String newValue) {
-    if (newValue.isEmpty) {
-      return false;
-    }
-    return true;
-  }
-}
-
-class CardNameText extends StatelessWidget {
-  const CardNameText(
-      {super.key,
-      required this.currentText,
-      required this.onTap,
-      required this.isGinkgoCard});
-
-  final String currentText;
-  final bool isGinkgoCard;
-
-  final VoidCallback? onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    final String defValue = isGinkgoCard ? tr('your_name_here') : '';
-    return InkWell(
-      onTap: onTap,
-      child: RichText(
-        // softWrap: true,
-        maxLines: 2,
-        overflow: TextOverflow.ellipsis,
-        text: TextSpan(
-          style: DefaultTextStyle.of(context).style,
-          children: <TextSpan>[
-            if (currentText == defValue)
-              TextSpan(
-                  text: currentText.toUpperCase(),
-                  style: const TextStyle(
-                      fontFamily: 'SourceCodePro', color: Colors.grey)),
-            if (currentText.isNotEmpty && currentText != defValue)
-              TextSpan(
-                  text: currentText,
-                  style: cardTextStyle(context, fontSize: 15)),
-            if (currentText.isNotEmpty && currentText != defValue)
-              TextSpan(
-                text: isGinkgoCard
-                    ? g1nkgoUserNameSuffix
-                    : protectedUserNameSuffix,
-                style: cardTextStyle(context, fontSize: 12),
-              ),
-          ],
-        ),
-      ),
-    );
   }
 }

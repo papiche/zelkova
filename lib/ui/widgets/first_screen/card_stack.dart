@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../data/models/cesium_card.dart';
+import '../../../data/models/stored_account.dart';
 import '../../../shared_prefs_helper.dart';
-import '../../logger.dart';
-import '../fifth_screen/import_dialog.dart';
-import 'credit_card_mini.dart';
+import '../add_wallet_assistant.dart';
+import 'drawer_credit_card.dart';
 
 class CardStack extends StatefulWidget {
   const CardStack({super.key});
@@ -19,62 +18,103 @@ class _CardStackState extends State<CardStack> {
 
   @override
   Widget build(BuildContext context) {
+    assert(() {
+      debugPrint('🎴 CardStack rebuilding');
+      return true;
+    }());
     return Consumer<SharedPreferencesHelper>(builder: (BuildContext context,
         SharedPreferencesHelper prefsHelper, Widget? child) {
-      final List<CesiumCard> cards =
-          List<CesiumCard>.from(SharedPreferencesHelper().cesiumCards);
-      final int currentIndex =
-          SharedPreferencesHelper().getCurrentWalletIndex();
-      logger('Current wallet index is $currentIndex of ${cards.length}');
-      final CesiumCard currentItem = cards.removeAt(currentIndex);
-      cards.add(currentItem);
+      final List<StoredAccount> accounts = SharedPreferencesHelper().accounts;
+      final List<StoredAccount> cards = List<StoredAccount>.from(accounts);
+      final StoredAccount currentAccount =
+          SharedPreferencesHelper().getCurrentAccount();
+
+      assert(() {
+        debugPrint('   Total accounts: ${accounts.length}');
+        debugPrint('   Current account: ${currentAccount.pubKey}');
+        return true;
+      }());
+
+      // Sort cards: least recently used at the top, most recently used at the bottom.
+      // The current wallet (matching _currentPubKey) MUST be last (visible on top).
+      cards.sort((StoredAccount a, StoredAccount b) {
+        final bool aIsCurrent = a.pubKey == currentAccount.pubKey;
+        final bool bIsCurrent = b.pubKey == currentAccount.pubKey;
+
+        // CRITICAL: Current wallet always goes last (on top visually)
+        if (aIsCurrent && !bIsCurrent) {
+          return 1; // a goes after b
+        }
+        if (!aIsCurrent && bIsCurrent) {
+          return -1; // b goes after a
+        }
+
+        // For non-current wallets, sort by lastUsed
+        final int aUsed = a.lastUsed ?? 0;
+        final int bUsed = b.lastUsed ?? 0;
+        if (aUsed != bUsed) {
+          return aUsed.compareTo(bUsed);
+        }
+        // Fallback to import order (original list order)
+        return accounts.indexOf(a).compareTo(accounts.indexOf(b));
+      });
+
       final int walletsSize = cards.length;
-      return Stack(
-        alignment: Alignment.center,
-        children: <Widget>[
-          ...List<Widget>.generate(
-            walletsSize,
-            (int index) {
-              return Positioned(
-                top: 50.0 * index,
-                child: SizedBox(
-                    height: 200,
-                    child: CreditCardMini(
-                        card: cards[index],
-                        cardIndex: index,
-                        settingsVisible: index == walletsSize - 1)),
-              );
-            },
-          ),
-          Positioned(
-              left: 30,
-              bottom: -15,
-              child: Container(
-                decoration: const BoxDecoration(
-                  shape: BoxShape.circle,
-                  boxShadow: <BoxShadow>[
-                    BoxShadow(
-                      color: Colors.black45,
-                      spreadRadius: 10,
-                      blurRadius: 10,
-                      offset: Offset(0, 6),
+      return SizedBox(
+          height: 200 + ((cards.length - 1) * 45),
+          child: Center(
+              child: Stack(
+            alignment: Alignment.center,
+            children: <Widget>[
+              ...List<Widget>.generate(
+                walletsSize,
+                (int index) {
+                  final StoredAccount card = cards[index];
+                  final bool isCurrentWallet =
+                      card.pubKey == currentAccount.pubKey;
+                  return AnimatedPositioned(
+                    key: ValueKey<String>(card.pubKey),
+                    duration: const Duration(milliseconds: 300),
+                    curve: Curves.easeInOut,
+                    top: 45.0 * index,
+                    child: SizedBox(
+                        height: 200,
+                        child: DrawerWalletCard(
+                            card: card,
+                            cardIndex: index,
+                            settingsVisible:
+                                index == walletsSize - 1 && isCurrentWallet)),
+                  );
+                },
+              ),
+              Positioned(
+                  right: 25,
+                  top: -15,
+                  child: Container(
+                    decoration: const BoxDecoration(
+                      shape: BoxShape.circle,
+                      boxShadow: <BoxShadow>[
+                        BoxShadow(
+                          color: Colors.black45,
+                          spreadRadius: 10,
+                          blurRadius: 10,
+                          offset: Offset(0, 6),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-                child: FloatingActionButton(
-                  // elevation: 20,
-                  /* shape: RoundedRectangleBorder(
-                  side: const BorderSide(color: Colors.grey, width: 1.0),
-                  borderRadius: BorderRadius.circular(20),
-                ), */
-                  onPressed: () {
-                    showSelectImportMethodDialog(context, 0);
-                  },
-                  child: const Icon(Icons.add),
-                ),
-              ))
-        ],
-      );
+                    child: FloatingActionButton(
+                      onPressed: () {
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return const WalletOptionsDialog();
+                            });
+                      },
+                      child: const Icon(Icons.add_card),
+                    ),
+                  ))
+            ],
+          )));
     });
   }
 }

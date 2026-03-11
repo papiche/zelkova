@@ -1,0 +1,13 @@
+#!/bin/sh
+
+#######################################################
+#
+# Add here the commands to be excuted before the package
+# has been installed
+#
+
+set -e
+
+#DEBHELPER#
+
+echo Installing g1nkgo

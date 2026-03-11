@@ -16,7 +16,7 @@ abstract class _$MultiWalletTransactionStateCWProxy {
   /// MultiWalletTransactionState(...).copyWith(id: 12, name: "My name")
   /// ````
   MultiWalletTransactionState call({
-    Map<String, TransactionState>? map,
+    Map<String, TransactionState> map,
   });
 }
 
@@ -43,7 +43,7 @@ class _$MultiWalletTransactionStateCWProxyImpl
     Object? map = const $CopyWithPlaceholder(),
   }) {
     return MultiWalletTransactionState(
-      map == const $CopyWithPlaceholder() || map == null
+      map == const $CopyWithPlaceholder()
           ? _value.map
           // ignore: cast_nullable_to_non_nullable
           : map as Map<String, TransactionState>,

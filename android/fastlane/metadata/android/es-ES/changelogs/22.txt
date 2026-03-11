@@ -1,0 +1,6 @@
+¡Bienvenido a Duniter 2.0!
+
+Mejoras en esta versión:
+- Mayor estabilidad y rendimiento de la aplicación
+- Mejor manejo de transiciones de red
+- Interfaz de usuario más responsiva

@@ -17,7 +17,11 @@ class TransactionState extends Equatable {
       required this.lastChecked,
       DateTime? latestSentNotification,
       DateTime? latestReceivedNotification,
-      this.endCursor})
+      this.endCursor,
+      this.hasNextPage = false,
+      this.udTransactions = const <Transaction>[],
+      this.udEndCursor,
+      this.udHasNextPage = false})
       : latestSentNotification = latestSentNotification ?? DateTime.now(),
         latestReceivedNotification =
             latestReceivedNotification ?? DateTime.now();
@@ -39,6 +43,10 @@ class TransactionState extends Equatable {
   final DateTime latestSentNotification;
   final DateTime latestReceivedNotification;
   final String? endCursor;
+  final bool hasNextPage;
+  final List<Transaction> udTransactions;
+  final String? udEndCursor;
+  final bool udHasNextPage;
 
   Map<String, dynamic> toJson() => _$TransactionStateToJson(this);
 
@@ -51,6 +59,10 @@ class TransactionState extends Equatable {
         lastChecked,
         latestSentNotification,
         latestReceivedNotification,
-        endCursor
+        endCursor,
+        hasNextPage,
+        udTransactions,
+        udEndCursor,
+        udHasNextPage
       ];
 }

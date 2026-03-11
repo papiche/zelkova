@@ -1,0 +1,1 @@
+- Solución alternativa cuando el export a fichero falla

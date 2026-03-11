@@ -1,0 +1,5 @@
+- Fixed v2 payment address parsing
+- Improved clipboard import functionality
+- Fixed file import dialogs
+- Added update notifications
+- Bug fixes and improvements

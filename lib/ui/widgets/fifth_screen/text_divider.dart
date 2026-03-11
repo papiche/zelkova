@@ -8,27 +8,22 @@ class TextDivider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 24, top: 24, right: 24, bottom: 10),
-      child: Row(children: <Widget>[
-        Expanded(
-          child: Divider(
-            color: Theme.of(context).colorScheme.onSurface.withOpacity(.4),
+    return Column(
+      children: ListTile.divideTiles(
+        context: context,
+        tiles: <Widget>[
+          ListTile(
+            title: Text(
+              tr(text),
+              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                  //fontWeight: FontWeight.bold,
+                  // color: Theme.of(context).colorScheme.primary,
+                  ),
+            ),
           ),
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12),
-          child: Text(
-            tr(text),
-            style: Theme.of(context).textTheme.bodyMedium,
-          ),
-        ),
-        Expanded(
-          child: Divider(
-            color: Theme.of(context).colorScheme.onSurface.withOpacity(.4),
-          ),
-        ),
-      ]),
+          const SizedBox(height: 2),
+        ],
+      ).toList(),
     );
   }
 }

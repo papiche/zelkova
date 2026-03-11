@@ -4,14 +4,14 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
-import 'package:hive/hive.dart';
-import 'package:path_provider/path_provider.dart';
+import 'package:hive_ce/hive.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 
 import '../data/models/contact.dart';
 import '../g1/api.dart';
 import '../g1/g1_helper.dart';
 import 'logger.dart';
+import 'ui_helpers.dart';
 
 class ContactsCache {
   factory ContactsCache() {
@@ -23,6 +23,22 @@ class ContactsCache {
 
   Box<dynamic>? box;
 
+  /// Lifecycle flags to prevent race conditions during disposal
+  bool _isDisposing = false;
+  bool _isDisposed = false;
+
+  /// Check if the Hive box is available and safe to use
+  bool _isBoxOpen() {
+    final bool isOpen =
+        box != null && box!.isOpen && !_isDisposing && !_isDisposed;
+    if (!isOpen) {
+      loggerDev(
+          '[ContactsCache] Box not available: box=$box, isOpen=${box?.isOpen}, '
+          '_isDisposing=$_isDisposing, _isDisposed=$_isDisposed');
+    }
+    return isOpen;
+  }
+
   Future<void> init([bool test = false]) async {
     if (test) {
       box = MemoryFallbackBox<Map<String, dynamic>>();
@@ -32,9 +48,9 @@ class ContactsCache {
       if (kIsWeb) {
         box = await Hive.openBox(_boxName);
       } else {
-        final Directory appDocDir = await getApplicationDocumentsDirectory();
-        final String appDocPath = appDocDir.path;
-        box = await Hive.openBox(_boxName, path: appDocPath);
+        final Directory appDataDir = await getAppDataDirectory();
+        final String appDataPath = appDataDir.path;
+        box = await Hive.openBox(_boxName, path: appDataPath);
       }
       // We clear the box on every startup to avoid issues with old data
     } catch (e) {
@@ -50,16 +66,51 @@ class ContactsCache {
   }
 
   Future<void> dispose() async {
-    await box?.close();
+    if (_isDisposed) {
+      logger('[ContactsCache] Already disposed, skipping dispose');
+      return;
+    }
+
+    _isDisposing = true;
+    logger('[ContactsCache] Starting disposal...');
+
+    try {
+      await box?.close();
+      logger('[ContactsCache] Hive box closed successfully');
+    } catch (e) {
+      logger('[ContactsCache] Error closing Hive box: $e');
+    }
+
+    _isDisposed = true;
+    logger('[ContactsCache] Disposal complete');
   }
 
   Future<void> clear() async {
+    if (!_isBoxOpen()) {
+      logger('[ContactsCache] Cannot clear, box is not available');
+      return;
+    }
     await box?.clear();
   }
 
+  Future<void> removeContact(String pubKey) async {
+    if (!_isBoxOpen()) {
+      logger('[ContactsCache] Cannot remove contact, box is not available');
+      return;
+    }
+    await box?.delete(pubKey);
+  }
+
   static ContactsCache? _instance;
+
+  /// Reset the singleton instance (for testing purposes only)
+  static void resetInstance() {
+    _instance = null;
+  }
+
   final Map<String, List<Completer<Contact>>> _pendingRequests =
       <String, List<Completer<Contact>>>{};
+  final Map<String, DateTime> _failedRequests = <String, DateTime>{};
 
   final String _boxName = 'contacts_cache';
 
@@ -96,35 +147,69 @@ class ContactsCache {
       return completer.future;
     }
 
+    if (_failedRequests.containsKey(pubKey)) {
+      final DateTime failedTime = _failedRequests[pubKey]!;
+      if (DateTime.now().difference(failedTime) < const Duration(minutes: 5)) {
+        if (!kReleaseMode && debug) {
+          logger('Returning cached failure for $pubKey');
+        }
+        return Contact(pubKey: pubKey);
+      } else {
+        _failedRequests.remove(pubKey);
+      }
+    }
+
     final Completer<Contact> completer = Completer<Contact>();
     _pendingRequests[pubKey] = <Completer<Contact>>[completer];
     try {
-      cachedContact = await getProfile(pubKey);
+      cachedContact = await getProfile(pubKey, complete: false);
       _storeContact(cachedContact);
       if (!kReleaseMode && debug) {
         logger('Returning non cached contact $cachedContact');
       }
       // Send to listeners
-      for (final Completer<Contact> completer in _pendingRequests[pubKey]!) {
-        completer.complete(cachedContact);
+      final List<Completer<Contact>>? pending = _pendingRequests.remove(pubKey);
+      if (pending != null) {
+        for (final Completer<Contact> completer in pending) {
+          completer.complete(cachedContact);
+        }
       }
-      _pendingRequests.remove(pubKey);
 
       return cachedContact;
     } catch (e, stackTrace) {
+      // If it's a 404 or other fetch error, cache it for a while
+      _failedRequests[pubKey] = DateTime.now();
+
       // Send error to listeners
-      for (final Completer<Contact> completer in _pendingRequests[pubKey]!) {
-        completer.completeError(e);
+      final List<Completer<Contact>>? pending = _pendingRequests.remove(pubKey);
+      if (pending != null) {
+        for (final Completer<Contact> completer in pending) {
+          // Return an empty contact instead of an error to avoid breaking UI flows
+          completer.complete(Contact(pubKey: pubKey));
+        }
       }
-      _pendingRequests.remove(pubKey);
-      await Sentry.captureException(e, stackTrace: stackTrace);
-      rethrow;
+      if (e is! Exception || !e.toString().contains('404')) {
+        await Sentry.captureException(e, stackTrace: stackTrace);
+      }
+      return Contact(pubKey: pubKey);
     }
   }
 
   Future<void> saveContact(Contact contact) async => addContact(contact);
 
+  Future<void> addAllContacts(List<Contact> contacts) async {
+    for (final Contact contact in contacts) {
+      await addContact(contact);
+    }
+  }
+
   Future<void> addContact(Contact contactRaw) async {
+    if (_isDisposing || _isDisposed) {
+      logger('[ContactsCache.addContact] Skipping add, cache is '
+          'disposing/disposed. Contact: ${contactRaw.pubKey}');
+      return;
+    }
+
     // Get the cached version of the contact, if it exists
     final Contact contact =
         contactRaw.copyWith(pubKey: extractPublicKey(contactRaw.pubKey));
@@ -147,25 +232,48 @@ class ContactsCache {
   }
 
   Future<void> _storeContact(Contact contact) async {
-    await box!.put(contact.pubKey, <String, dynamic>{
-      'timestamp': DateTime.now().toIso8601String(),
-      'data': json.encode(contact.toJson()),
-    });
+    if (!_isBoxOpen()) {
+      logger(
+          '[ContactsCache._storeContact] Cannot store contact, box is not available. '
+          'Contact: ${contact.pubKey}');
+      return;
+    }
+
+    try {
+      await box!.put(contact.pubKey, <String, dynamic>{
+        'timestamp': DateTime.now().toIso8601String(),
+        'data': json.encode(contact.toJson()),
+      });
+    } catch (e) {
+      logger('[ContactsCache._storeContact] Error storing contact: $e');
+    }
   }
 
   Contact? _retrieveContact(String pubKey) {
-    final dynamic record = box!.get(pubKey);
-
-    if (record != null) {
-      final Map<String, dynamic> typedRecord =
-          Map<String, dynamic>.from(record as Map<dynamic, dynamic>);
-      // final DateTime timestamp =
-      // DateTime.parse(typedRecord['timestamp'] as String);
-      final Contact contact = Contact.fromJson(
-          json.decode(typedRecord['data'] as String) as Map<String, dynamic>);
-      return contact;
+    // Return null if box is not available
+    if (!_isBoxOpen()) {
+      logger(
+          '[ContactsCache._retrieveContact] Cannot retrieve contact, box is not available');
+      return null;
     }
-    return null;
+
+    try {
+      final dynamic record = box!.get(pubKey);
+
+      if (record != null) {
+        final Map<String, dynamic> typedRecord =
+            Map<String, dynamic>.from(record as Map<dynamic, dynamic>);
+        // final DateTime timestamp =
+        // DateTime.parse(typedRecord['timestamp'] as String);
+        final Contact contact = Contact.fromJson(
+            json.decode(typedRecord['data'] as String) as Map<String, dynamic>);
+        return contact;
+      }
+      return null;
+    } catch (e) {
+      logger('[ContactsCache._retrieveContact] Error retrieving contact: $e');
+      return null;
+    }
   }
 }
 
@@ -313,4 +421,12 @@ class MemoryFallbackBox<E> extends Box<E> {
         .take(endIndex - startIndex + 1)
         .cast<E>();
   }
+}
+
+Contact getContactCache({required Contact simpleContact}) {
+  final Contact contact =
+      ContactsCache().getCachedContact(simpleContact.pubKey, false, true) ??
+          simpleContact;
+  assert(contact.hasAvatar == false);
+  return contact;
 }

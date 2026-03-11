@@ -1,19 +1,18 @@
 import 'dart:async';
 
+import 'package:get_it/get_it.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../ui/logger.dart';
 import '../../ui/widgets/connectivity_widget_wrapper_wrapper.dart';
-import 'app_cubit.dart';
 import 'multi_wallet_transaction_cubit.dart';
-import 'node_list_cubit.dart';
 import 'transaction.dart';
-import 'utxo_cubit.dart';
+import 'transaction_state.dart';
 
 part 'transactions_state.dart';
 
 class TransactionsBloc {
-  TransactionsBloc({this.isExternal = false, this.pubKey}) {
+  TransactionsBloc({this.pubKey, this.pageSize = 20, required this.isV2}) {
     _onPageRequest.stream
         .flatMap(_fetchTransactionsList)
         .listen(_onNewListingStateController.add)
@@ -25,15 +24,9 @@ class TransactionsBloc {
         .addTo(_subscriptions);
   }
 
-  final bool isExternal;
   final String? pubKey;
-
-  late AppCubit appCubit;
-  late NodeListCubit nodeListCubit;
-  late MultiWalletTransactionCubit transCubit;
-  late UtxoCubit utxoCubit;
-
-  static const int _pageSize = 20;
+  final int pageSize;
+  final bool isV2;
 
   final CompositeSubscription _subscriptions = CompositeSubscription();
 
@@ -45,6 +38,8 @@ class TransactionsBloc {
   Stream<TransactionsState> get onNewListingState =>
       _onNewListingStateController.stream;
 
+  TransactionsState get currentState => _onNewListingStateController.value;
+
   final StreamController<String?> _onPageRequest = StreamController<String?>();
 
   Sink<String?> get onPageRequestSink => _onPageRequest.sink;
@@ -55,48 +50,51 @@ class TransactionsBloc {
   Sink<String?> get onSearchInputChangedSink =>
       _onSearchInputChangedSubject.sink;
 
-  // String? get _searchInputValue => _onSearchInputChangedSubject.value;
-
   Stream<TransactionsState> _resetSearch() async* {
     yield TransactionsState();
-    yield* _fetchTransactionsList(null);
-  }
-
-  void init(MultiWalletTransactionCubit transCubit, NodeListCubit nodeListCubit,
-      AppCubit appCubit, UtxoCubit utxoCubit) {
-    this.appCubit = appCubit;
-    this.transCubit = transCubit;
-    this.nodeListCubit = nodeListCubit;
-    this.utxoCubit = utxoCubit;
+    yield* _fetchTransactionsList(null); // Always start with null cursor
   }
 
   Stream<TransactionsState> _fetchTransactionsList(String? pageKey) async* {
+    logger(
+        '[TransactionsBloc] _fetchTransactionsList START: pageKey=$pageKey, pubKey=$pubKey');
     final TransactionsState lastListingState =
         _onNewListingStateController.value;
     try {
+      final MultiWalletTransactionCubit transCubit =
+          GetIt.instance<MultiWalletTransactionCubit>();
+
       final bool isConnected =
           await ConnectivityWidgetWrapperWrapper.isConnected;
-      logger('isConnected: $isConnected');
+      logger('[TransactionsBloc] isConnected: $isConnected');
 
       if (!isConnected) {
+        logger(
+            '[TransactionsBloc] No connection, yielding cached transactions');
         yield TransactionsState(
-          nextPageKey: pageKey,
           itemList: transCubit.transactions(pubKey),
         );
       } else {
+        logger('[TransactionsBloc] Fetching transactions from server...');
         final List<Transaction> fetchedItems =
-            await transCubit.fetchTransactions(nodeListCubit, appCubit,
-                cursor: pageKey,
-                pageSize: _pageSize,
-                pubKey: pubKey,
-                isExternal: isExternal);
+            await transCubit.fetchTransactions(
+          cursor: pageKey,
+          pageSize: pageSize,
+          pubKey: pubKey,
+        );
 
-        final bool isLastPage = fetchedItems.length < _pageSize;
-        final String? nextPageKey =
-            isLastPage ? null : transCubit.currentWalletState(pubKey).endCursor;
+        // For V2 with cursor-based pagination, use hasNextPage flag from API
+        // For V1, use the old logic based on item count
+        final TransactionState currentState =
+            transCubit.currentWalletState(pubKey);
+        final bool isLastPage =
+            isV2 ? !currentState.hasNextPage : fetchedItems.length < pageSize;
 
+        final String? nextPageKey = isLastPage ? null : currentState.endCursor;
+
+        logger(
+            '[TransactionsBloc] Yielding state: items=${fetchedItems.length}, nextPageKey=$nextPageKey, isLastPage=$isLastPage');
         yield TransactionsState(
-          // error: null,
           nextPageKey: nextPageKey,
           itemList: pageKey == null
               ? fetchedItems
@@ -105,8 +103,10 @@ class TransactionsBloc {
                   ...fetchedItems
                 ],
         );
+        logger('[TransactionsBloc] State yielded successfully');
       }
     } catch (e) {
+      logger('[TransactionsBloc] ERROR: $e');
       yield TransactionsState(
         error: e,
         nextPageKey: lastListingState.nextPageKey,

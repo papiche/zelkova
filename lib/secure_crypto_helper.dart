@@ -1,0 +1,109 @@
+import 'dart:convert';
+import 'dart:math';
+import 'dart:typed_data';
+
+import 'package:crypto/crypto.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:pointycastle/export.dart';
+
+import 'ui/logger.dart' show loggerDev;
+
+mixin SecureCryptoHelper {
+  static Uint8List generateSalt([int length = 32]) {
+    final Random random = Random.secure();
+    final List<int> salt =
+        List<int>.generate(length, (_) => random.nextInt(256));
+    return Uint8List.fromList(salt);
+  }
+
+  static Future<Uint8List> deriveKeyFromPattern(
+      List<int> pattern, List<int> salt) async {
+    final String joined = pattern.join('-');
+    final List<int> password = utf8.encode(joined);
+    return Uint8List.fromList(_pbkdf2(password, salt));
+  }
+
+  static Future<Uint8List> deriveKeyFromPassword(
+      String password, List<int> salt) async {
+    final List<int> input = utf8.encode(password);
+    return Uint8List.fromList(_pbkdf2(input, salt));
+  }
+
+  static List<int> _pbkdf2(List<int> password, List<int> salt,
+      {int iterations = kIsWeb ? 10000 : 100000, int keyLength = 32}) {
+    final Hmac hmac = Hmac(sha256, password);
+    final List<int> result = <int>[];
+    final int blockCount =
+        (keyLength / hmac.convert(<int>[]).bytes.length).ceil();
+
+    for (int i = 1; i <= blockCount; i++) {
+      final List<int> saltBlock = List<int>.from(salt)
+        ..addAll(<int>[
+          (i >> 24) & 0xff,
+          (i >> 16) & 0xff,
+          (i >> 8) & 0xff,
+          i & 0xff,
+        ]);
+
+      List<int> u = hmac.convert(saltBlock).bytes;
+      final List<int> block = List<int>.from(u);
+      for (int j = 1; j < iterations; j++) {
+        u = hmac.convert(u).bytes;
+        for (int k = 0; k < block.length; k++) {
+          block[k] ^= u[k];
+        }
+      }
+      result.addAll(block);
+    }
+
+    return result.sublist(0, keyLength);
+  }
+
+  static Uint8List encrypt(Uint8List data, List<int> salt) {
+    try {
+      final Uint8List keyBytes = Uint8List.fromList(salt);
+      final Random random = Random.secure();
+      final Uint8List iv = Uint8List.fromList(
+          List<int>.generate(12, (_) => random.nextInt(256)));
+
+      final GCMBlockCipher cipher = GCMBlockCipher(AESEngine())
+        ..init(
+            true,
+            AEADParameters<KeyParameter>(
+                KeyParameter(keyBytes), 128, iv, Uint8List(0)));
+
+      final Uint8List ciphertext = cipher.process(data);
+      final Uint8List result = Uint8List(iv.length + ciphertext.length)
+        ..setRange(0, iv.length, iv)
+        ..setRange(iv.length, iv.length + ciphertext.length, ciphertext);
+
+      return result;
+    } catch (e) {
+      loggerDev('Encryption error: $e');
+      rethrow;
+    }
+  }
+
+  static Uint8List? decrypt(Uint8List encryptedData, List<int> salt) {
+    try {
+      const int ivLength = 12; // GCM IV size
+      if (encryptedData.length <= ivLength) {
+        return null;
+      }
+
+      final Uint8List iv = encryptedData.sublist(0, ivLength);
+      final Uint8List ciphertext = encryptedData.sublist(ivLength);
+      final Uint8List keyBytes = Uint8List.fromList(salt);
+
+      final GCMBlockCipher cipher = GCMBlockCipher(AESEngine())
+        ..init(
+            false,
+            AEADParameters<KeyParameter>(
+                KeyParameter(keyBytes), 128, iv, Uint8List(0)));
+
+      return cipher.process(ciphertext);
+    } catch (_) {
+      return null;
+    }
+  }
+}

@@ -1,0 +1,14 @@
+flutter_app: 
+  command: g1nkgo
+  arch: x64
+  parent: /usr/local/lib
+  nonInteractive: false
+
+control:
+  Package: g1nkgo
+  Version: 2.0.4
+  Architecture: amd64
+  Priority: optional
+  Depends: libsecret-1-0, libjsoncpp1 | libjsoncpp25
+  Maintainer: Vicente J. Ruiz Jurado <vjrj@comunes.org>
+  Description: G1nkgo - A simple, quick, modern and versatile Ğ1 Wallet

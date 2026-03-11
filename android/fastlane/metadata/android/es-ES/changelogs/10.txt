@@ -1,0 +1,5 @@
+- Corregido parsing de direcciones de pago v2
+- Mejora en funcionalidad de importación desde portapapeles
+- Corrección de diálogos de importación de archivos
+- Notificaciones de actualizaciones disponibles
+- Correcciones de errores y mejoras

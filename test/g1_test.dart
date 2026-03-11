@@ -1,17 +1,40 @@
 import 'dart:convert';
 import 'dart:math';
 
-import 'package:durt/durt.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:ginkgo/data/models/contact.dart';
+import 'package:ginkgo/data/models/node.dart';
+import 'package:ginkgo/data/models/node_lists_default.dart';
+import 'package:ginkgo/data/models/node_manager.dart';
 import 'package:ginkgo/data/models/payment_state.dart';
 import 'package:ginkgo/data/models/transaction.dart';
 import 'package:ginkgo/data/models/transaction_type.dart';
+import 'package:ginkgo/g1/crypto/cesium_wallet.dart';
+import 'package:ginkgo/g1/duniter_endpoint_helper.dart';
+import 'package:ginkgo/g1/g1_export_auth_utils.dart';
 import 'package:ginkgo/g1/g1_helper.dart';
 import 'package:ginkgo/ui/logger.dart';
 
+String _generateRandomPatternPassword(Random random) {
+  final int length = random.nextInt(8) + 2; // Password length between 2 and 9.
+  final Set<int> digits = <int>{1, 2, 3, 4, 5, 6, 7, 8, 9};
+  final List<int> passwordDigits = <int>[];
+  for (int i = 0; i < length; i++) {
+    final int selectedDigit = digits.elementAt(random.nextInt(digits.length));
+    passwordDigits.add(selectedDigit);
+    digits.remove(selectedDigit);
+  }
+  return passwordDigits.join();
+}
+
 void main() {
+  const String testPubKey = '7wnDh2FPdwNW8Dd5JyoJTbspuu8b9QJKps2xAYenefsu';
+  const String testPubKey1 = '7XtCpQSj8HRQxAD7rjZrMJ1knxBm6yx317R7sYzu3Hy6';
+  const String testPubKey2 = '2AD8Eg55RKidFLcFBVy8NuSrNsPvwrDjPe2SLq8seMjf';
+  const String testPubKey3 = 'A23W3Z4NNxShFThCwHsru1pgzMJDMSf5GaJxb3A5ipih';
+  const String testPubKey4 = '39a4E4555VNVyZKQgFC88h9eykEaSCFzyr22PncpGvA9:au1';
+
   test('Test serialization and deserialization of UInt8List seeds', () {
     final Uint8List seed = generateUintSeed();
     final String sSeed = seedToString(seed);
@@ -50,11 +73,17 @@ void main() {
   test('validate pub keys', () {
     expect(validateKey('FRYyk57Pi456EJRu9vqVfSHLgmUfx4Qc3goS62a7dUSm'),
         equals(true));
-
     expect(validateKey('BrgsSYK3xUzDyztGBHmxq69gfNxBfe2UKpxG21oZUBr5'),
         equals(true));
-
+    expect(validateKey('DU7b6JByc8HSKtZxbKape5ZSkXRwNy6ZKApisryevmrZ'),
+        equals(true));
+    expect(validateKey('DU7b6JByc8HSKtZxbKape5ZSkXRwNy6ZKApisryevmrZ:E14'),
+        equals(true));
     expect(validateKey('naU6XunXd1LSSfsHu3aNk8ZqgSosKQcvEQz8F2KaRAy'),
+        equals(true));
+    expect(validateKey('13hFX4M9GAVAdZnTQh1BSgAZBxoUkCfdBDkzvoMK8n1d'),
+        equals(true));
+    expect(validateKey('13hFX4M9GAVAdZnTQh1BSgAZBxoUkCfdBDkzvoMK8n1d:FCY'),
         equals(true));
   });
 
@@ -69,27 +98,27 @@ void main() {
         final PaymentState? payA = parseScannedUri(uriA);
         expect(payA!.amount, equals(10),
             reason: 'amount should be 10 in $uriA');
-        expect(payA.contacts[0].pubKey, equals(publicKey));
+        expect(payA.contacts[0].pubKey, equals(extractPublicKey(publicKey)));
       });
 
       test('validate qr uri without amount', () {
         final String uriB = getQrUri(pubKey: publicKey);
         final PaymentState? payB = parseScannedUri(uriB);
         expect(payB!.amount, equals(null));
-        expect(payB.contacts[0].pubKey, equals(publicKey));
+        expect(payB.contacts[0].pubKey, equals(extractPublicKey(publicKey)));
       });
 
       test('validate qr scanned', () {
         final PaymentState? payC = parseScannedUri(publicKey);
         expect(payC!.amount, equals(null));
-        expect(payC.contacts[0].pubKey, equals(publicKey));
+        expect(payC.contacts[0].pubKey, equals(extractPublicKey(publicKey)));
       });
 
       test('validate qr uri with decimal amount', () {
         final String uriD = getQrUri(pubKey: publicKey, amount: '10.10');
         final PaymentState? payD = parseScannedUri(uriD);
         expect(payD!.amount, equals(10.10));
-        expect(payD.contacts[0].pubKey, equals(publicKey));
+        expect(payD.contacts[0].pubKey, equals(extractPublicKey(publicKey)));
       });
 
       test('validate qr uri with localized decimal amount', () {
@@ -97,14 +126,14 @@ void main() {
             getQrUri(pubKey: publicKey, amount: '10,10', locale: 'es');
         final PaymentState? payE = parseScannedUri(uriE);
         expect(payE!.amount, equals(10.10));
-        expect(payE.contacts[0].pubKey, equals(publicKey));
+        expect(payE.contacts[0].pubKey, equals(extractPublicKey(publicKey)));
       });
 
       test('validate custom june uri with amount', () {
         final String uriF = 'june://$publicKey?amount=100';
         final PaymentState? payF = parseScannedUri(uriF);
         expect(payF!.amount, equals(100));
-        expect(payF.contacts[0].pubKey, equals(publicKey));
+        expect(payF.contacts[0].pubKey, equals(extractPublicKey(publicKey)));
       });
 
       test('validate june uri with comment and amount', () {
@@ -113,7 +142,7 @@ void main() {
         final PaymentState? payJ = parseScannedUri(uriJ);
         expect(payJ!.comment, equals('GCHANGE:AYDI9JPOVIL9ZVG-PNCU'));
         expect(payJ.amount, equals(100));
-        expect(payJ.contacts[0].pubKey, equals(publicKey));
+        expect(payJ.contacts[0].pubKey, equals(extractPublicKey(publicKey)));
       });
 
       test('validate june uri with amount and comment', () {
@@ -122,7 +151,7 @@ void main() {
         final PaymentState? payK = parseScannedUri(uriK);
         expect(payK!.comment, equals('This Is my comment'));
         expect(payK.amount, equals(10));
-        expect(payK.contacts[0].pubKey, equals(publicKey));
+        expect(payK.contacts[0].pubKey, equals(extractPublicKey(publicKey)));
       });
 
       test('validate june uri with reordered comment and amount', () {
@@ -131,7 +160,7 @@ void main() {
         final PaymentState? payL = parseScannedUri(uriL);
         expect(payL!.comment, equals('This Is my comment'));
         expect(payL.amount, equals(10));
-        expect(payL.contacts[0].pubKey, equals(publicKey));
+        expect(payL.contacts[0].pubKey, equals(extractPublicKey(publicKey)));
       });
 
       test('validate june uri with localized amount and comment', () {
@@ -140,7 +169,7 @@ void main() {
         final PaymentState? payM = parseScannedUri(uriM);
         expect(payM!.comment, equals('Mi comentario'));
         expect(payM.amount, equals(10));
-        expect(payM.contacts[0].pubKey, equals(publicKey));
+        expect(payM.contacts[0].pubKey, equals(extractPublicKey(publicKey)));
       });
 
       test('validate june uri with comment only', () {
@@ -148,7 +177,7 @@ void main() {
         final PaymentState? payN = parseScannedUri(uriN);
         expect(payN!.amount == null, equals(true));
         expect(payN.comment, equals('This Is my comment'));
-        expect(payN.contacts[0].pubKey, equals(publicKey));
+        expect(payN.contacts[0].pubKey, equals(extractPublicKey(publicKey)));
       });
 
       test('validate june uri with encoded uri', () {
@@ -157,7 +186,7 @@ void main() {
         final PaymentState? payN = parseScannedUri(uriN);
         expect(payN!.amount == null, equals(true));
         expect(payN.comment, equals('This Is my comment'));
-        expect(payN.contacts[0].pubKey, equals(publicKey));
+        expect(payN.contacts[0].pubKey, equals(extractPublicKey(publicKey)));
       });
 
       test('Replace incorrect comment characters', () {
@@ -166,7 +195,7 @@ void main() {
         final PaymentState? payN = parseScannedUri(uriN);
         expect(payN!.amount == null, equals(true));
         expect(payN.comment, equals('This Is my comment !%     '));
-        expect(payN.contacts[0].pubKey, equals(publicKey));
+        expect(payN.contacts[0].pubKey, equals(extractPublicKey(publicKey)));
       });
     });
   }
@@ -280,49 +309,43 @@ void main() {
       const String spreadsheetText =
           'Key1: EdWkzNABz7dPancFqW6JVLqv1wpGaQSxgWmMf1pmY7KG:BJH\nKey2: ARErWXr3bhKYh8FqX9axMXxxRPXMuoZW4s73P1zBHUTY';
 
-      final List<Contact> result = parseMultipleKeys(spreadsheetText);
-      expect(result, <Contact>[
-        const Contact(
-            pubKey: 'EdWkzNABz7dPancFqW6JVLqv1wpGaQSxgWmMf1pmY7KG:BJH'),
-        const Contact(pubKey: 'ARErWXr3bhKYh8FqX9axMXxxRPXMuoZW4s73P1zBHUTY')
-      ]);
+      final Set<Contact> result = parseMultipleKeys(spreadsheetText);
+      expect(result, <Contact>{
+        Contact(pubKey: 'EdWkzNABz7dPancFqW6JVLqv1wpGaQSxgWmMf1pmY7KG:BJH'),
+        Contact(pubKey: 'ARErWXr3bhKYh8FqX9axMXxxRPXMuoZW4s73P1zBHUTY')
+      });
     });
 
     test('Extraction from an email or telegram text', () {
       const String emailText =
           'Hello, here are the keys: EdWkzNABz7dPancFqW6JVLqv1wpGaQSxgWmMf1pmY7KG, ARErWXr3bhKYh8FqX9axMXxxRPXMuoZW4s73P1zBHUTY:9bG. Thanks!';
-      final List<Contact> result = parseMultipleKeys(emailText);
-      expect(result, <Contact>[
-        const Contact(pubKey: 'EdWkzNABz7dPancFqW6JVLqv1wpGaQSxgWmMf1pmY7KG'),
-        const Contact(
-            pubKey: 'ARErWXr3bhKYh8FqX9axMXxxRPXMuoZW4s73P1zBHUTY:9bG')
-      ]);
+      final Set<Contact> result = parseMultipleKeys(emailText);
+      expect(result, <Contact>{
+        Contact(pubKey: 'EdWkzNABz7dPancFqW6JVLqv1wpGaQSxgWmMf1pmY7KG'),
+        Contact(pubKey: 'ARErWXr3bhKYh8FqX9axMXxxRPXMuoZW4s73P1zBHUTY:9bG')
+      });
     });
 
     test('Extraction from a list separated by semicolons', () {
       const String listText =
-          'EdWkzNABz7dPancFqW6JVLqv1wpGaQSxgWmMf1pmY7KG; ARErWXr3bhKYh8FqX9axMXxxRPXMuoZW4s73P1zBHUTY:BJH; 78ZwwgpgdH5uLZLbThUQH7LKwPgjMunYfLiCfUCySkM8:4VT';
-      final List<Contact> result = parseMultipleKeys(listText);
-      expect(result, <Contact>[
-        const Contact(pubKey: 'EdWkzNABz7dPancFqW6JVLqv1wpGaQSxgWmMf1pmY7KG'),
-        const Contact(
-            pubKey: 'ARErWXr3bhKYh8FqX9axMXxxRPXMuoZW4s73P1zBHUTY:BJH'),
-        const Contact(
-            pubKey: '78ZwwgpgdH5uLZLbThUQH7LKwPgjMunYfLiCfUCySkM8:4VT')
-      ]);
+          'EdWkzNABz7dPancFqW6JVLqv1wpGaQSxgWmMf1pmY7KG; ARErWXr3bhKYh8FqX9axMXxxRPXMuoZW4s73P1zBHUTY:9bG; 78ZwwgpgdH5uLZLbThUQH7LKwPgjMunYfLiCfUCySkM8:4VT';
+      final Set<Contact> result = parseMultipleKeys(listText);
+      expect(result, <Contact>{
+        Contact(pubKey: 'EdWkzNABz7dPancFqW6JVLqv1wpGaQSxgWmMf1pmY7KG'),
+        Contact(pubKey: 'ARErWXr3bhKYh8FqX9axMXxxRPXMuoZW4s73P1zBHUTY:9bG'),
+        Contact(pubKey: '78ZwwgpgdH5uLZLbThUQH7LKwPgjMunYfLiCfUCySkM8:4VT')
+      });
     });
 
     test('Extraction from a list separated by spaces', () {
       const String listText =
-          'EdWkzNABz7dPancFqW6JVLqv1wpGaQSxgWmMf1pmY7KG      ARErWXr3bhKYh8FqX9axMXxxRPXMuoZW4s73P1zBHUTY:BJH       78ZwwgpgdH5uLZLbThUQH7LKwPgjMunYfLiCfUCySkM8:4VT';
-      final List<Contact> result = parseMultipleKeys(listText);
-      expect(result, <Contact>[
-        const Contact(pubKey: 'EdWkzNABz7dPancFqW6JVLqv1wpGaQSxgWmMf1pmY7KG'),
-        const Contact(
-            pubKey: 'ARErWXr3bhKYh8FqX9axMXxxRPXMuoZW4s73P1zBHUTY:BJH'),
-        const Contact(
-            pubKey: '78ZwwgpgdH5uLZLbThUQH7LKwPgjMunYfLiCfUCySkM8:4VT')
-      ]);
+          'EdWkzNABz7dPancFqW6JVLqv1wpGaQSxgWmMf1pmY7KG      ARErWXr3bhKYh8FqX9axMXxxRPXMuoZW4s73P1zBHUTY:9bG       78ZwwgpgdH5uLZLbThUQH7LKwPgjMunYfLiCfUCySkM8:4VT';
+      final Set<Contact> result = parseMultipleKeys(listText);
+      expect(result, <Contact>{
+        Contact(pubKey: 'EdWkzNABz7dPancFqW6JVLqv1wpGaQSxgWmMf1pmY7KG'),
+        Contact(pubKey: 'ARErWXr3bhKYh8FqX9axMXxxRPXMuoZW4s73P1zBHUTY:9bG'),
+        Contact(pubKey: '78ZwwgpgdH5uLZLbThUQH7LKwPgjMunYfLiCfUCySkM8:4VT')
+      });
     });
 
     test('Extraction from a long multiline list', () {
@@ -379,7 +402,7 @@ void main() {
       3akw6wCdsrauLgnMFQuJ2BoC7waB1ao3xovh7NRZLU1Y:Dn5
       7tH5qeBxsS15UMAf8Jh3FsGmpPkUJqBUBLwDgXyK3UTo:HVL
       CZAnpHKEFiqsUUqP3eMMeZkhKkhd1rEyQP2bdtJoLqTT:8yx''';
-      final List<Contact> results = parseMultipleKeys(listText);
+      final Set<Contact> results = parseMultipleKeys(listText);
       expect(results.length, 52);
       final Map<Contact, int> contactCounts = <Contact, int>{};
       for (final Contact contact in results) {
@@ -400,15 +423,15 @@ void main() {
     });
   });
 
-  const Contact from = Contact(pubKey: 'from-publicKey');
-  const Contact to1 = Contact(pubKey: 'to-publicKey-1');
-  const Contact to2 = Contact(pubKey: 'to-publicKey-2');
-  const Contact to3 = Contact(pubKey: 'to-publicKey-3');
-  const Contact to4 = Contact(pubKey: 'to-publicKey-4');
+  final Contact from = Contact(pubKey: testPubKey);
+  final Contact to1 = Contact(pubKey: testPubKey1);
+  final Contact to2 = Contact(pubKey: testPubKey2);
+  final Contact to3 = Contact(pubKey: testPubKey3);
+  final Contact to4 = Contact(pubKey: testPubKey4);
 
   test('genTxKey single recipient', () {
     final Transaction transaction = Transaction(
-      to: to1,
+      recipients: <Contact>[to1],
       amount: 10.0,
       comment: 'Test transaction',
       type: TransactionType.pending,
@@ -418,17 +441,18 @@ void main() {
 
     final String result = genTxKey(transaction);
 
-    expect(result,
-        equals('from:from-publicKey-to:to-publicKey-1-Test transaction-10.0'));
+    expect(
+        result,
+        equals(
+            'from:7wnDh2FPdwNW8Dd5JyoJTbspuu8b9QJKps2xAYenefsu-to:7XtCpQSj8HRQxAD7rjZrMJ1knxBm6yx317R7sYzu3Hy6-Test transaction-10.0'));
   });
 
   test('genTxKey multiple recipients', () {
     final Transaction transaction = Transaction(
       from: from,
-      to: to1,
       type: TransactionType.sending,
       time: DateTime.now(),
-      recipients: const <Contact>[to1, to2, to3, to4],
+      recipients: <Contact>[to1, to2, to3, to4],
       amount: 10.0,
       comment: 'Test transaction',
     );
@@ -438,7 +462,7 @@ void main() {
     expect(
         result,
         equals(
-            'from:from-publicKey-to:to-publicKey-1-to-publicKey-2-to-publicKey-3-to-publicKey-4-Test transaction-10.0'));
+            'from:7wnDh2FPdwNW8Dd5JyoJTbspuu8b9QJKps2xAYenefsu-to:2AD8Eg55RKidFLcFBVy8NuSrNsPvwrDjPe2SLq8seMjf-39a4E4555VNVyZKQgFC88h9eykEaSCFzyr22PncpGvA9-7XtCpQSj8HRQxAD7rjZrMJ1knxBm6yx317R7sYzu3Hy6-A23W3Z4NNxShFThCwHsru1pgzMJDMSf5GaJxb3A5ipih-Test transaction-10.0'));
   });
 
   test('genTxKey for sending and pending transactions', () {
@@ -559,12 +583,11 @@ void main() {
       () {
     final Transaction transaction = Transaction(
       type: TransactionType.sending,
-      from: const Contact(pubKey: 'from-publicKey'),
-      to: const Contact(pubKey: 'to-publicKey-1'),
-      recipients: const <Contact>[
-        Contact(pubKey: 'to-publicKey-1'),
-        Contact(pubKey: 'to-publicKey-2'),
-        Contact(pubKey: 'to-publicKey-3'),
+      from: Contact(pubKey: testPubKey),
+      recipients: <Contact>[
+        Contact(pubKey: testPubKey1),
+        Contact(pubKey: testPubKey2),
+        Contact(pubKey: testPubKey3),
       ],
       recipientsAmounts: const <double>[10.0, 20.0, 30.0],
       amount: 60.0,
@@ -585,9 +608,9 @@ void main() {
     expect(recipientsJson.length, equals(3));
     expect(recipientsAmountsJson.length, equals(3));
 
-    expect(recipientsJson[0].pubKey, equals('to-publicKey-1'));
-    expect(recipientsJson[1].pubKey, equals('to-publicKey-2'));
-    expect(recipientsJson[2].pubKey, equals('to-publicKey-3'));
+    expect(recipientsJson[0].pubKey, equals(testPubKey1));
+    expect(recipientsJson[1].pubKey, equals(testPubKey2));
+    expect(recipientsJson[2].pubKey, equals(testPubKey3));
 
     expect(recipientsAmountsJson[0], equals(10.0));
     expect(recipientsAmountsJson[1], equals(20.0));
@@ -599,12 +622,11 @@ void main() {
       () {
     final Transaction sendingTransaction = Transaction(
       type: TransactionType.sending,
-      from: const Contact(pubKey: 'from-publicKey'),
-      to: const Contact(pubKey: 'to-publicKey-1'),
-      recipients: const <Contact>[
-        Contact(pubKey: 'to-publicKey-1'),
-        Contact(pubKey: 'to-publicKey-2'),
-        Contact(pubKey: 'to-publicKey-3'),
+      from: Contact(pubKey: testPubKey),
+      recipients: <Contact>[
+        Contact(pubKey: testPubKey1),
+        Contact(pubKey: testPubKey1),
+        Contact(pubKey: testPubKey1),
       ],
       recipientsAmounts: const <double>[10.0, 20.0, 30.0],
       amount: 60.0,
@@ -620,16 +642,305 @@ void main() {
     expect(pendingTransaction.recipientsAmounts,
         equals(sendingTransaction.recipientsAmounts));
   });
-}
 
-String _generateRandomPatternPassword(Random random) {
-  final int length = random.nextInt(8) + 2; // Password length between 2 and 9.
-  final Set<int> digits = <int>{1, 2, 3, 4, 5, 6, 7, 8, 9};
-  final List<int> passwordDigits = <int>[];
-  for (int i = 0; i < length; i++) {
-    final int selectedDigit = digits.elementAt(random.nextInt(digits.length));
-    passwordDigits.add(selectedDigit);
-    digits.remove(selectedDigit);
-  }
-  return passwordDigits.join();
+  test('Import wallet and verify primary key', () async {
+    // Given
+    const String walletBackup =
+        '{"key":"rLkdXaEaz8hk0OGbb7TTMuh0d+aNrkW0fA1rlCR1lOvuURPy717ayCSvDviXE6J+LDRJ6FpbsG2SReDB6lcF8crS7DOyF5K4gx16RF4DlHaVxxZrwRnlVCxyBN9NstFlLglgAFnx/XmZJLSzZ7w/gG6ka9miXKECrPdUw93nPF3hPZhfXtcXzGo+6UKBtVtglEfjOXmgjDMTuYgbtJuHKvdAjoCDDNfpMmp6wV+C6zTglRRhHMh9+oubCmekwxrvAKA0lueC5M/CPL+puPH21/3wLHed8hF9N2F2EHmjSNGeK1r7ferN0SbwntWdNOfA/Jzhdxg7F+XNMeSNn7J4Py+jVwwx0Bs/wjw8DQI02cHSzBNOl+jP0ESs784ArMv2tL/sASAM5K0bXcc/zI89tOLI6A4+jnzOFNdGfjuPVU1AmNye79KCUDPXv6Qh4T6ZoiDgHtjFlT9n6/9RYLOFw86Lr0255ont8nnhm+MXkDhg38SscUMaU8I5CPglfWf+/bO0fDA2VQ0a/6wgpyWI02n3LzHgUEF6+l4akrHDn4ahm/pWaeS9DPIxw+WGMFYRPCph0tI5Bp0Alf6vy64ZGSP1VxrvbETvWQ3okWaOBOqm571h/CMVbre7CbKMqjFtFLiWbBJBmBNx1QSt5uGmGrWaJI29gHSW/MwU7YSvkCrIzoSJkr/7e2vDytkeG4Eq"}';
+    const String password = '678';
+    const String expectedPrimaryKey =
+        '6JgGvDDBu8XWL89BTvzHCfVmJWbSRfBNb1ZK4dQW6fNK';
+
+    // When
+    final Map<String, dynamic> keyJson =
+        jsonDecode(walletBackup) as Map<String, dynamic>;
+    final String keyEncrypted = keyJson['key'] as String;
+    final Map<String, dynamic> decryptedKeys =
+        decryptJsonForImport(keyEncrypted, password);
+
+    // Then
+    final dynamic cesiumCards = decryptedKeys['cesiumCards'];
+    final Map<String, dynamic> firstCard = (jsonDecode(cesiumCards as String)
+        as List<dynamic>)[0] as Map<String, dynamic>;
+    final String primaryKey = firstCard['pubKey'] as String;
+    expect(primaryKey, equals(expectedPrimaryKey));
+  });
+
+  test('Create Cesium account with devtest/devtest and validate pubkey', () {
+    // Given
+    const String expectedPubKey =
+        '6SvSMyZSTUFtKo8BJEN959xRX4ze9K3WT7SBK9tqR5vh';
+    const String expectedSecKey =
+        '3WUvt7z9M2tNNfmQkYakJ12VGGGaLdVVjQu4wMYdo92CMuL3cnkf4Zr29dWyrGM2JKKYo6D1BkQsRVouV33s1zim';
+    const String expectedWifData =
+        '9dA4Ciza7hLv1ShRgb1XSqd95BDQtYEi31ZwH6gzCb1gJBE';
+    const String expectedEwifData =
+        '2RTjpjZMnFnKHhgUadgT7JUvGeQem5sC6DQQpeuo5dCL6V1fgqsg8';
+
+    const String password = 'devtest';
+
+    // When
+    final CesiumWallet wallet = CesiumWallet(password, password);
+
+    // Generate
+    final String secKey = getPrivKey(wallet);
+    final String wifData = generateWif(wallet);
+    final String ewifData = generateEwif(wallet, 'devtest');
+
+    // Generate files
+    final Map<String, String> pubSecFile =
+        generatePubSecFile(wallet.pubkey, secKey);
+    final Map<String, String> wifFile = generateWifFile(wallet.pubkey, wifData);
+    final Map<String, String> ewifFile =
+        generateEwifFile(wallet.pubkey, ewifData);
+
+    // Validate
+    expect(wallet.pubkey, equals(expectedPubKey));
+    expect(secKey, equals(expectedSecKey));
+    expect(wifData, equals(expectedWifData));
+    expect(ewifData, equals(expectedEwifData));
+    expect(pubSecFile.values.first, equals('''
+Type: PubSec
+Version: 1
+pub: $expectedPubKey
+sec: $expectedSecKey
+'''));
+
+    expect(wifFile.values.first, equals('''
+Type: WIF
+Version: 1
+Data: $expectedWifData
+'''));
+
+    expect(ewifFile.values.first, equals('''
+Type: EWIF
+Version: 1
+Data: $expectedEwifData
+'''));
+  });
+
+  test('Parse PubSec file and validate wallet', () async {
+    const String pubSecContent = '''
+Type: PubSec
+Version: 1
+pub: 6SvSMyZSTUFtKo8BJEN959xRX4ze9K3WT7SBK9tqR5vh
+sec: 3WUvt7z9M2tNNfmQkYakJ12VGGGaLdVVjQu4wMYdo92CMuL3cnkf4Zr29dWyrGM2JKKYo6D1BkQsRVouV33s1zim
+''';
+
+    final CesiumWallet wallet =
+        await parseKeyFile(pubSecContent, null, 'devtest');
+    expect(
+        wallet.pubkey, equals('6SvSMyZSTUFtKo8BJEN959xRX4ze9K3WT7SBK9tqR5vh'));
+  });
+
+  test('Parse WIF file and validate wallet', () async {
+    const String wifContent = '''
+Type: WIF
+Version: 1
+Data: 9dA4Ciza7hLv1ShRgb1XSqd95BDQtYEi31ZwH6gzCb1gJBE
+''';
+
+    final CesiumWallet wallet = await parseKeyFile(wifContent, null, 'devtest');
+    expect(
+        wallet.pubkey, equals('6SvSMyZSTUFtKo8BJEN959xRX4ze9K3WT7SBK9tqR5vh'));
+  });
+
+  test('Parse EWIF file and validate wallet', () async {
+    const String ewifContent = '''
+Type: EWIF
+Version: 1
+Data: 2RTjpjZMnFnKHhgUadgT7JUvGeQem5sC6DQQpeuo5dCL6V1fgqsg8
+''';
+
+    final CesiumWallet wallet =
+        await parseKeyFile(ewifContent, null, 'devtest');
+    expect(
+        wallet.pubkey, equals('6SvSMyZSTUFtKo8BJEN959xRX4ze9K3WT7SBK9tqR5vh'));
+  });
+
+  test('Parse nodes URLs', skip: true, () {
+    final List<Node> nodes = defaultEndPointNodes;
+
+    for (final Node node in nodes) {
+      final String url = node.url;
+
+      try {
+        final Uri parsedUri = parseNodeUrl(url);
+
+        expect(parsedUri.scheme, 'wss', reason: 'Invalid scheme for URL: $url');
+
+        expect(parsedUri.host.isNotEmpty, true,
+            reason: 'Invalid host for URL: $url');
+
+        expect(parsedUri.port, 443, reason: 'Invalid port: $parsedUri');
+
+        if (parsedUri.path.isEmpty) {
+          expect(parsedUri.replace(path: '/').path, '/',
+              reason: 'Path was empty for URL: $url');
+        }
+        expect(parsedUri.toString(), equals(url),
+            reason: 'URLs $url and $parsedUri do not match');
+
+        logger('✅ Parsed successfully: $parsedUri');
+      } catch (e) {
+        fail('❌ Error parsing URL: $url - Error: $e');
+      }
+    }
+  });
+
+  group('sortNodesByErrorOrLatency', () {
+    test('Sorts by errors first, then by latency', () {
+      final List<Node> nodes = <Node>[
+        const Node(url: 'node1', latency: 100, errors: 3),
+        const Node(url: 'node2', latency: 50, errors: 1),
+        const Node(url: 'node3', latency: 75, errors: 1),
+        const Node(url: 'node4', latency: 30, errors: 2),
+      ];
+
+      sortNodesByErrorOrLatency(nodes);
+
+      expect(nodes[0].url, 'node2'); // Lowest errors, lowest latency
+      expect(nodes[1].url, 'node3'); // Same errors, higher latency
+      expect(nodes[2].url, 'node4'); // Higher errors
+      expect(nodes[3].url, 'node1'); // Highest errors
+    });
+
+    test('Handles empty list', () {
+      final List<Node> nodes = <Node>[];
+      sortNodesByErrorOrLatency(nodes);
+      expect(nodes, isEmpty);
+    });
+
+    test('Handles single node', () {
+      final List<Node> nodes = <Node>[const Node(url: 'node1', latency: 100)];
+      sortNodesByErrorOrLatency(nodes);
+      expect(nodes.length, 1);
+      expect(nodes[0].url, 'node1');
+    });
+
+    test('Handles all nodes with same errors and latency', () {
+      final List<Node> nodes = <Node>[
+        const Node(url: 'node1', latency: 50, errors: 2),
+        const Node(url: 'node2', latency: 50, errors: 2),
+        const Node(url: 'node3', latency: 50, errors: 2),
+      ];
+
+      sortNodesByErrorOrLatency(nodes);
+
+      expect(nodes[0].url, 'node1'); // Order remains as is
+      expect(nodes[1].url, 'node2');
+      expect(nodes[2].url, 'node3');
+    });
+
+    test('Sorts correctly with mixed errors and latencies', () {
+      final List<Node> nodes = <Node>[
+        const Node(url: 'node1', latency: 70, errors: 2),
+        const Node(url: 'node2', latency: 60, errors: 2),
+        const Node(url: 'node3', latency: 80, errors: 1),
+        const Node(url: 'node4', latency: 50, errors: 1),
+      ];
+
+      sortNodesByErrorOrLatency(nodes);
+
+      expect(nodes[0].url, 'node4'); // Fewest errors, lowest latency
+      expect(nodes[1].url, 'node3'); // Fewest errors, higher latency
+      expect(nodes[2].url, 'node2'); // More errors, lower latency
+      expect(nodes[3].url, 'node1'); // More errors, higher latency
+    });
+  });
+
+  test('Test serialization and deserialization of empty UInt8List seeds', () {
+    final Uint8List seedRestored = seedFromString('');
+    expect(seedToString(seedRestored), equals(''));
+  });
+
+  group('CesiumWallet with special characters (em-dash —)', () {
+    test('Create wallet with em-dash in secret phrase', () {
+      const String secret = 'test—password';
+      const String password = 'normal';
+
+      final CesiumWallet wallet = CesiumWallet(secret, password);
+
+      // Validate that a public key is generated
+      expect(wallet.pubkey, isNotEmpty);
+      expect(wallet.pubkey.length, equals(44)); // Base58 encoded key length
+
+      // FIXED: Em-dash (—, U+2014) is different from hyphen (-, U+002D)
+      // They must produce different public keys to maintain security
+      final CesiumWallet walletWithHyphen =
+          CesiumWallet('test-password', password);
+      expect(wallet.pubkey, isNot(equals(walletWithHyphen.pubkey)),
+          reason:
+              'Em-dash and hyphen must produce different public keys for security');
+
+      // Verify consistency - same inputs produce same output
+      final CesiumWallet wallet2 = CesiumWallet(secret, password);
+      expect(wallet.pubkey, equals(wallet2.pubkey),
+          reason:
+              'Same secret and password should produce consistent public key');
+    });
+
+    test('Create wallet with em-dash in password', () {
+      const String secret = 'normal';
+      const String password = 'my—secure—pass';
+
+      final CesiumWallet wallet = CesiumWallet(secret, password);
+
+      // Validate that a public key is generated
+      expect(wallet.pubkey, isNotEmpty);
+
+      // Validate consistency
+      final CesiumWallet wallet2 = CesiumWallet(secret, password);
+      expect(wallet.pubkey, equals(wallet2.pubkey),
+          reason: 'Same secret and password should produce same public key');
+    });
+
+    test('Create wallet with em-dash in both secret and password', () {
+      const String secret = 'test—secret';
+      const String password = 'my—password';
+
+      final CesiumWallet wallet = CesiumWallet(secret, password);
+
+      expect(wallet.pubkey, isNotEmpty);
+
+      final CesiumWallet wallet2 = CesiumWallet(secret, password);
+      expect(wallet.pubkey, equals(wallet2.pubkey));
+    });
+
+    test('EWIF export and import with em-dash password', () async {
+      const String password = 'dev—test';
+      final CesiumWallet wallet = CesiumWallet(password, password);
+
+      // Generate EWIF with em-dash password
+      final String ewifData = generateEwif(wallet, password);
+      expect(ewifData, isNotEmpty);
+
+      // Create EWIF file content
+      final String ewifContent = '''
+Type: EWIF
+Version: 1
+Data: $ewifData
+''';
+
+      // Parse back the EWIF with em-dash password
+      final CesiumWallet importedWallet =
+          await parseKeyFile(ewifContent, null, password);
+
+      // Verify the imported wallet matches the original
+      expect(importedWallet.pubkey, equals(wallet.pubkey),
+          reason: 'Imported wallet should have same pubkey as original');
+    });
+
+    test('Multiple em-dashes in password', () {
+      const String secret = 'my—secret—phrase—here';
+      const String password = '—password—with—multiple—dashes—';
+
+      final CesiumWallet wallet = CesiumWallet(secret, password);
+
+      expect(wallet.pubkey, isNotEmpty);
+
+      final CesiumWallet wallet2 = CesiumWallet(secret, password);
+      expect(wallet.pubkey, equals(wallet2.pubkey));
+    });
+  });
 }

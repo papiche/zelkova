@@ -12,45 +12,63 @@ part 'node_list_state.g.dart';
 @JsonSerializable()
 @CopyWith()
 class NodeListState extends Equatable {
-  NodeListState(
-      {List<Node>? duniterNodes,
-      List<Node>? cesiumPlusNodes,
-      List<Node>? gvaNodes,
-      List<Node>? endpointNodes,
-      List<Node>? duniterIndexerNodes,
-      this.currentGvaNode,
-      bool? isLoading})
-      : duniterNodes = duniterNodes ?? defaultDuniterNodes,
-        cesiumPlusNodes = cesiumPlusNodes ?? defaultCesiumPlusNodes,
-        gvaNodes = gvaNodes ?? defaultGvaNodes,
+  NodeListState({
+    List<Node>? cesiumPlusNodes,
+    List<Node>? endpointNodes,
+    List<Node>? duniterIndexerNodes,
+    List<Node>? duniterDataNodes,
+    List<Node>? ipfsGateways,
+    this.currentGvaNode,
+    this.cesiumPlusNodesLastUpdate,
+    this.endpointNodesLastUpdate,
+    this.duniterIndexerNodesLastUpdate,
+    this.duniterDataNodesLastUpdate,
+    this.ipfsGatewaysLastUpdate,
+    bool? isLoading,
+  })  : cesiumPlusNodes = cesiumPlusNodes ?? defaultCesiumPlusNodes,
         endpointNodes = endpointNodes ?? defaultEndPointNodes,
         duniterIndexerNodes = duniterIndexerNodes ?? defaultDuniterIndexerNodes,
+        duniterDataNodes = duniterDataNodes ?? defaultDatapodEndpointNodes,
+        ipfsGateways = ipfsGateways ?? defaultIpfsGateways,
         isLoading = isLoading ?? false;
 
   factory NodeListState.fromJson(Map<String, dynamic> json) =>
       _$NodeListStateFromJson(json);
 
   @JsonKey(fromJson: _nodesFromJson, toJson: _nodesToJson)
-  final List<Node> duniterNodes;
-  @JsonKey(fromJson: _nodesFromJson, toJson: _nodesToJson)
   final List<Node> cesiumPlusNodes;
-  @JsonKey(fromJson: _nodesFromJson, toJson: _nodesToJson)
-  final List<Node> gvaNodes;
   @JsonKey(fromJson: _nodesFromJson, toJson: _nodesToJson)
   final List<Node> endpointNodes;
   @JsonKey(fromJson: _nodesFromJson, toJson: _nodesToJson)
   final List<Node> duniterIndexerNodes;
+  @JsonKey(fromJson: _nodesFromJson, toJson: _nodesToJson)
+  final List<Node> duniterDataNodes;
+  @JsonKey(fromJson: _nodesFromJson, toJson: _nodesToJson)
+  final List<Node> ipfsGateways;
+
+  final DateTime? cesiumPlusNodesLastUpdate;
+  final DateTime? endpointNodesLastUpdate;
+  final DateTime? duniterIndexerNodesLastUpdate;
+  final DateTime? duniterDataNodesLastUpdate;
+  final DateTime? ipfsGatewaysLastUpdate;
+
   final bool isLoading;
   @JsonKey(fromJson: _nodeFromJson, toJson: _nodeToJson)
   final Node? currentGvaNode;
 
   @override
-  List<Object?> get props => <Object>[
-        duniterNodes,
+  List<Object?> get props => <Object?>[
         cesiumPlusNodes,
-        gvaNodes,
         endpointNodes,
         duniterIndexerNodes,
+        duniterDataNodes,
+        ipfsGateways,
+        currentGvaNode,
+        cesiumPlusNodesLastUpdate,
+        endpointNodesLastUpdate,
+        duniterIndexerNodesLastUpdate,
+        duniterDataNodesLastUpdate,
+        ipfsGatewaysLastUpdate,
         isLoading
       ];
 

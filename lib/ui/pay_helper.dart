@@ -1,39 +1,32 @@
-// ignore_for_file: use_build_context_synchronously
-
 import 'dart:async';
 
-import 'package:durt/durt.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:ndef/utilities.dart';
-import 'package:tuple/tuple.dart';
+import 'package:sn_progress_dialog/options/completed.dart';
+import 'package:sn_progress_dialog/progress_dialog.dart';
 
-import '../../../data/models/contact.dart';
-import '../../../data/models/node_type.dart';
-import '../../../data/models/payment_cubit.dart';
-import '../../../data/models/transaction.dart';
-import '../../../data/models/transaction_type.dart';
-import '../../../g1/api.dart';
-import '../../../shared_prefs_helper.dart';
-import '../data/models/app_cubit.dart';
 import '../data/models/bottom_nav_cubit.dart';
-import '../data/models/cesium_card.dart';
+import '../data/models/contact.dart';
 import '../data/models/multi_wallet_transaction_cubit.dart';
 import '../data/models/node.dart';
 import '../data/models/node_manager.dart';
+import '../data/models/node_type.dart';
+import '../data/models/payment_cubit.dart';
 import '../data/models/payment_state.dart';
-import '../data/models/utxo.dart';
-import '../data/models/utxo_cubit.dart';
-import '../g1/astroid_helper.dart';
+import '../data/models/transaction.dart';
+import '../data/models/transaction_type.dart';
+import '../g1/api.dart';
 import '../g1/currency.dart';
 import '../g1/g1_helper.dart';
+import '../g1/pay_result.dart';
+import '../shared_prefs_helper.dart';
 import 'contacts_cache.dart';
 import 'logger.dart';
-import 'qr_manager.dart';
+import 'secure_unlock_widget.dart';
 import 'ui_helpers.dart';
 import 'widgets/connectivity_widget_wrapper_wrapper.dart';
-import 'widgets/fifth_screen/import_dialog.dart';
+import 'widgets/default_progress_dialog.dart';
 
 Future<bool> payWithRetry(
     {required BuildContext context,
@@ -45,139 +38,173 @@ Future<bool> payWithRetry(
     required double currentUd,
     bool useBMA = false}) async {
   assert(amount > 0);
-  bool hasPass = false;
   final bool isToMultiple = recipients.length > 1;
-  if (!SharedPreferencesHelper().isG1nkgoCard() &&
-      !SharedPreferencesHelper().hasVolatile()) {
-    hasPass = await showImportCesiumWalletDialog(
-            context,
-            SharedPreferencesHelper().getPubKey(),
-            context.read<BottomNavCubit>().currentIndex) ??
-        false;
-  } else {
-    hasPass = true;
-  }
+  final bool hasPass = await walletAuth(context);
   if (hasPass) {
     if (context.mounted) {
       final MultiWalletTransactionCubit txCubit =
           context.read<MultiWalletTransactionCubit>();
       final PaymentCubit paymentCubit = context.read<PaymentCubit>();
-      final AppCubit appCubit = context.read<AppCubit>();
       paymentCubit.sending();
       final String fromPubKey = SharedPreferencesHelper().getPubKey();
 
+      final Currency paymentCurrency = isG1 ? Currency.G1 : Currency.DU;
       final bool? confirmed = await _confirmSend(context, amount.toString(),
-          fromPubKey, recipients, isRetry, appCubit.currency, isToMultiple);
-      final Contact fromContact = await ContactsCache().getContact(fromPubKey);
-      final CesiumWallet wallet = await SharedPreferencesHelper().getWallet();
+          fromPubKey, recipients, isRetry, paymentCurrency, isToMultiple,
+          isG1: isG1, currentUd: currentUd);
+
+      if (confirmed == null || !confirmed) {
+        paymentCubit.sentFailed();
+        return false;
+      }
+
+      // Show progress dialog immediately after confirmation
       if (!context.mounted) {
         return false;
       }
-      final UtxoCubit utxoCubit = context.read<UtxoCubit>();
-      final double convertedAmount = toG1(amount, isG1, currentUd);
-      if (confirmed == null || !confirmed) {
-        paymentCubit.sentFailed();
-      } else {
-        final Transaction tx = Transaction(
-            type: TransactionType.pending,
-            from: fromContact,
-            to: recipients[0],
-            recipients: recipients,
-            recipientsAmounts: List<double>.filled(recipients.length, amount),
-            amount: -toCG1(convertedAmount).toDouble() * recipients.length,
-            comment: comment,
-            time: DateTime.now());
+      final ProgressDialog pd = ProgressDialog(context: context);
+      pd.show(
+        progressType: defProgressType,
+        msg: tr('tx_processing'),
+        hideValue: defProgressHideValue,
+        progressBgColor: defProgressBgColor,
+        barrierDismissible: defProgressBarrierDismissible,
+        msgMaxLines: defProgressMsgMaxLines,
+        completed: Completed(),
+      );
+
+      try {
+        final Contact fromContact =
+            await ContactsCache().getContact(fromPubKey);
+
+        if (!context.mounted) {
+          pd.close();
+          return false;
+        }
+        final double convertedAmount = toG1(amount, isG1, currentUd);
+
+        // For v2 payments with multiple recipients, create separate pending transactions
+        // for each recipient to match on-chain batch transactions
+        final List<Transaction> pendingTransactions =
+            recipients.map((Contact recipient) {
+          return Transaction(
+              type: TransactionType.pending,
+              from: fromContact,
+              recipients: <Contact>[recipient],
+              recipientsAmounts: <double>[amount],
+              amount: -toCG1(convertedAmount).toDouble(),
+              comment: comment,
+              time: DateTime.now());
+        }).toList();
+
         final bool isConnected =
             await ConnectivityWidgetWrapperWrapper.isConnected;
         logger('isConnected: $isConnected');
         if (isConnected != null && !isConnected && !isRetry) {
+          pd.close();
           paymentCubit.sent();
           if (!context.mounted) {
             return true;
           }
           showAlertDialog(context, tr('payment_waiting_internet_title'),
               tr('payment_waiting_internet_desc_beta'));
-          final Transaction pending =
-              tx.copyWith(type: TransactionType.waitingNetwork);
-          txCubit.addPendingTransaction(pending);
+          for (final Transaction pending in pendingTransactions) {
+            txCubit.addPendingTransaction(
+                pending.copyWith(type: TransactionType.waitingNetwork));
+          }
           context.read<BottomNavCubit>().updateIndex(3);
           return true;
         } else {
           // PAY!
+          logger('Starting payment process...');
           PayResult result;
-          if (!useBMA) {
-            result = await payWithGVA(
-                to: recipients.map((Contact c) => c.pubKey).toList(),
-                comment: comment,
-                amount: convertedAmount);
+
+          logger(
+              'Calling pay() with recipients: ${recipients.map((Contact c) => c.pubKey).toList()}');
+          result = await pay(
+              to: recipients.map((Contact c) => c.pubKey).toList(),
+              comment: comment,
+              amount: convertedAmount);
+          logger('pay() returned with result: ${result.message}');
+
+          // Update pending transactions with debug info
+          final List<Transaction> updatedPendingTxs =
+              pendingTransactions.map((Transaction tx) {
+            return tx.copyWith(
+                debugInfo:
+                    'Node used: ${result != null && result.node != null ? result.node!.url : 'unknown'}');
+          }).toList();
+
+          if (result.progressStream != null) {
+            // Progress dialog already shown, just listen to stream updates
+            result.progressStream!.listen(
+              (String progressMessage) {
+                pd.update(msg: progressMessage);
+              },
+              onDone: () async {
+                await Future<dynamic>.delayed(
+                    const Duration(milliseconds: 1000));
+                if (!context.mounted) {
+                  return;
+                }
+                _onPaymentWIthProgressDone(
+                    pd, context, isRetry, txCubit, updatedPendingTxs);
+              },
+              onError: (dynamic error) {
+                if (!context.mounted) {
+                  return;
+                }
+                _onPaymentWithProgressError(
+                    pd, isRetry, txCubit, updatedPendingTxs, context, error);
+              },
+            );
           } else {
-            await utxoCubit.fetchUtxos(fromPubKey);
-            final List<Utxo>? utxos = utxoCubit.consume(convertedAmount);
-            final Tuple2<Map<String, dynamic>?, Node> currentBlock =
-                await getCurrentBlockGVA();
-
-            if (currentBlock != null && utxos != null) {
-              result = await payWithBMA(
-                  destPub: recipients[0].pubKey,
-                  blockHash: '${currentBlock.item1!['hash']}',
-                  blockNumber: '${currentBlock.item1!['number']}',
-                  comment: comment,
-                  wallet: wallet,
-                  utxos: utxos,
-                  amount: convertedAmount);
-            } else {
-              final Node triedNode = currentBlock.item2;
-              result = PayResult(
-                  message: 'Error retrieving payment data', node: triedNode);
-            }
-          }
-
-          final Transaction pending = tx.copyWith(
-              debugInfo:
-                  'Node used: ${result != null && result.node != null ? result.node!.url : 'unknown'}');
-          if (result.message == 'success') {
-            paymentCubit.sent();
-            if (!context.mounted) {
+            if (result.message == 'success') {
+              pd.close();
+              paymentCubit.sent();
+              // ignore: use_build_context_synchronously
+              if (!context.mounted) {
+                return true;
+              }
+              showAlertDialog(context, tr('payment_successful'),
+                  tr('payment_successful_desc'));
+              if (!isRetry) {
+                // Add here the transactions to the pending list (so we can check if they are confirmed)
+                updatedPendingTxs.forEach(txCubit.addPendingTransaction);
+              } else {
+                // Update the previously failed txs with an update time and type pending
+                for (final Transaction pending in updatedPendingTxs) {
+                  txCubit.updatePendingTransaction(
+                      pending.copyWith(type: TransactionType.pending));
+                }
+              }
+              // Refresh transactions to ensure pending transactions are shown
+              txCubit.fetchTransactions(pubKey: fromContact.pubKey);
+              context.read<BottomNavCubit>().updateIndex(3);
               return true;
-            }
-            showAlertDialog(context, tr('payment_successful'),
-                tr('payment_successful_desc'));
-            if (!isRetry) {
-              // Add here the transaction to the pending list (so we can check it the tx is confirmed)
-              txCubit.addPendingTransaction(pending);
             } else {
-              // Update the previously failed tx with an update time and type pending
-              txCubit.updatePendingTransaction(
-                  pending.copyWith(type: TransactionType.pending));
-            }
-            context.read<BottomNavCubit>().updateIndex(3);
-            return true;
-          } else {
-            paymentCubit.pendingPayment();
-            if (!context.mounted) {
+              pd.close();
+              paymentCubit.pendingPayment();
+              if (!context.mounted) {
+                return false;
+              }
+              final bool failedWithoutBalance =
+                  result.message == 'insufficient balance' ||
+                      result.message == 'Insufficient balance in your wallet';
+              showPayError(
+                  context: context,
+                  desc: tr('payment_error_desc',
+                      namedArgs: <String, String>{'error': tr(result.message)}),
+                  increaseErrors: !failedWithoutBalance,
+                  node: result.node);
+              _addPending(isRetry, txCubit, updatedPendingTxs, context);
               return false;
             }
-            final bool failedWithoutBalance =
-                result.message == 'insufficient balance' ||
-                    result.message == 'Insufficient balance in your wallet';
-            showPayError(
-                context: context,
-                desc: tr('payment_error_desc',
-                    namedArgs: <String, String>{'error': tr(result.message)}),
-                increaseErrors: !failedWithoutBalance,
-                node: result.node);
-            if (!isRetry) {
-              txCubit.insertPendingTransaction(
-                  pending.copyWith(type: TransactionType.failed));
-              context.read<BottomNavCubit>().updateIndex(3);
-            } else {
-              // Update the previously failed tx with an update time and type pending
-              txCubit.updatePendingTransaction(
-                  pending.copyWith(type: TransactionType.failed));
-            }
-            return false;
           }
         }
+      } catch (e) {
+        pd.close();
+        rethrow;
       }
     }
   } else {
@@ -190,6 +217,77 @@ Future<bool> payWithRetry(
     return false;
   }
   return true;
+}
+
+void _onPaymentWIthProgressDone(
+    ProgressDialog pd,
+    BuildContext context,
+    bool isRetry,
+    MultiWalletTransactionCubit txCubit,
+    List<Transaction> pendingTransactions) {
+  pd.close();
+
+  // Mark payment as sent in the UI state
+  context.read<PaymentCubit>().sent();
+
+  // Add the transactions to the pending list
+  if (!isRetry) {
+    pendingTransactions.forEach(txCubit.addPendingTransaction);
+  } else {
+    for (final Transaction pending in pendingTransactions) {
+      txCubit.updatePendingTransaction(
+          pending.copyWith(type: TransactionType.pending));
+    }
+  }
+
+  // Refresh transactions to ensure pending transactions are shown
+  if (pendingTransactions.isNotEmpty) {
+    final String fromPubKey = pendingTransactions.first.from.pubKey;
+    txCubit.fetchTransactions(pubKey: fromPubKey);
+  }
+
+  context.read<BottomNavCubit>().updateIndex(3);
+}
+
+void _onPaymentWithProgressError(
+    ProgressDialog pd,
+    bool isRetry,
+    MultiWalletTransactionCubit txCubit,
+    List<Transaction> pendingTransactions,
+    BuildContext context,
+    dynamic error) {
+  pd.close();
+  _addPending(isRetry, txCubit, pendingTransactions, context);
+  showDialog(
+    context: context,
+    builder: (BuildContext context) => AlertDialog(
+      title: Text(tr('payment_error')),
+      content: Text(error is String ? error : 'Unknown error'),
+      actions: <Widget>[
+        TextButton(
+          onPressed: () => Navigator.of(context).pop(),
+          child: Text(tr('accept')),
+        ),
+      ],
+    ),
+  );
+}
+
+void _addPending(bool isRetry, MultiWalletTransactionCubit txCubit,
+    List<Transaction> pendingTransactions, BuildContext context) {
+  if (!isRetry) {
+    for (final Transaction pending in pendingTransactions) {
+      txCubit.insertPendingTransaction(
+          pending.copyWith(type: TransactionType.failed));
+    }
+    context.read<BottomNavCubit>().updateIndex(3);
+  } else {
+    // Update the previously failed txs with type pending
+    for (final Transaction pending in pendingTransactions) {
+      txCubit.updatePendingTransaction(
+          pending.copyWith(type: TransactionType.failed));
+    }
+  }
 }
 
 bool weHaveBalance(BuildContext context, double amount) {
@@ -208,7 +306,25 @@ Future<bool?> _confirmSend(
     List<Contact> recipients,
     bool isRetry,
     Currency currency,
-    bool isPayToMultiple) async {
+    bool isPayToMultiple,
+    {required bool isG1,
+    required double currentUd}) async {
+  // Validate that user is not trying to pay to themselves
+  for (final Contact recipient in recipients) {
+    if (extractPublicKey(recipient.pubKey) == extractPublicKey(fromPubKey)) {
+      if (context.mounted) {
+        showAlertDialog(context, tr('payment_error'),
+            tr("You can't send money to yourself."));
+      }
+      return false;
+    }
+  }
+
+  // Calculate G1 equivalent if paying in DU
+  final String amountWithCurrency = !isG1
+      ? '$amount DU (${toG1(double.parse(amount), isG1, currentUd).toStringAsFixed(2)} Ğ1)'
+      : '$amount ${currency.name()}';
+
   return showDialog<bool>(
     context: context,
     builder: (BuildContext context) {
@@ -217,8 +333,8 @@ Future<bool?> _confirmSend(
         content: isPayToMultiple
             ? Text(tr('please_confirm_sent_multi_desc',
                 namedArgs: <String, String>{
-                    'amount': amount,
-                    'currency': currency.name(),
+                    'amount': amountWithCurrency,
+                    'currency': '',
                     'people': recipients.length.toString()
                   }))
             : Text(tr(
@@ -226,9 +342,9 @@ Future<bool?> _confirmSend(
                     ? 'please_confirm_retry_sent_desc'
                     : 'please_confirm_sent_desc',
                 namedArgs: <String, String>{
-                    'amount': amount,
+                    'amount': amountWithCurrency,
                     'to': humanizeContact(fromPubKey, recipients[0], true),
-                    'currency': currency.name()
+                    'currency': ''
                   })),
         actions: <Widget>[
           TextButton(
@@ -253,11 +369,10 @@ void showPayError(
   showAlertDialog(context, tr('payment_error'), desc);
   context.read<PaymentCubit>().sentFailed();
   if (node != null && increaseErrors) {
-    NodeManager().increaseNodeErrors(NodeType.gva, node);
+    NodeManager().increaseNodeErrors(NodeType.endpoint, node,
+        cause: 'Payment error: $desc');
   }
 }
-
-const Duration paymentTimeRange = Duration(minutes: 60);
 
 Future<void> onKeyScanned(BuildContext context, String scannedKey) async {
   final PaymentState? pay = parseScannedUri(scannedKey);
@@ -280,77 +395,5 @@ Future<void> onKeyScanned(BuildContext context, String scannedKey) async {
   } else {
     ScaffoldMessenger.of(context)
         .showSnackBar(SnackBar(content: Text(tr('qr_invalid_payment'))));
-  }
-}
-
-Future<void> importAstroID(BuildContext context) async {
-  try {
-    // Scanner le QR code et extraire la valeur DISCO
-    final String? disco = await QrManager.qrScan(context);
-    if (disco == null) {
-      return;
-    }
-
-    // Demander à l'utilisateur de saisir le mot de passe unique ($UNIQID)
-    final String? password = await showDialog<String>(
-      context: context,
-      builder: (BuildContext context) {
-        String passwordLocal = '';
-        return AlertDialog(
-          title: const Text('Saisir le mot de passe'),
-          content: TextField(
-            decoration: const InputDecoration(hintText: 'Mot de passe unique'),
-            onChanged: (String value) {
-              // Handle password input
-              passwordLocal = value;
-            },
-          ),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: const Text('Cancel'),
-            ),
-            TextButton(
-              onPressed: () {
-                // Handle password submission
-                Navigator.of(context).pop(passwordLocal);
-              },
-              child: const Text('OK'),
-            ),
-          ],
-        );
-      },
-    );
-    if (password == null || password.isEmpty) {
-      return;
-    }
-
-    // Déchiffrer l'AstroID
-    final Tuple2<String, String>? secrets =
-        await decryptAstroID(disco, password);
-    if (secrets == null) {
-      showAlertDialog(context, 'Erreur',
-          'Impossible de déchiffrer AstroID. Vérifiez le mot de passe.');
-      return;
-    }
-
-    // Initialiser un nouveau portefeuille CesiumWallet avec les secrets déchiffrés
-    final CesiumWallet wallet = CesiumWallet(secrets.item1, secrets.item2);
-
-    // Add the AstroID wallet to the storage
-    SharedPreferencesHelper().importAstroIDWallet(disco, password);
-    final CesiumCard card = SharedPreferencesHelper().buildCesiumCard(
-        seed: wallet.seed.toHexString(), pubKey: wallet.pubkey);
-
-    // Select the AstroID wallet as the current wallet
-    SharedPreferencesHelper().selectCurrentWallet(card);
-
-    // Rediriger vers l'écran principal
-    Navigator.of(context).pushReplacementNamed('/');
-  } catch (e, stacktrace) {
-    logger('Erreur importation AstroID: $e');
-    logger(stacktrace.toString());
-    showAlertDialog(context, 'Erreur',
-        'Une erreur est survenue lors de importation de AstroID.');
   }
 }

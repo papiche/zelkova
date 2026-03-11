@@ -1,0 +1,5 @@
+Versión 1.5.8 - Correcciones de errores y mejoras
+
+• Se corrigieron problemas de compatibilidad con Android 15
+• Mejor rendimiento y estabilidad de la aplicación
+• Varias correcciones de errores y mejoras de interfaz

@@ -1,106 +1,107 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <!--
-    If you are serving your web app in a path other than the root, change the
-    href value below to reflect the base path you are serving from.
+    <!--
+      If you are serving your web app in a path other than the root, change the
+      href value below to reflect the base path you are serving from.
 
-    The path provided below has to start and end with a slash "/" in order for
-    it to work correctly.
+      The path provided below has to start and end with a slash "/" in order for
+      it to work correctly.
 
-    For more details:
-    * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base
+      For more details:
+      * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base
 
-    This is a placeholder for base href that will be replaced by the value of
-    the `--base-href` argument provided to `flutter build`.
-  -->
-  <base href="$FLUTTER_BASE_HREF">
+      This is a placeholder for base href that will be replaced by the value of
+      the `--base-href` argument provided to `flutter build`.
+    -->
+    <base href="$FLUTTER_BASE_HREF">
 
-  <meta charset="UTF-8">
-  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
-  <meta content="Ğ1nkgo" name="description">
+    <meta charset="UTF-8">
+    <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+          name="viewport">
+    <meta content="#0175C2" name="theme-color">
+    <!-- iOS meta tags & icons -->
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="black" name="apple-mobile-web-app-status-bar-style">
+    <meta content="Ğ1nkgo" name="apple-mobile-web-app-title">
+    <link href="/icons/Icon-192.png" rel="apple-touch-icon">
 
-  <!-- iOS meta tags & icons -->
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <meta name="apple-mobile-web-app-title" content="Ğ1nkgo">
-  <link rel="apple-touch-icon" href="/icons/Icon-192.png">
-  
-  <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png">
+    <link href="icons/Icon-192.png" rel="apple-touch-icon">
+    <link href="/icons/favicon-16x16.png" rel="icon" sizes="16x16" type="image/png">
+    <link href="icons/favicon-32x32.png" rel="icon" sizes="32x32" type="image/png">
+    <link href="icons/favicon-16x16.png" rel="icon" sizes="16x16" type="image/png">
+    <link href="favicon.png" rel="icon" type="image/png"/>
 
-  <!-- Favicon -->
-  <link rel="icon" type="image/png" href="favicon.png"/>
-
-  <title>Ğinkgo</title>
-  <link rel="manifest" href="manifest.json">
+    <title>Ğinkgo</title>
+    <link href="manifest.json" rel="manifest">
 
     <style>
-  #splash-container {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
+        #splash-container {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+        }
 
-  </style>
-  <script src="jsQR.min.js" defer></script>
-  <!-- Capture PWA install prompt event -->
-  <script>
-    let deferredPrompt;
+    </style>
+    <!-- Capture PWA install prompt event and define callbacks required by pwa_install package -->
+    <script>
+        let deferredPrompt;
 
-    window.addEventListener('beforeinstallprompt', (e) => {
-      deferredPrompt = e;
-    });
+        // Placeholder callback functions for pwa_install package
+        // These must be defined BEFORE the package tries to use them
+        function appInstalled() {
+          console.log('[PWA] App installed');
+        }
 
-    function promptInstall(){
-       deferredPrompt.prompt();
-    }
+        function appLaunchedInBrowser() {
+          console.log('[PWA] Launched in browser');
+        }
 
-    // Listen for app install event
-    window.addEventListener('appinstalled', () => {
-      deferredPrompt = null;
-      appInstalled();
-    });
+        function appLaunchedAsPWA() {
+          console.log('[PWA] Launched as PWA');
+        }
 
-    // Track how PWA was launched (either from browser or as PWA)
-    function getLaunchMode() {
-      const isStandalone = window.matchMedia('(display-mode: standalone)').matches;
-      if(deferredPrompt) hasPrompt();
-      if (document.referrer.startsWith('android-app://')) {
-        appLaunchedAsTWA();
-      } else if (navigator.standalone || isStandalone) {
-        appLaunchedAsPWA();
-      } else {
-        window.appLaunchedInBrowser();
-      }
-    }
-  </script>
-  <script>
-    // The value below is injected by flutter build, do not touch.
-    var serviceWorkerVersion = null;
-  </script>
-  <!-- This script adds the flutter initialization JS code -->
-  <script src="flutter.js" defer></script>
+        function appLaunchedAsTWA() {
+          console.log('[PWA] Launched as TWA (Android)');
+        }
+
+        // Track how PWA was launched (either from browser or as PWA)
+        // This function is called by the pwa_install Dart package
+        function getLaunchMode() {
+          const isStandalone = window.matchMedia('(display-mode: standalone)').matches;
+          if (document.referrer.startsWith('android-app://')) {
+            appLaunchedAsTWA();
+          } else if (navigator.standalone || isStandalone) {
+            appLaunchedAsPWA();
+          } else {
+            appLaunchedInBrowser();
+          }
+        }
+
+        function promptInstall(){
+           if (deferredPrompt) {
+             deferredPrompt.prompt();
+           }
+        }
+
+        // Listen for beforeinstallprompt event
+        window.addEventListener('beforeinstallprompt', (e) => {
+          deferredPrompt = e;
+        });
+
+        // Listen for app install event
+        window.addEventListener('appinstalled', () => {
+          deferredPrompt = null;
+          appInstalled();
+        });
+    </script>
 </head>
 <body>
+<script async src="flutter_bootstrap.js"></script>
 <div id="splash-container">
     <img alt="Logo" src="assets/img/logo.png">
 </div>
-  <script>
-    window.addEventListener('load', function(ev) {
-      // Download main.dart.js
-      _flutter.loader.loadEntrypoint({
-        serviceWorker: {
-          serviceWorkerVersion: serviceWorkerVersion,
-        },
-        onEntrypointLoaded: function(engineInitializer) {
-          engineInitializer.initializeEngine().then(function(appRunner) {
-            appRunner.runApp();
-          });
-        }
-      });
-    });
-  </script>
 </body>
 </html>

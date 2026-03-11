@@ -1,0 +1,5 @@
+✨ Descubrimiento más rápido y mejor gestión de nodos para v2
+• Mejora en el descubrimiento y selección de nodos de v2 con mejor gestión de errores
+• Al pulsar en notificaciones te redirige a la wallet adecuada
+• Copia la dirección de v2 desde los menús
+• Actualizador mejorado y deshabilitado en web

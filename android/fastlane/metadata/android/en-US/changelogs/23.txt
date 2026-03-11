@@ -1,0 +1,5 @@
+✨ Faster discovery & better node management for v2
+• Improved node discovery and selection with better error handling
+• Tap notifications to go directly to the right wallet
+• Copy v2 address from menus
+• Upgraded updater and disabled in web

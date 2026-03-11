@@ -227,7 +227,15 @@ build:linux:
     
     # Install dependencies for Linux build
     - apt-get update -qq
-    - apt-get install -y -qq clang cmake ninja-build pkg-config libgtk-3-dev liblzma-dev libsecret-1-dev libcurl4-openssl-dev
+    # Core build tools
+    - apt-get install -y -qq clang cmake ninja-build pkg-config build-essential
+    # GTK and UI dependencies
+    - apt-get install -y -qq libgtk-3-dev mesa-utils
+    # Compression and archive tools
+    - apt-get install -y -qq liblzma-dev zip unzip
+    # Security and networking
+    - apt-get install -y -qq libsecret-1-dev libcurl4-openssl-dev
+    # Binary utilities and tools
     - apt-get install -y -qq patchelf jq binutils
     
     # Install flutter_to_debian for .deb packaging

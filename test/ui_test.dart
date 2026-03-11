@@ -228,15 +228,22 @@ void main() {
               'es',
               DateTime.parse('2024-11-08T20:40:00Z').toLocal()),
           'hace 2 minutos');
-      await initializeDateFormatting('es'); // Inicializa el locale 'en'
+      await initializeDateFormatting('es'); // Inicializa el locale 'es'
+
+      // Calculate expected time based on current timezone
+      // UTC timestamp: 2024-11-08T20:38:28Z converts to local time
+      final utcDateTime =
+          DateTime.fromMillisecondsSinceEpoch(1731098308 * 1000, isUtc: true);
+      final localDateTime = utcDateTime.toLocal();
+      final expectedTime =
+          '${localDateTime.day}/${localDateTime.month}/${localDateTime.year} ${localDateTime.hour.toString().padLeft(2, '0')}:${localDateTime.minute.toString().padLeft(2, '0')}';
 
       expect(
           humanizeTimeFull(
-            utcDateTime: DateTime.fromMillisecondsSinceEpoch(1731098308 * 1000,
-                isUtc: true),
+            utcDateTime: utcDateTime,
             locale: 'es',
           ),
-          '8/11/2024 21:38');
+          expectedTime);
     });
   });
 }

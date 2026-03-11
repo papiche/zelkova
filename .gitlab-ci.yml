@@ -103,6 +103,10 @@ test:integration-patrol:
     # Generate code
     - dart run build_runner build --delete-conflicting-outputs
     
+    # Install patrol CLI
+    - dart pub global activate patrol_cli
+    - export PATH="$PATH:$PUB_CACHE/bin"
+    
     # Run Patrol integration tests on web (Chrome)
     # Note: Running on web/Chrome only since CI environment has no mobile device emulator
     # Mobile device tests should be run locally or in Phase 2 Docker setup with emulator

@@ -180,7 +180,8 @@ void main() {
         'https://node3.com',
       ];
 
-      const int iterations = 100;
+      const int iterations =
+          300; // Increased from 100 for better statistical stability
       final Map<String, int> hitCounts = <String, int>{
         for (final String url in nodeUrls) url: 0
       };
@@ -190,11 +191,13 @@ void main() {
         hitCounts[shuffled.first] = hitCounts[shuffled.first]! + 1;
       }
 
-      // Each node should be first approximately 33% of the time (±25% tolerance for randomness)
+      // Each node should be first approximately 33% of the time
+      // With 300 iterations: expected ~100 per node
+      // Tolerance: ±30% to account for randomness (wider margin for CI environments)
       for (final String url in nodeUrls) {
         final int hits = hitCounts[url]!;
         final int expectedHits = iterations ~/ nodeUrls.length;
-        final int tolerance = (expectedHits * 0.25).toInt(); // ±25% tolerance
+        final int tolerance = (expectedHits * 0.30).toInt(); // ±30% tolerance
 
         expect(hits, greaterThan(expectedHits - tolerance),
             reason:

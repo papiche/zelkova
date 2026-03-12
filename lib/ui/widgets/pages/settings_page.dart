@@ -5,7 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../data/models/app_cubit.dart';
 import '../../../data/models/app_state.dart';
 import '../../../data/models/theme_cubit.dart';
-import '../../../g1/currency.dart';
 import '../../../shared_prefs_helper.dart';
 import '../../../ui/notification_controller.dart';
 import '../fifth_screen/export_dialog.dart';

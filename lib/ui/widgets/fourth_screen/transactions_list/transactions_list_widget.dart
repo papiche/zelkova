@@ -12,6 +12,7 @@ import '../../../../data/models/multi_wallet_transaction_state.dart';
 import '../../../../data/models/transaction.dart';
 import '../../../../data/models/transaction_state.dart';
 import '../../../../shared_prefs_helper.dart';
+import '../../multipass_recharge_dialog.dart';
 import '../../../in_dev_helper.dart';
 import '../../../logger.dart';
 import '../../balance_widget.dart';
@@ -616,6 +617,17 @@ class _TransactionsListWidgetState extends State<TransactionsListWidget> {
                       return BalanceWidget(pubKey: _pubKey, small: false);
                     },
                   ),
+                  if (!_isExternalAccount)
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 40, vertical: 12),
+                      child: OutlinedButton.icon(
+                        onPressed: () =>
+                            showMultipassRechargeDialog(context),
+                        icon: const Icon(Icons.account_balance_wallet),
+                        label: Text(tr('recharge_title')),
+                      ),
+                    ),
                 ],
               ),
             ),

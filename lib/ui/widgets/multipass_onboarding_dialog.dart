@@ -105,6 +105,14 @@ class _MultipassOnboardingDialogState extends State<MultipassOnboardingDialog> {
         nostrns: response.nostrns,
         ssssPlayer: response.ssssPlayer,
         email: response.email,
+        isOrigin: response.isOrigin,
+        uplanetHome: response.uplanetHome,
+        ocUrls: <String, String>{
+          'satellite': response.ocUrls.satellite,
+          'constellation': response.ocUrls.constellation,
+          'cloud': response.ocUrls.cloud,
+          'membre': response.ocUrls.membre,
+        },
       );
 
       setState(() {
@@ -204,10 +212,10 @@ class _MultipassOnboardingDialogState extends State<MultipassOnboardingDialog> {
 
   Widget _buildSuccessView(BuildContext context) {
     final OcUrls ocUrls = _result!.ocUrls;
-    final bool hasOcUrls = ocUrls.satellite.isNotEmpty ||
-        ocUrls.constellation.isNotEmpty ||
-        ocUrls.cloud.isNotEmpty ||
-        ocUrls.membre.isNotEmpty;
+    final bool hasBatisseur =
+        ocUrls.satellite.isNotEmpty || ocUrls.constellation.isNotEmpty;
+    final bool hasExplorateur =
+        ocUrls.cloud.isNotEmpty || ocUrls.membre.isNotEmpty;
 
     return AlertDialog(
       title: Text(tr('multipass_created_title')),
@@ -225,14 +233,18 @@ class _MultipassOnboardingDialogState extends State<MultipassOnboardingDialog> {
                 backgroundColor: Colors.orange.shade100,
               ),
             ],
-            if (hasOcUrls) ...<Widget>[
+            // Bâtisseur — parcelle numérique (sociétaire SCIC)
+            if (hasBatisseur) ...<Widget>[
               const SizedBox(height: 16),
               Text(
-                tr('choose_subscription'),
+                tr('tier_batisseur_title'),
                 style: Theme.of(context).textTheme.titleSmall,
               ),
-              const SizedBox(height: 8),
-              // Sociétaire tiers
+              Text(
+                tr('tier_batisseur_desc'),
+                style: Theme.of(context).textTheme.bodySmall,
+              ),
+              const SizedBox(height: 4),
               if (ocUrls.satellite.isNotEmpty)
                 ListTile(
                   leading: const Icon(Icons.satellite_alt),
@@ -249,23 +261,47 @@ class _MultipassOnboardingDialogState extends State<MultipassOnboardingDialog> {
                   onTap: () => _openSubscription(ocUrls.constellation),
                   trailing: const Icon(Icons.open_in_new),
                 ),
-              // Locataire tiers
+            ],
+            // Explorateur — recharge MULTIPASS (sans parcelle)
+            if (hasExplorateur) ...<Widget>[
+              const SizedBox(height: 16),
+              Text(
+                tr('tier_explorateur_title'),
+                style: Theme.of(context).textTheme.titleSmall,
+              ),
+              Text(
+                tr('tier_explorateur_desc'),
+                style: Theme.of(context).textTheme.bodySmall,
+              ),
+              const SizedBox(height: 4),
               if (ocUrls.cloud.isNotEmpty)
                 ListTile(
-                  leading: const Icon(Icons.cloud),
-                  title: Text(tr('subscription_cloud_title')),
-                  subtitle: Text(tr('subscription_cloud_desc')),
+                  leading: const Icon(Icons.bolt),
+                  title: Text(tr('subscription_recharge_title')),
+                  subtitle: Text(tr('subscription_recharge_desc')),
                   onTap: () => _openSubscription(ocUrls.cloud),
                   trailing: const Icon(Icons.open_in_new),
                 ),
               if (ocUrls.membre.isNotEmpty)
                 ListTile(
-                  leading: const Icon(Icons.home),
-                  title: Text(tr('subscription_membre_title')),
-                  subtitle: Text(tr('subscription_membre_desc')),
+                  leading: const Icon(Icons.autorenew),
+                  title: Text(tr('subscription_monthly_title')),
+                  subtitle: Text(tr('subscription_monthly_desc')),
                   onTap: () => _openSubscription(ocUrls.membre),
                   trailing: const Icon(Icons.open_in_new),
                 ),
+            ],
+            // UPlanet home link
+            if (_result!.uplanetHome.isNotEmpty) ...<Widget>[
+              const SizedBox(height: 16),
+              const Divider(),
+              ListTile(
+                leading: const Icon(Icons.public),
+                title: Text(tr('uplanet_home_title')),
+                subtitle: Text(tr('uplanet_home_desc')),
+                onTap: () => _openSubscription(_result!.uplanetHome),
+                trailing: const Icon(Icons.open_in_new),
+              ),
             ],
           ],
         ),

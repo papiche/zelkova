@@ -489,6 +489,9 @@ class SharedPreferencesHelperV2
     required String nostrns,
     required String ssssPlayer,
     required String email,
+    bool? isOrigin,
+    String? uplanetHome,
+    Map<String, dynamic>? ocUrls,
   }) async {
     final CesiumWallet wallet = CesiumWallet(salt, pepper);
     final String pubKey = wallet.pubkey;
@@ -516,11 +519,14 @@ class SharedPreferencesHelperV2
     );
     await _storage.write(
       key: '${StorageKeys.multipassDataPrefix}$pubKey',
-      value: jsonEncode(<String, String>{
+      value: jsonEncode(<String, dynamic>{
         'email': email,
         'npub': npub,
         'nostrns': nostrns,
         'ssss_player': ssssPlayer,
+        if (isOrigin != null) 'is_origin': isOrigin,
+        if (uplanetHome != null) 'uplanet_home': uplanetHome,
+        if (ocUrls != null) 'oc_urls': ocUrls,
       }),
     );
 

@@ -9,6 +9,7 @@ import '../../data/models/app_cubit.dart';
 import '../../shared_prefs_helper_v2.dart';
 import '../secure_unlock_widget.dart';
 import 'fifth_screen/import_dialog.dart';
+import 'multipass_onboarding_dialog.dart';
 
 class WalletOptionsDialog extends StatelessWidget {
   const WalletOptionsDialog({super.key});
@@ -69,6 +70,16 @@ class WalletOptionsDialog extends StatelessWidget {
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
+                ListTile(
+                  leading: const Icon(Symbols.shield_person),
+                  title: Text(tr('create_multipass_option')),
+                  subtitle: Text(tr('create_multipass_description')),
+                  onTap: () {
+                    Navigator.of(context).pop();
+                    showMultipassOnboardingDialog(orgContext);
+                  },
+                ),
+                const Divider(),
                 ListTile(
                   leading: const Icon(Symbols.money_bag),
                   title: Text(tr('create_no_password_option')),

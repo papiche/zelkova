@@ -476,6 +476,74 @@ class SharedPreferencesHelperV2
     return account;
   }
 
+  /// Create a wallet from MULTIPASS salt/pepper credentials.
+  ///
+  /// Uses CesiumWallet(salt, pepper) to derive the same G1 keypair
+  /// as the Astroport keygen. Stores nsec and MULTIPASS metadata
+  /// in secure storage for future NOSTR relay interactions.
+  Future<StoredAccount> createMultipassAccount({
+    required String salt,
+    required String pepper,
+    required String nsec,
+    required String npub,
+    required String nostrns,
+    required String ssssPlayer,
+    required String email,
+  }) async {
+    final CesiumWallet wallet = CesiumWallet(salt, pepper);
+    final String pubKey = wallet.pubkey;
+
+    if (_accountExists(pubKey)) {
+      throw WalletAlreadyExistsException(pubKey);
+    }
+
+    final StoredAccount account = StoredAccount(
+      type: AccountType.v1PasswordProtected,
+      pubKey: pubKey,
+      address: addressFromV1Pubkey(pubKey),
+      seed: null,
+      contact: Contact.withPubKey(pubKey: pubKey, name: email),
+      theme: SharedPreferencesHelper().randomTheme(),
+    );
+
+    // Store the CesiumWallet for signing operations
+    _cesiumVolatileCards[pubKey] = wallet;
+
+    // Store nsec and MULTIPASS data in secure storage
+    await _storage.write(
+      key: '${StorageKeys.nostrNsecPrefix}$pubKey',
+      value: nsec,
+    );
+    await _storage.write(
+      key: '${StorageKeys.multipassDataPrefix}$pubKey',
+      value: jsonEncode(<String, String>{
+        'email': email,
+        'npub': npub,
+        'nostrns': nostrns,
+        'ssss_player': ssssPlayer,
+      }),
+    );
+
+    await _onAccountAdded(account);
+    return account;
+  }
+
+  /// Retrieve the NOSTR nsec key for a given wallet pubKey
+  Future<String?> getNostrNsec([String? pubKey]) async {
+    final String key = pubKey ?? getPubKey();
+    return _storage.read(
+        key: '${StorageKeys.nostrNsecPrefix}${extractPublicKey(key)}');
+  }
+
+  /// Retrieve MULTIPASS metadata for a given wallet pubKey
+  Future<Map<String, dynamic>?> getMultipassData([String? pubKey]) async {
+    final String key = pubKey ?? getPubKey();
+    final String? data = await _storage.read(
+        key: '${StorageKeys.multipassDataPrefix}${extractPublicKey(key)}');
+    if (data == null) return null;
+    return jsonDecode(data) as Map<String, dynamic>;
+  }
+
   @override
   Future<KeyPair> getKeyPair([int? index, StoredAccount? account]) async {
     final StoredAccount acc = account ?? accounts[index ?? _getCurrentIndex()];

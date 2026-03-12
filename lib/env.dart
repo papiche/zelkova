@@ -32,4 +32,8 @@ abstract class Env {
   static const String datapodEndpoints = _Env.datapodEndpoints;
   @EnviedField(varName: 'IPFS_GATEWAYS')
   static const String ipfsGateways = _Env.ipfsGateways;
+
+  // UPassport API
+  @EnviedField(varName: 'UPASSPORT_URL')
+  static const String upassportUrl = _Env.upassportUrl;
 }

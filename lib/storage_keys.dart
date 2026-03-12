@@ -10,4 +10,8 @@ class StorageKeys {
 
   static const String accountsKey = 'secure_storage_accounts'; // V2
   static const String biometricEnabledKey = 'auth_enable_biometrics'; // V2
+
+  // MULTIPASS / NOSTR
+  static const String nostrNsecPrefix = 'nostr_nsec_'; // + pubKey
+  static const String multipassDataPrefix = 'multipass_'; // + pubKey
 }

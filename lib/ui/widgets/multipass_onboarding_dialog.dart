@@ -203,6 +203,12 @@ class _MultipassOnboardingDialogState extends State<MultipassOnboardingDialog> {
   }
 
   Widget _buildSuccessView(BuildContext context) {
+    final OcUrls ocUrls = _result!.ocUrls;
+    final bool hasOcUrls = ocUrls.satellite.isNotEmpty ||
+        ocUrls.constellation.isNotEmpty ||
+        ocUrls.cloud.isNotEmpty ||
+        ocUrls.membre.isNotEmpty;
+
     return AlertDialog(
       title: Text(tr('multipass_created_title')),
       content: SingleChildScrollView(
@@ -211,30 +217,56 @@ class _MultipassOnboardingDialogState extends State<MultipassOnboardingDialog> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Text(tr('multipass_created_description')),
-            const SizedBox(height: 16),
-            Text(
-              tr('choose_subscription'),
-              style: Theme.of(context).textTheme.titleSmall,
-            ),
-            const SizedBox(height: 8),
-            ListTile(
-              leading: const Icon(Icons.satellite_alt),
-              title: const Text('Satellite (128 Go)'),
-              subtitle: Text(tr('subscription_satellite_desc')),
-              onTap: () => _openSubscription(
-                'https://opencollective.com/monnaie-libre/projects/coeurbox/contribute/parrainage-infrastructure-extension-128-go-98386',
+            if (_result!.isOrigin) ...<Widget>[
+              const SizedBox(height: 8),
+              Chip(
+                avatar: const Icon(Icons.science, size: 18),
+                label: Text(tr('origin_mode_label')),
+                backgroundColor: Colors.orange.shade100,
               ),
-              trailing: const Icon(Icons.open_in_new),
-            ),
-            ListTile(
-              leading: const Icon(Icons.memory),
-              title: const Text('GPU (max)'),
-              subtitle: Text(tr('subscription_gpu_desc')),
-              onTap: () => _openSubscription(
-                'https://opencollective.com/monnaie-libre/projects/coeurbox/contribute/parrainage-infrastructure-module-gpu-1-24-98385',
+            ],
+            if (hasOcUrls) ...<Widget>[
+              const SizedBox(height: 16),
+              Text(
+                tr('choose_subscription'),
+                style: Theme.of(context).textTheme.titleSmall,
               ),
-              trailing: const Icon(Icons.open_in_new),
-            ),
+              const SizedBox(height: 8),
+              // Sociétaire tiers
+              if (ocUrls.satellite.isNotEmpty)
+                ListTile(
+                  leading: const Icon(Icons.satellite_alt),
+                  title: Text(tr('subscription_satellite_title')),
+                  subtitle: Text(tr('subscription_satellite_desc')),
+                  onTap: () => _openSubscription(ocUrls.satellite),
+                  trailing: const Icon(Icons.open_in_new),
+                ),
+              if (ocUrls.constellation.isNotEmpty)
+                ListTile(
+                  leading: const Icon(Icons.memory),
+                  title: Text(tr('subscription_constellation_title')),
+                  subtitle: Text(tr('subscription_constellation_desc')),
+                  onTap: () => _openSubscription(ocUrls.constellation),
+                  trailing: const Icon(Icons.open_in_new),
+                ),
+              // Locataire tiers
+              if (ocUrls.cloud.isNotEmpty)
+                ListTile(
+                  leading: const Icon(Icons.cloud),
+                  title: Text(tr('subscription_cloud_title')),
+                  subtitle: Text(tr('subscription_cloud_desc')),
+                  onTap: () => _openSubscription(ocUrls.cloud),
+                  trailing: const Icon(Icons.open_in_new),
+                ),
+              if (ocUrls.membre.isNotEmpty)
+                ListTile(
+                  leading: const Icon(Icons.home),
+                  title: Text(tr('subscription_membre_title')),
+                  subtitle: Text(tr('subscription_membre_desc')),
+                  onTap: () => _openSubscription(ocUrls.membre),
+                  trailing: const Icon(Icons.open_in_new),
+                ),
+            ],
           ],
         ),
       ),

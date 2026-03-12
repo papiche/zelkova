@@ -4,6 +4,31 @@ import 'package:http/http.dart' as http;
 
 import '../env.dart';
 
+/// OC contribution URLs returned by the server
+class OcUrls {
+  OcUrls({
+    this.satellite = '',
+    this.constellation = '',
+    this.cloud = '',
+    this.membre = '',
+  });
+
+  factory OcUrls.fromJson(Map<String, dynamic>? json) {
+    if (json == null) return OcUrls();
+    return OcUrls(
+      satellite: json['satellite'] as String? ?? '',
+      constellation: json['constellation'] as String? ?? '',
+      cloud: json['cloud'] as String? ?? '',
+      membre: json['membre'] as String? ?? '',
+    );
+  }
+
+  final String satellite;
+  final String constellation;
+  final String cloud;
+  final String membre;
+}
+
 /// Response from the UPassport /g1nostr MULTIPASS creation endpoint
 class MultipassResponse {
   MultipassResponse({
@@ -18,6 +43,8 @@ class MultipassResponse {
     required this.lat,
     required this.lon,
     required this.ssssPlayer,
+    required this.isOrigin,
+    required this.ocUrls,
   });
 
   factory MultipassResponse.fromJson(Map<String, dynamic> json) {
@@ -33,6 +60,8 @@ class MultipassResponse {
       lat: json['lat'] as String? ?? '',
       lon: json['lon'] as String? ?? '',
       ssssPlayer: json['ssss_player'] as String? ?? '',
+      isOrigin: json['is_origin'] as bool? ?? false,
+      ocUrls: OcUrls.fromJson(json['oc_urls'] as Map<String, dynamic>?),
     );
   }
 
@@ -47,6 +76,8 @@ class MultipassResponse {
   final String lat;
   final String lon;
   final String ssssPlayer;
+  final bool isOrigin;
+  final OcUrls ocUrls;
 }
 
 /// Service to create a MULTIPASS identity via UPassport API

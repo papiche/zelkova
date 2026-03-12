@@ -104,7 +104,11 @@ dependencies:
   device_info_plus: ^11.5.0
   built_value: ^8.9.2
   # pdf: ^3.11.1 # Commented out: incompatible with WASM (image <4.6.0)
-  #web_socket_channel: ^3.0.1
+  # NOSTR relay integration (profile via kind 0, contacts via kind 3)
+  web_socket_channel: ^3.0.3
+  bip340: ^0.1.0
+  hex: ^0.2.0
+  pinenacl: ^0.6.0
   ss58: ^1.1.3
   duniter_indexer:
     path: ./packages/duniter_indexer
@@ -155,7 +159,6 @@ dev_dependencies:
 # source: https://stackoverflow.com/a/75332857/8301867
 dependency_overrides:
   normalize: ^0.10.0
-  #web_socket_channel: 2.4.4
   #web_socket: ^0.1.6
   intl: ^0.20.2
   substrate_bip39: 0.6.1

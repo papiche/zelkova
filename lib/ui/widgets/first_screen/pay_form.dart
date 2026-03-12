@@ -309,7 +309,7 @@ class _PayFormState extends State<PayForm> {
     double balance,
     bool isV2,
   ) {
-    final bool isG1 = currency == Currency.G1;
+    final bool isG1 = currency.isG1Like;
     final bool notCanBeSent = !state.canBeSent();
     final bool notValidComment =
         isV2 ? !_commentValidateV2() : !_commentValidate();
@@ -389,12 +389,13 @@ class _PayFormState extends State<PayForm> {
     int recipients,
     double g1Balance,
   ) {
-    final double balance = convertAmount(
-      currency == Currency.G1,
+    final double balance = convertAmountByCurrency(
+      currency,
       g1Balance,
       currentUd,
+      isBalance: true,
     );
-    logger('We have $balance G1, need ${amount * recipients}');
+    logger('We have $balance ${currency.name()}, need ${amount * recipients}');
     final bool weHave = balance >= amount * recipients;
 
     if (!weHave) {

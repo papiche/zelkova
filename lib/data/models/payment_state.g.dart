@@ -110,7 +110,7 @@ PaymentState _$PaymentStateFromJson(Map<String, dynamic> json) => PaymentState(
       comment: json['comment'] as String? ?? '',
       amount: (json['amount'] as num?)?.toDouble(),
       currency: $enumDecodeNullable(_$CurrencyEnumMap, json['currency']) ??
-          Currency.G1,
+          Currency.ZEN,
       status: $enumDecodeNullable(_$PaymentStatusEnumMap, json['status']) ??
           PaymentStatus.notSent,
     );
@@ -127,6 +127,7 @@ Map<String, dynamic> _$PaymentStateToJson(PaymentState instance) =>
 const _$CurrencyEnumMap = {
   Currency.G1: 'G1',
   Currency.DU: 'DU',
+  Currency.ZEN: 'ZEN',
 };
 
 const _$PaymentStatusEnumMap = {

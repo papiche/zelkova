@@ -201,7 +201,7 @@ class MultiWalletTransactionCubit
     final TransactionState currentState = _getStateOfWallet(pubKey);
     Tuple2<Map<String, dynamic>?, Node> txDataResult;
     bool success = false;
-    final bool isG1 = appCubit.currency == Currency.G1;
+    final bool isG1 = appCubit.currency.isG1Like;
 
     final bool isConnected = isConnectedOverride ??
         await ConnectivityWidgetWrapperWrapper.isConnected;

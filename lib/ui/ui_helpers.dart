@@ -16,6 +16,7 @@ import '../data/models/contact.dart';
 import '../data/models/theme_cubit.dart';
 import '../g1/g1_helper.dart';
 import 'basic_avatar.dart';
+import '../g1/currency.dart';
 import 'currency_helper.dart';
 import 'image_utils.dart';
 import 'in_dev_helper.dart';
@@ -456,7 +457,9 @@ TextSpan humanizeAmount(
     double balanceFontSize,
     double balance,
     double currentUd,
-    [Color? color]) {
+    {Color? color,
+    Currency? currency,
+    bool isBalance = false}) {
   return TextSpan(
     children: <InlineSpan>[
       if (isCurrencyBefore)
@@ -469,7 +472,9 @@ TextSpan humanizeAmount(
             amount: balance,
             isG1: isG1,
             currentUd: currentUd,
-            useSymbol: false),
+            useSymbol: false,
+            currency: currency,
+            isBalance: isBalance),
         style: TextStyle(
             fontSize: balanceFontSize,
             color: color ??

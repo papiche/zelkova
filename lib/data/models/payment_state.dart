@@ -18,7 +18,7 @@ class PaymentState extends Equatable {
     List<Contact>? contacts,
     this.comment = '',
     this.amount,
-    this.currency = Currency.G1,
+    this.currency = Currency.ZEN,
     this.status = PaymentStatus.notSent,
   }) : contacts = contacts ?? const <Contact>[];
 

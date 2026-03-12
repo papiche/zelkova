@@ -169,7 +169,7 @@ class _SimpleTransactionsPanelState extends State<SimpleTransactionsPanel> {
                       16,
                       totalReceived,
                       widget.currentUd,
-                      Colors.green)
+                      color: Colors.green)
                 ]))),
             Padding(
                 padding: const EdgeInsets.all(4.0),
@@ -190,7 +190,7 @@ class _SimpleTransactionsPanelState extends State<SimpleTransactionsPanel> {
                       16,
                       totalSent,
                       widget.currentUd,
-                      Colors.red)
+                      color: Colors.red)
                 ]))),
           ]),
       initiallyExpanded: widget.initiallyExpanded,

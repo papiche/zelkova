@@ -30,7 +30,7 @@ class AppState extends Equatable implements IsJsonSerializable<AppState> {
       this.wotInfo,
       this.v2AutoActivated = false})
       : tutorials = tutorials ?? <String, bool>{},
-        currency = currency ?? Currency.G1,
+        currency = currency ?? Currency.ZEN,
         walletCreatedViewed = walletCreatedViewed ?? introViewed,
         currentUd = currentUd ?? 11.48,
         hasRecentExport = hasRecentExport ?? false,

@@ -19,23 +19,26 @@ class BalanceWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final AppCubit appCubit = context.read<AppCubit>();
     final double balanceFontSize = small ? 18 : 36;
-    final bool isG1 = appCubit.currency == Currency.G1;
+    final Currency currency = appCubit.currency;
+    final bool isG1 = currency.isG1Like;
     final double currentUd = appCubit.currentUd;
-    final String currentSymbol = currentCurrencyTrimmed(isG1);
+    final String currentSymbol = currentCurrencyTrimmedFromEnum(currency);
     final double balance =
         context.read<MultiWalletTransactionCubit>().balance(pubKey);
     final NumberFormat currentNumber = currentNumberFormat(
         useSymbol: true,
         isG1: isG1,
         locale: currentLocale(context),
-        amount: balance);
+        amount: balance,
+        currency: currency);
     final bool isCurrencyBefore =
         isSymbolPlacementBefore(currentNumber.symbols.CURRENCY_PATTERN);
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10.0),
       child: Center(
           child: Text.rich(humanizeAmount(isCurrencyBefore, context, isG1,
-              small, currentSymbol, balanceFontSize, balance, currentUd))),
+              small, currentSymbol, balanceFontSize, balance, currentUd,
+              currency: currency, isBalance: true))),
     );
   }
 }

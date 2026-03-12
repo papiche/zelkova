@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 
-import '../../../data/models/app_cubit.dart';
 import '../../../data/models/payment_cubit.dart';
 import '../../../data/models/payment_state.dart';
 import '../../../g1/currency.dart';
@@ -113,14 +112,14 @@ class _G1PayAmountFieldState extends State<G1PayAmountField> {
   void initState() {
     super.initState();
     _controller.addListener(_onAmountChanged);
-    // Initialize payment currency from PaymentCubit (independent from display currency)
-    _paymentCurrency = context.read<PaymentCubit>().state.currency;
+    // Initialize payment currency to ZEN on zen branch
+    _paymentCurrency = Currency.ZEN;
   }
 
   void _switchPaymentCurrency() {
     setState(() {
       _paymentCurrency =
-          _paymentCurrency == Currency.G1 ? Currency.DU : Currency.G1;
+          _paymentCurrency == Currency.ZEN ? Currency.DU : Currency.ZEN;
 
       // Update the payment state with the new currency if there's an amount
       final PaymentCubit paymentCubit = context.read<PaymentCubit>();
@@ -189,9 +188,8 @@ class _G1PayAmountFieldState extends State<G1PayAmountField> {
           }
         }
 
-        final bool expertMode = context.read<AppCubit>().isExpertMode;
-        final bool enableCurrencies = expertMode;
-        final Currency currentCurrency = _paymentCurrency;
+        // ZEN branch: currency is always ẐEN
+        const Currency currentCurrency = Currency.ZEN;
 
         return Form(
           key: _formKey,
@@ -229,19 +227,13 @@ class _G1PayAmountFieldState extends State<G1PayAmountField> {
                   toggleKey: 'toggle_${currentCurrency.name()}',
                   minWidth: 40.0,
                   radiusStyle: true,
-                  initialLabelIndex: enableCurrencies
-                      ? currentCurrency == Currency.G1
-                          ? 0
-                          : 1
-                      : 0,
+                  initialLabelIndex: 0,
                   cornerRadius: 20.0,
                   activeFgColor: Colors.black,
                   inactiveBgColor: Colors.grey[400],
                   inactiveFgColor: Colors.black,
-                  totalSwitches: enableCurrencies ? 2 : 1,
-                  labels: enableCurrencies
-                      ? const <String>['Ğ1', 'DU']
-                      : const <String>['Ğ1'],
+                  totalSwitches: 1,
+                  labels: const <String>['Ẑ'],
                   iconSize: 30.0,
                   borderWidth: 1.0,
                   borderColor: const <Color>[Colors.grey],

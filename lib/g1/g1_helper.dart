@@ -12,6 +12,7 @@ import 'package:sentry_flutter/sentry_flutter.dart';
 import '../data/models/contact.dart';
 import '../data/models/payment_state.dart';
 import '../data/models/transaction.dart';
+import 'currency.dart';
 import '../ui/currency_helper.dart';
 import '../ui/logger.dart';
 //import '../ui/pay_helper.dart';
@@ -339,7 +340,10 @@ bool areDatesClose(DateTime date1, DateTime date2, Duration threshold) {
   return date1.difference(date2).abs() <= threshold;
 }
 
-double toG1(double amount, bool isG1, double currentUd) {
+double toG1(double amount, bool isG1, double currentUd, {Currency? currency}) {
+  if (currency == Currency.ZEN) {
+    return amount / 10; // 1 ẐEN = 0.1 Ğ1
+  }
   return isG1 ? amount : amount * currentUd;
 }
 

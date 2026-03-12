@@ -29,13 +29,15 @@ class TransactionListItemWrapper extends StatelessWidget {
   Widget build(BuildContext context) {
     final AppCubit appCubit = context.read<AppCubit>();
     final bool isExternalAccount = SharedPreferencesHelper().isExternal(pubKey);
-    final bool isG1 = appCubit.currency == Currency.G1;
-    final String currentSymbol = currentCurrencyTrimmed(isG1);
+    final Currency currency = appCubit.currency;
+    final bool isG1 = currency.isG1Like;
+    final String currentSymbol = currentCurrencyTrimmedFromEnum(currency);
     final NumberFormat currentNumber = currentNumberFormat(
       useSymbol: true,
       isG1: isG1,
       locale: currentLocale(context),
       amount: transaction.amount,
+      currency: currency,
     );
     final bool isCurrencyBefore =
         isSymbolPlacementBefore(currentNumber.symbols.CURRENCY_PATTERN);
@@ -45,6 +47,7 @@ class TransactionListItemWrapper extends StatelessWidget {
       pubKey: pubKey,
       index: index,
       isG1: isG1,
+      currency: currency,
       currentUd: appCubit.currentUd,
       currentSymbol: currentSymbol,
       isCurrencyBefore: isCurrencyBefore,

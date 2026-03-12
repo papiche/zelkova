@@ -282,4 +282,5 @@ Map<String, dynamic> _$AppStateToJson(AppState instance) => <String, dynamic>{
 const _$CurrencyEnumMap = {
   Currency.G1: 'G1',
   Currency.DU: 'DU',
+  Currency.ZEN: 'ZEN',
 };

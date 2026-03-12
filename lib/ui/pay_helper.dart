@@ -36,6 +36,7 @@ Future<bool> payWithRetry(
     bool isRetry = false,
     required bool isG1,
     required double currentUd,
+    Currency? currency,
     bool useBMA = false}) async {
   assert(amount > 0);
   final bool isToMultiple = recipients.length > 1;
@@ -48,7 +49,7 @@ Future<bool> payWithRetry(
       paymentCubit.sending();
       final String fromPubKey = SharedPreferencesHelper().getPubKey();
 
-      final Currency paymentCurrency = isG1 ? Currency.G1 : Currency.DU;
+      final Currency paymentCurrency = currency ?? Currency.ZEN;
       final bool? confirmed = await _confirmSend(context, amount.toString(),
           fromPubKey, recipients, isRetry, paymentCurrency, isToMultiple,
           isG1: isG1, currentUd: currentUd);
@@ -81,7 +82,7 @@ Future<bool> payWithRetry(
           pd.close();
           return false;
         }
-        final double convertedAmount = toG1(amount, isG1, currentUd);
+        final double convertedAmount = toG1(amount, isG1, currentUd, currency: currency);
 
         // For v2 payments with multiple recipients, create separate pending transactions
         // for each recipient to match on-chain batch transactions
@@ -320,10 +321,7 @@ Future<bool?> _confirmSend(
     }
   }
 
-  // Calculate G1 equivalent if paying in DU
-  final String amountWithCurrency = !isG1
-      ? '$amount DU (${toG1(double.parse(amount), isG1, currentUd).toStringAsFixed(2)} Ğ1)'
-      : '$amount ${currency.name()}';
+  final String amountWithCurrency = '$amount ${currency.name()}';
 
   return showDialog<bool>(
     context: context,

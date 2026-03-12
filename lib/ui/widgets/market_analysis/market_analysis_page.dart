@@ -119,9 +119,9 @@ class _MarketAnalysisPageState extends State<MarketAnalysisPage> {
 
   @override
   Widget build(BuildContext context) {
-    isG1 = appCubit.currency == Currency.G1;
+    isG1 = appCubit.currency.isG1Like;
     currentUd = appCubit.currentUd;
-    currentSymbol = currentCurrencyTrimmed(isG1);
+    currentSymbol = currentCurrencyTrimmedFromEnum(appCubit.currency);
     currentNumber = currentNumberFormat(
         useSymbol: true, isG1: isG1, locale: currentLocale(context), amount: 1);
     isCurrencyBefore =
@@ -251,7 +251,8 @@ class _MarketAnalysisPageState extends State<MarketAnalysisPage> {
                                               16,
                                               totalReceivedAllContacts,
                                               currentUd,
-                                              Colors.green)
+                                              color: Colors.green,
+                                              currency: appCubit.currency)
                                         ]))),
                                     Padding(
                                         padding: const EdgeInsets.symmetric(
@@ -279,7 +280,8 @@ class _MarketAnalysisPageState extends State<MarketAnalysisPage> {
                                               16,
                                               totalSentAllContacts,
                                               currentUd,
-                                              Colors.red)
+                                              color: Colors.red,
+                                              currency: appCubit.currency)
                                         ])))
                                   ],
                                 ),

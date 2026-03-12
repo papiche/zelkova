@@ -144,18 +144,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   context.read<AppCubit>().setExpertMode(expert);
                 },
               ),
-              if (state.expertMode)
-                SwitchListTile(
-                  title: Text(tr('display_amounts_du')),
-                  value: state.currency == Currency.DU,
-                  onChanged: (bool useDU) {
-                    if (!useDU) {
-                      context.read<AppCubit>().setG1Currency();
-                    } else {
-                      context.read<AppCubit>().setDUCurrency();
-                    }
-                  },
-                ),
+              // ZEN branch: currency is always ẐEN, no toggle needed
 
               // NETWORK SECTION - HIDDEN (V2 mode is now forced)
               // In the future, this will be replaced by network selection

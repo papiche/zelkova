@@ -11,6 +11,7 @@ import '../../../data/models/multi_wallet_transaction_state.dart';
 import '../../../data/models/payment_cubit.dart';
 import '../../../data/models/transaction.dart';
 import '../../../data/models/transaction_type.dart';
+import '../../../g1/currency.dart';
 import '../../../g1/g1_helper.dart';
 import '../../../shared_prefs_helper.dart';
 import '../../contacts_cache.dart';
@@ -34,6 +35,7 @@ class TransactionListItem extends StatefulWidget {
       required this.transaction,
       required this.index,
       required this.isG1,
+      this.currency,
       required this.currentUd,
       required this.currentSymbol,
       required this.isCurrencyBefore,
@@ -47,6 +49,7 @@ class TransactionListItem extends StatefulWidget {
   final Transaction transaction;
   final int index;
   final bool isG1;
+  final Currency? currency;
   final double currentUd;
   final String currentSymbol;
   final bool isCurrencyBefore;
@@ -167,7 +170,8 @@ class _TransactionListItemState extends State<TransactionListItem> {
         amount: transaction.amount,
         isG1: widget.isG1,
         currentUd: widget.currentUd,
-        useSymbol: false);
+        useSymbol: false,
+        currency: widget.currency);
     final String amountS =
         '${transaction.amount < 0 ? "" : "+"}$amountWithSymbol';
     statusText = transaction.type != TransactionType.waitingNetwork

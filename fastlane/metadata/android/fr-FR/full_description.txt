@@ -1,0 +1,19 @@
+G1nkgo est un portefeuille moderne pour le ẐEN, un stablecoin de couche 2 construit sur la blockchain de monnaie libre Ğ1 (June / Duniter v2s).
+
+Le ẐEN est l'unité opérationnelle de l'écosystème coopératif UPlanet. Chaque station relais Astroport exécute un moteur ZEN.ECONOMY qui automatise les règles constitutionnelles de la coopérative : répartition des revenus (3x1/3), provisions fiscales et pont de liquidité entre ẐEN et Euros.
+
+Fonctionnalités :
+- Envoi et réception de paiements en ẐEN
+- Scan de QR codes pour des transactions faciles
+- Consultation de l'historique et du solde
+- Authentification biométrique
+- Intégration IPFS pour le contenu décentralisé
+- Outils d'analyse de marché
+- Notifications push
+
+Chaque instance G1nkgo se connecte à sa constellation UPlanet ORIGIN — un réseau de nœuds relais Astroport partageant le même swarm.key. Les règles économiques sont définies par la constitution LEGAL de la coopérative et appliquées par le protocole ZEN.ECONOMY.
+
+Il y a autant de déploiements G1nkgo que de constellations UPlanet ORIGIN et leurs clones ẐEN.
+
+Développé avec Flutter. Licence AGPL-3.0.
+SCIC CopyLaRadio — https://copylaradio.com

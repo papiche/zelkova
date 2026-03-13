@@ -53,3 +53,8 @@ lib/env.g.dart
 /android/local.properties
 android/app/.cxx/
 test_bundle.dart
+
+# Build output APKs
+ginkgo-*.apk
+*.jks
+android/key.properties

@@ -12,6 +12,8 @@ import '../../g1/api.dart';
 import '../../g1/no_nodes_exception.dart';
 import '../ui_helpers.dart';
 import '../widgets/node_list/node_list_widget.dart';
+import '../widgets/node_list/station_status_widget.dart';
+import '../widgets/node_list/swarm_economy_widget.dart';
 
 class NodeListPage extends StatelessWidget {
   NodeListPage({super.key});
@@ -80,6 +82,10 @@ class NodeListPage extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
+                      // Station status from 12345.json (heartbox_analysis)
+                      const StationStatusWidget(),
+                      // Constellation economy from NOSTR kind 30850
+                      const SwarmEconomyWidget(),
                       // Show v2 nodes only if useV2, otherwise show only v1 nodes
                       if (useV2)
                         for (final NodeType type in v2Types) ...<Widget>[

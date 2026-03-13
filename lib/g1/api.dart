@@ -39,6 +39,8 @@ import 'g1_v2_helper.dart';
 import 'no_nodes_exception.dart';
 import 'node_check_result.dart';
 import 'pay_result.dart';
+import 'nostr/nostr_profile.dart';
+import 'nostr/nostr_relay_service.dart';
 import 'service_manager.dart';
 import 'v2_peers.dart';
 
@@ -1428,26 +1430,90 @@ Future<List<Contact>> searchProfilesV1(
     required String searchTerm,
     required String searchTermCapitalized,
     bool quickMode = false}) async {
-  final String query =
-      '/user/profile/_search?q=title:$searchTermLower OR issuer:$searchTerm OR title:$searchTermCapitalized OR title:$searchTerm';
+  // Run NOSTR relay search and Cesium+ search in parallel
+  final Future<List<Contact>> cPlusFuture = _searchCesiumPlus(
+    searchTermLower: searchTermLower,
+    searchTerm: searchTerm,
+    searchTermCapitalized: searchTermCapitalized,
+    quickMode: quickMode,
+  );
+  final Future<List<Contact>> nostrFuture = _searchNostrRelay(searchTermLower);
 
-  final Response response = (await requestCPlusWithRetry(query,
-          retryWith404: false, quickMode: quickMode))
-      .item2;
-  final List<Contact> searchResult = <Contact>[];
-  if (response.statusCode != 404) {
-    // Add cplus users
-    final List<dynamic> hits = ((const JsonDecoder().convert(response.body)
-            as Map<String, dynamic>)['hits'] as Map<String, dynamic>)['hits']
-        as List<dynamic>;
-    for (final dynamic hit in hits) {
-      final Contact c = await contactFromResultSearch(
-        hit as Map<String, dynamic>,
-      );
-      logger('Contact retrieved in c+ search $c');
-      ContactsCache().addContact(c);
-      searchResult.add(c);
-    }
+  final List<List<Contact>> results =
+      await Future.wait(<Future<List<Contact>>>[cPlusFuture, nostrFuture]);
+
+  // Merge results, NOSTR first, dedup by pubkey
+  final Map<String, Contact> merged = <String, Contact>{};
+  for (final Contact c in results[1]) {
+    // NOSTR results
+    if (c.pubKey != null) merged[c.pubKey!] = c;
   }
-  return searchResult;
+  for (final Contact c in results[0]) {
+    // Cesium+ results
+    if (c.pubKey != null) merged.putIfAbsent(c.pubKey!, () => c);
+  }
+  return merged.values.toList();
+}
+
+Future<List<Contact>> _searchCesiumPlus({
+  required String searchTermLower,
+  required String searchTerm,
+  required String searchTermCapitalized,
+  bool quickMode = false,
+}) async {
+  try {
+    final String query =
+        '/user/profile/_search?q=title:$searchTermLower OR issuer:$searchTerm OR title:$searchTermCapitalized OR title:$searchTerm';
+
+    final Response response = (await requestCPlusWithRetry(query,
+            retryWith404: false, quickMode: quickMode))
+        .item2;
+    final List<Contact> searchResult = <Contact>[];
+    if (response.statusCode != 404) {
+      final List<dynamic> hits = ((const JsonDecoder().convert(response.body)
+              as Map<String, dynamic>)['hits'] as Map<String, dynamic>)['hits']
+          as List<dynamic>;
+      for (final dynamic hit in hits) {
+        final Contact c = await contactFromResultSearch(
+          hit as Map<String, dynamic>,
+        );
+        logger('Contact retrieved in c+ search $c');
+        ContactsCache().addContact(c);
+        searchResult.add(c);
+      }
+    }
+    return searchResult;
+  } catch (e) {
+    loggerDev('Error in Cesium+ search: $e');
+    return <Contact>[];
+  }
+}
+
+Future<List<Contact>> _searchNostrRelay(String searchTerm) async {
+  try {
+    final NostrRelayService relay = NostrRelayService();
+    if (!relay.isConnected) return <Contact>[];
+
+    final List<NostrProfile> profiles = await relay.searchProfiles(searchTerm);
+    final List<Contact> contacts = <Contact>[];
+    for (final NostrProfile profile in profiles) {
+      final String? g1pub = profile.g1pub;
+      if (g1pub != null && g1pub.isNotEmpty) {
+        final Contact c = Contact.withPubKey(
+          pubKey: g1pub,
+          name: profile.displayName ?? profile.name,
+        ).copyWith(
+          description: profile.about,
+          city: profile.city,
+          socials: profile.socials,
+        );
+        ContactsCache().addContact(c);
+        contacts.add(c);
+      }
+    }
+    return contacts;
+  } catch (e) {
+    loggerDev('Error in NOSTR relay search: $e');
+    return <Contact>[];
+  }
 }

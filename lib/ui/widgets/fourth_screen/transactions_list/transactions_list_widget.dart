@@ -13,6 +13,7 @@ import '../../../../data/models/transaction.dart';
 import '../../../../data/models/transaction_state.dart';
 import '../../../../shared_prefs_helper.dart';
 import '../../multipass_recharge_dialog.dart';
+import '../../zen_remboursement_dialog.dart';
 import '../../../in_dev_helper.dart';
 import '../../../logger.dart';
 import '../../balance_widget.dart';
@@ -621,11 +622,27 @@ class _TransactionsListWidgetState extends State<TransactionsListWidget> {
                     Padding(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 40, vertical: 12),
-                      child: OutlinedButton.icon(
-                        onPressed: () =>
-                            showMultipassRechargeDialog(context),
-                        icon: const Icon(Icons.account_balance_wallet),
-                        label: Text(tr('recharge_title')),
+                      child: Row(
+                        children: <Widget>[
+                          Expanded(
+                            child: OutlinedButton.icon(
+                              onPressed: () =>
+                                  showMultipassRechargeDialog(context),
+                              icon: const Icon(Icons.account_balance_wallet),
+                              label: Text(tr('recharge_title')),
+                            ),
+                          ),
+                          const SizedBox(width: 8),
+                          Expanded(
+                            child: OutlinedButton.icon(
+                              onPressed: () =>
+                                  showZenRemboursementDialog(context),
+                              icon: const Icon(Icons.receipt_long),
+                              label: Text(tr('remboursement_title'),
+                                  overflow: TextOverflow.ellipsis),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                 ],

@@ -1,8 +1,10 @@
 import 'dart:convert';
+import 'dart:typed_data';
 
 import 'package:http/http.dart' as http;
 
 import '../env.dart';
+import '../ui/logger.dart';
 
 /// OC contribution URLs returned by the server
 class OcUrls {
@@ -122,5 +124,53 @@ class MultipassService {
     final Map<String, dynamic> data =
         jsonDecode(response.body) as Map<String, dynamic>;
     return MultipassResponse.fromJson(data);
+  }
+
+  /// Upload a profile image (avatar/banner) to the UPassport API.
+  ///
+  /// Returns the IPFS URL (or local fallback URL) of the uploaded image,
+  /// or null on failure.
+  static Future<String?> uploadImage({
+    required String npub,
+    required Uint8List imageBytes,
+    required String imageType, // 'avatar', 'banner', 'logo'
+    String filename = 'image.jpg',
+    String? serverUrl,
+  }) async {
+    final String baseUrl = serverUrl ?? Env.upassportUrl;
+    final Uri uri = Uri.parse('$baseUrl/api/upload/image');
+
+    final http.MultipartRequest request = http.MultipartRequest('POST', uri)
+      ..fields['npub'] = npub
+      ..fields['type'] = imageType
+      ..files.add(http.MultipartFile.fromBytes(
+        'file',
+        imageBytes,
+        filename: filename,
+      ));
+
+    try {
+      final http.StreamedResponse streamedResponse =
+          await request.send().timeout(_timeout);
+      final http.Response response =
+          await http.Response.fromStream(streamedResponse);
+
+      if (response.statusCode == 201) {
+        final Map<String, dynamic> data =
+            jsonDecode(response.body) as Map<String, dynamic>;
+        // Prefer IPFS URL, fallback to local URL
+        final String? ipfsUrl = data['ipfs_url'] as String?;
+        final String? localUrl = data['local_url'] as String?;
+        if (ipfsUrl != null && ipfsUrl.isNotEmpty) return ipfsUrl;
+        if (localUrl != null && localUrl.isNotEmpty) {
+          return '$baseUrl$localUrl';
+        }
+        return data['url'] as String?;
+      }
+      loggerDev('Image upload failed: ${response.statusCode} ${response.body}');
+    } catch (e) {
+      loggerDev('Image upload error: $e');
+    }
+    return null;
   }
 }

@@ -107,6 +107,7 @@ dependencies:
   # NOSTR relay integration (profile via kind 0, contacts via kind 3)
   web_socket_channel: ^3.0.3
   bip340: ^0.1.0
+  bech32: ^0.2.2
   hex: ^0.2.0
   pinenacl: ^0.6.0
   ss58: ^1.1.3

@@ -16,7 +16,7 @@ class _FAQState extends State<FAQ> {
     return ListView.builder(
       physics: const NeverScrollableScrollPhysics(),
       shrinkWrap: true,
-      itemCount: 5,
+      itemCount: 10,
       itemBuilder: (BuildContext context, int index) {
         final String question = tr('faq_${index}_title');
         final String answer = tr('faq_${index}_desc');

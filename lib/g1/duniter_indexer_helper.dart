@@ -23,6 +23,9 @@ import '../ui/ui_helpers.dart';
 import 'api.dart';
 import 'g1_helper.dart';
 import 'g1_v2_helper.dart';
+import 'nostr/nostr_keys.dart';
+import 'nostr/nostr_profile.dart';
+import 'nostr/nostr_relay_service.dart';
 
 Future<List<Contact>> searchWotV2(String searchPatternRaw) async {
   final List<Contact> contacts = <Contact>[];
@@ -925,6 +928,31 @@ Future<Contact> getAccountBasic({required String address}) async {
       : Contact.withAddress(address: address);
 }
 
+/// Helper: Fetch NOSTR profile (kind 0) for a G1 pubkey via relay
+Future<Contact?> _fetchNostrProfile(String pubKey) async {
+  final NostrRelayService relay = NostrRelayService();
+  if (!relay.isConnected) return null;
+
+  try {
+    // Convert G1 base58 pubkey to NOSTR hex pubkey
+    final String hexPubkey = pubkeyToHex(pubKey);
+    final NostrProfile? profile = await relay.fetchProfile(hexPubkey);
+    if (profile == null) return null;
+
+    return Contact.withPubKey(
+      pubKey: pubKey,
+      name: profile.displayName ?? profile.name,
+    ).copyWith(
+      description: profile.about,
+      city: profile.city,
+      socials: profile.socials,
+    );
+  } catch (e) {
+    loggerDev('Error fetching NOSTR profile for $pubKey: $e');
+  }
+  return null;
+}
+
 /// Helper: Fetch Cesium+ profile data for an address
 Future<Contact?> _fetchCesiumPlusProfile(String pubKey,
     {bool resize = true}) async {
@@ -973,8 +1001,9 @@ Future<Contact> getProfileV2(String pubKeyRaw,
     }
   }
 
-  // Get Cesium+ profile data, or use baseContact if available
-  Contact c = await _fetchCesiumPlusProfile(cPlusPubKey, resize: resize) ??
+  // Get profile: try NOSTR relay first, then Cesium+ fallback
+  Contact c = await _fetchNostrProfile(cPlusPubKey) ??
+      await _fetchCesiumPlusProfile(cPlusPubKey, resize: resize) ??
       (baseContact ?? Contact.withAddress(address: address));
 
   // Get WOT V2 data if not only profile

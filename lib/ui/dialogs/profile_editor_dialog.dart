@@ -1,10 +1,15 @@
 import 'dart:convert';
+import 'dart:typed_data';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 import '../../data/models/contact.dart';
 import '../../g1/api.dart' as g1_api;
+import '../../g1/multipass_service.dart';
+import '../../g1/nostr/nostr_keys.dart';
+import '../../g1/nostr/nostr_profile.dart';
+import '../../g1/nostr/nostr_relay_service.dart';
 import '../../shared_prefs_helper_v2.dart';
 import '../../ui/logger.dart';
 import '../widgets/avatar_picker.dart';
@@ -94,8 +99,63 @@ class _ProfileEditorDialogState extends State<ProfileEditorDialog> {
     setState(() => _isSaving = true);
 
     try {
-      // Call API to save profile with extended fields
-      final bool success = await g1_api.createOrUpdateProfileV2cPlusExtended(
+      // Publish to NOSTR relay (primary) and Cesium+ (fallback)
+      bool nostrSuccess = false;
+      bool cPlusSuccess = false;
+
+      // Try NOSTR relay first
+      final NostrRelayService relay = NostrRelayService();
+      if (relay.isConnected) {
+        try {
+          final SharedPreferencesHelperV2 helper = SharedPreferencesHelperV2();
+          final String? nsec = await helper.getNostrNsec();
+          if (nsec != null) {
+            final String hexPrivateKey = NostrKeys.nsecToHex(nsec);
+            // Derive npub from private key for API calls
+            final String hexPubkey =
+                NostrRelayService.derivePublicKey(hexPrivateKey);
+            final String npub = NostrKeys.hexToNpub(hexPubkey);
+
+            // Upload avatar to IPFS via UPassport API if changed
+            String? pictureUrl;
+            if (_selectedAvatarBase64 != null) {
+              try {
+                final List<int> imageBytes =
+                    base64Decode(_selectedAvatarBase64!);
+                pictureUrl = await MultipassService.uploadImage(
+                  npub: npub,
+                  imageBytes: Uint8List.fromList(imageBytes),
+                  imageType: 'avatar',
+                  filename: 'avatar.jpg',
+                );
+                loggerDev('Avatar uploaded: $pictureUrl');
+              } catch (e) {
+                loggerDev('Avatar upload error: $e');
+              }
+            }
+
+            final NostrProfile profile = NostrProfile(
+              npub: npub,
+              name: _titleController.text,
+              about: _descriptionController.text.isEmpty
+                  ? null
+                  : _descriptionController.text,
+              city: _cityController.text.isEmpty ? null : _cityController.text,
+              picture: pictureUrl,
+              picture64: _selectedAvatarBase64,
+              socials: _socials.isEmpty ? null : _socials,
+            );
+            nostrSuccess =
+                await relay.publishProfile(profile, hexPrivateKey);
+            loggerDev('NOSTR profile publish: $nostrSuccess');
+          }
+        } catch (e) {
+          loggerDev('Error publishing NOSTR profile: $e');
+        }
+      }
+
+      // Also publish to Cesium+ for backward compatibility
+      cPlusSuccess = await g1_api.createOrUpdateProfileV2cPlusExtended(
         title: _titleController.text,
         description: _descriptionController.text.isEmpty
             ? null
@@ -109,7 +169,7 @@ class _ProfileEditorDialogState extends State<ProfileEditorDialog> {
         return;
       }
 
-      if (success) {
+      if (nostrSuccess || cPlusSuccess) {
         // Update local storage
         final SharedPreferencesHelperV2 helper = SharedPreferencesHelperV2();
         helper.updateProfile(

@@ -1,17 +1,16 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:bip340/bip340.dart' as bip340;
 import 'package:crypto/crypto.dart';
 import 'package:hex/hex.dart';
-import 'package:web_socket_channel/io.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
 import '../../ui/logger.dart';
 import 'nostr_profile.dart';
 import 'nostr_utils.dart';
+import 'station_economy_event.dart';
 
 /// NOSTR relay service for Ginkgo.
 ///
@@ -55,11 +54,10 @@ class NostrRelayService {
 
     try {
       final Uri uri = Uri.parse(relayUrl);
-      final WebSocket ws = await WebSocket.connect(uri.toString())
-          .timeout(const Duration(seconds: 10));
-      ws.pingInterval = const Duration(seconds: 30);
-
-      _channel = IOWebSocketChannel(ws);
+      // Use WebSocketChannel.connect() — works on both web and native
+      _channel = WebSocketChannel.connect(uri);
+      // Wait for the connection to be ready (throws on failure)
+      await _channel!.ready.timeout(const Duration(seconds: 10));
       _currentRelayUrl = relayUrl;
 
       _subscription = _channel!.stream.listen(
@@ -244,6 +242,119 @@ class NostrRelayService {
     return _publishEvent(event);
   }
 
+  /// Search profiles (kind 0) by name using NIP-50 text search
+  Future<List<NostrProfile>> searchProfiles(String searchTerm) async {
+    if (!_isConnected) return <NostrProfile>[];
+
+    final String subId = NostrUtils.generateSubscriptionId('search');
+    final Completer<List<NostrProfile>> completer =
+        Completer<List<NostrProfile>>();
+    final List<NostrProfile> results = <NostrProfile>[];
+
+    _handlers[subId] = (List<dynamic> msg) {
+      final String type = msg[0] as String;
+      if (type == 'EVENT' && msg.length >= 3) {
+        final Map<String, dynamic> event =
+            msg[2] as Map<String, dynamic>;
+        try {
+          final String pubkey = event['pubkey'] as String;
+          final List<List<String>> tags = (event['tags'] as List<dynamic>)
+              .map((dynamic t) => (t as List<dynamic>)
+                  .map((dynamic e) => e.toString())
+                  .toList())
+              .toList();
+          final NostrProfile profile = NostrProfile.fromEventContent(
+            event['content'] as String,
+            pubkey,
+            tags,
+          );
+          results.add(profile);
+        } catch (e) {
+          loggerDev('[NostrRelay] Search profile parse error: $e');
+        }
+      } else if (type == 'EOSE') {
+        if (!completer.isCompleted) completer.complete(results);
+        _handlers.remove(subId);
+        _sendRaw(jsonEncode(<dynamic>['CLOSE', subId]));
+      }
+    };
+
+    // NIP-50: text search filter
+    final Map<String, dynamic> filter = <String, dynamic>{
+      'kinds': <int>[0],
+      'search': searchTerm,
+      'limit': 20,
+    };
+    _sendRaw(jsonEncode(<dynamic>['REQ', subId, filter]));
+
+    return completer.future.timeout(
+      const Duration(seconds: 10),
+      onTimeout: () {
+        _handlers.remove(subId);
+        _sendRaw(jsonEncode(<dynamic>['CLOSE', subId]));
+        return results;
+      },
+    );
+  }
+
+  // ─── Station Economy (Kind 30850) ─────────────────────────────────
+
+  /// Event kind for station economy reports (NIP-78 application-specific)
+  static const int kindStationEconomy = 30850;
+
+  /// Fetch station economy events from the last 30 days.
+  /// Returns a map of stationId → most recent StationEconomyData.
+  Future<Map<String, StationEconomyData>> fetchStationEvents() async {
+    if (!_isConnected) return <String, StationEconomyData>{};
+
+    final String subId = NostrUtils.generateSubscriptionId('stations');
+    final Completer<Map<String, StationEconomyData>> completer =
+        Completer<Map<String, StationEconomyData>>();
+    final Map<String, StationEconomyData> stations =
+        <String, StationEconomyData>{};
+
+    _handlers[subId] = (List<dynamic> msg) {
+      final String type = msg[0] as String;
+      if (type == 'EVENT' && msg.length >= 3) {
+        try {
+          final Map<String, dynamic> event =
+              msg[2] as Map<String, dynamic>;
+          final StationEconomyData data =
+              StationEconomyData.fromEvent(event);
+          // Keep only the most recent event per station
+          final StationEconomyData? existing = stations[data.stationId];
+          if (existing == null || data.createdAt > existing.createdAt) {
+            stations[data.stationId] = data;
+          }
+        } catch (e) {
+          loggerDev('[NostrRelay] Station event parse error: $e');
+        }
+      } else if (type == 'EOSE') {
+        if (!completer.isCompleted) completer.complete(stations);
+        _handlers.remove(subId);
+        _sendRaw(jsonEncode(<dynamic>['CLOSE', subId]));
+      }
+    };
+
+    final int since =
+        DateTime.now().millisecondsSinceEpoch ~/ 1000 - (30 * 24 * 3600);
+    final Map<String, dynamic> filter = <String, dynamic>{
+      'kinds': <int>[kindStationEconomy],
+      'since': since,
+      'limit': 500,
+    };
+    _sendRaw(jsonEncode(<dynamic>['REQ', subId, filter]));
+
+    return completer.future.timeout(
+      const Duration(seconds: 15),
+      onTimeout: () {
+        _handlers.remove(subId);
+        _sendRaw(jsonEncode(<dynamic>['CLOSE', subId]));
+        return stations;
+      },
+    );
+  }
+
   // ─── Contact List (Kind 3) ───────────────────────────────────────
 
   /// Fetch contacts (kind 3) for a hex pubkey
@@ -288,6 +399,13 @@ class NostrRelayService {
         return <String>[];
       },
     );
+  }
+
+  // ─── Key derivation ────────────────────────────────────────────
+
+  /// Derive hex public key from hex private key (BIP-340)
+  static String derivePublicKey(String hexPrivateKey) {
+    return bip340.getPublicKey(hexPrivateKey);
   }
 
   // ─── Signing ─────────────────────────────────────────────────────

@@ -57,7 +57,9 @@ import 'g1/g1_helper.dart';
 import 'g1/service_manager.dart';
 import 'services/background_wallet_sync_service.dart';
 // import 'services/g1_genesis_service.dart'; // DEPRECATED: Removed with forced V2 mode
+import 'g1/nostr/nostr_relay_service.dart';
 import 'shared_prefs_helper.dart';
+import 'shared_prefs_helper_v2.dart';
 import 'ui/biometrics/biometric_auth_service.dart';
 import 'ui/contacts_cache.dart';
 import 'ui/in_dev_helper.dart';
@@ -1111,6 +1113,21 @@ Future<void> initGetItAll() async {
     getIt.registerSingleton<ServiceManager>(
       ServiceManager(),
     );
+
+    // Connect NOSTR relay if MULTIPASS exists
+    _initNostrRelay();
+  }
+}
+
+Future<void> _initNostrRelay() async {
+  try {
+    final String? nsec = await SharedPreferencesHelperV2().getNostrNsec();
+    if (nsec != null && nsec.isNotEmpty) {
+      final String relayUrl = Env.resolvedNostrRelay;
+      NostrRelayService().connect(relayUrl);
+    }
+  } catch (e) {
+    // Non-blocking: NOSTR relay is optional
   }
 }
 

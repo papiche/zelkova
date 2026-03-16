@@ -1,19 +1,15 @@
-import 'dart:convert';
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../data/models/app_cubit.dart';
 import '../../data/models/contact.dart';
 import '../../data/models/multi_wallet_transaction_cubit.dart';
-import '../../env.dart';
 import '../../g1/currency.dart';
+import '../../g1/zen_tag_service.dart';
 import '../../shared_prefs_helper_v2.dart';
 import '../currency_helper.dart';
-import '../logger.dart';
 import '../pay_helper.dart';
 
 /// Shows the ZEN expense claim dialog (credit return → OC expense submission).
@@ -89,14 +85,9 @@ class _ZenRemboursementDialogState extends State<ZenRemboursementDialog> {
       }
     }
 
-    // Resolve UPLANETNAME_G1 (cooperative central wallet = uplanet.G1.dunikey):
-    // NOT to be confused with UPLANETG1PUB (uplanet.dunikey = swarm identity)
-    // 1. From multipass data (if UPassport /g1nostr returns it)
-    // 2. Fallback: fetch 12345.json from station IPFS gateway
-    String uplanetnameG1 = data?['uplanetname_g1'] as String? ?? '';
-    if (uplanetnameG1.isEmpty) {
-      uplanetnameG1 = await _fetchUplanetnameG1FromStation();
-    }
+    // Resolve UPLANETNAME_G1 via ZenTagService (shared singleton)
+    await ZenTagService().init();
+    final String uplanetnameG1 = ZenTagService().uplanetnameG1 ?? '';
 
     setState(() {
       _multipassData = data;
@@ -106,54 +97,6 @@ class _ZenRemboursementDialogState extends State<ZenRemboursementDialog> {
       _uplanetnameG1 = uplanetnameG1;
       _loading = false;
     });
-  }
-
-  /// Fetch UPLANETNAME_G1 (cooperative bank pubkey = uplanet.G1.dunikey)
-  /// from the station's 12345.json.
-  /// NOT UPLANETG1PUB which is the swarm identity (uplanet.dunikey).
-  /// Convention: UPASSPORT_URL = https://u.{domain}
-  ///           → IPFS gateway  = https://ipfs.{domain}
-  ///           → 12345.json    = https://ipfs.{domain}/12345/
-  Future<String> _fetchUplanetnameG1FromStation() async {
-    try {
-      final Uri upassportUri = Uri.parse(Env.upassportUrl);
-      final String host = upassportUri.host;
-      // Derive IPFS gateway: u.domain → ipfs.domain
-      String ipfsHost;
-      if (host.startsWith('u.')) {
-        ipfsHost = 'ipfs.${host.substring(2)}';
-      } else {
-        // Fallback: try replacing first subdomain
-        final List<String> parts = host.split('.');
-        if (parts.length >= 2) {
-          parts[0] = 'ipfs';
-          ipfsHost = parts.join('.');
-        } else {
-          return '';
-        }
-      }
-
-      final Uri stationUrl = Uri.https(ipfsHost, '/12345/');
-      loggerDev('Fetching station data from $stationUrl');
-
-      final http.Response response = await http
-          .get(stationUrl)
-          .timeout(const Duration(seconds: 10));
-
-      if (response.statusCode == 200) {
-        final Map<String, dynamic> stationData =
-            jsonDecode(response.body) as Map<String, dynamic>;
-        final String pubKey =
-            stationData['UPLANETNAME_G1'] as String? ?? '';
-        if (pubKey.isNotEmpty) {
-          loggerDev('Resolved UPLANETNAME_G1 from 12345.json: ${pubKey.substring(0, 8)}...');
-        }
-        return pubKey;
-      }
-    } catch (e) {
-      loggerDev('Failed to fetch UPLANETNAME_G1 from station: $e');
-    }
-    return '';
   }
 
   String? _validateAmount(String? value) {

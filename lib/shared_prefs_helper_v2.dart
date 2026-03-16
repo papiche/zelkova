@@ -492,6 +492,7 @@ class SharedPreferencesHelperV2
     bool? isOrigin,
     String? uplanetHome,
     Map<String, dynamic>? ocUrls,
+    String? uplanetnameG1,
   }) async {
     final CesiumWallet wallet = CesiumWallet(salt, pepper);
     final String pubKey = wallet.pubkey;
@@ -504,7 +505,6 @@ class SharedPreferencesHelperV2
       type: AccountType.v1PasswordProtected,
       pubKey: pubKey,
       address: addressFromV1Pubkey(pubKey),
-      seed: null,
       contact: Contact.withPubKey(pubKey: pubKey, name: email),
       theme: SharedPreferencesHelper().randomTheme(),
     );
@@ -527,6 +527,8 @@ class SharedPreferencesHelperV2
         if (isOrigin != null) 'is_origin': isOrigin,
         if (uplanetHome != null) 'uplanet_home': uplanetHome,
         if (ocUrls != null) 'oc_urls': ocUrls,
+        if (uplanetnameG1 != null && uplanetnameG1.isNotEmpty)
+          'uplanetname_g1': uplanetnameG1,
       }),
     );
 

@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:bip340/bip340.dart' as bip340;
-import 'package:crypto/crypto.dart';
 import 'package:hex/hex.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
@@ -18,11 +17,11 @@ import 'station_economy_event.dart';
 /// profile fetch/publish (kind 0), and contact list (kind 3).
 /// Adapted from TrocZen's NostrConnectionService + NostrService.
 class NostrRelayService {
-  static final NostrRelayService _instance = NostrRelayService._internal();
 
   factory NostrRelayService() => _instance;
 
   NostrRelayService._internal();
+  static final NostrRelayService _instance = NostrRelayService._internal();
 
   WebSocketChannel? _channel;
   StreamSubscription<dynamic>? _subscription;
@@ -30,8 +29,8 @@ class NostrRelayService {
   String? _currentRelayUrl;
 
   // Subscription handlers for REQ/EVENT routing
-  final Map<String, void Function(List<dynamic>)> _handlers = {};
-  final Map<String, Completer<bool>> _publishCompleters = {};
+  final Map<String, void Function(List<dynamic>)> _handlers = <String, void Function(List<dynamic>)>{};
+  final Map<String, Completer<bool>> _publishCompleters = <String, Completer<bool>>{};
 
   // Reconnection
   Timer? _reconnectTimer;

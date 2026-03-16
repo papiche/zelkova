@@ -14,9 +14,9 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../data/models/contact.dart';
 import '../data/models/theme_cubit.dart';
+import '../g1/currency.dart';
 import '../g1/g1_helper.dart';
 import 'basic_avatar.dart';
-import '../g1/currency.dart';
 import 'currency_helper.dart';
 import 'image_utils.dart';
 import 'in_dev_helper.dart';

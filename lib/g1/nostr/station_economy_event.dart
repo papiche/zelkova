@@ -51,7 +51,7 @@ class StationEconomyData {
           const JsonDecoder().convert(contentStr) as Map<dynamic, dynamic>);
     } catch (_) {}
 
-    String _tag(String name) {
+    String tag(String name) {
       for (final dynamic t in tags) {
         final List<dynamic> tag = t as List<dynamic>;
         if (tag.isNotEmpty && tag[0].toString() == name && tag.length >= 2) {
@@ -61,49 +61,49 @@ class StationEconomyData {
       return '';
     }
 
-    double _tagDouble(String name) =>
-        double.tryParse(_tag(name)) ?? 0;
-    int _tagInt(String name) => int.tryParse(_tag(name)) ?? 0;
+    double tagDouble(String name) =>
+        double.tryParse(tag(name)) ?? 0;
+    int tagInt(String name) => int.tryParse(tag(name)) ?? 0;
 
-    final String stationId = _tag('station');
+    final String stationId = tag('station');
 
     return StationEconomyData(
       stationId: stationId,
-      stationName: _tag('station:name').isNotEmpty
-          ? _tag('station:name')
+      stationName: tag('station:name').isNotEmpty
+          ? tag('station:name')
           : (stationId.length > 8
               ? '...${stationId.substring(stationId.length - 8)}'
               : stationId),
-      swarmId: _tag('swarm_id').isNotEmpty ? _tag('swarm_id') : 'default',
-      healthStatus: _tag('health:status').isNotEmpty
-          ? _tag('health:status')
+      swarmId: tag('swarm_id').isNotEmpty ? tag('swarm_id') : 'default',
+      healthStatus: tag('health:status').isNotEmpty
+          ? tag('health:status')
           : 'healthy',
-      bilan: _tagDouble('health:bilan'),
+      bilan: tagDouble('health:bilan'),
       generatedAt: content['generated_at'] as String?,
       createdAt: createdAt,
-      cashBalance: _tagDouble('balance:cash'),
-      rndBalance: _tagDouble('balance:rnd'),
-      assetsBalance: _tagDouble('balance:assets'),
-      impotBalance: _tagDouble('balance:impot'),
-      capitalBalance: _tagDouble('balance:capital'),
-      provisionTva: _tagDouble('provision:tva'),
-      provisionIs: _tagDouble('provision:is'),
-      costPaf: _tagDouble('cost:paf'),
-      priceMultipass: _tagDouble('price:multipass'),
-      priceZencard: _tagDouble('price:zencard'),
-      multipassUsed: _tagInt('capacity:multipass_used'),
-      multipassTotal: _tagInt('capacity:multipass_total'),
-      zencardRenters: _tagInt('capacity:zencard_renters'),
-      zencardOwners: _tagInt('capacity:zencard_owners'),
-      zencardCapacity: _tagInt('capacity:zencard_capacity'),
-      weeksRunway: _tagInt('health:weeks_runway'),
-      revenueTotal: _tagDouble('revenue:total'),
-      revenueMultipass: _tagDouble('revenue:multipass'),
-      revenueZencard: _tagDouble('revenue:zencard'),
-      stationLat: _tagDouble('geo:lat'),
-      stationLon: _tagDouble('geo:lon'),
-      solarOffset: _tag('sync:solar_offset').isNotEmpty
-          ? _tag('sync:solar_offset')
+      cashBalance: tagDouble('balance:cash'),
+      rndBalance: tagDouble('balance:rnd'),
+      assetsBalance: tagDouble('balance:assets'),
+      impotBalance: tagDouble('balance:impot'),
+      capitalBalance: tagDouble('balance:capital'),
+      provisionTva: tagDouble('provision:tva'),
+      provisionIs: tagDouble('provision:is'),
+      costPaf: tagDouble('cost:paf'),
+      priceMultipass: tagDouble('price:multipass'),
+      priceZencard: tagDouble('price:zencard'),
+      multipassUsed: tagInt('capacity:multipass_used'),
+      multipassTotal: tagInt('capacity:multipass_total'),
+      zencardRenters: tagInt('capacity:zencard_renters'),
+      zencardOwners: tagInt('capacity:zencard_owners'),
+      zencardCapacity: tagInt('capacity:zencard_capacity'),
+      weeksRunway: tagInt('health:weeks_runway'),
+      revenueTotal: tagDouble('revenue:total'),
+      revenueMultipass: tagDouble('revenue:multipass'),
+      revenueZencard: tagDouble('revenue:zencard'),
+      stationLat: tagDouble('geo:lat'),
+      stationLon: tagDouble('geo:lon'),
+      solarOffset: tag('sync:solar_offset').isNotEmpty
+          ? tag('sync:solar_offset')
           : null,
     );
   }

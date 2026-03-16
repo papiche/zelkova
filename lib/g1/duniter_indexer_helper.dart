@@ -23,7 +23,6 @@ import '../ui/ui_helpers.dart';
 import 'api.dart';
 import 'g1_helper.dart';
 import 'g1_v2_helper.dart';
-import 'nostr/nostr_keys.dart';
 import 'nostr/nostr_profile.dart';
 import 'nostr/nostr_relay_service.dart';
 
@@ -1001,9 +1000,8 @@ Future<Contact> getProfileV2(String pubKeyRaw,
     }
   }
 
-  // Get profile: try NOSTR relay first, then Cesium+ fallback
+  // Get profile from NOSTR relay
   Contact c = await _fetchNostrProfile(cPlusPubKey) ??
-      await _fetchCesiumPlusProfile(cPlusPubKey, resize: resize) ??
       (baseContact ?? Contact.withAddress(address: address));
 
   // Get WOT V2 data if not only profile

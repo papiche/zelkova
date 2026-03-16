@@ -232,10 +232,10 @@ void main() {
 
       // Calculate expected time based on current timezone
       // UTC timestamp: 2024-11-08T20:38:28Z converts to local time
-      final utcDateTime =
+      final DateTime utcDateTime =
           DateTime.fromMillisecondsSinceEpoch(1731098308 * 1000, isUtc: true);
-      final localDateTime = utcDateTime.toLocal();
-      final expectedTime =
+      final DateTime localDateTime = utcDateTime.toLocal();
+      final String expectedTime =
           '${localDateTime.day}/${localDateTime.month}/${localDateTime.year} ${localDateTime.hour.toString().padLeft(2, '0')}:${localDateTime.minute.toString().padLeft(2, '0')}';
 
       expect(

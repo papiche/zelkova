@@ -606,6 +606,7 @@
   "profile.description.max_length": "La description ne peut excéder 1000 caractères",
   "profile.city": "Ville",
   "profile.city.hint": "Votre ville",
+  "profile.banner.tap": "Toucher pour ajouter une bannière",
   "profile.socials": "Réseaux sociaux",
   "profile.saved": "Profil sauvegardé avec succès",
   "profile.save_error": "Erreur lors de la sauvegarde du profil. Veuillez réessayer.",

@@ -79,6 +79,10 @@ class AppCubit extends HydratedCubit<AppState> {
     return state.tutorials[tutorialId] ?? false;
   }
 
+  void multipassPrompted() {
+    onFinishTutorial('multipass_prompt');
+  }
+
   void setG1Currency() {
     emit(state.copyWith(currency: Currency.G1));
   }

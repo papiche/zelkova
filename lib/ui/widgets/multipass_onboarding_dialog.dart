@@ -6,6 +6,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../../data/models/app_cubit.dart';
 import '../../g1/multipass_service.dart';
+import '../../g1/zen_tag_service.dart';
 import '../../shared_prefs_helper_v2.dart';
 
 void showMultipassOnboardingDialog(BuildContext context) {
@@ -113,7 +114,13 @@ class _MultipassOnboardingDialogState extends State<MultipassOnboardingDialog> {
           'cloud': response.ocUrls.cloud,
           'membre': response.ocUrls.membre,
         },
+        uplanetnameG1: response.uplanetnameG1,
       );
+
+      // Initialize ZEN tag if UPLANETNAME_G1 was returned
+      if (response.uplanetnameG1.isNotEmpty) {
+        ZenTagService().setUplanetnameG1(response.uplanetnameG1);
+      }
 
       setState(() {
         _result = response;

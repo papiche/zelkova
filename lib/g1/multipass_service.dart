@@ -48,6 +48,7 @@ class MultipassResponse {
     required this.isOrigin,
     required this.ocUrls,
     required this.uplanetHome,
+    required this.uplanetnameG1,
   });
 
   factory MultipassResponse.fromJson(Map<String, dynamic> json) {
@@ -66,6 +67,7 @@ class MultipassResponse {
       isOrigin: json['is_origin'] as bool? ?? false,
       ocUrls: OcUrls.fromJson(json['oc_urls'] as Map<String, dynamic>?),
       uplanetHome: json['uplanet_home'] as String? ?? '',
+      uplanetnameG1: json['uplanetname_g1'] as String? ?? '',
     );
   }
 
@@ -83,6 +85,7 @@ class MultipassResponse {
   final bool isOrigin;
   final OcUrls ocUrls;
   final String uplanetHome;
+  final String uplanetnameG1;
 }
 
 /// Service to create a MULTIPASS identity via UPassport API

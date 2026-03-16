@@ -4,6 +4,7 @@ import 'package:qr_flutter/qr_flutter.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
 import '../g1/g1_helper.dart';
+import '../g1/zen_tag_service.dart';
 import 'clipboard_helper.dart';
 import 'ui_helpers.dart';
 
@@ -14,7 +15,10 @@ void showQrDialog({
   bool noTitle = false,
   String? feedbackText,
 }) {
-  final String key = isV2 ? pubKeyOrAddress : getFullPubKey(pubKeyOrAddress);
+  final String baseKey =
+      isV2 ? pubKeyOrAddress : getFullPubKey(pubKeyOrAddress);
+  // Append :ZEN:XXXXXXXX constellation tag for ecosystem isolation
+  final String key = ZenTagService().tagAddress(baseKey);
 
   final bool brightnessSupported = isBrightnessSupported();
 

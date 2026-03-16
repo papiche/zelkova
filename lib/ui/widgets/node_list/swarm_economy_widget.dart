@@ -417,7 +417,7 @@ class _SwarmEconomyWidgetState extends State<SwarmEconomyWidget> {
   Widget _buildResourceBar(
       String label, double value, Color barColor, ColorScheme colors) {
     // Normalize bar width relative to an arbitrary max for visual display
-    final double maxVal = 1000;
+    const double maxVal = 1000;
     final double width = (value.abs() / maxVal).clamp(0.0, 1.0);
 
     return Padding(

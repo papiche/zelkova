@@ -29,6 +29,7 @@ class NostrProfile {
     this.socials,
     // UPlanet identity (NIP-39 "i" tags)
     this.g1pub,
+    this.g1v2,
     this.email,
     this.zencard,
     this.ipfsGw,
@@ -90,6 +91,7 @@ class NostrProfile {
       socials: socials,
       // NIP-39 identity tags (content field takes priority over i-tag)
       g1pub: json['g1pub'] as String? ?? iTags['g1pub'],
+      g1v2: json['g1v2'] as String? ?? iTags['g1v2'],
       email: iTags['email'],
       zencard: iTags['zencard'],
       ipfsGw: iTags['ipfs_gw'],
@@ -124,6 +126,7 @@ class NostrProfile {
 
   // UPlanet identity (NIP-39 "i" tags from nostr_setup_profile.py)
   final String? g1pub;
+  final String? g1v2; // Duniter v2 SS58 address
   final String? email;
   final String? zencard;
   final String? ipfsGw;
@@ -154,6 +157,7 @@ class NostrProfile {
       if (nip05 != null) 'nip05': nip05,
       if (website != null) 'website': website,
       if (g1pub != null) 'g1pub': g1pub,
+      if (g1v2 != null) 'g1v2': g1v2,
       if (city != null) 'city': city,
       if (socials != null && socials!.isNotEmpty) 'socials': socials,
       'bot': false,
@@ -170,6 +174,7 @@ class NostrProfile {
     }
 
     addTag('g1pub', g1pub);
+    addTag('g1v2', g1v2);
     addTag('email', email);
     addTag('zencard', zencard);
     addTag('ipfs_gw', ipfsGw);
@@ -198,6 +203,7 @@ class NostrProfile {
     String? nip05,
     String? website,
     String? g1pub,
+    String? g1v2,
     String? city,
     List<Map<String, String>>? socials,
     String? email,
@@ -227,6 +233,7 @@ class NostrProfile {
       nip05: nip05 ?? this.nip05,
       website: website ?? this.website,
       g1pub: g1pub ?? this.g1pub,
+      g1v2: g1v2 ?? this.g1v2,
       city: city ?? this.city,
       socials: socials ?? this.socials,
       email: email ?? this.email,

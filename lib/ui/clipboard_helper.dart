@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../data/models/stored_account.dart';
+import '../g1/zen_tag_service.dart';
 import '../shared_prefs_helper.dart';
 import 'logger.dart';
 import 'pattern_util.dart';
@@ -10,10 +11,12 @@ import 'pattern_util.dart';
 Future<void> copyPublicKeyToClipboard(BuildContext context,
     [String? uri, String? feedbackText]) async {
   final StoredAccount account = SharedPreferencesHelper().getCurrentAccount();
-  final String textToCopy = uri ??
+  final String rawKey = uri ??
       (account.type.isV2
           ? account.address
           : SharedPreferencesHelper().getPubKey());
+  // Append :ZEN:XXXXXXXX constellation tag for ecosystem isolation
+  final String textToCopy = ZenTagService().tagAddress(rawKey);
   await Clipboard.setData(ClipboardData(text: textToCopy));
   if (context.mounted) {
     final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;

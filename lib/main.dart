@@ -54,10 +54,11 @@ import 'g1/api.dart';
 import 'g1/distance_precompute.dart';
 import 'g1/distance_precompute_provider.dart';
 import 'g1/g1_helper.dart';
-import 'g1/service_manager.dart';
-import 'services/background_wallet_sync_service.dart';
 // import 'services/g1_genesis_service.dart'; // DEPRECATED: Removed with forced V2 mode
 import 'g1/nostr/nostr_relay_service.dart';
+import 'g1/service_manager.dart';
+import 'g1/zen_tag_service.dart';
+import 'services/background_wallet_sync_service.dart';
 import 'shared_prefs_helper.dart';
 import 'shared_prefs_helper_v2.dart';
 import 'ui/biometrics/biometric_auth_service.dart';
@@ -437,12 +438,12 @@ class _AppIntro extends State<AppIntro> {
       if (!context.mounted) {
         return;
       }
+      cubit.introViewed();
       Navigator.of(context).pushReplacement(
         MaterialPageRoute<void>(
           builder: (BuildContext _) => const FeedbackAndSkeletonScreen(),
         ),
       );
-      cubit.introViewed();
     });
   }
 
@@ -1116,6 +1117,17 @@ Future<void> initGetItAll() async {
 
     // Connect NOSTR relay if MULTIPASS exists
     _initNostrRelay();
+
+    // Initialize ZEN constellation tag (fetches UPLANETNAME_G1)
+    _initZenTag();
+  }
+}
+
+Future<void> _initZenTag() async {
+  try {
+    await ZenTagService().init();
+  } catch (e) {
+    // Non-blocking: ZEN tag is optional
   }
 }
 

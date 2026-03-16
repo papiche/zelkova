@@ -38,9 +38,9 @@ import 'g1_helper.dart';
 import 'g1_v2_helper.dart';
 import 'no_nodes_exception.dart';
 import 'node_check_result.dart';
-import 'pay_result.dart';
 import 'nostr/nostr_profile.dart';
 import 'nostr/nostr_relay_service.dart';
+import 'pay_result.dart';
 import 'service_manager.dart';
 import 'v2_peers.dart';
 
@@ -1446,11 +1446,11 @@ Future<List<Contact>> searchProfilesV1(
   final Map<String, Contact> merged = <String, Contact>{};
   for (final Contact c in results[1]) {
     // NOSTR results
-    if (c.pubKey != null) merged[c.pubKey!] = c;
+    if (c.pubKey != null) merged[c.pubKey] = c;
   }
   for (final Contact c in results[0]) {
     // Cesium+ results
-    if (c.pubKey != null) merged.putIfAbsent(c.pubKey!, () => c);
+    if (c.pubKey != null) merged.putIfAbsent(c.pubKey, () => c);
   }
   return merged.values.toList();
 }

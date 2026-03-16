@@ -3,9 +3,9 @@ import 'dart:typed_data';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../../data/models/contact.dart';
-import '../../g1/api.dart' as g1_api;
 import '../../g1/multipass_service.dart';
 import '../../g1/nostr/nostr_keys.dart';
 import '../../g1/nostr/nostr_profile.dart';
@@ -34,6 +34,7 @@ class _ProfileEditorDialogState extends State<ProfileEditorDialog> {
   late List<Map<String, String>> _socials;
 
   String? _selectedAvatarBase64;
+  String? _selectedBannerBase64;
   bool _isSaving = false;
 
   @override
@@ -99,11 +100,10 @@ class _ProfileEditorDialogState extends State<ProfileEditorDialog> {
     setState(() => _isSaving = true);
 
     try {
-      // Publish to NOSTR relay (primary) and Cesium+ (fallback)
+      // Publish to NOSTR relay
       bool nostrSuccess = false;
-      bool cPlusSuccess = false;
 
-      // Try NOSTR relay first
+      // Publish profile via NOSTR relay
       final NostrRelayService relay = NostrRelayService();
       if (relay.isConnected) {
         try {
@@ -134,6 +134,24 @@ class _ProfileEditorDialogState extends State<ProfileEditorDialog> {
               }
             }
 
+            // Upload banner to IPFS via UPassport API if changed
+            String? bannerUrl;
+            if (_selectedBannerBase64 != null) {
+              try {
+                final List<int> bannerBytes =
+                    base64Decode(_selectedBannerBase64!);
+                bannerUrl = await MultipassService.uploadImage(
+                  npub: npub,
+                  imageBytes: Uint8List.fromList(bannerBytes),
+                  imageType: 'banner',
+                  filename: 'banner.jpg',
+                );
+                loggerDev('Banner uploaded: $bannerUrl');
+              } catch (e) {
+                loggerDev('Banner upload error: $e');
+              }
+            }
+
             final NostrProfile profile = NostrProfile(
               npub: npub,
               name: _titleController.text,
@@ -142,6 +160,7 @@ class _ProfileEditorDialogState extends State<ProfileEditorDialog> {
                   : _descriptionController.text,
               city: _cityController.text.isEmpty ? null : _cityController.text,
               picture: pictureUrl,
+              banner: bannerUrl,
               picture64: _selectedAvatarBase64,
               socials: _socials.isEmpty ? null : _socials,
             );
@@ -154,22 +173,11 @@ class _ProfileEditorDialogState extends State<ProfileEditorDialog> {
         }
       }
 
-      // Also publish to Cesium+ for backward compatibility
-      cPlusSuccess = await g1_api.createOrUpdateProfileV2cPlusExtended(
-        title: _titleController.text,
-        description: _descriptionController.text.isEmpty
-            ? null
-            : _descriptionController.text,
-        city: _cityController.text.isEmpty ? null : _cityController.text,
-        avatarBase64: _selectedAvatarBase64,
-        socials: _socials.isEmpty ? null : _socials,
-      );
-
       if (!mounted) {
         return;
       }
 
-      if (nostrSuccess || cPlusSuccess) {
+      if (nostrSuccess) {
         // Update local storage
         final SharedPreferencesHelperV2 helper = SharedPreferencesHelperV2();
         helper.updateProfile(
@@ -243,6 +251,14 @@ class _ProfileEditorDialogState extends State<ProfileEditorDialog> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
+                    // Banner Picker
+                    _BannerPicker(
+                      existingBase64: _selectedBannerBase64,
+                      onSelected: (String base64) {
+                        setState(() => _selectedBannerBase64 = base64);
+                      },
+                    ),
+                    const SizedBox(height: 16),
                     // Avatar Picker
                     Center(
                       child: AvatarPicker(
@@ -400,6 +416,142 @@ class _ProfileEditorDialogState extends State<ProfileEditorDialog> {
                         _isSaving ? 'common.saving'.tr() : 'common.save'.tr()),
                   ),
                 ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// Banner picker widget — rectangular image for NOSTR profile banner
+class _BannerPicker extends StatefulWidget {
+  const _BannerPicker({
+    required this.onSelected,
+    this.existingBase64,
+  });
+
+  final void Function(String base64) onSelected;
+  final String? existingBase64;
+
+  @override
+  State<_BannerPicker> createState() => _BannerPickerState();
+}
+
+class _BannerPickerState extends State<_BannerPicker> {
+  static const int maxBannerSizeBytes = 2 * 1024 * 1024; // 2MB
+  final ImagePicker _picker = ImagePicker();
+  String? _selectedBase64;
+  bool _isProcessing = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedBase64 = widget.existingBase64;
+  }
+
+  Future<void> _pickBanner() async {
+    if (_isProcessing) return;
+    setState(() => _isProcessing = true);
+
+    try {
+      final XFile? file = await _picker.pickImage(source: ImageSource.gallery);
+      if (file == null) {
+        setState(() => _isProcessing = false);
+        return;
+      }
+
+      final Uint8List bytes = await file.readAsBytes();
+      if (bytes.lengthInBytes > maxBannerSizeBytes) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Banner image exceeds 2MB limit'),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
+        setState(() => _isProcessing = false);
+        return;
+      }
+
+      final String base64String = base64Encode(bytes);
+      setState(() {
+        _selectedBase64 = base64String;
+        _isProcessing = false;
+      });
+      widget.onSelected(base64String);
+    } catch (e) {
+      setState(() => _isProcessing = false);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    Uint8List? bannerBytes;
+    if (_selectedBase64 != null) {
+      try {
+        bannerBytes = base64Decode(_selectedBase64!);
+      } catch (_) {}
+    }
+
+    return GestureDetector(
+      onTap: _isProcessing ? null : _pickBanner,
+      child: Container(
+        height: 120,
+        width: double.infinity,
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.surfaceContainerHighest,
+          borderRadius: BorderRadius.circular(12),
+          image: bannerBytes != null
+              ? DecorationImage(
+                  image: MemoryImage(bannerBytes),
+                  fit: BoxFit.cover,
+                )
+              : null,
+        ),
+        child: Stack(
+          children: <Widget>[
+            if (bannerBytes == null)
+              Center(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    Icon(Icons.panorama,
+                        size: 32,
+                        color: Theme.of(context).colorScheme.onSurfaceVariant),
+                    const SizedBox(height: 4),
+                    Text(
+                      'profile.banner.tap'.tr(),
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            Positioned(
+              bottom: 8,
+              right: 8,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Theme.of(context).primaryColor.withAlpha(200),
+                  shape: BoxShape.circle,
+                ),
+                padding: const EdgeInsets.all(8),
+                child: _isProcessing
+                    ? const SizedBox(
+                        width: 16,
+                        height: 16,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          valueColor:
+                              AlwaysStoppedAnimation<Color>(Colors.white),
+                        ),
+                      )
+                    : const Icon(Icons.camera_alt,
+                        color: Colors.white, size: 16),
               ),
             ),
           ],

@@ -12,13 +12,14 @@ import 'package:sentry_flutter/sentry_flutter.dart';
 import '../data/models/contact.dart';
 import '../data/models/payment_state.dart';
 import '../data/models/transaction.dart';
-import 'currency.dart';
 import '../ui/currency_helper.dart';
 import '../ui/logger.dart';
 //import '../ui/pay_helper.dart';
 import '../ui/ui_helpers.dart';
 import 'crypto/cesium_wallet.dart';
+import 'currency.dart';
 import 'g1_v2_helper.dart';
+import 'zen_tag_service.dart';
 
 Random createRandom() {
   try {
@@ -187,18 +188,22 @@ String getQrUri(
     amountD = 0;
   }
 
+  // Append :ZEN:XXXXXXXX constellation tag for ecosystem isolation
+  final String taggedKey = ZenTagService().tagAddress(pubKey);
+
   String uri;
   if (amountD > 0) {
     // there is something like this in other clients?
-    uri = 'june://$pubKey?amount=$amountD';
+    uri = 'june://$taggedKey?amount=$amountD';
   } else {
-    uri = pubKey;
+    uri = taggedKey;
   }
   return uri;
 }
 
 PaymentState? parseScannedUri(String qrOrig) {
-  final String qr = Uri.decodeFull(qrOrig);
+  // Strip :ZEN:XXXXXXXX constellation tag before parsing
+  final String qr = Uri.decodeFull(ZenTagService.stripTag(qrOrig));
 
   // Regex patterns that support both v1 pubKeys and v2 addresses
   // v1: 43-44 chars base58, optionally with :XXX checksum

@@ -17,6 +17,9 @@ import '../../data/models/identity_status.dart';
 import '../../data/models/multi_wallet_transaction_cubit.dart';
 import '../../data/models/stored_account.dart';
 import '../../data/wot_info_fetcher.dart';
+import '../../g1/g1_v2_helper.dart';
+import '../../g1/nostr/nostr_profile.dart';
+import '../../g1/nostr/nostr_relay_service.dart';
 import '../../g1/sign_and_send.dart';
 import '../../main.dart';
 import '../../shared_prefs_helper.dart';
@@ -48,6 +51,7 @@ class _ContactPageState extends State<ContactPage> with RouteAware {
   bool isAvatarExpanded = false;
   late bool isV2;
   late Stream<ContactWotInfo> _wotInfoStream;
+  String? _bannerUrl;
   late ScrollController _scrollController;
   bool _isRefreshing = false;
 
@@ -60,7 +64,20 @@ class _ContactPageState extends State<ContactPage> with RouteAware {
     _wotInfoStream = _getWotInfo(appCubit);
     _scrollController = ScrollController();
     _scrollController.addListener(_onScroll);
+    _fetchBanner();
     super.initState();
+  }
+
+  Future<void> _fetchBanner() async {
+    final NostrRelayService relay = NostrRelayService();
+    if (!relay.isConnected) return;
+    try {
+      final String hexPubkey = pubkeyToHex(widget.contact.pubKey);
+      final NostrProfile? profile = await relay.fetchProfile(hexPubkey);
+      if (profile?.banner != null && profile!.banner!.isNotEmpty && mounted) {
+        setState(() => _bannerUrl = profile.banner);
+      }
+    } catch (_) {}
   }
 
   @override
@@ -525,7 +542,19 @@ class _ContactPageState extends State<ContactPage> with RouteAware {
     final String title = contact.title;
     // contact.nick ?? contact.name ?? humanizePubKey(contact.pubKey);
     return Container(
-      color: Theme.of(context).colorScheme.secondaryContainer,
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.secondaryContainer,
+        image: _bannerUrl != null
+            ? DecorationImage(
+                image: NetworkImage(_bannerUrl!),
+                fit: BoxFit.cover,
+                colorFilter: ColorFilter.mode(
+                  Colors.black.withAlpha(80),
+                  BlendMode.darken,
+                ),
+              )
+            : null,
+      ),
       width: double.infinity,
       height: isAvatarExpanded ? MediaQuery.of(context).size.height / 2 : 132,
       padding: const EdgeInsets.symmetric(vertical: 10),
@@ -587,12 +616,28 @@ class _ContactPageState extends State<ContactPage> with RouteAware {
                       title,
                       numberOfReps: 2,
                       selectable: true,
-                      style: Theme.of(context).textTheme.titleLarge,
+                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                            color: _bannerUrl != null ? Colors.white : null,
+                            shadows: _bannerUrl != null
+                                ? <Shadow>[
+                                    const Shadow(
+                                        blurRadius: 4, color: Colors.black54)
+                                  ]
+                                : null,
+                          ),
                     )
                   : Text(
                       title,
                       textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.titleLarge,
+                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                            color: _bannerUrl != null ? Colors.white : null,
+                            shadows: _bannerUrl != null
+                                ? <Shadow>[
+                                    const Shadow(
+                                        blurRadius: 4, color: Colors.black54)
+                                  ]
+                                : null,
+                          ),
                     ),
             ),
           ],

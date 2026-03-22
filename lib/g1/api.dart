@@ -29,6 +29,7 @@ import '../data/models/node_type.dart';
 import '../data/models/transaction_state.dart';
 import '../env.dart';
 import '../shared_prefs_helper.dart';
+import '../shared_prefs_helper_v2.dart';
 import '../ui/contacts_cache.dart';
 import '../ui/logger.dart';
 import '../ui/ui_helpers.dart';
@@ -1415,8 +1416,41 @@ Future<bool> createOrUpdateProfile(String name) {
   return GetIt.instance<ServiceManager>().current.createOrUpdateProfile(name);
 }
 
+Future<bool> createOrUpdateProfileNostr(String name) async {
+  final String? nsec = await SharedPreferencesHelperV2().getNostrNsec();
+  if (nsec == null) return false;
+
+  final NostrRelayService relay = NostrRelayService();
+  if (!relay.isConnected) return false;
+
+  final String hexPriv = nsec;
+  final String hexPub = NostrRelayService.derivePublicKey(hexPriv);
+
+  final NostrProfile? existing = await relay.fetchProfile(hexPub);
+
+  final NostrProfile newProfile = existing?.copyWith(name: name) ??
+      NostrProfile(name: name, npub: hexPub);
+
+  return relay.publishProfile(newProfile, hexPriv);
+}
+
 Future<bool> deleteProfile() {
   return GetIt.instance<ServiceManager>().current.deleteProfile();
+}
+
+Future<bool> deleteProfileNostr() async {
+  final String? nsec = await SharedPreferencesHelperV2().getNostrNsec();
+  if (nsec == null) return false;
+
+  final NostrRelayService relay = NostrRelayService();
+  if (!relay.isConnected) return false;
+
+  final String hexPriv = nsec;
+  final String hexPub = NostrRelayService.derivePublicKey(hexPriv);
+
+  final NostrProfile emptyProfile =
+      NostrProfile(name: 'Deleted User', npub: hexPub, about: '', picture: '');
+  return relay.publishProfile(emptyProfile, hexPriv);
 }
 
 // Always wrap HTTP calls with this to enforce a hard timeout on Web as well.
@@ -1430,29 +1464,8 @@ Future<List<Contact>> searchProfilesV1(
     required String searchTerm,
     required String searchTermCapitalized,
     bool quickMode = false}) async {
-  // Run NOSTR relay search and Cesium+ search in parallel
-  final Future<List<Contact>> cPlusFuture = _searchCesiumPlus(
-    searchTermLower: searchTermLower,
-    searchTerm: searchTerm,
-    searchTermCapitalized: searchTermCapitalized,
-    quickMode: quickMode,
-  );
-  final Future<List<Contact>> nostrFuture = _searchNostrRelay(searchTermLower);
-
-  final List<List<Contact>> results =
-      await Future.wait(<Future<List<Contact>>>[cPlusFuture, nostrFuture]);
-
-  // Merge results, NOSTR first, dedup by pubkey
-  final Map<String, Contact> merged = <String, Contact>{};
-  for (final Contact c in results[1]) {
-    // NOSTR results
-    if (c.pubKey != null) merged[c.pubKey] = c;
-  }
-  for (final Contact c in results[0]) {
-    // Cesium+ results
-    if (c.pubKey != null) merged.putIfAbsent(c.pubKey, () => c);
-  }
-  return merged.values.toList();
+  // Only use NOSTR relay search
+  return _searchNostrRelay(searchTermLower);
 }
 
 Future<List<Contact>> _searchCesiumPlus({

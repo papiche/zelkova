@@ -28,8 +28,9 @@ class MultipassService {
     final String pepper = _generateRandomString(24);
     
     // Construct the URL. Assuming the API endpoint is /g1nostr
-    // and it accepts query parameters.
-    final Uri url = Uri.parse('$baseUrl/g1nostr').replace(queryParameters: {
+    final Uri url = Uri.parse('$baseUrl/g1nostr');
+
+    final Map<String, String> body = {
       'email': email,
       'lang': lang,
       'lat': lat.toString(),
@@ -37,11 +38,11 @@ class MultipassService {
       'salt': salt,
       'pepper': pepper,
       'format': 'json',
-    });
+    };
 
-    logger('Calling MULTIPASS API: $url');
+    logger('Calling MULTIPASS API (POST): $url');
 
-    final http.Response response = await http.get(url);
+    final http.Response response = await http.post(url, body: body);
 
     if (response.statusCode == 200) {
       try {

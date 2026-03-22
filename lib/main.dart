@@ -987,7 +987,7 @@ class _GinkgoAppState extends State<GinkgoApp> {
                   ],
                   child: MaterialApp(
                     /// Localization is not available for the title.
-                    title: 'Ğ1nkgo',
+                    title: 'Ẑinkgo',
                     navigatorKey: GinkgoApp.navigatorKey,
                     navigatorObservers: <NavigatorObserver>[
                       GinkgoApp.routeObserver,

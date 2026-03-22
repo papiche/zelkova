@@ -1074,10 +1074,10 @@ Future<List<Contact>> getProfilesV2({required List<String> pubKeys}) async {
         // ignore
       }
 
-      // Try to get Cesium+ profile data using V1 pubkey
-      final Contact? cPlusContact = await _fetchCesiumPlusProfile(cPlusPubKey);
-      if (cPlusContact != null) {
-        contact = contact.merge(cPlusContact);
+      // Try to get Nostr profile data using V1 pubkey
+      final Contact? nostrContact = await _fetchNostrProfile(cPlusPubKey);
+      if (nostrContact != null) {
+        contact = contact.merge(nostrContact);
       }
 
       contacts.add(contact);

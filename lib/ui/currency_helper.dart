@@ -15,9 +15,9 @@ String formatKAmountInView(
     _formatAmount(
         locale: currentLocale(context),
         amount: convertAmountByCurrency(
-            currency ?? (isG1 ? Currency.G1 : Currency.DU), amount, currentUd,
+            currency ?? (isG1 ? Currency.ZEN : Currency.DU), amount, currentUd,
             isBalance: isBalance),
-        currency: currency ?? (isG1 ? Currency.G1 : Currency.DU),
+        currency: currency ?? (isG1 ? Currency.ZEN : Currency.DU),
         useSymbol: useSymbol);
 
 String formatKAmountInViewWithLocale(
@@ -30,8 +30,8 @@ String formatKAmountInViewWithLocale(
     _formatAmount(
         locale: locale,
         amount: convertAmountByCurrency(
-            currency ?? (isG1 ? Currency.G1 : Currency.DU), amount, currentUd),
-        currency: currency ?? (isG1 ? Currency.G1 : Currency.DU),
+            currency ?? (isG1 ? Currency.ZEN : Currency.DU), amount, currentUd),
+        currency: currency ?? (isG1 ? Currency.ZEN : Currency.DU),
         useSymbol: useSymbol);
 
 /// Legacy conversion (kept for compatibility)
@@ -108,14 +108,14 @@ NumberFormat currentNumberFormat({
 
   // Build the currency formatter with the correct locale and symbol
   return NumberFormat.currency(
-    symbol: useSymbol ? currentCurrencyFromEnum(currency ?? (isG1 ? Currency.G1 : Currency.DU)) : '',
+    symbol: useSymbol ? currentCurrencyFromEnum(currency ?? (isG1 ? Currency.ZEN : Currency.DU)) : '',
     locale: eo(locale), // fallback for Esperanto
     decimalDigits: decimalsToShow,
   );
 }
 
 String currentCurrency(bool isG1) {
-  return isG1 ? '${Currency.G1.name()} ' : '${Currency.DU.name()} ';
+  return isG1 ? '${Currency.ZEN.name()} ' : '${Currency.DU.name()} ';
 }
 
 String currentCurrencyFromEnum(Currency currency) {

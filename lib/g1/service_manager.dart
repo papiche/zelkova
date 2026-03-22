@@ -118,12 +118,12 @@ class DuniterServiceV2 implements DuniterService {
 
   @override
   Future<bool> createOrUpdateProfile(String name) {
-    return createOrUpdateProfileV2cPlus(name);
+    return createOrUpdateProfileNostr(name);
   }
 
   @override
   Future<bool> deleteProfile() {
-    return deleteProfileV2cPlus();
+    return deleteProfileNostr();
   }
 
   @override

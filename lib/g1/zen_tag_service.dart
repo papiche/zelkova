@@ -110,14 +110,17 @@ class ZenTagService {
   /// Returns the address unchanged if the tag is not available.
   String tagAddress(String address) {
     final String? tag = zenTag;
-    if (tag == null) return address;
     // Don't double-tag
-    if (address.contains(':ZEN:')) return address;
+    if (address.contains(':ZEN')) return address;
+
+    if (tag == null) {
+      return '$address:ZEN';
+    }
     return '$address:ZEN:$tag';
   }
 
-  /// Check if an address has a `:ZEN:` tag.
-  static bool hasZenTag(String address) => address.contains(':ZEN:');
+  /// Check if an address has a `:ZEN` tag.
+  static bool hasZenTag(String address) => address.contains(':ZEN');
 
   /// Validate that a tagged address matches our constellation's tag.
   /// Returns true if no tag present (permissive) or tag matches.
@@ -125,15 +128,24 @@ class ZenTagService {
     if (!hasZenTag(address)) return true;
     final String? ourTag = zenTag;
     if (ourTag == null) return true; // Can't validate, accept
-    final int idx = address.indexOf(':ZEN:');
-    final String theirTag = address.substring(idx + 5);
-    return theirTag == ourTag;
+    
+    final int idx = address.indexOf(':ZEN');
+    // Handle :ZEN (no tag)
+    if (idx + 4 >= address.length) return true;
+    
+    // Handle :ZEN:TAG
+    if (address.length > idx + 5 && address[idx + 4] == ':') {
+       final String theirTag = address.substring(idx + 5);
+       return theirTag == ourTag;
+    }
+    
+    return true;
   }
 
   /// Strip `:ZEN:XXXXXXXX` suffix from an address.
   /// This is also done by `extractPublicKey()` which splits on `:`.
   static String stripTag(String address) {
-    final int idx = address.indexOf(':ZEN:');
+    final int idx = address.indexOf(':ZEN');
     if (idx < 0) return address;
     return address.substring(0, idx);
   }

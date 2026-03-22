@@ -73,6 +73,7 @@ import 'ui/ui_helpers.dart';
 import 'ui/widgets/connectivity_widget_wrapper_wrapper.dart';
 import 'ui/widgets/lazy_upgrade_alert.dart';
 import 'ui/widgets/pages/biometric_lock_screen.dart';
+import 'ui/screens/wallet_creation_screen.dart';
 
 const String fetchWalletsTransactionsTask =
     'org.comunes.g1nkgo.fetchWalletsTransactionsTask';
@@ -257,10 +258,10 @@ void main() async {
     final SharedPreferencesHelper shared = SharedPreferencesHelper();
     await shared.init();
 
-    if (shared.isEmpty) {
+    /* if (shared.isEmpty) {
       await shared.createDefWalletIfNotExist();
     }
-    assert(shared.getPubKey() != null);
+    assert(shared.getPubKey() != null); */
 
     // Initialize storage layers (Hydrated + Hive + Ferry cache).
     await hiveInit();
@@ -1303,6 +1304,11 @@ class _AppStartState extends State<AppStart> {
     if (_initializing) {
       return const SizedBox.shrink();
     }
+
+    if (SharedPreferencesHelper().isEmpty) {
+      return const WalletCreationScreen();
+    }
+
     // Don't show tutorial in development
     if (inDevelopment || introViewed) {
       final Widget child = _isAppLocked

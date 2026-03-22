@@ -148,8 +148,16 @@ class NostrRelayService {
           if (parsed.length >= 3) {
             final String eventId = parsed[1] as String;
             final bool success = parsed[2] as bool;
+            if (!success && parsed.length >= 4) {
+              loggerDev('[NostrRelay] OK false: ${parsed[3]}');
+            }
             _publishCompleters[eventId]?.complete(success);
             _publishCompleters.remove(eventId);
+          }
+          break;
+        case 'NOTICE':
+          if (parsed.length >= 2) {
+            loggerDev('[NostrRelay] NOTICE: ${parsed[1]}');
           }
           break;
       }
@@ -428,6 +436,7 @@ class NostrRelayService {
     return completer.future.timeout(
       const Duration(seconds: 10),
       onTimeout: () {
+        loggerDev('[NostrRelay] Publish timeout for event $eventId');
         _publishCompleters.remove(eventId);
         return false;
       },

@@ -9,6 +9,7 @@ import '../../data/models/contact.dart';
 import '../../g1/multipass_service.dart';
 import '../../g1/nostr/nostr_keys.dart';
 import '../../g1/nostr/nostr_profile.dart';
+import '../../env.dart';
 import '../../g1/nostr/nostr_relay_service.dart';
 import '../../shared_prefs_helper_v2.dart';
 import '../../ui/logger.dart';
@@ -105,6 +106,12 @@ class _ProfileEditorDialogState extends State<ProfileEditorDialog> {
 
       // Publish profile via NOSTR relay
       final NostrRelayService relay = NostrRelayService();
+
+      if (!relay.isConnected) {
+        loggerDev('NostrRelay not connected, trying to connect...');
+        await relay.connect(Env.resolvedNostrRelay);
+      }
+
       if (relay.isConnected) {
         try {
           final SharedPreferencesHelperV2 helper = SharedPreferencesHelperV2();
@@ -167,10 +174,14 @@ class _ProfileEditorDialogState extends State<ProfileEditorDialog> {
             nostrSuccess =
                 await relay.publishProfile(profile, hexPrivateKey);
             loggerDev('NOSTR profile publish: $nostrSuccess');
+          } else {
+            loggerDev('Nostr nsec not found, cannot publish profile');
           }
         } catch (e) {
           loggerDev('Error publishing NOSTR profile: $e');
         }
+      } else {
+        loggerDev('NostrRelay connection failed');
       }
 
       if (!mounted) {
@@ -195,6 +206,7 @@ class _ProfileEditorDialogState extends State<ProfileEditorDialog> {
           Navigator.pop(context);
         }
       } else {
+        loggerDev('Nostr publish failed (nostrSuccess=false)');
         _showError('profile.save_error'.tr());
       }
     } catch (e) {

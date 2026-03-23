@@ -443,6 +443,90 @@ class NostrRelayService {
     );
   }
 
+  /// Public method to publish a NOSTR event (any kind)
+  Future<bool> publishEvent(Map<String, dynamic> event) async {
+    return _publishEvent(event);
+  }
+
+  /// Query events with arbitrary filters (NIP-01)
+  /// Returns a list of event maps.
+  Future<List<Map<String, dynamic>>> queryEvents({
+    List<int>? kinds,
+    List<String>? authors,
+    int? since,
+    int? until,
+    int? limit,
+    List<List<String>>? tags,
+    String? search,
+  }) async {
+    if (!_isConnected) return <Map<String, dynamic>>[];
+
+    final String subId = NostrUtils.generateSubscriptionId('query');
+    final Completer<List<Map<String, dynamic>>> completer =
+        Completer<List<Map<String, dynamic>>>();
+    final List<Map<String, dynamic>> events = <Map<String, dynamic>>[];
+
+    _handlers[subId] = (List<dynamic> msg) {
+      final String type = msg[0] as String;
+      if (type == 'EVENT' && msg.length >= 3) {
+        try {
+          final Map<String, dynamic> event =
+              msg[2] as Map<String, dynamic>;
+          events.add(event);
+        } catch (e) {
+          loggerDev('[NostrRelay] Query event parse error: $e');
+        }
+      } else if (type == 'EOSE') {
+        if (!completer.isCompleted) completer.complete(events);
+        _handlers.remove(subId);
+        _sendRaw(jsonEncode(<dynamic>['CLOSE', subId]));
+      }
+    };
+
+    final Map<String, dynamic> filter = <String, dynamic>{};
+    if (kinds != null && kinds.isNotEmpty) {
+      filter['kinds'] = kinds;
+    }
+    if (authors != null && authors.isNotEmpty) {
+      filter['authors'] = authors;
+    }
+    if (since != null) {
+      filter['since'] = since;
+    }
+    if (until != null) {
+      filter['until'] = until;
+    }
+    if (limit != null) {
+      filter['limit'] = limit;
+    }
+    if (tags != null && tags.isNotEmpty) {
+      // NIP-12: generic tag queries
+      for (int i = 0; i < tags.length; i++) {
+        final List<String> tag = tags[i];
+        if (tag.isNotEmpty) {
+          final String tagName = tag[0];
+          final List<String> tagValues = tag.sublist(1);
+          filter['#${tagName}'] = tagValues;
+        }
+      }
+    }
+    if (search != null && search.isNotEmpty) {
+      filter['search'] = search; // NIP-50
+    }
+
+    _sendRaw(jsonEncode(<dynamic>['REQ', subId, filter]));
+
+    return completer.future.timeout(
+      const Duration(seconds: 15),
+      onTimeout: () {
+        loggerDev('[NostrRelay] Query timeout for sub $subId');
+        _handlers.remove(subId);
+        _sendRaw(jsonEncode(<dynamic>['CLOSE', subId]));
+        return events;
+      },
+    );
+  }
+
   /// Dispose resources
   Future<void> dispose() async {
     _connectionController.close();

@@ -1,22 +1,188 @@
 #!/bin/bash
-## Build Flutter web and patch for IPFS-compatible relative paths
+## Build Flutter web for IPFS deployment with multiple modes and flavors
+## Usage: ./build_web_ipfs.sh [debug|release|profile] [development|production] [--no-patch] [--clean] [--help]
 set -e
 
 cd "$(dirname "$0")"
 
-echo "=== Flutter build web ==="
-flutter build web
+BUILD_MODE="${1:-release}"
+FLAVOR="${2:-production}"
+PATCH_IPFS=true
+CLEAN=false
 
-echo "=== Patching for IPFS (relative paths) ==="
+# Parse additional flags
+for arg in "$@"; do
+    case $arg in
+        --no-patch)
+            PATCH_IPFS=false
+            shift
+            ;;
+        --clean)
+            CLEAN=true
+            shift
+            ;;
+        --help|-h)
+            cat <<EOF
+Usage: $0 [BUILD_MODE] [FLAVOR] [OPTIONS]
 
-# base href: "/" -> "./"
-sed -i 's|<base href="/">|<base href="./">|' build/web/index.html
+Build Ginkgo web for IPFS deployment.
 
-# Remove absolute /icons/ paths in index.html
-sed -i 's|href="/icons/|href="icons/|g' build/web/index.html
+Arguments:
+  BUILD_MODE          debug, release, or profile (default: release)
+  FLAVOR              development or production (default: production)
 
-# Remove absolute /icons/ paths in manifest.json
-sed -i 's|"src": "/icons/|"src": "icons/|g' build/web/manifest.json
+Options:
+  --no-patch          Skip IPFS relative‑path patching
+  --clean             Run 'flutter clean' before building
+  --help, -h          Show this help
 
-echo "=== Done ==="
-echo "Deploy: ipfs add -r build/web/"
+Examples:
+  $0 debug development          # Debug build, development flavor
+  $0 release production         # Release build, production flavor (default)
+  $0 profile production --clean # Clean & profile build with IPFS patch
+  $0 --no-patch                 # Release build without IPFS patching
+
+Flavors:
+  development: enables sandbox, verbose logs, dev tools
+  production:  disables sandbox, enables optimizations
+
+IPFS patching:
+  - Changes base href from "/" to "./"
+  - Converts absolute /icons/ paths to relative
+  - Required for proper IPFS gateway hosting
+
+EOF
+            exit 0
+            ;;
+    esac
+done
+
+# Validate build mode
+case $BUILD_MODE in
+    debug|release|profile)
+        ;;
+    *)
+        echo "ERROR: BUILD_MODE must be debug, release, or profile (got: $BUILD_MODE)"
+        exit 1
+        ;;
+esac
+
+# Validate flavor
+case $FLAVOR in
+    development|production)
+        ;;
+    *)
+        echo "ERROR: FLAVOR must be development or production (got: $FLAVOR)"
+        exit 1
+        ;;
+esac
+
+echo "=== Ginkgo Web Build ==="
+echo "Mode:   $BUILD_MODE"
+echo "Flavor: $FLAVOR"
+echo "Patch:  $PATCH_IPFS"
+echo "Clean:  $CLEAN"
+echo ""
+
+# Check flutter
+if ! command -v flutter &>/dev/null; then
+    if [ -x "$HOME/flutter/bin/flutter" ]; then
+        export PATH="$HOME/flutter/bin:$PATH"
+    else
+        echo "ERROR: flutter not found in PATH"
+        exit 1
+    fi
+fi
+
+echo "Flutter: $(flutter --version | head -1)"
+echo ""
+
+# Clean if requested
+if [ "$CLEAN" = true ]; then
+    echo "=== flutter clean ==="
+    flutter clean
+    echo ""
+fi
+
+# Get dependencies
+echo "=== flutter pub get ==="
+flutter pub get
+echo ""
+
+# Build web
+echo "=== Building web ($BUILD_MODE, $FLAVOR) ==="
+
+DART_DEFINES="FLUTTER_FLAVOR=$FLAVOR"
+if [ "$FLAVOR" = "development" ]; then
+    DART_DEFINES="$DART_DEFINES,DEVELOPMENT=true"
+else
+    DART_DEFINES="$DART_DEFINES,DEVELOPMENT=false"
+fi
+
+# Use appropriate Flutter command
+case $BUILD_MODE in
+    debug)
+        flutter build web --debug --dart-define="$DART_DEFINES" -t lib/main.dart
+        ;;
+    release)
+        flutter build web --release --dart-define="$DART_DEFINES" -t lib/main.dart
+        ;;
+    profile)
+        flutter build web --profile --dart-define="$DART_DEFINES" -t lib/main.dart
+        ;;
+esac
+
+echo "Build completed: build/web/"
+echo ""
+
+# IPFS patching
+if [ "$PATCH_IPFS" = true ]; then
+    echo "=== Patching for IPFS (relative paths) ==="
+
+    WEB_DIR="build/web"
+
+    # Ensure index.html exists
+    if [ ! -f "$WEB_DIR/index.html" ]; then
+        echo "ERROR: $WEB_DIR/index.html not found"
+        exit 1
+    fi
+
+    # base href: "/" -> "./"
+    sed -i 's|<base href="/">|<base href="./">|' "$WEB_DIR/index.html"
+
+    # Remove absolute /icons/ paths in index.html
+    sed -i 's|href="/icons/|href="icons/|g' "$WEB_DIR/index.html"
+    sed -i 's|src="/icons/|src="icons/|g' "$WEB_DIR/index.html"
+
+    # Remove absolute /icons/ paths in manifest.json
+    if [ -f "$WEB_DIR/manifest.json" ]; then
+        sed -i 's|"src": "/icons/|"src": "icons/|g' "$WEB_DIR/manifest.json"
+    fi
+
+    # Also patch service worker.js if it references absolute paths
+    if [ -f "$WEB_DIR/flutter_service_worker.js" ]; then
+        sed -i "s|'/icons/'|'icons/'|g" "$WEB_DIR/flutter_service_worker.js"
+    fi
+
+    echo "IPFS patching done."
+    echo ""
+fi
+
+# Summary
+echo "=== Build Summary ==="
+echo "Output directory: $(pwd)/build/web"
+echo "Build mode:       $BUILD_MODE"
+echo "Flavor:           $FLAVOR"
+echo "IPFS patch:       $PATCH_IPFS"
+echo ""
+echo "To deploy on IPFS:"
+echo "  ipfs add -r build/web/"
+echo ""
+echo "To serve locally:"
+echo "  python3 -m http.server --directory build/web 8080"
+echo "  # then open http://localhost:8080"
+echo ""
+echo "To test with IPFS gateway (simulated):"
+echo "  ipfs daemon &"
+echo "  ipfs add -r -q build/web | tail -n1 | xargs -I{} echo http://localhost:8080/ipfs/{}"
+echo ""

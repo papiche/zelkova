@@ -59,6 +59,9 @@ import 'g1/nostr/nostr_relay_service.dart';
 import 'g1/service_manager.dart';
 import 'g1/zen_tag_service.dart';
 import 'services/background_wallet_sync_service.dart';
+import 'services/open_collective_service.dart';
+import 'services/upassport_api_service.dart';
+import 'services/nip101_service.dart';
 import 'shared_prefs_helper.dart';
 import 'shared_prefs_helper_v2.dart';
 import 'ui/biometrics/biometric_auth_service.dart';
@@ -1121,7 +1124,39 @@ Future<void> initGetItAll() async {
 
     // Initialize ZEN constellation tag (fetches UPLANETNAME_G1)
     _initZenTag();
+
+    // Register new services for NIP-101, Open Collective, UPassport integration
+    _registerNewServices();
   }
+}
+
+/// Register the new services (OpenCollectiveService, UPassportApiService, Nip101Service)
+/// as singletons in GetIt for dependency injection.
+void _registerNewServices() {
+  final GetIt getIt = GetIt.instance;
+
+  // NostrRelayService is already a singleton via factory, ensure it's registered
+  if (!getIt.isRegistered<NostrRelayService>()) {
+    getIt.registerSingleton<NostrRelayService>(NostrRelayService());
+  }
+
+  // OpenCollectiveService - use empty configuration for now; will be configured later via NOSTR
+  if (!getIt.isRegistered<OpenCollectiveService>()) {
+    getIt.registerSingleton<OpenCollectiveService>(OpenCollectiveService.empty());
+  }
+
+  // UPassportApiService
+  if (!getIt.isRegistered<UPassportApiService>()) {
+    getIt.registerSingleton<UPassportApiService>(UPassportApiService());
+  }
+
+  // Nip101Service depends on NostrRelayService
+  if (!getIt.isRegistered<Nip101Service>()) {
+    final NostrRelayService relayService = getIt.get<NostrRelayService>();
+    getIt.registerSingleton<Nip101Service>(Nip101Service(relayService));
+  }
+
+  loggerDev('[initGetItAll] New services registered for NIP-101 integration');
 }
 
 Future<void> _initZenTag() async {

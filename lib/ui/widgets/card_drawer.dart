@@ -10,6 +10,7 @@ import 'package:sentry_flutter/sentry_flutter.dart';
 import '../../data/models/app_cubit.dart';
 import '../../data/models/app_state.dart';
 import '../../env.dart';
+import '../../shared_prefs_helper_v2.dart';
 import '../in_dev_helper.dart';
 import '../screens/sandbox.dart';
 import '../ui_helpers.dart';
@@ -17,6 +18,7 @@ import 'backup_reminder_dialog.dart';
 import 'first_screen/card_stack.dart';
 import 'lazy_about_info.dart';
 import 'market_analysis/market_analysis_page.dart';
+import 'multipass_relocation_dialog.dart';
 import 'pages/settings_page.dart';
 
 typedef IssueCreatedCallback = void Function(
@@ -32,6 +34,22 @@ class CardDrawer extends StatefulWidget {
 class _CardDrawerState extends State<CardDrawer> {
   // ignore: unused_field
   bool _isLogoLongPressed = false;
+  bool _isMultipass = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _detectMultipass();
+  }
+
+  Future<void> _detectMultipass() async {
+    final String? nsec = await SharedPreferencesHelperV2().getNostrNsec();
+    if (mounted) {
+      setState(() {
+        _isMultipass = nsec != null && nsec.isNotEmpty;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -59,18 +77,35 @@ class _CardDrawerState extends State<CardDrawer> {
                         ],
                       ),
                     ))),
-            if (!state.hasRecentExport)
+            // For MULTIPASS users: show relocation banner instead of export reminder.
+            // For regular wallets: show the usual export-reminder warning.
+            if (_isMultipass)
+              ListTile(
+                tileColor: Colors.blue[50],
+                leading: const Icon(
+                  Icons.moving,
+                  color: Colors.blueAccent,
+                ),
+                title: Text(
+                  tr('multipass_relocation_banner_title'),
+                  style: const TextStyle(color: Colors.blue),
+                ),
+                subtitle: Text(
+                  tr('multipass_relocation_banner_subtitle'),
+                  style: const TextStyle(fontSize: 11),
+                ),
+                onTap: () => showMultipassRelocationDialog(context),
+              )
+            else if (!state.hasRecentExport)
               ListTile(
                 tileColor: Colors.red[100],
                 leading: const Icon(
                   Icons.warning_rounded,
                   color: Colors.redAccent,
                 ),
-                // color de link ,
                 title: Text(tr('export_reminder_title'),
                     style: const TextStyle(
                       color: Colors.blue,
-                      // decoration: TextDecoration.underline,
                     )),
                 onTap: () => showBackupReminderDialog(context),
               ),

@@ -154,9 +154,23 @@ class _ContactPageState extends State<ContactPage> with RouteAware {
     final NostrRelayService relay = NostrRelayService();
     if (!relay.isConnected) return;
     try {
-      // Step 1: Find NOSTR hex via g1pub identity tag (NIP-39)
-      final String? nostrHex =
-          await relay.findNostrHexByG1Pub(widget.contact.pubKey);
+      // Step 1a: Si c'est notre propre compte, dériver nostrHex depuis nsec
+      // (évite une requête réseau et fonctionne même si le relay n'a pas encore
+      // reçu le kind 0 — le profil est fetché directement avec le hex dérivé)
+      String? nostrHex;
+      final String myPubKey =
+          SharedPreferencesHelper().getCurrentAccount().pubKey;
+      if (widget.contact.pubKey == myPubKey) {
+        final String? nsec =
+            await SharedPreferencesHelperV2().getNostrNsec();
+        if (nsec != null && nsec.isNotEmpty) {
+          nostrHex = NostrRelayService.derivePublicKey(
+              NostrKeys.nsecToHex(nsec));
+        }
+      }
+
+      // Step 1b: Fallback — chercher via tag NIP-39 g1pub sur le relay
+      nostrHex ??= await relay.findNostrHexByG1Pub(widget.contact.pubKey);
 
       if (nostrHex == null || !mounted) return;
 

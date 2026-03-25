@@ -6,9 +6,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:material_symbols_icons/symbols.dart';
+import 'package:flutter/services.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 import 'package:sn_progress_dialog/options/completed.dart';
 import 'package:sn_progress_dialog/progress_dialog.dart';
 import 'package:text_scroll/text_scroll.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../data/models/app_cubit.dart';
 import '../../data/models/contact.dart';
@@ -56,6 +59,7 @@ class _ContactPageState extends State<ContactPage> with RouteAware {
   late Stream<ContactWotInfo> _wotInfoStream;
   String? _bannerUrl;
   NostrProfile? _nostrProfile;
+  Map<String, dynamic>? _ocUrls; // OC urls depuis MULTIPASS si me=true
   late ScrollController _scrollController;
   bool _isRefreshing = false;
 
@@ -69,7 +73,78 @@ class _ContactPageState extends State<ContactPage> with RouteAware {
     _scrollController = ScrollController();
     _scrollController.addListener(_onScroll);
     _fetchBanner();
+    _loadOcUrls();
     super.initState();
+  }
+
+  /// Charge les URLs OC depuis le MULTIPASS stocké (pour afficher les liens de recharge)
+  Future<void> _loadOcUrls() async {
+    try {
+      final Map<String, dynamic>? data =
+          await SharedPreferencesHelperV2().getMultipassData(widget.contact.pubKey);
+      if (data != null && mounted) {
+        final dynamic raw = data['oc_urls'];
+        if (raw is Map) {
+          setState(() {
+            _ocUrls = Map<String, dynamic>.from(raw);
+          });
+        }
+      }
+    } catch (_) {}
+  }
+
+  /// Ouvre une URL dans le navigateur externe
+  Future<void> _openExternalUrl(String url) async {
+    if (url.isEmpty) return;
+    final Uri uri = Uri.parse(url);
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri, mode: LaunchMode.externalApplication);
+    }
+  }
+
+  /// Affiche un dialog QR avec le npub/hex NOSTR pour être suivi facilement
+  void _showNpubQr(String npub) {
+    showDialog<void>(
+      context: context,
+      builder: (BuildContext ctx) => AlertDialog(
+        title: Row(
+          children: <Widget>[
+            const Icon(Icons.electric_bolt, color: Color(0xFFBF5AFF)),
+            const SizedBox(width: 8),
+            const Text('Clef NOSTR', style: TextStyle(fontSize: 16)),
+          ],
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            QrImageView(data: npub, size: 200, version: QrVersions.auto),
+            const SizedBox(height: 8),
+            SelectableText(
+              npub,
+              style: const TextStyle(fontSize: 9, fontFamily: 'monospace'),
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
+        actions: <Widget>[
+          TextButton.icon(
+            icon: const Icon(Icons.copy, size: 14),
+            label: const Text('Copier'),
+            onPressed: () {
+              Clipboard.setData(ClipboardData(text: npub));
+              Navigator.of(ctx).pop();
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Clef NOSTR copiée'), duration: Duration(seconds: 2)),
+              );
+            },
+          ),
+          TextButton(
+            onPressed: () => Navigator.of(ctx).pop(),
+            child: const Text('Fermer'),
+          ),
+        ],
+      ),
+    );
   }
 
   /// Fetch NOSTR profile for this contact.
@@ -424,6 +499,103 @@ class _ContactPageState extends State<ContactPage> with RouteAware {
           _buildQrListTile(contact),
 
           _buildQrListTile(contact, isV2: true),
+
+          // ── Section NOSTR — affiché pour tout contact avec profil kind 0 ──
+          if (_nostrProfile != null) ...<Widget>[
+            const Divider(),
+            ListTile(
+              leading: const Icon(Icons.electric_bolt,
+                  color: Color(0xFFBF5AFF)),
+              title: const Text('Clef NOSTR',
+                  style: TextStyle(fontWeight: FontWeight.w700)),
+              subtitle: Text(
+                _nostrProfile!.npub.length > 16
+                    ? '${_nostrProfile!.npub.substring(0, 8)}…${_nostrProfile!.npub.substring(_nostrProfile!.npub.length - 8)}'
+                    : _nostrProfile!.npub,
+                style: const TextStyle(
+                    fontFamily: 'monospace', fontSize: 11),
+              ),
+              trailing: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  IconButton(
+                    icon: const Icon(Icons.copy, size: 18),
+                    tooltip: 'Copier npub',
+                    onPressed: () {
+                      Clipboard.setData(ClipboardData(
+                          text: _nostrProfile!.npub));
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                            content: Text('Clef NOSTR copiée'),
+                            duration: Duration(seconds: 2)),
+                      );
+                    },
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.qr_code, size: 18),
+                    tooltip: 'QR Code — partager / suivre',
+                    onPressed: () => _showNpubQr(_nostrProfile!.npub),
+                  ),
+                ],
+              ),
+            ),
+          ],
+
+          // ── Section recharge ẐEN — affiché sur le propre profil ──────────
+          if (wotInfo.isme) ...<Widget>[
+            const Divider(),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 8, 16, 4),
+              child: Text(
+                'Recharger mon MULTIPASS',
+                style: TextStyle(
+                    fontWeight: FontWeight.w800,
+                    color: Theme.of(context).colorScheme.primary,
+                    fontSize: 13),
+              ),
+            ),
+            if (_ocUrls?['cloud']?.toString().isNotEmpty == true)
+              ListTile(
+                leading: const Icon(Icons.cloud,
+                    color: Color(0xFF00BB77)),
+                title: Text(tr('subscription_recharge_title')),
+                subtitle: const Text('Montant libre · 1 € = 1 Ẑ · crédité immédiatement'),
+                trailing: const Icon(Icons.open_in_new, size: 16),
+                onTap: () =>
+                    _openExternalUrl(_ocUrls!['cloud']!.toString()),
+              )
+            else
+              ListTile(
+                leading: const Icon(Icons.cloud,
+                    color: Color(0xFF00BB77)),
+                title: Text(tr('subscription_recharge_title')),
+                subtitle: const Text('Montant libre · 1 € = 1 Ẑ'),
+                trailing: const Icon(Icons.open_in_new, size: 16),
+                onTap: () => _openExternalUrl(
+                    'https://opencollective.com/monnaie-libre/projects/coeurbox/contribute/cotisation-services-cloud-usage-98388'),
+              ),
+            if (_ocUrls?['membre']?.toString().isNotEmpty == true)
+              ListTile(
+                leading: const Icon(Icons.autorenew,
+                    color: Color(0xFFDD6633)),
+                title: Text(tr('subscription_monthly_title')),
+                subtitle: const Text('~4 Ẑ/mois · Accès continu'),
+                trailing: const Icon(Icons.open_in_new, size: 16),
+                onTap: () =>
+                    _openExternalUrl(_ocUrls!['membre']!.toString()),
+              )
+            else
+              ListTile(
+                leading: const Icon(Icons.autorenew,
+                    color: Color(0xFFDD6633)),
+                title: Text(tr('subscription_monthly_title')),
+                subtitle: const Text('~4 Ẑ/mois · Accès continu'),
+                trailing: const Icon(Icons.open_in_new, size: 16),
+                onTap: () => _openExternalUrl(
+                    'https://opencollective.com/monnaie-libre/projects/coeurbox/contribute/membre-resident-soutien-mensuel-98389'),
+              ),
+          ],
+          // ──────────────────────────────────────────────────────────────────
 
           if (debug && inDevelopment)
             ListTile(title: Text('Status: ${contact.status}')),

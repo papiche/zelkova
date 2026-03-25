@@ -1,19 +1,12 @@
 import 'dart:convert';
+
 import 'package:http/http.dart' as http;
-import '../ui/logger.dart';
+
 import '../g1/nostr/nostr_relay_service.dart';
+import '../ui/logger.dart';
 
 /// Represents an Open Collective transaction (contribution or expense)
 class OCTransaction {
-  final String id;
-  final String description;
-  final double amount;
-  final String currency;
-  final DateTime createdAt;
-  final String status;
-  final String? fromAccountSlug;
-  final String? toAccountSlug;
-  final String? expenseId;
 
   OCTransaction({
     required this.id,
@@ -40,15 +33,19 @@ class OCTransaction {
       expenseId: json['expense']?['id'] as String?,
     );
   }
+  final String id;
+  final String description;
+  final double amount;
+  final String currency;
+  final DateTime createdAt;
+  final String status;
+  final String? fromAccountSlug;
+  final String? toAccountSlug;
+  final String? expenseId;
 }
 
 /// Represents an Open Collective member (collective or individual)
-class OCMember {
-  final String slug;
-  final String name;
-  final String? imageUrl;
-  final String? email;
-  final String type; // 'COLLECTIVE', 'INDIVIDUAL', 'ORGANIZATION'
+class OCMember { // 'COLLECTIVE', 'INDIVIDUAL', 'ORGANIZATION'
 
   OCMember({
     required this.slug,
@@ -67,13 +64,15 @@ class OCMember {
       type: json['type'] as String? ?? 'INDIVIDUAL',
     );
   }
+  final String slug;
+  final String name;
+  final String? imageUrl;
+  final String? email;
+  final String type;
 }
 
 /// Service to interact with Open Collective GraphQL API
 class OpenCollectiveService {
-  final String apiUrl;
-  final String apiKey;
-  final String collectiveSlug;
 
   OpenCollectiveService({
     required this.apiUrl,
@@ -90,6 +89,9 @@ class OpenCollectiveService {
       collectiveSlug: '',
     );
   }
+  final String apiUrl;
+  final String apiKey;
+  final String collectiveSlug;
 
   /// Create an instance by fetching configuration from NOSTR economic health events.
   /// Requires NostrRelayService to be connected and a valid UPLANETNAME_G1 event.
@@ -137,18 +139,18 @@ class OpenCollectiveService {
       }
     ''';
 
-    final Map<String, dynamic> variables = {
+    final Map<String, dynamic> variables = <String, dynamic>{
       'collectiveSlug': collectiveSlug,
       'limit': limit,
       'offset': offset != null ? int.tryParse(offset) : null,
     };
 
     final Map<String, dynamic>? data = await _graphqlRequest(query, variables);
-    if (data == null) return [];
+    if (data == null) return <OCTransaction>[];
 
-    final List<dynamic> nodes = data['collective']?['transactions']?['nodes'] as List<dynamic>? ?? [];
+    final List<dynamic> nodes = data['collective']?['transactions']?['nodes'] as List<dynamic>? ?? <dynamic>[];
     return nodes.map((node) {
-      final amount = node['amount'] as Map<String, dynamic>? ?? {};
+      final Map<String, dynamic> amount = node['amount'] as Map<String, dynamic>? ?? <String, dynamic>{};
       return OCTransaction(
         id: node['id'] as String,
         description: node['description'] as String? ?? '',
@@ -176,7 +178,7 @@ class OpenCollectiveService {
       }
     ''';
 
-    final Map<String, dynamic> variables = {'slug': slug};
+    final Map<String, dynamic> variables = <String, dynamic>{'slug': slug};
     final Map<String, dynamic>? data = await _graphqlRequest(query, variables);
     if (data == null || data['account'] == null) return null;
 
@@ -202,7 +204,7 @@ class OpenCollectiveService {
       }
     ''';
 
-    final Map<String, dynamic> variables = {'expense': expenseData};
+    final Map<String, dynamic> variables = <String, dynamic>{'expense': expenseData};
     final Map<String, dynamic>? data = await _graphqlRequest(mutation, variables);
     return data?['createExpense']?['id'] as String?;
   }
@@ -222,18 +224,18 @@ class OpenCollectiveService {
       }
     ''';
 
-    final Map<String, dynamic> variables = {'id': expenseId};
-    return await _graphqlRequest(query, variables);
+    final Map<String, dynamic> variables = <String, dynamic>{'id': expenseId};
+    return _graphqlRequest(query, variables);
   }
 
   Future<Map<String, dynamic>?> _graphqlRequest(String query, Map<String, dynamic> variables) async {
     final Uri uri = Uri.parse(apiUrl);
-    final Map<String, String> headers = {
+    final Map<String, String> headers = <String, String>{
       'Content-Type': 'application/json',
       'Authorization': 'Bearer $apiKey',
     };
 
-    final Map<String, dynamic> body = {
+    final Map<String, dynamic> body = <String, dynamic>{
       'query': query,
       'variables': variables,
     };

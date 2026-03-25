@@ -19,8 +19,11 @@ import '../data/models/transaction_type.dart';
 import '../g1/api.dart';
 import '../g1/currency.dart';
 import '../g1/g1_helper.dart';
+import '../g1/nostr/nostr_keys.dart';
+import '../g1/nostr/nostr_relay_service.dart';
 import '../g1/pay_result.dart';
 import '../shared_prefs_helper.dart';
+import '../shared_prefs_helper_v2.dart';
 import 'contacts_cache.dart';
 import 'logger.dart';
 import 'secure_unlock_widget.dart';
@@ -192,6 +195,31 @@ Future<bool> payWithRetry(
               final bool failedWithoutBalance =
                   result.message == 'insufficient balance' ||
                       result.message == 'Insufficient balance in your wallet';
+
+              // ── Kind 7 NOSTR fallback (when Duniter node unavailable) ──────
+              // Priorité : Duniter (direct on-chain) → kind 7 (relay station)
+              // Le relay NIP-101 (filter/7.sh) exécute PAYforSURE.sh localement
+              if (!failedWithoutBalance && recipients.length == 1) {
+                final int zenAmount = (convertedAmount * 10).round();
+                if (zenAmount > 0) {
+                  final bool kind7Sent = await _tryKind7PaymentFallback(
+                    recipient: recipients.first,
+                    zenAmount: zenAmount,
+                  );
+                  if (kind7Sent && context.mounted) {
+                    paymentCubit.sent();
+                    showAlertDialog(
+                      context,
+                      tr('payment_via_nostr_title'),
+                      tr('payment_via_nostr_desc'),
+                    );
+                    context.read<BottomNavCubit>().updateIndex(3);
+                    return true;
+                  }
+                }
+              }
+              // ─────────────────────────────────────────────────────────────
+
               showPayError(
                   context: context,
                   desc: tr('payment_error_desc',
@@ -393,5 +421,63 @@ Future<void> onKeyScanned(BuildContext context, String scannedKey) async {
   } else {
     ScaffoldMessenger.of(context)
         .showSnackBar(SnackBar(content: Text(tr('qr_invalid_payment'))));
+  }
+}
+
+/// Kind 7 NOSTR payment fallback.
+///
+/// When Duniter nodes are unavailable, publishes a kind 7 reaction with
+/// content="+{zenAmount}" (e.g. "+10" = 10Ẑ = 1 G1).
+/// The NIP-101 relay (filter/7.sh) intercepts this and calls PAYforSURE.sh
+/// on the local Astroport station to execute the transaction on-chain.
+///
+/// Conversion: 1 G1 = 10 Ẑ → zenAmount = (g1Amount * 10).round()
+/// Requires the recipient to be known in the relay's amisOfAmis list
+/// (registered via kind 3 when their ContactPage was opened).
+///
+/// Returns true if the kind 7 was successfully published to the relay.
+Future<bool> _tryKind7PaymentFallback({
+  required Contact recipient,
+  required int zenAmount,
+}) async {
+  try {
+    final NostrRelayService relay = NostrRelayService();
+    if (!relay.isConnected) {
+      logger('[pay_helper] Kind 7 fallback: relay not connected');
+      return false;
+    }
+
+    // Get or resolve the recipient's NOSTR hex pubkey
+    String? nostrHex = recipient.nostrHex;
+    if (nostrHex == null || nostrHex.isEmpty) {
+      // Try to find it via NIP-39 identity tag lookup
+      nostrHex = await relay.findNostrHexByG1Pub(recipient.pubKey);
+    }
+    if (nostrHex == null || nostrHex.isEmpty) {
+      logger('[pay_helper] Kind 7 fallback: no NOSTR hex for ${recipient.pubKey}');
+      return false;
+    }
+
+    // Get sender's nsec
+    final String? nsec = await SharedPreferencesHelperV2().getNostrNsec();
+    if (nsec == null || nsec.isEmpty) {
+      logger('[pay_helper] Kind 7 fallback: no nsec available');
+      return false;
+    }
+    final String hexPrivKey = NostrKeys.nsecToHex(nsec);
+
+    // Publish kind 7 with ZEN amount as content ("+N")
+    final bool sent = await relay.publishReaction(
+      hexPrivateKey: hexPrivKey,
+      reactedAuthorHexPubkey: nostrHex,
+      content: '+$zenAmount',
+    );
+
+    logger('[pay_helper] Kind 7 fallback result: sent=$sent'
+        ', +${zenAmount}Ẑ → ${recipient.pubKey.substring(0, 8)}...');
+    return sent;
+  } catch (e) {
+    logger('[pay_helper] Kind 7 fallback error: $e');
+    return false;
   }
 }

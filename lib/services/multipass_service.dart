@@ -1,10 +1,11 @@
 import 'dart:convert';
 import 'dart:math';
+
 import 'package:http/http.dart' as http;
-import '../env.dart';
-import '../shared_prefs_helper.dart';
-import '../shared_prefs_helper_v2.dart';
+
 import '../data/models/stored_account.dart';
+import '../env.dart';
+import '../shared_prefs_helper_v2.dart';
 import '../ui/logger.dart';
 
 class MultipassService {
@@ -21,7 +22,7 @@ class MultipassService {
     required double lon,
     String lang = 'fr',
   }) async {
-    final String baseUrl = Env.upassportUrl;
+    const String baseUrl = Env.upassportUrl;
     
     // Generate Salt and Pepper locally
     final String salt = _generateRandomString(24);
@@ -30,7 +31,7 @@ class MultipassService {
     // Construct the URL. Assuming the API endpoint is /g1nostr
     final Uri url = Uri.parse('$baseUrl/g1nostr');
 
-    final Map<String, String> body = {
+    final Map<String, String> body = <String, String>{
       'email': email,
       'lang': lang,
       'lat': lat.toString(),

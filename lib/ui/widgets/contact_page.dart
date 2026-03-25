@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:typed_data';
 
 import 'package:easy_localization/easy_localization.dart';
@@ -18,8 +19,10 @@ import '../../data/models/multi_wallet_transaction_cubit.dart';
 import '../../data/models/stored_account.dart';
 import '../../data/wot_info_fetcher.dart';
 import '../../g1/g1_v2_helper.dart';
+import '../../g1/nostr/nostr_keys.dart';
 import '../../g1/nostr/nostr_profile.dart';
 import '../../g1/nostr/nostr_relay_service.dart';
+import '../../shared_prefs_helper_v2.dart';
 import '../../g1/sign_and_send.dart';
 import '../../main.dart';
 import '../../shared_prefs_helper.dart';
@@ -52,6 +55,7 @@ class _ContactPageState extends State<ContactPage> with RouteAware {
   late bool isV2;
   late Stream<ContactWotInfo> _wotInfoStream;
   String? _bannerUrl;
+  NostrProfile? _nostrProfile;
   late ScrollController _scrollController;
   bool _isRefreshing = false;
 
@@ -68,16 +72,72 @@ class _ContactPageState extends State<ContactPage> with RouteAware {
     super.initState();
   }
 
+  /// Fetch NOSTR profile for this contact.
+  /// Uses NIP-39 tag lookup (["i", "g1pub:PUBKEY"]) to find the correct
+  /// NOSTR hex pubkey — different from the Duniter base58 pubkey.
   Future<void> _fetchBanner() async {
     final NostrRelayService relay = NostrRelayService();
     if (!relay.isConnected) return;
     try {
-      final String hexPubkey = pubkeyToHex(widget.contact.pubKey);
-      final NostrProfile? profile = await relay.fetchProfile(hexPubkey);
-      if (profile?.banner != null && profile!.banner!.isNotEmpty && mounted) {
-        setState(() => _bannerUrl = profile.banner);
+      // Step 1: Find NOSTR hex via g1pub identity tag (NIP-39)
+      final String? nostrHex =
+          await relay.findNostrHexByG1Pub(widget.contact.pubKey);
+
+      if (nostrHex == null || !mounted) return;
+
+      // Step 2: Persist nostrHex in the Contact (in-memory, not serialized)
+      if (widget.contact.nostrHex != nostrHex) {
+        context
+            .read<ContactsCubit>()
+            .updateContact(widget.contact.copyWith(nostrHex: nostrHex));
+        // Step 3: Register in our kind 3 follow list (async, fire & forget)
+        unawaited(_publishContactToKind3(relay, nostrHex));
+      }
+
+      // Step 4: Fetch full profile for UI display
+      final NostrProfile? profile = await relay.fetchProfile(nostrHex);
+      if (profile != null && mounted) {
+        setState(() {
+          _nostrProfile = profile;
+          if (profile.banner?.isNotEmpty == true) {
+            _bannerUrl = profile.banner;
+          }
+        });
       }
     } catch (_) {}
+  }
+
+  /// Register this contact's NOSTR hex in our kind 3 follow list.
+  /// This ensures the NIP-101 relay can route kind 7 payments to them.
+  Future<void> _publishContactToKind3(
+      NostrRelayService relay, String contactNostrHex) async {
+    try {
+      final String? nsec =
+          await SharedPreferencesHelperV2().getNostrNsec();
+      if (nsec == null || nsec.isEmpty) return;
+
+      final String hexPrivateKey = NostrKeys.nsecToHex(nsec);
+      final String myHexPubkey =
+          NostrRelayService.derivePublicKey(hexPrivateKey);
+
+      // Fetch current follow list and add the new contact if not present
+      final List<String> currentContacts =
+          await relay.fetchContacts(myHexPubkey);
+      if (!currentContacts.contains(contactNostrHex)) {
+        final List<String> updated = <String>[
+          ...currentContacts,
+          contactNostrHex
+        ];
+        await relay.publishContacts(
+          hexPrivateKey: hexPrivateKey,
+          hexPubkeys: updated,
+        );
+        debugPrint(
+            '[ContactPage] Published kind 3 with ${updated.length} follows');
+      }
+    } catch (e) {
+      debugPrint('[ContactPage] Failed to publish kind 3: $e');
+    }
   }
 
   @override
@@ -285,7 +345,7 @@ class _ContactPageState extends State<ContactPage> with RouteAware {
         ),
         body: Column(
           children: <Widget>[
-            _buildAvatarSection(contact),
+            _buildAvatarSection(contact, me: me),
             TabBar(
               tabs: <Widget>[
                 Tab(text: tr('info')),
@@ -538,7 +598,7 @@ class _ContactPageState extends State<ContactPage> with RouteAware {
     );
   }
 
-  Widget _buildAvatarSection(Contact contact) {
+  Widget _buildAvatarSection(Contact contact, {bool me = false}) {
     final String title = contact.title;
     // contact.nick ?? contact.name ?? humanizePubKey(contact.pubKey);
     return Container(
@@ -585,23 +645,47 @@ class _ContactPageState extends State<ContactPage> with RouteAware {
                     AnimatedOpacity(
                       opacity: isAvatarExpanded ? 1.0 : 0.0,
                       duration: const Duration(milliseconds: 300),
-                      child: contact.avatar ==
-                              null /*  && contact.avatarCid == null */
-                          ? avatar(contact, avatarSize: 44)
-                          : Container(
-                              width: double.infinity,
-                              height: double.infinity,
-                              decoration: BoxDecoration(
-                                image: DecorationImage(
-                                  image: /* contact.avatarCid != null
-                                      ? NetworkImage(NodeManager()
-                                          .ipfsUrl(contact.avatarCid!))
-                                      : */
-                                      MemoryImage(contact.avatar!),
-                                  fit: BoxFit.cover,
-                                ),
+                      child: Stack(
+                        alignment: Alignment.bottomRight,
+                        children: <Widget>[
+                          // Priority: NOSTR picture URL → Cesium+ binary
+                          _nostrProfile?.picture?.isNotEmpty == true
+                              ? Container(
+                                  width: double.infinity,
+                                  height: double.infinity,
+                                  decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                      image: NetworkImage(_nostrProfile!.picture!),
+                                      fit: BoxFit.cover,
+                                      onError: (_, __) {},
+                                    ),
+                                  ),
+                                )
+                              : contact.avatar != null
+                                  ? Container(
+                                      width: double.infinity,
+                                      height: double.infinity,
+                                      decoration: BoxDecoration(
+                                        image: DecorationImage(
+                                          image: MemoryImage(contact.avatar!),
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
+                                    )
+                                  : avatar(contact, avatarSize: 44),
+                          // Edit button: only for own MULTIPASS
+                          if (me && isAvatarExpanded)
+                            Padding(
+                              padding: const EdgeInsets.all(8),
+                              child: FloatingActionButton.small(
+                                heroTag: 'edit_profile_pic',
+                                onPressed: () => _openProfileEditor(contact),
+                                tooltip: tr('profile.edit_title'),
+                                child: const Icon(Icons.edit, size: 18),
                               ),
                             ),
+                        ],
+                      ),
                     ),
                   ],
                 ),
@@ -640,6 +724,39 @@ class _ContactPageState extends State<ContactPage> with RouteAware {
                           ),
                     ),
             ),
+            // NOSTR bio/about — shown when avatar is expanded
+            if (isAvatarExpanded && _nostrProfile != null) ...<Widget>[
+              if (_nostrProfile!.city?.isNotEmpty == true)
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 2),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      const Icon(Icons.location_on, size: 14, color: Colors.white70),
+                      const SizedBox(width: 4),
+                      Text(
+                        _nostrProfile!.city!,
+                        style: const TextStyle(color: Colors.white70, fontSize: 13),
+                      ),
+                    ],
+                  ),
+                ),
+              if (_nostrProfile!.about?.isNotEmpty == true)
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 4),
+                  child: Text(
+                    _nostrProfile!.about!.length > 120
+                        ? '${_nostrProfile!.about!.substring(0, 120)}…'
+                        : _nostrProfile!.about!,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 13,
+                      shadows: <Shadow>[Shadow(blurRadius: 3, color: Colors.black87)],
+                    ),
+                  ),
+                ),
+            ],
           ],
         ),
       ),

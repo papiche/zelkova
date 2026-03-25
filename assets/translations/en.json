@@ -663,5 +663,7 @@
   "remboursement_label_capitaine": "• Operator: 'Technical maintenance service'",
   "remboursement_go_oc": "Submit on OpenCollective",
   "remboursement_no_central_wallet": "The cooperative collective is not configured yet. Contact your administrator.",
-  "remboursement_insufficient_balance": "Your usage credit balance is too low to request an expense claim."
+  "remboursement_insufficient_balance": "Your usage credit balance is too low to request an expense claim.",
+  "payment_via_nostr_title": "Payment via NOSTR",
+  "payment_via_nostr_desc": "The Duniter network is unavailable. The payment was delegated to the Astroport station via NOSTR (kind 7). It will be processed once the station handles the transaction."
 }

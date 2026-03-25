@@ -677,5 +677,7 @@
   "profile_migration_failed": "Echec de la migration du profil vers le nouveau compte",
   "account_upgrade_required_title": "Sécurisez votre compte",
   "account_upgrade_required_desc": "Pour utiliser les fonctionnalités d'identité, votre compte doit être protégé par un modèle ou un mot de passe. Ceci assure que vos fonds et votre identité restent en sécurité.",
-  "create_linked_account_option": "Créer un compte lié"
+  "create_linked_account_option": "Créer un compte lié",
+  "payment_via_nostr_title": "Paiement via NOSTR",
+  "payment_via_nostr_desc": "Le réseau Duniter est indisponible. Le paiement a été délégué à la station Astroport via NOSTR (kind 7). Il sera exécuté dès que la station traitera la transaction."
 }

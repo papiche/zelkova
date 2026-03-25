@@ -3,7 +3,6 @@ import 'package:provider/provider.dart';
 
 import '../../../data/models/stored_account.dart';
 import '../../../shared_prefs_helper.dart';
-import '../add_wallet_assistant.dart';
 import 'drawer_credit_card.dart';
 
 class CardStack extends StatefulWidget {
@@ -87,32 +86,6 @@ class _CardStackState extends State<CardStack> {
                   );
                 },
               ),
-              Positioned(
-                  right: 25,
-                  top: -15,
-                  child: Container(
-                    decoration: const BoxDecoration(
-                      shape: BoxShape.circle,
-                      boxShadow: <BoxShadow>[
-                        BoxShadow(
-                          color: Colors.black45,
-                          spreadRadius: 10,
-                          blurRadius: 10,
-                          offset: Offset(0, 6),
-                        ),
-                      ],
-                    ),
-                    child: FloatingActionButton(
-                      onPressed: () {
-                        showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return const WalletOptionsDialog();
-                            });
-                      },
-                      child: const Icon(Icons.add_card),
-                    ),
-                  ))
             ],
           )));
     });

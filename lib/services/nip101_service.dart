@@ -9,11 +9,6 @@ import '../ui/logger.dart';
 
 /// DID Document according to NIP-101 kind 30800
 class DIDDocument {
-  final String id; // did:nostr:<hex_pubkey>
-  final Map<String, dynamic> document;
-  final String pubKey;
-  final DateTime createdAt;
-  final DateTime? updatedAt;
 
   DIDDocument({
     required this.id,
@@ -26,7 +21,7 @@ class DIDDocument {
   factory DIDDocument.fromJson(Map<String, dynamic> json) {
     return DIDDocument(
       id: json['id'] as String? ?? '',
-      document: json['document'] as Map<String, dynamic>? ?? {},
+      document: json['document'] as Map<String, dynamic>? ?? <String, dynamic>{},
       pubKey: json['pubkey'] as String? ?? '',
       createdAt: DateTime.parse(json['created_at'] as String),
       updatedAt: json['updated_at'] != null
@@ -34,9 +29,14 @@ class DIDDocument {
           : null,
     );
   }
+  final String id; // did:nostr:<hex_pubkey>
+  final Map<String, dynamic> document;
+  final String pubKey;
+  final DateTime createdAt;
+  final DateTime? updatedAt;
 
   Map<String, dynamic> toJson() {
-    return {
+    return <String, dynamic>{
       'id': id,
       'document': document,
       'pubkey': pubKey,
@@ -48,14 +48,6 @@ class DIDDocument {
 
 /// Permit Definition (kind 30500)
 class PermitDefinition {
-  final String id;
-  final String name;
-  final String description;
-  final List<String> requirements;
-  final String issuerPubKey;
-  final DateTime createdAt;
-  final DateTime? expiresAt;
-  final Map<String, dynamic> metadata;
 
   PermitDefinition({
     required this.id,
@@ -76,25 +68,27 @@ class PermitDefinition {
       requirements: (json['requirements'] as List<dynamic>?)
               ?.map((r) => r.toString())
               .toList() ??
-          [],
+          <String>[],
       issuerPubKey: json['issuer_pub_key'] as String? ?? '',
       createdAt: DateTime.parse(json['created_at'] as String),
       expiresAt: json['expires_at'] != null
           ? DateTime.parse(json['expires_at'] as String)
           : null,
-      metadata: json['metadata'] as Map<String, dynamic>? ?? {},
+      metadata: json['metadata'] as Map<String, dynamic>? ?? <String, dynamic>{},
     );
   }
+  final String id;
+  final String name;
+  final String description;
+  final List<String> requirements;
+  final String issuerPubKey;
+  final DateTime createdAt;
+  final DateTime? expiresAt;
+  final Map<String, dynamic> metadata;
 }
 
 /// Permit Request (kind 30501)
 class PermitRequest {
-  final String id;
-  final String permitId;
-  final String applicantPubKey;
-  final Map<String, dynamic> evidence;
-  final DateTime requestedAt;
-  final String status; // 'PENDING', 'APPROVED', 'REJECTED'
 
   PermitRequest({
     required this.id,
@@ -110,22 +104,21 @@ class PermitRequest {
       id: json['id'] as String? ?? '',
       permitId: json['permit_id'] as String? ?? '',
       applicantPubKey: json['applicant_pub_key'] as String? ?? '',
-      evidence: json['evidence'] as Map<String, dynamic>? ?? {},
+      evidence: json['evidence'] as Map<String, dynamic>? ?? <String, dynamic>{},
       requestedAt: DateTime.parse(json['requested_at'] as String),
       status: json['status'] as String? ?? 'PENDING',
     );
   }
+  final String id;
+  final String permitId;
+  final String applicantPubKey;
+  final Map<String, dynamic> evidence;
+  final DateTime requestedAt;
+  final String status; // 'PENDING', 'APPROVED', 'REJECTED'
 }
 
 /// Geographic query for events
 class GeoQuery {
-  final double latitude;
-  final double longitude;
-  final double radiusKm;
-  final List<int>? kinds;
-  final int? since;
-  final int? until;
-  final int? limit;
 
   GeoQuery({
     required this.latitude,
@@ -136,13 +129,20 @@ class GeoQuery {
     this.until,
     this.limit = 50,
   });
+  final double latitude;
+  final double longitude;
+  final double radiusKm;
+  final List<int>? kinds;
+  final int? since;
+  final int? until;
+  final int? limit;
 }
 
 /// Service for NIP-101 functionality (DIDs, Oracle, ORE, GeoKeys)
 class Nip101Service {
-  final NostrRelayService _relayService;
 
   Nip101Service(this._relayService);
+  final NostrRelayService _relayService;
 
   /// Resolve a DID (did:nostr:<hex>) to a DID Document
   Future<DIDDocument?> resolveDid(String did) async {
@@ -152,8 +152,8 @@ class Nip101Service {
 
     // Query kind 30800 events from the author
     final List<Map<String, dynamic>> events = await _queryEvents(
-      kinds: [30800],
-      authors: [hexPubKey],
+      kinds: <int>[30800],
+      authors: <String>[hexPubKey],
       limit: 1,
     );
 
@@ -169,7 +169,6 @@ class Nip101Service {
         pubKey: hexPubKey,
         createdAt: DateTime.fromMillisecondsSinceEpoch(
             (event['created_at'] as int) * 1000),
-        updatedAt: null,
       );
     } catch (e) {
       logger('[Nip101Service] Failed to parse DID document: $e');
@@ -182,13 +181,13 @@ class Nip101Service {
     final String hexPubKey = bip340.getPublicKey(hexPrivateKey);
     final int createdAt = DateTime.now().millisecondsSinceEpoch ~/ 1000;
 
-    final Map<String, dynamic> event = {
+    final Map<String, dynamic> event = <String, dynamic>{
       'kind': 30800,
       'pubkey': hexPubKey,
       'created_at': createdAt,
-      'tags': [
-        ['d', doc.id],
-        ['t', 'did'],
+      'tags': <List<String>>[
+        <String>['d', doc.id],
+        <String>['t', 'did'],
       ],
       'content': jsonEncode(doc.document),
     };
@@ -206,12 +205,12 @@ class Nip101Service {
     int limit = 20,
   }) async {
     final List<Map<String, dynamic>> events = await _queryEvents(
-      kinds: [30500],
-      authors: issuerPubKey != null ? [issuerPubKey] : null,
+      kinds: <int>[30500],
+      authors: issuerPubKey != null ? <String>[issuerPubKey] : null,
       limit: limit,
     );
 
-    return events.map((event) {
+    return events.map((Map<String, dynamic> event) {
       try {
         final Map<String, dynamic> content =
             jsonDecode(event['content'] as String) as Map<String, dynamic>;
@@ -222,14 +221,14 @@ class Nip101Service {
           requirements: (content['requirements'] as List<dynamic>?)
                   ?.map((r) => r.toString())
                   .toList() ??
-              [],
+              <String>[],
           issuerPubKey: event['pubkey'] as String,
           createdAt: DateTime.fromMillisecondsSinceEpoch(
               (event['created_at'] as int) * 1000),
           expiresAt: content['expires_at'] != null
               ? DateTime.parse(content['expires_at'] as String)
               : null,
-          metadata: content['metadata'] as Map<String, dynamic>? ?? {},
+          metadata: content['metadata'] as Map<String, dynamic>? ?? <String, dynamic>{},
         );
       } catch (e) {
         logger('[Nip101Service] Failed to parse permit definition: $e');
@@ -237,13 +236,13 @@ class Nip101Service {
           id: '',
           name: 'Invalid',
           description: 'Failed to parse',
-          requirements: [],
+          requirements: <String>[],
           issuerPubKey: event['pubkey'] as String,
           createdAt: DateTime.now(),
-          metadata: {},
+          metadata: <String, dynamic>{},
         );
       }
-    }).where((def) => def.id.isNotEmpty).toList();
+    }).where((PermitDefinition def) => def.id.isNotEmpty).toList();
   }
 
   /// Apply for a permit (kind 30501)
@@ -255,7 +254,7 @@ class Nip101Service {
     final String hexPubKey = bip340.getPublicKey(hexPrivateKey);
     final int createdAt = DateTime.now().millisecondsSinceEpoch ~/ 1000;
 
-    final Map<String, dynamic> content = {
+    final Map<String, dynamic> content = <String, dynamic>{
       'permit_id': permitId,
       'applicant_pub_key': hexPubKey,
       'evidence': evidence,
@@ -263,14 +262,14 @@ class Nip101Service {
       'status': 'PENDING',
     };
 
-    final Map<String, dynamic> event = {
+    final Map<String, dynamic> event = <String, dynamic>{
       'kind': 30501,
       'pubkey': hexPubKey,
       'created_at': createdAt,
-      'tags': [
-        ['p', hexPubKey], // Applicant
-        ['t', 'permit_request'],
-        ['permit', permitId],
+      'tags': <List<String>>[
+        <String>['p', hexPubKey], // Applicant
+        <String>['t', 'permit_request'],
+        <String>['permit', permitId],
       ],
       'content': jsonEncode(content),
     };
@@ -292,23 +291,23 @@ class Nip101Service {
     final String issuerPubKey = bip340.getPublicKey(issuerPrivateKey);
     final int createdAt = DateTime.now().millisecondsSinceEpoch ~/ 1000;
 
-    final Map<String, dynamic> content = {
+    final Map<String, dynamic> content = <String, dynamic>{
       'permit_id': permitId,
       'applicant_pub_key': applicantPubKey,
       'issuer_pub_key': issuerPubKey,
       'attested_at': createdAt,
-      'metadata': metadata ?? {},
+      'metadata': metadata ?? <String, dynamic>{},
     };
 
-    final Map<String, dynamic> event = {
+    final Map<String, dynamic> event = <String, dynamic>{
       'kind': 30502,
       'pubkey': issuerPubKey,
       'created_at': createdAt,
-      'tags': [
-        ['p', applicantPubKey],
-        ['p', issuerPubKey],
-        ['t', 'permit_attestation'],
-        ['permit', permitId],
+      'tags': <List<String>>[
+        <String>['p', applicantPubKey],
+        <String>['p', issuerPubKey],
+        <String>['t', 'permit_attestation'],
+        <String>['permit', permitId],
       ],
       'content': jsonEncode(content),
     };
@@ -332,7 +331,7 @@ class Nip101Service {
     );
 
     // Filter by distance (simplistic)
-    return events.where((event) {
+    return events.where((Map<String, dynamic> event) {
       final double? lat = _extractLatitude(event);
       final double? lon = _extractLongitude(event);
       if (lat == null || lon == null) return false;
@@ -383,7 +382,7 @@ class Nip101Service {
 
   /// Extract latitude from event tags
   double? _extractLatitude(Map<String, dynamic> event) {
-    final List<dynamic> tags = event['tags'] as List<dynamic>? ?? [];
+    final List<dynamic> tags = event['tags'] as List<dynamic>? ?? <dynamic>[];
     for (final tag in tags) {
       if (tag is List<dynamic> && tag.length >= 2) {
         if (tag[0] == 'g') {
@@ -403,7 +402,7 @@ class Nip101Service {
 
   /// Extract longitude from event tags
   double? _extractLongitude(Map<String, dynamic> event) {
-    final List<dynamic> tags = event['tags'] as List<dynamic>? ?? [];
+    final List<dynamic> tags = event['tags'] as List<dynamic>? ?? <dynamic>[];
     for (final tag in tags) {
       if (tag is List<dynamic> && tag.length >= 2) {
         if (tag[0] == 'g') {

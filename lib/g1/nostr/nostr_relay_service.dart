@@ -249,6 +249,24 @@ class NostrRelayService {
     return _publishEvent(event);
   }
 
+  /// Find the NOSTR hex pubkey of a Duniter contact by querying kind 0 events
+  /// that contain the NIP-39 identity tag ["i", "g1pub:{duniterPubKey}"].
+  ///
+  /// Returns the hex NOSTR pubkey if found, or null.
+  /// This is the correct way to link a Duniter G1 pubkey to its NOSTR identity.
+  Future<String?> findNostrHexByG1Pub(String duniterBase58PubKey) async {
+    if (!_isConnected) return null;
+
+    final List<Map<String, dynamic>> events = await queryEvents(
+      kinds: <int>[0],
+      tags: <List<String>>[<String>['i', 'g1pub:$duniterBase58PubKey']],
+      limit: 1,
+    );
+
+    if (events.isEmpty) return null;
+    return events.first['pubkey'] as String?;
+  }
+
   /// Search profiles (kind 0) by name using NIP-50 text search
   Future<List<NostrProfile>> searchProfiles(String searchTerm) async {
     if (!_isConnected) return <NostrProfile>[];
@@ -362,7 +380,88 @@ class NostrRelayService {
     );
   }
 
+  // ─── Reactions / Kind 7 (NIP-25 + NIP-101 ZEN payment extension) ──────────
+
+  /// Publish a kind 7 reaction.
+  /// Used as payment fallback when Duniter nodes are unavailable:
+  ///   content = "+{zen}" (ex: "+10" = pay +10Ẑ to [reactedAuthorHexPubkey])
+  ///   The NIP-101 relay filter/7.sh intercepts this and calls PAYforSURE.sh
+  ///   on the Astroport station to execute the Duniter transaction locally.
+  ///
+  /// For a standard like: content = "+"
+  /// For a ZEN payment:   content = "+10" (pays 10Ẑ = 1 G1)
+  /// For crowdfunding:    add tag ["t", "crowdfunding"], ["project-id", "CF-XXX"]
+  ///
+  /// [reactedEventId] is optional (empty string if no reference event).
+  Future<bool> publishReaction({
+    required String hexPrivateKey,
+    required String reactedAuthorHexPubkey,
+    String reactedEventId = '',
+    String content = '+',
+  }) async {
+    if (!_isConnected) return false;
+
+    final String hexPubkey = bip340.getPublicKey(hexPrivateKey);
+    final int createdAt = DateTime.now().millisecondsSinceEpoch ~/ 1000;
+
+    final List<List<String>> tags = <List<String>>[
+      <String>['p', reactedAuthorHexPubkey],
+    ];
+    if (reactedEventId.isNotEmpty) {
+      tags.add(<String>['e', reactedEventId]);
+    }
+
+    final Map<String, dynamic> event = <String, dynamic>{
+      'kind': 7,
+      'pubkey': hexPubkey,
+      'created_at': createdAt,
+      'tags': tags,
+      'content': content,
+    };
+
+    final String eventId = NostrUtils.calculateEventId(event);
+    event['id'] = eventId;
+    event['sig'] = _signEvent(eventId, hexPrivateKey);
+
+    loggerDev('[NostrRelay] Publishing kind 7 reaction: $content → ${reactedAuthorHexPubkey.substring(0, 8)}...');
+    return _publishEvent(event);
+  }
+
   // ─── Contact List (Kind 3) ───────────────────────────────────────
+
+  /// Publish contacts list (kind 3) — adds/updates the follow list.
+  /// Should be called after discovering a NOSTR profile (kind 0) to ensure
+  /// the relay recognises the contact in amisOfAmis for kind 7 payments.
+  ///
+  /// [hexPubkeys] is the COMPLETE list of followed hex pubkeys (replaces prev).
+  Future<bool> publishContacts({
+    required String hexPrivateKey,
+    required List<String> hexPubkeys,
+  }) async {
+    if (!_isConnected) return false;
+
+    final String hexPubkey = bip340.getPublicKey(hexPrivateKey);
+    final int createdAt = DateTime.now().millisecondsSinceEpoch ~/ 1000;
+
+    final List<List<String>> tags = hexPubkeys
+        .map((String p) => <String>['p', p])
+        .toList();
+
+    final Map<String, dynamic> event = <String, dynamic>{
+      'kind': 3,
+      'pubkey': hexPubkey,
+      'created_at': createdAt,
+      'tags': tags,
+      'content': '',
+    };
+
+    final String eventId = NostrUtils.calculateEventId(event);
+    event['id'] = eventId;
+    event['sig'] = _signEvent(eventId, hexPrivateKey);
+
+    loggerDev('[NostrRelay] Publishing kind 3 contacts (${hexPubkeys.length} follows)');
+    return _publishEvent(event);
+  }
 
   /// Fetch contacts (kind 3) for a hex pubkey
   Future<List<String>> fetchContacts(String hexPubkey) async {
@@ -506,7 +605,7 @@ class NostrRelayService {
         if (tag.isNotEmpty) {
           final String tagName = tag[0];
           final List<String> tagValues = tag.sublist(1);
-          filter['#${tagName}'] = tagValues;
+          filter['#$tagName'] = tagValues;
         }
       }
     }

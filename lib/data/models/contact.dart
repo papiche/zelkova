@@ -39,7 +39,8 @@ class Contact extends Equatable implements IsJsonSerializable<Contact> {
       this.isMember,
       this.createdOn,
       this.index,
-      this.expireOn})
+      this.expireOn,
+      this.nostrHex})
       :
         // ensure that Contact does not have v1 checksums
         pubKey = extractPublicKey(pubKey),
@@ -95,7 +96,8 @@ class Contact extends Equatable implements IsJsonSerializable<Contact> {
       this.isMember,
       this.createdOn,
       this.index,
-      this.expireOn});
+      this.expireOn,
+      this.nostrHex});
 
   factory Contact.withPubKey(
       {String? nick,
@@ -220,6 +222,12 @@ class Contact extends Equatable implements IsJsonSerializable<Contact> {
   final int? expireOn;
   final int? index;
 
+  /// NOSTR hex public key (64-char lowercase hex) — not persisted in JSON.
+  /// Populated at runtime by fetching kind 0 from the relay.
+  /// Used for kind 7 payment fallback when Duniter nodes are unavailable.
+  @JsonKey(includeToJson: false, includeFromJson: false)
+  final String? nostrHex;
+
   Contact merge(Contact c) {
     return Contact(
       nick: c.nick ?? nick,
@@ -242,6 +250,7 @@ class Contact extends Equatable implements IsJsonSerializable<Contact> {
       createdOn: c.createdOn ?? createdOn,
       expireOn: c.expireOn ?? expireOn,
       index: c.index ?? index,
+      nostrHex: c.nostrHex ?? nostrHex,
     );
   }
 

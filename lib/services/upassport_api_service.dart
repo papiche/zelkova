@@ -5,11 +5,6 @@ import '../ui/logger.dart';
 
 /// Represents balance information from UPassport API
 class BalanceInfo {
-  final String g1pub;
-  final String balance;
-  final String? balanceZencard;
-  final String? email;
-  final DateTime? timestamp;
 
   BalanceInfo({
     required this.g1pub,
@@ -30,14 +25,15 @@ class BalanceInfo {
           : null,
     );
   }
+  final String g1pub;
+  final String balance;
+  final String? balanceZencard;
+  final String? email;
+  final DateTime? timestamp;
 }
 
 /// Represents ZEN Card information
 class ZenCardInfo {
-  final String email;
-  final List<Map<String, dynamic>> transactions;
-  final double totalShares;
-  final DateTime? lastUpdated;
 
   ZenCardInfo({
     required this.email,
@@ -52,24 +48,21 @@ class ZenCardInfo {
       transactions: (json['transactions'] as List<dynamic>?)
               ?.map((t) => t as Map<String, dynamic>)
               .toList() ??
-          [],
+          <Map<String, dynamic>>[],
       totalShares: (json['total_shares'] as num?)?.toDouble() ?? 0.0,
       lastUpdated: json['last_updated'] != null
           ? DateTime.parse(json['last_updated'] as String)
           : null,
     );
   }
+  final String email;
+  final List<Map<String, dynamic>> transactions;
+  final double totalShares;
+  final DateTime? lastUpdated;
 }
 
 /// Represents a permit credential (Oracle NIP-101)
 class PermitCredential {
-  final String id;
-  final String permitId;
-  final String issuerPubKey;
-  final DateTime issuedAt;
-  final DateTime? expiresAt;
-  final Map<String, dynamic> evidence;
-  final String status; // 'VALID', 'EXPIRED', 'REVOKED'
 
   PermitCredential({
     required this.id,
@@ -90,21 +83,21 @@ class PermitCredential {
       expiresAt: json['expires_at'] != null
           ? DateTime.parse(json['expires_at'] as String)
           : null,
-      evidence: json['evidence'] as Map<String, dynamic>? ?? {},
+      evidence: json['evidence'] as Map<String, dynamic>? ?? <String, dynamic>{},
       status: json['status'] as String? ?? 'VALID',
     );
   }
+  final String id;
+  final String permitId;
+  final String issuerPubKey;
+  final DateTime issuedAt;
+  final DateTime? expiresAt;
+  final Map<String, dynamic> evidence;
+  final String status; // 'VALID', 'EXPIRED', 'REVOKED'
 }
 
 /// Represents UMAP geographic information
 class UmapInfo {
-  final String pubKey;
-  final double latitude;
-  final double longitude;
-  final String name;
-  final String? description;
-  final int memberCount;
-  final DateTime lastActivity;
 
   UmapInfo({
     required this.pubKey,
@@ -127,20 +120,27 @@ class UmapInfo {
       lastActivity: DateTime.parse(json['last_activity'] as String),
     );
   }
+  final String pubKey;
+  final double latitude;
+  final double longitude;
+  final String name;
+  final String? description;
+  final int memberCount;
+  final DateTime lastActivity;
 }
 
 /// Service to interact with UPassport API (FastAPI)
-class UPassportApiService {
-  final String baseUrl;
-  final String? nostrPubKey; // For NIP-42 authentication
+class UPassportApiService { // For NIP-42 authentication
 
   UPassportApiService({String? customUrl, this.nostrPubKey})
       : baseUrl = customUrl ?? Env.upassportUrl;
+  final String baseUrl;
+  final String? nostrPubKey;
 
   /// Get balance for a G1 public key or email
   Future<BalanceInfo> getBalance(String identifier) async {
     final Uri url = Uri.parse('$baseUrl/check_balance')
-        .replace(queryParameters: {'g1pub': identifier, 'format': 'json'});
+        .replace(queryParameters: <String, dynamic>{'g1pub': identifier, 'format': 'json'});
 
     final http.Response response = await http.get(url);
 
@@ -157,7 +157,7 @@ class UPassportApiService {
   /// Get ZEN Card information for an email
   Future<ZenCardInfo> getZenCard(String email) async {
     final Uri url = Uri.parse('$baseUrl/check_zencard')
-        .replace(queryParameters: {'email': email, 'format': 'json'});
+        .replace(queryParameters: <String, dynamic>{'email': email, 'format': 'json'});
 
     final http.Response response = await http.get(url);
 
@@ -179,7 +179,7 @@ class UPassportApiService {
     required String npub,
   }) async {
     final Uri url = Uri.parse('$baseUrl/zen_send');
-    final Map<String, String> body = {
+    final Map<String, String> body = <String, String>{
       'zen': amount,
       'g1source': sourceG1pub,
       'g1dest': destG1pub,
@@ -201,20 +201,20 @@ class UPassportApiService {
   /// Get permit credentials for a user (by NOSTR public key)
   Future<List<PermitCredential>> getUserPermits(String npub) async {
     final Uri url = Uri.parse('$baseUrl/api/permit/user/credentials')
-        .replace(queryParameters: {'npub': npub});
+        .replace(queryParameters: <String, dynamic>{'npub': npub});
 
     final http.Response response = await http.get(url);
 
     if (response.statusCode == 200) {
       final Map<String, dynamic> data =
           jsonDecode(response.body) as Map<String, dynamic>;
-      final List<dynamic> credentials = data['credentials'] as List<dynamic>? ?? [];
+      final List<dynamic> credentials = data['credentials'] as List<dynamic>? ?? <dynamic>[];
       return credentials
           .map((c) => PermitCredential.fromJson(c as Map<String, dynamic>))
           .toList();
     } else {
       logger('[UPassportApiService] Failed to get permits: ${response.statusCode}');
-      return [];
+      return <PermitCredential>[];
     }
   }
 
@@ -225,7 +225,7 @@ class UPassportApiService {
     double radiusKm = 10.0,
   }) async {
     final Uri url = Uri.parse('$baseUrl/api/umap/geolinks')
-        .replace(queryParameters: {
+        .replace(queryParameters: <String, dynamic>{
       'lat': lat.toString(),
       'lon': lon.toString(),
       'radius_km': radiusKm.toString(),
@@ -236,20 +236,20 @@ class UPassportApiService {
     if (response.statusCode == 200) {
       final Map<String, dynamic> data =
           jsonDecode(response.body) as Map<String, dynamic>;
-      final List<dynamic> umaps = data['umaps'] as List<dynamic>? ?? [];
+      final List<dynamic> umaps = data['umaps'] as List<dynamic>? ?? <dynamic>[];
       return umaps
           .map((u) => UmapInfo.fromJson(u as Map<String, dynamic>))
           .toList();
     } else {
       logger('[UPassportApiService] Failed to get nearby UMAPs: ${response.statusCode}');
-      return [];
+      return <UmapInfo>[];
     }
   }
 
   /// Publish a DID document to NOSTR via UPassport
   Future<bool> publishDidDocument(Map<String, dynamic> doc) async {
     final Uri url = Uri.parse('$baseUrl/api/permit/define');
-    final Map<String, String> headers = {
+    final Map<String, String> headers = <String, String>{
       'Content-Type': 'application/json',
     };
 
@@ -265,7 +265,7 @@ class UPassportApiService {
   /// Process Open Collective webhook (simulate)
   Future<Map<String, dynamic>> processOcWebhook(Map<String, dynamic> payload) async {
     final Uri url = Uri.parse('$baseUrl/oc_webhook');
-    final Map<String, String> headers = {
+    final Map<String, String> headers = <String, String>{
       'Content-Type': 'application/json',
     };
 
@@ -285,7 +285,7 @@ class UPassportApiService {
   /// Get NIP-42 challenge for authentication
   Future<String> getNip42Challenge(String npub) async {
     final Uri url = Uri.parse('$baseUrl/api/nip42/challenge')
-        .replace(queryParameters: {'npub': npub});
+        .replace(queryParameters: <String, dynamic>{'npub': npub});
 
     final http.Response response = await http.get(url);
 

@@ -6,10 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../data/models/contact.dart';
+import '../../env.dart';
 import '../../g1/multipass_service.dart';
 import '../../g1/nostr/nostr_keys.dart';
 import '../../g1/nostr/nostr_profile.dart';
-import '../../env.dart';
 import '../../g1/nostr/nostr_relay_service.dart';
 import '../../shared_prefs_helper_v2.dart';
 import '../../ui/logger.dart';

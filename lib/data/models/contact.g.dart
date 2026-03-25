@@ -49,6 +49,8 @@ abstract class _$ContactCWProxy {
 
   Contact expireOn(int? expireOn);
 
+  Contact nostrHex(String? nostrHex);
+
   /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `Contact(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
   ///
   /// Usage
@@ -77,6 +79,7 @@ abstract class _$ContactCWProxy {
     int? createdOn,
     int? index,
     int? expireOn,
+    String? nostrHex,
   });
 }
 
@@ -153,6 +156,9 @@ class _$ContactCWProxyImpl implements _$ContactCWProxy {
   Contact expireOn(int? expireOn) => this(expireOn: expireOn);
 
   @override
+  Contact nostrHex(String? nostrHex) => this(nostrHex: nostrHex);
+
+  @override
 
   /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `Contact(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
   ///
@@ -182,6 +188,7 @@ class _$ContactCWProxyImpl implements _$ContactCWProxy {
     Object? createdOn = const $CopyWithPlaceholder(),
     Object? index = const $CopyWithPlaceholder(),
     Object? expireOn = const $CopyWithPlaceholder(),
+    Object? nostrHex = const $CopyWithPlaceholder(),
   }) {
     return Contact(
       nick: nick == const $CopyWithPlaceholder()
@@ -268,6 +275,10 @@ class _$ContactCWProxyImpl implements _$ContactCWProxy {
           ? _value.expireOn
           // ignore: cast_nullable_to_non_nullable
           : expireOn as int?,
+      nostrHex: nostrHex == const $CopyWithPlaceholder()
+          ? _value.nostrHex
+          // ignore: cast_nullable_to_non_nullable
+          : nostrHex as String?,
     );
   }
 }

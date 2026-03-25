@@ -153,7 +153,11 @@ class NostrProfile {
       if (about != null) 'about': about,
       if (picture != null) 'picture': picture,
       if (banner != null) 'banner': banner,
-      if (picture64 != null) 'picture64': picture64,
+      // N'inclure picture64 (base64) QUE si pas d'URL IPFS disponible.
+      // Les relays strfry rejettent les events > ~65KB ;
+      // un avatar base64 peut dépasser 280KB.
+      if (picture64 != null && (picture == null || picture!.isEmpty))
+        'picture64': picture64,
       if (nip05 != null) 'nip05': nip05,
       if (website != null) 'website': website,
       if (g1pub != null) 'g1pub': g1pub,

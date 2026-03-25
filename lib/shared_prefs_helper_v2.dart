@@ -545,7 +545,9 @@ class SharedPreferencesHelperV2
 
   /// Retrieve MULTIPASS metadata for a given wallet pubKey
   Future<Map<String, dynamic>?> getMultipassData([String? pubKey]) async {
-    final String key = pubKey ?? getPubKey();
+    // Guard: getPubKey() accesses accounts[0] and throws RangeError if empty
+    final String? key = pubKey ?? (isEmpty ? null : getPubKey());
+    if (key == null) return null;
     final String? data = await _storage.read(
         key: '${StorageKeys.multipassDataPrefix}${extractPublicKey(key)}');
     if (data == null) return null;

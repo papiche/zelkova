@@ -56,7 +56,17 @@ class _DrawerWalletCardState extends State<DrawerWalletCard> {
 
   Future<void> _fetchNostrProfile() async {
     final NostrRelayService relay = NostrRelayService();
-    if (!relay.isConnected) return;
+    // Attendre la connexion si le relay n'est pas encore prêt (timing)
+    if (!relay.isConnected) {
+      try {
+        await relay.onConnectionChange
+            .firstWhere((bool connected) => connected)
+            .timeout(const Duration(seconds: 15));
+      } catch (_) {
+        return; // Timeout ou erreur — ne pas bloquer
+      }
+    }
+    if (!mounted) return;
     try {
       String? nostrHex;
       // Compte courant → dériver depuis nsec (aucune requête réseau)

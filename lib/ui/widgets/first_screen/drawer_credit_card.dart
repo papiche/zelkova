@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import 'package:bip340/bip340.dart' as bip340;
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -11,7 +12,10 @@ import '../../../data/models/multi_wallet_transaction_cubit.dart';
 import '../../../data/models/stored_account.dart';
 import '../../../data/models/wallet_themes.dart';
 import '../../../g1/g1_helper.dart';
+import '../../../g1/nostr/nostr_keys.dart';
+import '../../../g1/nostr/nostr_relay_service.dart';
 import '../../../shared_prefs_helper.dart';
+import '../../../shared_prefs_helper_v2.dart';
 import '../../logger.dart';
 import '../../secure_unlock_widget.dart';
 import '../../ui_helpers.dart';
@@ -39,6 +43,53 @@ class _DrawerWalletCardState extends State<DrawerWalletCard> {
   static DateTime? _lastDeletionTime;
   static const Duration _deletionCooldown = Duration(milliseconds: 500);
   bool _isDeleting = false;
+
+  // ── Profil NOSTR (kind 0) — image de fond + avatar ────────────────────────
+  String? _nostrBannerUrl;
+  String? _nostrPictureUrl;
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchNostrProfile();
+  }
+
+  Future<void> _fetchNostrProfile() async {
+    final NostrRelayService relay = NostrRelayService();
+    if (!relay.isConnected) return;
+    try {
+      String? nostrHex;
+      // Compte courant → dériver depuis nsec (aucune requête réseau)
+      final bool isCurrent = widget.card.pubKey ==
+          SharedPreferencesHelper().getCurrentAccount().pubKey;
+      if (isCurrent) {
+        final String? nsec =
+            await SharedPreferencesHelperV2().getNostrNsec();
+        if (nsec != null && nsec.isNotEmpty) {
+          nostrHex = bip340.getPublicKey(NostrKeys.nsecToHex(nsec));
+        }
+      }
+      // Fallback : chercher via tag NIP-39 g1pub
+      nostrHex ??= await relay.findNostrHexByG1Pub(widget.card.pubKey);
+
+      if (nostrHex == null) return;
+      final nostrProfile = await relay.fetchProfile(nostrHex);
+      if (nostrProfile != null && mounted) {
+        setState(() {
+          _nostrBannerUrl = nostrProfile.banner?.isNotEmpty == true
+              ? nostrProfile.banner
+              : null;
+          _nostrPictureUrl = nostrProfile.picture?.isNotEmpty == true
+              ? nostrProfile.picture
+              : null;
+        });
+        loggerDev('[DrawerCard] NOSTR profile loaded for ${widget.card.pubKey.substring(0, 8)}'
+            ' banner=${_nostrBannerUrl != null} picture=${_nostrPictureUrl != null}');
+      }
+    } catch (e) {
+      loggerDev('[DrawerCard] NOSTR profile fetch failed: $e');
+    }
+  }
 
   void _showAccountOptions(BuildContext context) {
     // Check if account is v2PasswordLess and can be upgraded
@@ -217,18 +268,51 @@ class _DrawerWalletCardState extends State<DrawerWalletCard> {
                       spreadRadius: 1.0,
                     )
                   ],
-                  gradient: LinearGradient(
-                    begin: Alignment.bottomLeft,
-                    end: Alignment.topRight,
-                    colors: <Color>[
-                      widget.card.theme.primaryColor,
-                      widget.card.theme.secondaryColor
-                    ],
-                  ),
+                  // Image NOSTR banner en fond si disponible,
+                  // sinon gradient de couleur choisie par l'utilisateur
+                  image: _nostrBannerUrl != null
+                      ? DecorationImage(
+                          image: NetworkImage(_nostrBannerUrl!),
+                          fit: BoxFit.cover,
+                          colorFilter: const ColorFilter.mode(
+                              Colors.black38, BlendMode.darken),
+                          onError: (_, __) {},
+                        )
+                      : null,
+                  gradient: _nostrBannerUrl == null
+                      ? LinearGradient(
+                          begin: Alignment.bottomLeft,
+                          end: Alignment.topRight,
+                          colors: <Color>[
+                            widget.card.theme.primaryColor,
+                            widget.card.theme.secondaryColor
+                          ],
+                        )
+                      : null,
                 ),
                 child: Padding(
                   padding: const EdgeInsets.all(10),
                   child: Stack(children: <Widget>[
+                    // ── Avatar NOSTR (picture kind 0) — coin haut droit ──────
+                    if (_nostrPictureUrl != null)
+                      Positioned(
+                        top: 4,
+                        right: 4,
+                        child: Container(
+                          width: 36,
+                          height: 36,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: Border.all(
+                                color: Colors.white38, width: 1.5),
+                            image: DecorationImage(
+                              image: NetworkImage(_nostrPictureUrl!),
+                              fit: BoxFit.cover,
+                              onError: (_, __) {},
+                            ),
+                          ),
+                        ),
+                      ),
                     if (widget.settingsVisible)
                       Positioned(
                         bottom: 4,

@@ -1,3 +1,4 @@
+import 'package:bip340/bip340.dart' as bip340;
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -5,6 +6,10 @@ import 'package:flutter_svg/svg.dart';
 import '../../../data/models/stored_account.dart';
 import '../../../data/models/wallet_themes.dart';
 import '../../../g1/g1_helper.dart';
+import '../../../g1/nostr/nostr_keys.dart';
+import '../../../g1/nostr/nostr_relay_service.dart';
+import '../../../shared_prefs_helper.dart';
+import '../../../shared_prefs_helper_v2.dart';
 import '../../logger.dart';
 import '../../ui_helpers.dart';
 import '../avatar_badge.dart';
@@ -30,6 +35,58 @@ class CreditCard extends StatefulWidget {
 }
 
 class _CreditCardState extends State<CreditCard> {
+  String? _nostrBannerUrl;
+  String? _nostrPictureUrl;
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchNostrProfile();
+  }
+
+  Future<void> _fetchNostrProfile() async {
+    final NostrRelayService relay = NostrRelayService();
+    if (!relay.isConnected) {
+      try {
+        await relay.onConnectionChange
+            .firstWhere((bool c) => c)
+            .timeout(const Duration(seconds: 15));
+      } catch (_) {
+        return;
+      }
+    }
+    if (!mounted) return;
+    try {
+      String? nostrHex;
+      final bool isCurrent = widget.account.pubKey ==
+          SharedPreferencesHelper().getCurrentAccount().pubKey;
+      if (isCurrent) {
+        final String? nsec =
+            await SharedPreferencesHelperV2().getNostrNsec();
+        if (nsec != null && nsec.isNotEmpty) {
+          nostrHex =
+              bip340.getPublicKey(NostrKeys.nsecToHex(nsec));
+        }
+      }
+      nostrHex ??= await relay.findNostrHexByG1Pub(widget.account.pubKey);
+      if (nostrHex == null) return;
+      final nostrProfile = await relay.fetchProfile(nostrHex);
+      if (nostrProfile != null && mounted) {
+        setState(() {
+          _nostrBannerUrl = nostrProfile.banner?.isNotEmpty == true
+              ? nostrProfile.banner
+              : null;
+          _nostrPictureUrl = nostrProfile.picture?.isNotEmpty == true
+              ? nostrProfile.picture
+              : null;
+        });
+        loggerDev('[CreditCard] NOSTR loaded: banner=${_nostrBannerUrl != null} picture=${_nostrPictureUrl != null}');
+      }
+    } catch (e) {
+      loggerDev('[CreditCard] NOSTR fetch error: $e');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     const double cardRadius = 10.0;
@@ -85,17 +142,49 @@ class _CreditCardState extends State<CreditCard> {
                       spreadRadius: 1.0,
                     )
                   ],
-                  gradient: LinearGradient(
-                    begin: Alignment.bottomLeft,
-                    end: Alignment.topRight,
-                    colors: <Color>[
-                      cardTheme.primaryColor,
-                      cardTheme.secondaryColor
-                    ],
-                  ),
+                  // Banner NOSTR comme fond si disponible
+                  image: _nostrBannerUrl != null
+                      ? DecorationImage(
+                          image: NetworkImage(_nostrBannerUrl!),
+                          fit: BoxFit.cover,
+                          colorFilter: const ColorFilter.mode(
+                              Colors.black38, BlendMode.darken),
+                          onError: (_, __) {},
+                        )
+                      : null,
+                  gradient: _nostrBannerUrl == null
+                      ? LinearGradient(
+                          begin: Alignment.bottomLeft,
+                          end: Alignment.topRight,
+                          colors: <Color>[
+                            cardTheme.primaryColor,
+                            cardTheme.secondaryColor
+                          ],
+                        )
+                      : null,
                 ),
                 child: Stack(
                   children: <Widget>[
+                    // Picture NOSTR en avatar rond (coin haut droit)
+                    if (_nostrPictureUrl != null)
+                      Positioned(
+                        top: 8,
+                        right: 8,
+                        child: Container(
+                          width: 36,
+                          height: 36,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: Border.all(
+                                color: Colors.white38, width: 1.5),
+                            image: DecorationImage(
+                              image: NetworkImage(_nostrPictureUrl!),
+                              fit: BoxFit.cover,
+                              onError: (_, __) {},
+                            ),
+                          ),
+                        ),
+                      ),
                     // Background logo
                     Padding(
                       padding: const EdgeInsets.fromLTRB(160, 10, 0, 0),

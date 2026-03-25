@@ -257,9 +257,12 @@ class NostrRelayService {
   Future<String?> findNostrHexByG1Pub(String duniterBase58PubKey) async {
     if (!_isConnected) return null;
 
+    // Strip any :ZEN:XXXX tag appended by ZenTagService before using as lookup key
+    final String cleanKey = duniterBase58PubKey.split(':').first;
+
     final List<Map<String, dynamic>> events = await queryEvents(
       kinds: <int>[0],
-      tags: <List<String>>[<String>['i', 'g1pub:$duniterBase58PubKey']],
+      tags: <List<String>>[<String>['i', 'g1pub:$cleanKey']],
       limit: 1,
     );
 

@@ -826,7 +826,15 @@ class _ContactPageState extends State<ContactPage> with RouteAware {
                     AnimatedOpacity(
                       opacity: isAvatarExpanded ? 0.0 : 1.0,
                       duration: const Duration(milliseconds: 300),
-                      child: avatar(contact, avatarSize: 44),
+                      // Picture NOSTR en avatar compact si disponible
+                      child: _nostrProfile?.picture?.isNotEmpty == true
+                          ? CircleAvatar(
+                              radius: 44,
+                              backgroundImage:
+                                  NetworkImage(_nostrProfile!.picture!),
+                              onBackgroundImageError: (_, __) {},
+                            )
+                          : avatar(contact, avatarSize: 44),
                     ),
                     AnimatedOpacity(
                       opacity: isAvatarExpanded ? 1.0 : 0.0,

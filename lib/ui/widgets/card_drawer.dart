@@ -9,6 +9,7 @@ import 'package:sentry_flutter/sentry_flutter.dart';
 
 import '../../data/models/app_cubit.dart';
 import '../../data/models/app_state.dart';
+import '../../env.dart';
 import '../in_dev_helper.dart';
 import '../screens/sandbox.dart';
 import '../ui_helpers.dart';
@@ -114,21 +115,15 @@ class _CardDrawerState extends State<CardDrawer> {
                 },
               ),
             ListTile(
-              leading: const Icon(Icons.telegram_outlined),
-              title: Text(tr('telegram_group')),
+              leading: const Icon(Icons.forum_outlined),
+              title: const Text('Coracle — Réseau Social UPlanet'),
+              subtitle: const Text('NOSTR · décentralisé · souverain'),
               onTap: () async {
-                final Locale locale = context.locale;
-                if (locale == const Locale('es') ||
-                    locale == const Locale('ca') ||
-                    locale == const Locale('gl') ||
-                    locale == const Locale('eu') ||
-                    locale == const Locale('ast')) {
-                  await openUrl('https://t.me/g1nkgoES');
-                } else if (locale == const Locale('fr')) {
-                  await openUrl('https://t.me/g1nkgoFR');
-                } else {
-                  await openUrl('https://t.me/g1nkgoEN');
-                }
+                // Utilise la première passerelle IPFS connue
+                final String ipfsGw = Env.ipfsGateways.isNotEmpty
+                    ? Env.ipfsGateways.split(' ').first.trimRight()
+                    : 'https://gyroi.de';
+                await openUrl('$ipfsGw/ipns/coracle.copylaradio.com');
               },
             ),
             /*
@@ -207,9 +202,28 @@ class _CardDrawerState extends State<CardDrawer> {
               applicationName: tr('app_name'),
               applicationIcon: g1nkgoIcon,
               applicationLegalese:
-                  '© ${DateTime.now().year.toString() == '2023' ? '2023' : '2023-${DateTime.now().year}'} Comunes Association, under AGPLv3',
-              aboutBoxChildren: const <Widget>[
-                SizedBox(height: 10.0),
+                  '© ${DateTime.now().year.toString() == '2023' ? '2023' : '2023-${DateTime.now().year}'} Comunes Association • G1FabLab#monnaie-libre, under AGPLv3',
+              aboutBoxChildren: <Widget>[
+                const SizedBox(height: 8.0),
+                const Text(
+                  'G1FabLab · AMAP Numérique Citoyenne\n'
+                  'Ğ1 apporte la Liberté · Ẑen apporte l\'Égalité · ❤️ apporte la Fraternité',
+                  style: TextStyle(fontSize: 12),
+                ),
+                const SizedBox(height: 8.0),
+                InkWell(
+                  onTap: () async {
+                    await openUrl(
+                        'https://git.duniter.org/zicmama/ginkgo/-/tree/zen');
+                  },
+                  child: const Text(
+                    '🔗 git.duniter.org/zicmama/ginkgo · branche zen',
+                    style: TextStyle(
+                        color: Colors.blue,
+                        decoration: TextDecoration.underline,
+                        fontSize: 12),
+                  ),
+                ),
               ],
 
               // versionLabelPrefix: 'Version: ',

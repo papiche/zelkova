@@ -9,10 +9,13 @@ import '../../../data/models/contact.dart';
 import '../../../data/models/contact_cubit.dart';
 import '../../../data/models/contact_sort_type.dart';
 import '../../../g1/api.dart';
+import '../../../g1/nostr/nostr_profile.dart';
+import '../../../g1/nostr/nostr_relay_service.dart';
 import '../../ui_helpers.dart';
 import '../bottom_widget.dart';
 import '../connectivity_widget_wrapper_wrapper.dart';
 import '../contact_menu.dart';
+import '../contact_page.dart';
 import '../contacts_actions.dart';
 import '../slidable_contact_tile.dart';
 
@@ -28,6 +31,12 @@ class _ContactsPageState extends State<ContactsPage> {
   List<Contact> _networkResults = <Contact>[];
   bool _isSearchingNetwork = false;
   final int minSearchLength = 3;
+
+  // ── MULTIPASS / NOSTR mode ──────────────────────────────────────────────
+  bool _nostrMode = false;
+  List<NostrProfile> _allNostrProfiles = <NostrProfile>[];
+  List<NostrProfile> _filteredNostrProfiles = <NostrProfile>[];
+  bool _nostrLoading = false;
 
   @override
   void initState() {
@@ -96,6 +105,90 @@ class _ContactsPageState extends State<ContactsPage> {
         });
       }
     }
+  }
+
+  // ── NOSTR / MULTIPASS methods ───────────────────────────────────────────
+
+  Future<void> _loadNostrProfiles() async {
+    if (_nostrLoading) return;
+    setState(() => _nostrLoading = true);
+    try {
+      final NostrRelayService relay = NostrRelayService();
+      if (!relay.isConnected) {
+        if (mounted) setState(() => _nostrLoading = false);
+        return;
+      }
+      final List<NostrProfile> profiles =
+          await relay.fetchAllMultipassProfiles();
+      if (mounted) {
+        setState(() {
+          _allNostrProfiles = profiles;
+          _filteredNostrProfiles = _applyNostrFilter(_searchController.text);
+          _nostrLoading = false;
+        });
+      }
+    } catch (_) {
+      if (mounted) setState(() => _nostrLoading = false);
+    }
+  }
+
+  List<NostrProfile> _applyNostrFilter(String query) {
+    if (query.isEmpty) return List<NostrProfile>.from(_allNostrProfiles);
+    final String q = query.toLowerCase();
+    return _allNostrProfiles.where((NostrProfile p) {
+      return (p.name.toLowerCase().contains(q)) ||
+          (p.city?.toLowerCase().contains(q) ?? false) ||
+          (p.email?.toLowerCase().contains(q) ?? false) ||
+          (p.g1pub?.toLowerCase().contains(q) ?? false);
+    }).toList();
+  }
+
+  Widget _buildNostrProfilesList() {
+    if (_nostrLoading) {
+      return const Center(child: CircularProgressIndicator());
+    }
+    if (_allNostrProfiles.isEmpty) {
+      return Center(child: Text(tr('contacts_nostr_empty')));
+    }
+    if (_filteredNostrProfiles.isEmpty) {
+      return Center(child: Text(tr('not_found_contacts')));
+    }
+    return ListView.builder(
+      itemCount: _filteredNostrProfiles.length,
+      itemBuilder: (BuildContext ctx, int i) {
+        final NostrProfile p = _filteredNostrProfiles[i];
+        final String g1pub = p.g1pub ?? '';
+        return ListTile(
+          leading: CircleAvatar(
+            backgroundImage: p.picture != null && p.picture!.isNotEmpty
+                ? NetworkImage(p.picture!)
+                : null,
+            onBackgroundImageError: (_, __) {},
+            child: p.picture == null || p.picture!.isEmpty
+                ? Text(
+                    p.name.isNotEmpty ? p.name[0].toUpperCase() : '?',
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  )
+                : null,
+          ),
+          title: Text(p.name, overflow: TextOverflow.ellipsis),
+          subtitle: Text(
+            <String>[
+              if (p.city?.isNotEmpty == true) p.city!,
+              if (p.email?.isNotEmpty == true) p.email!,
+            ].join(' · '),
+            overflow: TextOverflow.ellipsis,
+            style: const TextStyle(fontSize: 12),
+          ),
+          trailing: g1pub.isNotEmpty
+              ? const Icon(Icons.chevron_right, size: 18)
+              : null,
+          onTap: g1pub.isNotEmpty
+              ? () => showContactPage(ctx, Contact(pubKey: g1pub))
+              : null,
+        );
+      },
+    );
   }
 
   Widget _buildContactsList(ContactsCubit cubit) {
@@ -315,6 +408,37 @@ class _ContactsPageState extends State<ContactsPage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
+        // ── Source toggle: Cesium+ vs MULTIPASS ────────────────────────
+        Padding(
+          padding: const EdgeInsets.fromLTRB(16, 8, 16, 4),
+          child: SegmentedButton<bool>(
+            style: SegmentedButton.styleFrom(
+              visualDensity: VisualDensity.compact,
+            ),
+            segments: <ButtonSegment<bool>>[
+              ButtonSegment<bool>(
+                value: false,
+                label: Text(tr('contacts_source_cesium')),
+                icon: const Icon(Icons.person_search, size: 16),
+              ),
+              ButtonSegment<bool>(
+                value: true,
+                label: Text(tr('contacts_source_multipass')),
+                icon: const Icon(Icons.electric_bolt, size: 16),
+              ),
+            ],
+            selected: <bool>{_nostrMode},
+            onSelectionChanged: (Set<bool> s) {
+              setState(() {
+                _nostrMode = s.first;
+                if (_nostrMode) {
+                  _loadNostrProfiles();
+                }
+              });
+            },
+          ),
+        ),
+        // ── Search bar ─────────────────────────────────────────────────
         Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Container(
@@ -325,19 +449,30 @@ class _ContactsPageState extends State<ContactsPage> {
                       child: TextField(
                           controller: _searchController,
                           decoration: InputDecoration(
-                            hintText: tr('search_contacts'),
+                            hintText: _nostrMode
+                                ? tr('contacts_search_multipass')
+                                : tr('search_contacts'),
                             border: const OutlineInputBorder(),
                           ),
                           onChanged: (String query) {
-                            context.read<ContactsCubit>().filterContacts(query);
-                            // Debounce network search
-                            EasyDebounce.debounce(
-                              'search-network',
-                              const Duration(milliseconds: 500),
-                              () => _searchNetwork(query),
-                            );
+                            if (_nostrMode) {
+                              setState(() {
+                                _filteredNostrProfiles =
+                                    _applyNostrFilter(query);
+                              });
+                            } else {
+                              context
+                                  .read<ContactsCubit>()
+                                  .filterContacts(query);
+                              EasyDebounce.debounce(
+                                'search-network',
+                                const Duration(milliseconds: 500),
+                                () => _searchNetwork(query),
+                              );
+                            }
                           })),
-                  PopupMenuButton<ContactsSortType>(
+                  if (!_nostrMode)
+                    PopupMenuButton<ContactsSortType>(
                     icon: const Icon(Icons.sort),
                     onSelected: (ContactsSortType result) {
                       context.read<ContactsCubit>().sortContacts(result);
@@ -379,11 +514,16 @@ class _ContactsPageState extends State<ContactsPage> {
                         ),
                       ];
                     },
-                  )
-                ]))),
-        const SizedBox(height: 20),
-        Expanded(child: _buildContactsList(cubit)),
-        const BottomWidget()
+                  ),
+                ])),
+        ),
+        const SizedBox(height: 12),
+        Expanded(
+          child: _nostrMode
+              ? _buildNostrProfilesList()
+              : _buildContactsList(cubit),
+        ),
+        const BottomWidget(),
       ],
     );
   }

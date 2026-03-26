@@ -117,7 +117,14 @@ class _ContactPageState extends State<ContactPage> with RouteAware {
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            QrImageView(data: npub, size: 200, version: QrVersions.auto),
+            // SizedBox required: QrImageView uses LayoutBuilder internally which
+            // crashes inside AlertDialog when Flutter tries to compute intrinsic
+            // dimensions speculatively (Flutter bug / LayoutBuilder constraint).
+            SizedBox(
+              width: 200,
+              height: 200,
+              child: QrImageView(data: npub, version: QrVersions.auto),
+            ),
             const SizedBox(height: 8),
             SelectableText(
               npub,
@@ -593,7 +600,7 @@ class _ContactPageState extends State<ContactPage> with RouteAware {
                 leading: const Icon(Icons.autorenew,
                     color: Color(0xFFDD6633)),
                 title: Text(tr('subscription_monthly_title')),
-                subtitle: const Text('~4 Ẑ/mois · Accès continu'),
+                subtitle: const Text('5 Ẑ/semaine · Accès continu'),
                 trailing: const Icon(Icons.open_in_new, size: 16),
                 onTap: () =>
                     _openExternalUrl(_ocUrls!['membre']!.toString()),
@@ -603,7 +610,7 @@ class _ContactPageState extends State<ContactPage> with RouteAware {
                 leading: const Icon(Icons.autorenew,
                     color: Color(0xFFDD6633)),
                 title: Text(tr('subscription_monthly_title')),
-                subtitle: const Text('~4 Ẑ/mois · Accès continu'),
+                subtitle: const Text('5 Ẑ/semaine · Accès continu'),
                 trailing: const Icon(Icons.open_in_new, size: 16),
                 onTap: () => _openExternalUrl(
                     'https://opencollective.com/monnaie-libre/projects/coeurbox/contribute/membre-resident-soutien-mensuel-98389'),
@@ -801,6 +808,7 @@ class _ContactPageState extends State<ContactPage> with RouteAware {
               )
             : null,
       ),
+      clipBehavior: Clip.hardEdge,
       width: double.infinity,
       height: isAvatarExpanded ? MediaQuery.of(context).size.height / 2 : 132,
       padding: const EdgeInsets.symmetric(vertical: 10),
@@ -1019,6 +1027,9 @@ class _ContactPageState extends State<ContactPage> with RouteAware {
       builder: (BuildContext context) {
         return ProfileEditorDialog(
           currentContact: contact,
+          // Pass the fetched kind-0 profile so the dialog pre-fills name,
+          // about, city and picture URL with current NOSTR values.
+          nostrProfile: _nostrProfile,
           onSaved: _refreshAfterProfileEdit,
         );
       },

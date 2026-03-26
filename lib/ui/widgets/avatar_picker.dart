@@ -9,6 +9,7 @@ class AvatarPicker extends StatefulWidget {
     super.key,
     required this.onSelected,
     this.existingBase64,
+    this.existingUrl,
     this.label,
     this.avatarRadius = 80,
   });
@@ -16,8 +17,13 @@ class AvatarPicker extends StatefulWidget {
   /// Callback when avatar is successfully selected and converted to base64
   final void Function(String base64) onSelected;
 
-  /// Optional: pre-existing avatar to display
+  /// Optional: pre-existing avatar as base64 (Cesium+ binary)
   final String? existingBase64;
+
+  /// Optional: pre-existing avatar as URL (NOSTR kind-0 picture field).
+  /// Shown when no base64 is available, so the user can see the current
+  /// picture before picking a new one.
+  final String? existingUrl;
 
   /// Optional: label for the button
   final String? label;
@@ -131,9 +137,13 @@ class _AvatarPickerState extends State<AvatarPicker> {
             children: <Widget>[
               CircleAvatar(
                 radius: widget.avatarRadius,
-                backgroundImage:
-                    avatarBytes != null ? MemoryImage(avatarBytes) : null,
-                child: avatarBytes == null
+                backgroundImage: avatarBytes != null
+                    ? MemoryImage(avatarBytes) as ImageProvider<Object>
+                    : widget.existingUrl != null
+                        ? NetworkImage(widget.existingUrl!)
+                        : null,
+                onBackgroundImageError: (_, __) {},
+                child: avatarBytes == null && widget.existingUrl == null
                     ? const Icon(Icons.person, size: 48)
                     : null,
               ),

@@ -325,6 +325,78 @@ class NostrRelayService {
     );
   }
 
+  // ─── MULTIPASS discovery ──────────────────────────────────────────
+
+  /// Fetch all MULTIPASS profiles registered on the local relay.
+  ///
+  /// Retrieves kind-0 events (NIP-01 profiles) limited to [limit] entries,
+  /// then filters to keep only genuine UPlanet MULTIPASS profiles — those
+  /// that carry a NIP-39 identity tag `["i", "g1pub:<duniterPubKey>"]`.
+  ///
+  /// Notes on Cesium+ incompatibility:
+  ///   • Cesium+ profiles are indexed by Duniter base-58 pubkey only.
+  ///   • MULTIPASS profiles live on a NOSTR relay and are keyed by hex/npub.
+  ///   • Their G1 wallet is referenced via the NIP-39 `g1pub` tag.
+  ///   • The two systems cannot be mixed in a single search flow.
+  Future<List<NostrProfile>> fetchAllMultipassProfiles(
+      {int limit = 200}) async {
+    if (!_isConnected) return <NostrProfile>[];
+
+    final String subId =
+        NostrUtils.generateSubscriptionId('multipass-all');
+    final Completer<List<NostrProfile>> completer =
+        Completer<List<NostrProfile>>();
+    final List<NostrProfile> results = <NostrProfile>[];
+
+    _handlers[subId] = (List<dynamic> msg) {
+      final String type = msg[0] as String;
+      if (type == 'EVENT' && msg.length >= 3) {
+        final Map<String, dynamic> event =
+            msg[2] as Map<String, dynamic>;
+        try {
+          final String pubkey = event['pubkey'] as String;
+          final List<List<String>> tags = (event['tags'] as List<dynamic>)
+              .map((dynamic t) => (t as List<dynamic>)
+                  .map((dynamic e) => e.toString())
+                  .toList())
+              .toList();
+          // Only include genuine MULTIPASS profiles (NIP-39 g1pub tag)
+          final bool hasG1pub = tags.any((List<String> t) =>
+              t.length >= 2 &&
+              t[0] == 'i' &&
+              t[1].startsWith('g1pub:'));
+          if (!hasG1pub) return;
+          results.add(NostrProfile.fromEventContent(
+            event['content'] as String,
+            pubkey,
+            tags,
+          ));
+        } catch (e) {
+          loggerDev('[NostrRelay] fetchAllMultipassProfiles parse: $e');
+        }
+      } else if (type == 'EOSE') {
+        if (!completer.isCompleted) completer.complete(results);
+        _handlers.remove(subId);
+        _sendRaw(jsonEncode(<dynamic>['CLOSE', subId]));
+      }
+    };
+
+    _sendRaw(jsonEncode(<dynamic>[
+      'REQ',
+      subId,
+      <String, dynamic>{'kinds': <int>[0], 'limit': limit},
+    ]));
+
+    return completer.future.timeout(
+      const Duration(seconds: 10),
+      onTimeout: () {
+        _handlers.remove(subId);
+        _sendRaw(jsonEncode(<dynamic>['CLOSE', subId]));
+        return results;
+      },
+    );
+  }
+
   // ─── Station Economy (Kind 30850) ─────────────────────────────────
 
   /// Event kind for station economy reports (NIP-78 application-specific)

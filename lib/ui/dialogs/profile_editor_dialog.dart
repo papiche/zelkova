@@ -20,9 +20,13 @@ class ProfileEditorDialog extends StatefulWidget {
     super.key,
     required this.currentContact,
     required this.onSaved,
+    this.nostrProfile,
   });
   final Contact currentContact;
   final VoidCallback onSaved;
+  /// Current NOSTR kind-0 profile. When provided, the form fields are
+  /// pre-filled with the live profile values (name, about, city, picture URL).
+  final NostrProfile? nostrProfile;
 
   @override
   State<ProfileEditorDialog> createState() => _ProfileEditorDialogState();
@@ -38,17 +42,26 @@ class _ProfileEditorDialogState extends State<ProfileEditorDialog> {
   String? _selectedBannerBase64;
   bool _isSaving = false;
 
+  // Picture URL from the live kind-0 profile (shown as preview when no new
+  // image has been picked yet).
+  String? _existingPictureUrl;
+  String? _existingBannerUrl;
+
   @override
   void initState() {
     super.initState();
-    _titleController =
-        TextEditingController(text: widget.currentContact.name ?? '');
-    _descriptionController =
-        TextEditingController(text: widget.currentContact.description ?? '');
-    _cityController =
-        TextEditingController(text: widget.currentContact.city ?? '');
+    final NostrProfile? np = widget.nostrProfile;
+    // Priority: NOSTR kind-0 > Contact (local cache)
+    _titleController = TextEditingController(
+        text: np?.name ?? widget.currentContact.name ?? '');
+    _descriptionController = TextEditingController(
+        text: np?.about ?? widget.currentContact.description ?? '');
+    _cityController = TextEditingController(
+        text: np?.city ?? widget.currentContact.city ?? '');
     _socials = List<Map<String, String>>.from(
-        widget.currentContact.socials ?? <Map<String, String>>[]);
+        np?.socials ?? widget.currentContact.socials ?? <Map<String, String>>[]);
+    _existingPictureUrl = np?.picture;
+    _existingBannerUrl = np?.banner;
   }
 
   @override
@@ -274,9 +287,12 @@ class _ProfileEditorDialogState extends State<ProfileEditorDialog> {
                     // Avatar Picker
                     Center(
                       child: AvatarPicker(
-                        existingBase64: widget.currentContact.avatar != null
-                            ? base64Encode(widget.currentContact.avatar!)
-                            : null,
+                        existingBase64: _selectedAvatarBase64
+                            ?? (widget.currentContact.avatar != null
+                                ? base64Encode(widget.currentContact.avatar!)
+                                : null),
+                        // Show NOSTR picture URL as preview when no local base64
+                        existingUrl: _existingPictureUrl,
                         onSelected: (String base64) {
                           setState(() => _selectedAvatarBase64 = base64);
                         },

@@ -1,5 +1,17 @@
 import 'dart:convert';
 
+/// Normalize an image URL by collapsing path double-slashes.
+/// Some UPlanet IPFS gateways emit  https://host//ipfs/Qm…
+/// which breaks NetworkImage. We keep the protocol "://" intact.
+String? _normalizeUrl(String? url) {
+  if (url == null || url.isEmpty) return url;
+  // Replace //+ in path with a single /  (but not the "://" in protocol).
+  return url.replaceAllMapped(
+    RegExp(r'(?<!:)//+'),
+    (_) => '/',
+  );
+}
+
 /// NOSTR profile metadata (NIP-01 kind 0, NIP-24, NIP-39)
 ///
 /// Maps to Cesium+ profile fields for migration:
@@ -82,8 +94,11 @@ class NostrProfile {
       name: (json['name'] as String?) ?? '',
       displayName: json['display_name'] as String?,
       about: json['about'] as String?,
-      picture: json['picture'] as String?,
-      banner: json['banner'] as String?,
+      // Normalize URLs: fix double-slashes in path introduced by some IPFS
+      // gateways (e.g. https://ipfs.example.com//ipfs/Qm...).
+      // Preserve the protocol prefix "://" unchanged.
+      picture: _normalizeUrl(json['picture'] as String?),
+      banner: _normalizeUrl(json['banner'] as String?),
       picture64: json['picture64'] as String?,
       nip05: json['nip05'] as String?,
       website: json['website'] as String?,

@@ -1,17 +1,133 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:math' as math;
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../data/models/app_cubit.dart';
+import '../../env.dart';
 import '../../g1/multipass_service.dart';
 import '../../g1/zen_tag_service.dart';
 import '../../shared_prefs_helper_v2.dart';
 import '../logger.dart';
+
+/// A station in the UPlanet SWARM that can host a MULTIPASS.
+class _SwarmStation {
+  const _SwarmStation({
+    required this.label,
+    required this.hostname,
+    required this.city,
+    required this.uspot,
+    required this.myIpfs,
+    required this.relay,
+    required this.active,
+    required this.lat,
+    required this.lon,
+    // Capacities
+    required this.nostrSlots,
+    required this.zencardSlots,
+    required this.captainSlots,
+    required this.availableSpaceGb,
+    // Economy
+    required this.ncard,
+    required this.zcard,
+    required this.paf,
+    required this.machineValueZen,
+    required this.bilan,
+  });
+
+  final String label;      // hostname – IPCity
+  final String hostname;
+  final String city;
+  final String uspot;      // UPassport URL
+  final String myIpfs;     // IPFS gateway
+  final String relay;      // WSS NOSTR relay
+  final bool active;       // upassport service running?
+  final double lat;
+  final double lon;
+  // Capacities
+  final int nostrSlots;    // Available MULTIPASS slots
+  final int zencardSlots;
+  final int captainSlots;
+  final double availableSpaceGb;
+  // Weekly economics
+  final int ncard;          // active MULTIPASS count
+  final int zcard;          // active ZenCard count
+  final int paf;            // weekly levy (ZEN) per MULTIPASS
+  final double machineValueZen; // machine purchase price (ZEN)
+  final String bilan;       // weekly accounting balance
+
+  static _SwarmStation? fromJson(Map<String, dynamic> m) {
+    final String? uspot = m['uSPOT'] as String?;
+    if (uspot == null || uspot.isEmpty) return null;
+    final String host = m['hostname'] as String? ?? '';
+    final String city = m['IPCity'] as String? ?? '';
+
+    final Map<String, dynamic> cap =
+        (m['capacities'] as Map<String, dynamic>?) ?? <String, dynamic>{};
+    final Map<String, dynamic> storage =
+        (cap['storage_details'] as Map<String, dynamic>?) ?? <String, dynamic>{};
+    final Map<String, dynamic> root =
+        (storage['root'] as Map<String, dynamic>?) ?? <String, dynamic>{};
+    final Map<String, dynamic> svc =
+        (m['services'] as Map<String, dynamic>?) ?? <String, dynamic>{};
+    final Map<String, dynamic> up =
+        (svc['upassport'] as Map<String, dynamic>?) ?? <String, dynamic>{};
+    final Map<String, dynamic> eco =
+        (m['economy'] as Map<String, dynamic>?) ?? <String, dynamic>{};
+
+    final String label = <String>[
+      if (host.isNotEmpty) host,
+      if (city.isNotEmpty) city,
+    ].join(' – ');
+
+    return _SwarmStation(
+      label: label.isNotEmpty ? label : uspot,
+      hostname: host,
+      city: city,
+      uspot: uspot,
+      myIpfs: m['myIPFS'] as String? ?? '',
+      relay: m['myRELAY'] as String? ?? '',
+      active: up['active'] as bool? ?? false,
+      lat: double.tryParse(m['STATION_LAT'] as String? ?? '') ?? 0.0,
+      lon: double.tryParse(m['STATION_LON'] as String? ?? '') ?? 0.0,
+      // capacities
+      nostrSlots: (cap['nostr_slots'] as num?)?.toInt() ?? 0,
+      zencardSlots: (cap['zencard_slots'] as num?)?.toInt() ?? 0,
+      captainSlots: (cap['reserved_captain_slots'] as num?)?.toInt() ?? 0,
+      availableSpaceGb: (root['available_gb'] as num?)?.toDouble()
+          ?? (cap['available_space_gb'] as num?)?.toDouble() ?? 0,
+      // economics
+      ncard: int.tryParse(m['NCARD']?.toString() ?? '') ??
+          (eco['multipass_count'] as num?)?.toInt() ?? 0,
+      zcard: int.tryParse(m['ZCARD']?.toString() ?? '') ??
+          (eco['zencard_count'] as num?)?.toInt() ?? 0,
+      paf: int.tryParse(m['PAF']?.toString() ?? '') ??
+          (eco['captain_remuneration'] as num?)?.toInt() ?? 0,
+      machineValueZen: double.tryParse(m['MACHINE_VALUE_ZEN']?.toString() ?? '')
+          ?? 0.0,
+      bilan: m['BILAN']?.toString() ?? '0',
+    );
+  }
+
+  /// Haversine distance in km from [lat]/[lon].
+  double distanceFrom(double fromLat, double fromLon) {
+    const double r = 6371.0;
+    final double dLat = (lat - fromLat) * math.pi / 180.0;
+    final double dLon = (lon - fromLon) * math.pi / 180.0;
+    final double a = math.sin(dLat / 2) * math.sin(dLat / 2) +
+        math.cos(fromLat * math.pi / 180.0) *
+            math.cos(lat * math.pi / 180.0) *
+            math.sin(dLon / 2) *
+            math.sin(dLon / 2);
+    return r * 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a));
+  }
+}
 
 /// Onboarding screen for first launch:
 /// Page 0 — Présentation des 4 options de contribution OC (carousel)
@@ -36,11 +152,74 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
   bool _geolocated = false;
   MultipassResponse? _result;
 
+  // ── SWARM station selector ─────────────────────────────────────────────────
+  List<_SwarmStation> _swarmStations = <_SwarmStation>[];
+  bool _swarmLoading = false;
+  String _selectedUspot = Env.upassportUrl; // URL used for MULTIPASS creation
+
+  @override
+  void initState() {
+    super.initState();
+    _loadSwarmStations();
+  }
+
   @override
   void dispose() {
     _pageController.dispose();
     _emailController.dispose();
     super.dispose();
+  }
+
+  /// Load the SWARM station list from the main UPassport API endpoint.
+  /// The JSON root contains the primary station fields + a SWARM array.
+  Future<void> _loadSwarmStations() async {
+    setState(() => _swarmLoading = true);
+    try {
+      final Uri uri = Uri.parse(Env.upassportUrl);
+      final http.Response r =
+          await http.get(uri).timeout(const Duration(seconds: 10));
+      if (r.statusCode == 200) {
+        final Map<String, dynamic> root =
+            jsonDecode(r.body) as Map<String, dynamic>;
+
+        final List<_SwarmStation> stations = <_SwarmStation>[];
+
+        // Primary station — force active:true (we just reached it)
+        final Map<String, dynamic> primaryMap =
+            Map<String, dynamic>.from(root);
+        primaryMap['services'] = <String, dynamic>{
+          ...?(root['services'] as Map<String, dynamic>?),
+          'upassport': <String, dynamic>{'active': true},
+        };
+        final _SwarmStation? primary = _SwarmStation.fromJson(primaryMap);
+        if (primary != null) stations.add(primary);
+
+        // SWARM stations
+        final List<dynamic> swarm =
+            root['SWARM'] as List<dynamic>? ?? <dynamic>[];
+        for (final dynamic raw in swarm) {
+          if (raw is Map<String, dynamic>) {
+            final _SwarmStation? s = _SwarmStation.fromJson(raw);
+            if (s != null) stations.add(s);
+          }
+        }
+
+        if (mounted) {
+          setState(() {
+            _swarmStations = stations;
+            // Keep current selection if still in list, else pick primary
+            if (stations.isNotEmpty &&
+                !stations.any((_SwarmStation s) => s.uspot == _selectedUspot)) {
+              _selectedUspot = stations.first.uspot;
+            }
+          });
+        }
+      }
+    } catch (e) {
+      loggerDev('SWARM load error: $e');
+    } finally {
+      if (mounted) setState(() => _swarmLoading = false);
+    }
   }
 
   // ── Géolocalisation ────────────────────────────────────────────────────────
@@ -71,6 +250,8 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
         _lon = position.longitude.toStringAsFixed(2);
         _geolocated = true;
       });
+      // Re-sort SWARM by distance now that we have a real position
+      _sortStationsByDistance(position.latitude, position.longitude);
     } catch (e) {
       // Erreur GPS → fallback 0.00,0.00
       setState(() {
@@ -79,6 +260,32 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
         _geolocated = true;
       });
     }
+  }
+
+  /// Sort _swarmStations by Haversine distance from user's position.
+  /// Stations at (0, 0) (no GPS data) are pushed to the end.
+  void _sortStationsByDistance(double userLat, double userLon) {
+    if (_swarmStations.isEmpty) return;
+    final List<_SwarmStation> sorted = List<_SwarmStation>.from(_swarmStations);
+    sorted.sort((_SwarmStation a, _SwarmStation b) {
+      final bool aNoGps = a.lat == 0 && a.lon == 0;
+      final bool bNoGps = b.lat == 0 && b.lon == 0;
+      if (aNoGps && bNoGps) return 0;
+      if (aNoGps) return 1;
+      if (bNoGps) return -1;
+      final double da = a.distanceFrom(userLat, userLon);
+      final double db = b.distanceFrom(userLat, userLon);
+      return da.compareTo(db);
+    });
+    setState(() {
+      _swarmStations = sorted;
+      // Update selection to nearest station that has slots + is active
+      final _SwarmStation? nearest = sorted.firstWhere(
+        (_SwarmStation s) => s.active && s.nostrSlots > 0,
+        orElse: () => sorted.first,
+      );
+      if (nearest != null) _selectedUspot = nearest.uspot;
+    });
   }
 
   // ── Création du MULTIPASS ──────────────────────────────────────────────────
@@ -97,6 +304,7 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
         lang: context.locale.languageCode,
         lat: _lat,
         lon: _lon,
+        serverUrl: _selectedUspot, // use swarm-selected station
       );
 
       await SharedPreferencesHelperV2().createMultipassAccount(
@@ -270,7 +478,7 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
             _buildRechargeInfo(
               emoji: '🏠',
               title: tr('subscription_monthly_title'),
-              subtitle: '~4 Ẑ/mois · Accès continu à tous les services',
+              subtitle: '5 Ẑ/semaine · Accès continu à tous les services',
               desc: 'Comme une adhésion à votre asso favorite : vous cotisez, vous bénéficiez, vous décidez.',
               badge: 'RÉCURRENT',
               badgeColor: const Color(0xFFDD6633),
@@ -516,6 +724,18 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
                   },
                 ),
                 const SizedBox(height: 16),
+                // Station selector — loaded from SWARM
+                if (_swarmLoading)
+                  const Padding(
+                    padding: EdgeInsets.symmetric(vertical: 8),
+                    child: Center(child: SizedBox(
+                      width: 20, height: 20,
+                      child: CircularProgressIndicator(strokeWidth: 2),
+                    )),
+                  )
+                else if (_swarmStations.isNotEmpty)
+                  _buildStationSelector(),
+                const SizedBox(height: 16),
                 AnimatedSwitcher(
                   duration: const Duration(milliseconds: 300),
                   child: _geolocated
@@ -583,6 +803,304 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  // ── Station selector ───────────────────────────────────────────────────────
+  // Shows the SWARM list fetched from {Env.upassportUrl}.
+  // Each item displays: label (hostname – IPCity), available MULTIPASS slots,
+  // and an active/inactive badge for the UPassport service.
+  // The selected station's uSPOT URL is used in _createMultipass().
+
+  Widget _buildStationSelector() {
+    final ThemeData theme = Theme.of(context);
+    final ColorScheme cs = theme.colorScheme;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Text(
+          tr('swarm_station_title'),
+          style: theme.textTheme.labelMedium?.copyWith(
+            fontWeight: FontWeight.w600,
+            color: cs.onSurface.withValues(alpha: 0.7),
+          ),
+        ),
+        const SizedBox(height: 6),
+        Container(
+          decoration: BoxDecoration(
+            border: Border.all(color: cs.outline.withValues(alpha: 0.4)),
+            borderRadius: BorderRadius.circular(14),
+          ),
+          child: DropdownButtonHideUnderline(
+            child: ButtonTheme(
+              alignedDropdown: true,
+              child: DropdownButton<String>(
+                value: _selectedUspot,
+                isExpanded: true,
+                borderRadius: BorderRadius.circular(14),
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                items: _swarmStations
+                    .map((_SwarmStation s) => DropdownMenuItem<String>(
+                          value: s.uspot,
+                          child: _buildStationItem(s, theme, cs),
+                        ))
+                    .toList(),
+                onChanged: (String? v) {
+                  if (v != null) setState(() => _selectedUspot = v);
+                },
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildStationItem(
+      _SwarmStation s, ThemeData theme, ColorScheme cs) {
+    final bool hasSlots = s.nostrSlots > 0;
+    final int bilanInt = int.tryParse(s.bilan) ?? 0;
+    final Color bilanColor = bilanInt >= 0 ? Colors.green : Colors.red;
+    return Row(
+      children: <Widget>[
+        // Active / inactive dot
+        Container(
+          width: 8,
+          height: 8,
+          decoration: BoxDecoration(
+            color: s.active ? Colors.green : Colors.orange,
+            shape: BoxShape.circle,
+          ),
+        ),
+        const SizedBox(width: 8),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              // hostname – city
+              Text(
+                s.label,
+                style: theme.textTheme.bodyMedium
+                    ?.copyWith(fontWeight: FontWeight.w600),
+                overflow: TextOverflow.ellipsis,
+              ),
+              // PAF + BILAN + NCARD/ZCARD summary
+              Text(
+                'PAF ${s.paf}Ẑ/sem · ${s.ncard}MP · ${s.zcard}ZC · '
+                'bilan ${bilanInt > 0 ? '+' : ''}${s.bilan}Ẑ',
+                style: theme.textTheme.labelSmall?.copyWith(
+                    color: cs.onSurface.withValues(alpha: 0.55)),
+                overflow: TextOverflow.ellipsis,
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(width: 6),
+        // Slot badge + info button
+        Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: <Widget>[
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
+              decoration: BoxDecoration(
+                color: hasSlots ? cs.primaryContainer : cs.errorContainer,
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Text(
+                '${s.nostrSlots}MP',
+                style: theme.textTheme.labelSmall?.copyWith(
+                  color: hasSlots ? cs.onPrimaryContainer : cs.onErrorContainer,
+                  fontWeight: FontWeight.w700,
+                  fontSize: 9,
+                ),
+              ),
+            ),
+            if (bilanInt != 0)
+              Text(
+                '${bilanInt > 0 ? '+' : ''}${s.bilan}Ẑ',
+                style: theme.textTheme.labelSmall
+                    ?.copyWith(color: bilanColor, fontSize: 9),
+              ),
+          ],
+        ),
+        // ℹ️ opens the Astroport detail sheet
+        GestureDetector(
+          onTap: () => _showStationDetail(s),
+          child: Padding(
+            padding: const EdgeInsets.only(left: 4),
+            child: Icon(Icons.info_outline, size: 16,
+                color: cs.onSurface.withValues(alpha: 0.45)),
+          ),
+        ),
+      ],
+    );
+  }
+
+  // ── Astroport detail sheet ──────────────────────────────────────────────────
+
+  void _showStationDetail(_SwarmStation s) {
+    final int bilanInt = int.tryParse(s.bilan) ?? 0;
+    final Color bilanColor = bilanInt >= 0 ? Colors.green : Colors.red;
+
+    showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (BuildContext ctx) {
+        final ThemeData theme = Theme.of(ctx);
+        final ColorScheme cs = theme.colorScheme;
+        return DraggableScrollableSheet(
+          initialChildSize: 0.6,
+          maxChildSize: 0.95,
+          expand: false,
+          builder: (_, ScrollController scroll) => Container(
+            decoration: BoxDecoration(
+              color: cs.surface,
+              borderRadius:
+                  const BorderRadius.vertical(top: Radius.circular(20)),
+            ),
+            child: ListView(
+              controller: scroll,
+              padding: const EdgeInsets.fromLTRB(20, 12, 20, 24),
+              children: <Widget>[
+                // Handle
+                Center(
+                  child: Container(
+                    width: 40, height: 4,
+                    margin: const EdgeInsets.only(bottom: 16),
+                    decoration: BoxDecoration(
+                      color: cs.onSurface.withValues(alpha: 0.2),
+                      borderRadius: BorderRadius.circular(2),
+                    ),
+                  ),
+                ),
+                // Header
+                Row(
+                  children: <Widget>[
+                    Container(
+                      width: 10, height: 10,
+                      decoration: BoxDecoration(
+                          color: s.active ? Colors.green : Colors.orange,
+                          shape: BoxShape.circle),
+                    ),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: Text(
+                        s.label,
+                        style: theme.textTheme.titleMedium
+                            ?.copyWith(fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ],
+                ),
+                if (s.city.isNotEmpty) ...<Widget>[
+                  const SizedBox(height: 4),
+                  Text(s.city,
+                      style: theme.textTheme.bodySmall
+                          ?.copyWith(color: cs.onSurface.withValues(alpha: 0.6))),
+                ],
+                const Divider(height: 24),
+
+                // URLs
+                _detailSection(theme, cs, '🌐 Accès', <Widget>[
+                  _detailRow(theme, cs, 'UPassport', s.uspot),
+                  _detailRow(theme, cs, 'IPFS',     s.myIpfs),
+                  _detailRow(theme, cs, 'Relay',    s.relay),
+                  if (s.lat != 0 || s.lon != 0)
+                    _detailRow(theme, cs, 'GPS',
+                        '${s.lat.toStringAsFixed(2)}°, ${s.lon.toStringAsFixed(2)}°'),
+                ]),
+
+                // Capacities
+                _detailSection(theme, cs, '📦 Capacités', <Widget>[
+                  _detailRow(theme, cs, 'MULTIPASS disponibles',
+                      '${s.nostrSlots}'),
+                  _detailRow(theme, cs, 'ZenCard disponibles',
+                      '${s.zencardSlots}'),
+                  _detailRow(theme, cs, 'Réservés capitaine',
+                      '${s.captainSlots}'),
+                  _detailRow(theme, cs, 'Espace disque',
+                      '${s.availableSpaceGb.toStringAsFixed(0)} Go'),
+                ]),
+
+                // Economy
+                _detailSection(theme, cs, '💰 Économie hebdomadaire', <Widget>[
+                  _detailRow(theme, cs, 'MULTIPASS actifs', '${s.ncard}'),
+                  _detailRow(theme, cs, 'ZenCards actifs',  '${s.zcard}'),
+                  _detailRow(theme, cs, 'PAF (prélèvement)', '${s.paf} Ẑ/sem'),
+                  _detailRow(theme, cs, 'Valeur machine',
+                      '${s.machineValueZen.toStringAsFixed(0)} Ẑ'),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Text('Bilan comptable',
+                          style: theme.textTheme.bodySmall
+                              ?.copyWith(color: cs.onSurface.withValues(alpha: 0.65))),
+                      Text(
+                        '${bilanInt > 0 ? '+' : ''}${s.bilan} Ẑ/sem',
+                        style: theme.textTheme.bodyMedium?.copyWith(
+                            color: bilanColor, fontWeight: FontWeight.w700),
+                      ),
+                    ],
+                  ),
+                ]),
+
+                const SizedBox(height: 8),
+                ElevatedButton(
+                  onPressed: () {
+                    setState(() => _selectedUspot = s.uspot);
+                    Navigator.pop(ctx);
+                  },
+                  child: Text(tr('swarm_station_select')),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _detailSection(ThemeData t, ColorScheme cs, String title,
+      List<Widget> rows) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Text(title,
+            style: t.textTheme.labelMedium?.copyWith(
+                fontWeight: FontWeight.w700,
+                color: cs.onSurface.withValues(alpha: 0.7))),
+        const SizedBox(height: 6),
+        ...rows,
+        const SizedBox(height: 16),
+      ],
+    );
+  }
+
+  Widget _detailRow(ThemeData t, ColorScheme cs, String label, String value) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 2),
+      child: Row(
+        children: <Widget>[
+          Expanded(
+            flex: 2,
+            child: Text(label,
+                style: t.textTheme.bodySmall
+                    ?.copyWith(color: cs.onSurface.withValues(alpha: 0.65))),
+          ),
+          Expanded(
+            flex: 3,
+            child: Text(
+              value,
+              style: t.textTheme.bodySmall
+                  ?.copyWith(fontWeight: FontWeight.w600),
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -752,7 +1270,7 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
                   _buildOcTile(
                     icon: Icons.autorenew,
                     title: tr('subscription_monthly_title'),
-                    subtitle: '~4 Ẑ/mois · Accès continu',
+                    subtitle: '5 Ẑ/semaine · Accès continu',
                     url: ocUrls.membre.isNotEmpty
                         ? ocUrls.membre
                         : _ocMembreUrl,

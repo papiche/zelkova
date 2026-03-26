@@ -19,19 +19,36 @@ import '../ui_helpers.dart';
 ///       – exports all NOSTR events to IPFS (encrypted backup)
 ///       – transfers the Ğ1 balance to the primordial account (cash-back)
 ///       – pre-generates a .next.disco for restoration on the new relay
-///       – publishes the backup CID in the "deactivated" NOSTR profile
-///  4. Ginkgo displays the outcome; the user simply types their email on
-///     the new relay to trigger nostr_RESTORE_TW.sh automatically.
+///       – publishes the backup CID in the "deactivated" NOSTR profile (kind-0)
+///         NOSTR is the single source of truth for the restoration CID.
+///  4. Ginkgo displays npub + link to the deactivated NOSTR profile on Coracle.
+///     The user simply types their email on the new relay → auto-restore.
+///
+/// Bugs fixed vs previous version:
+///  • DraggableScrollableSheet avoids getMaxIntrinsicWidth Flutter crash
+///  • URL Coracle built from _upassportHome (the UPlanet relay IPFS gateway),
+///    not from Env.ipfsGateways which may point to duniter/squid nodes
+///  • If ssss_player is empty (old account), fall back to opening /scan manually
 void showMultipassRelocationDialog(BuildContext context) {
   showModalBottomSheet(
     context: context,
     isScrollControlled: true,
     backgroundColor: Colors.transparent,
-    builder: (BuildContext ctx) => const _MultipassRelocationSheet(),
+    builder: (BuildContext ctx) {
+      return DraggableScrollableSheet(
+        initialChildSize: 0.60,
+        minChildSize: 0.40,
+        maxChildSize: 0.95,
+        expand: false,
+        builder: (BuildContext _, ScrollController scrollController) {
+          return const _MultipassRelocationSheet();
+        },
+      );
+    },
   );
 }
 
-enum _RelocationState { idle, confirm, loading, success, error }
+enum _RelocationState { idle, confirm, loading, success, noSsss, error }
 
 class _MultipassRelocationSheet extends StatefulWidget {
   const _MultipassRelocationSheet();
@@ -45,8 +62,10 @@ class _MultipassRelocationSheetState
     extends State<_MultipassRelocationSheet> {
   _RelocationState _phase = _RelocationState.idle;
   String? _ssssPlayer;
+  // Base URL of the UPlanet relay (e.g. https://u.copylaradio.com).
+  // Used to POST /upassport and build Coracle profile URL.
   String? _upassportHome;
-  String? _npub; // npub of the user, used to link to the deactivated NOSTR profile
+  String? _npub;
   String? _errorMessage;
   bool _dataLoading = true;
 
@@ -65,28 +84,21 @@ class _MultipassRelocationSheetState
         _upassportHome = data != null
             ? (data['uplanet_home'] as String?) ?? Env.upassportUrl
             : Env.upassportUrl;
-        // npub is stored in multipass data — used to open the NOSTR profile
-        // where nostr_DESTROY_TW.sh publishes the encrypted backup CID.
         _npub = data != null ? data['npub'] as String? : null;
         _dataLoading = false;
+        // If no SSSS is stored (account created before SSSS was persisted),
+        // skip the automatic flow and go directly to the manual fallback.
+        if (_ssssPlayer == null || _ssssPlayer!.isEmpty) {
+          _phase = _RelocationState.noSsss;
+        }
       });
     }
   }
 
-  /// Send SSSS player key + PIN 0000 to /upassport — triggers
-  /// nostr_DESTROY_TW.sh on the relay (full migration).
+  /// POST SSSS player key + PIN 0000 to /upassport.
+  /// Triggers nostr_DESTROY_TW.sh on the relay.
   Future<void> _triggerRelocation() async {
-    final String ssss = _ssssPlayer ?? '';
     final String home = _upassportHome ?? Env.upassportUrl;
-
-    if (ssss.isEmpty) {
-      setState(() {
-        _phase = _RelocationState.error;
-        _errorMessage = tr('multipass_relocation_no_ssss');
-      });
-      return;
-    }
-
     setState(() => _phase = _RelocationState.loading);
 
     try {
@@ -95,7 +107,7 @@ class _MultipassRelocationSheetState
           .post(
             url,
             body: <String, String>{
-              'parametre': ssss,
+              'parametre': _ssssPlayer!,
               'imageData': '0000', // relocation PIN
               'zlat': '0.00',
               'zlon': '0.00',
@@ -109,8 +121,8 @@ class _MultipassRelocationSheetState
         } else {
           setState(() {
             _phase = _RelocationState.error;
-            _errorMessage =
-                tr('multipass_relocation_http_error', namedArgs: <String, String>{
+            _errorMessage = tr('multipass_relocation_http_error',
+                namedArgs: <String, String>{
               'code': response.statusCode.toString(),
             });
           });
@@ -126,6 +138,19 @@ class _MultipassRelocationSheetState
     }
   }
 
+  // ── Coracle profile URL ────────────────────────────────────────────────────
+  // Built on the relay domain (_upassportHome) which exposes an IPFS gateway.
+
+  String get _ipfsGateway =>
+      (_upassportHome ?? Env.upassportUrl).replaceAll(RegExp(r'/+$'), '');
+
+  String? _coracleProfileUrl() {
+    if (_npub == null || _npub!.isEmpty) return null;
+    return '$_ipfsGateway/ipns/coracle.copylaradio.com/#/profile/$_npub';
+  }
+
+  // ── build ──────────────────────────────────────────────────────────────────
+
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
@@ -138,105 +163,84 @@ class _MultipassRelocationSheetState
         borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
       ),
       child: SafeArea(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            // Handle bar
-            Container(
-              width: 40,
-              height: 4,
-              margin: const EdgeInsets.only(bottom: 16),
-              decoration: BoxDecoration(
-                color: colorScheme.onSurface.withValues(alpha: 0.2),
-                borderRadius: BorderRadius.circular(2),
-              ),
-            ),
-
-            // --- Title row ---
-            Row(
-              children: <Widget>[
-                Icon(Icons.moving, color: colorScheme.primary, size: 26),
-                const SizedBox(width: 10),
-                Expanded(
-                  child: Text(
-                    tr('multipass_relocation_title'),
-                    style: theme.textTheme.titleMedium
-                        ?.copyWith(fontWeight: FontWeight.bold),
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              // Handle bar
+              Center(
+                child: Container(
+                  width: 40,
+                  height: 4,
+                  margin: const EdgeInsets.only(bottom: 16),
+                  decoration: BoxDecoration(
+                    color: colorScheme.onSurface.withValues(alpha: 0.2),
+                    borderRadius: BorderRadius.circular(2),
                   ),
                 ),
-              ],
-            ),
-            const SizedBox(height: 16),
+              ),
+              // Title
+              Row(
+                children: <Widget>[
+                  Icon(Icons.moving, color: colorScheme.primary, size: 26),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: Text(
+                      tr('multipass_relocation_title'),
+                      style: theme.textTheme.titleMedium
+                          ?.copyWith(fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 16),
 
-            // --- Phase-specific body ---
-            if (_dataLoading)
-              const Padding(
-                padding: EdgeInsets.symmetric(vertical: 24),
-                child: CircularProgressIndicator(),
-              )
-            else
-              _buildBody(theme, colorScheme),
-          ],
+              if (_dataLoading)
+                const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 32),
+                  child: Center(child: CircularProgressIndicator()),
+                )
+              else
+                _buildPhase(theme, colorScheme),
+            ],
+          ),
         ),
       ),
     );
   }
 
-  Widget _buildBody(ThemeData theme, ColorScheme colorScheme) {
+  Widget _buildPhase(ThemeData theme, ColorScheme colorScheme) {
     switch (_phase) {
       case _RelocationState.idle:
-        return _buildIdleBody(theme, colorScheme);
+        return _buildIdle(theme, colorScheme);
       case _RelocationState.confirm:
-        return _buildConfirmBody(theme, colorScheme);
+        return _buildConfirm(theme, colorScheme);
       case _RelocationState.loading:
-        return _buildLoadingBody(theme);
+        return _buildLoading(theme);
       case _RelocationState.success:
-        return _buildSuccessBody(theme, colorScheme);
+        return _buildSuccess(theme, colorScheme);
+      case _RelocationState.noSsss:
+        return _buildNoSsss(theme, colorScheme);
       case _RelocationState.error:
-        return _buildErrorBody(theme, colorScheme);
+        return _buildError(theme, colorScheme);
     }
   }
 
-  // ── Idle: explain what will happen ─────────────────────────────────────────
+  // ── Idle ───────────────────────────────────────────────────────────────────
 
-  Widget _buildIdleBody(ThemeData theme, ColorScheme colorScheme) {
+  Widget _buildIdle(ThemeData theme, ColorScheme colorScheme) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
-        Text(
-          tr('multipass_relocation_description'),
-          style: theme.textTheme.bodyMedium,
-        ),
+        Text(tr('multipass_relocation_description'),
+            style: theme.textTheme.bodyMedium),
         const SizedBox(height: 14),
         _step(theme, colorScheme, '1', tr('multipass_relocation_step1')),
         _step(theme, colorScheme, '2', tr('multipass_relocation_step2')),
         _step(theme, colorScheme, '3', tr('multipass_relocation_step3')),
         const SizedBox(height: 10),
-        // Warning
-        Container(
-          padding: const EdgeInsets.all(10),
-          decoration: BoxDecoration(
-            color: colorScheme.errorContainer.withValues(alpha: 0.25),
-            borderRadius: BorderRadius.circular(8),
-          ),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Icon(Icons.warning_amber_rounded,
-                  color: colorScheme.error, size: 18),
-              const SizedBox(width: 8),
-              Expanded(
-                child: Text(
-                  tr('multipass_relocation_warning'),
-                  style: theme.textTheme.bodySmall?.copyWith(
-                    color: colorScheme.error,
-                    fontStyle: FontStyle.italic,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
+        _warningBox(theme, colorScheme, tr('multipass_relocation_warning')),
         const SizedBox(height: 20),
         Row(
           children: <Widget>[
@@ -261,26 +265,20 @@ class _MultipassRelocationSheetState
     );
   }
 
-  // ── Confirm: explicit confirmation before sending ───────────────────────────
+  // ── Confirm ────────────────────────────────────────────────────────────────
 
-  Widget _buildConfirmBody(ThemeData theme, ColorScheme colorScheme) {
+  Widget _buildConfirm(ThemeData theme, ColorScheme colorScheme) {
     return Column(
       children: <Widget>[
-        Icon(Icons.help_outline_rounded,
-            size: 48, color: colorScheme.primary),
+        Icon(Icons.help_outline_rounded, size: 48, color: colorScheme.primary),
         const SizedBox(height: 12),
-        Text(
-          tr('multipass_relocation_confirm_title'),
-          style: theme.textTheme.titleSmall
-              ?.copyWith(fontWeight: FontWeight.bold),
-          textAlign: TextAlign.center,
-        ),
+        Text(tr('multipass_relocation_confirm_title'),
+            style: theme.textTheme.titleSmall
+                ?.copyWith(fontWeight: FontWeight.bold),
+            textAlign: TextAlign.center),
         const SizedBox(height: 8),
-        Text(
-          tr('multipass_relocation_confirm_body'),
-          style: theme.textTheme.bodyMedium,
-          textAlign: TextAlign.center,
-        ),
+        Text(tr('multipass_relocation_confirm_body'),
+            style: theme.textTheme.bodyMedium, textAlign: TextAlign.center),
         const SizedBox(height: 20),
         Row(
           children: <Widget>[
@@ -308,73 +306,53 @@ class _MultipassRelocationSheetState
     );
   }
 
-  // ── Loading: waiting for the server ────────────────────────────────────────
+  // ── Loading ────────────────────────────────────────────────────────────────
 
-  Widget _buildLoadingBody(ThemeData theme) {
+  Widget _buildLoading(ThemeData theme) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 32),
       child: Column(
         children: <Widget>[
           const CircularProgressIndicator(),
           const SizedBox(height: 16),
-          Text(
-            tr('multipass_relocation_loading'),
-            style: theme.textTheme.bodyMedium,
-            textAlign: TextAlign.center,
-          ),
+          Text(tr('multipass_relocation_loading'),
+              style: theme.textTheme.bodyMedium, textAlign: TextAlign.center),
         ],
       ),
     );
   }
 
-  // ── Success ─────────────────────────────────────────────────────────────────
+  // ── Success ────────────────────────────────────────────────────────────────
   //
-  // After nostr_DESTROY_TW.sh completes, the deactivated NOSTR kind-0 profile
-  // is the single source of truth:
-  //   • about   → "Account deactivated - Backup: {ipfs_url} | Next HEX: …"
-  //   • website → direct IPFS link to the encrypted backup ZIP
+  // After nostr_DESTROY_TW.sh completes, the deactivated kind-0 NOSTR profile
+  // IS the single source of truth: its `about` / `website` fields contain the
+  // CID of the encrypted backup ZIP.
   //
-  // We open the user's own profile on Coracle using their npub so they can
-  // copy the CID and hand it to the new relay's captain.
+  // URL built on the relay domain — NOT on Env.ipfsGateways which may resolve
+  // to duniter/squid nodes instead of an IPFS gateway.
 
-  Widget _buildSuccessBody(ThemeData theme, ColorScheme colorScheme) {
+  Widget _buildSuccess(ThemeData theme, ColorScheme colorScheme) {
     final String? npub = _npub;
-    final String ipfsGw = Env.ipfsGateways.isNotEmpty
-        ? Env.ipfsGateways.split(' ').first.trimRight()
-        : 'https://gyroi.de';
-
-    // Deep-link into the deactivated NOSTR profile which contains the backup CID.
-    final String? profileUrl = npub != null && npub.isNotEmpty
-        ? '$ipfsGw/ipns/coracle.copylaradio.com/#/profile/$npub'
-        : null;
+    final String? profileUrl = _coracleProfileUrl();
 
     return Column(
       children: <Widget>[
-        Icon(Icons.check_circle_outline,
-            size: 56, color: colorScheme.primary),
+        Icon(Icons.check_circle_outline, size: 56, color: colorScheme.primary),
         const SizedBox(height: 12),
-        Text(
-          tr('multipass_relocation_success_title'),
-          style: theme.textTheme.titleSmall
-              ?.copyWith(fontWeight: FontWeight.bold, color: colorScheme.primary),
-          textAlign: TextAlign.center,
-        ),
+        Text(tr('multipass_relocation_success_title'),
+            style: theme.textTheme.titleSmall?.copyWith(
+                fontWeight: FontWeight.bold, color: colorScheme.primary),
+            textAlign: TextAlign.center),
         const SizedBox(height: 8),
-        Text(
-          tr('multipass_relocation_success_body'),
-          style: theme.textTheme.bodyMedium,
-          textAlign: TextAlign.center,
-        ),
+        Text(tr('multipass_relocation_success_body'),
+            style: theme.textTheme.bodyMedium, textAlign: TextAlign.center),
         const SizedBox(height: 6),
-        Text(
-          tr('multipass_relocation_success_hint'),
-          style: theme.textTheme.bodySmall?.copyWith(
-            color: colorScheme.onSurface.withValues(alpha: 0.6),
-            fontStyle: FontStyle.italic,
-          ),
-          textAlign: TextAlign.center,
-        ),
-        // Display npub for lookup on the new relay + copy button
+        Text(tr('multipass_relocation_success_hint'),
+            style: theme.textTheme.bodySmall?.copyWith(
+                color: colorScheme.onSurface.withValues(alpha: 0.6),
+                fontStyle: FontStyle.italic),
+            textAlign: TextAlign.center),
+        // npub display + copy button
         if (npub != null && npub.isNotEmpty) ...<Widget>[
           const SizedBox(height: 12),
           Container(
@@ -386,24 +364,19 @@ class _MultipassRelocationSheetState
             child: Row(
               children: <Widget>[
                 Expanded(
-                  child: Text(
-                    npub,
-                    style: theme.textTheme.bodySmall
-                        ?.copyWith(fontFamily: 'monospace', fontSize: 11),
-                    overflow: TextOverflow.ellipsis,
-                  ),
+                  child: Text(npub,
+                      style: theme.textTheme.bodySmall
+                          ?.copyWith(fontFamily: 'monospace', fontSize: 11),
+                      overflow: TextOverflow.ellipsis),
                 ),
                 IconButton(
                   icon: const Icon(Icons.copy, size: 18),
                   tooltip: tr('multipass_relocation_copy_npub'),
                   onPressed: () {
                     Clipboard.setData(ClipboardData(text: npub));
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                         content:
-                            Text(tr('multipass_relocation_npub_copied')),
-                      ),
-                    );
+                            Text(tr('multipass_relocation_npub_copied'))));
                   },
                 ),
               ],
@@ -413,20 +386,19 @@ class _MultipassRelocationSheetState
         const SizedBox(height: 20),
         Row(
           children: <Widget>[
-            if (profileUrl != null)
+            if (profileUrl != null) ...<Widget>[
               Expanded(
                 child: OutlinedButton.icon(
                   icon: const Icon(Icons.person_outline),
                   label: Text(tr('multipass_relocation_see_nostr_profile')),
                   onPressed: () {
                     Navigator.pop(context);
-                    // The deactivated NOSTR profile (kind-0) is the relay for
-                    // the encrypted backup CID published by nostr_DESTROY_TW.sh.
                     openUrl(profileUrl);
                   },
                 ),
               ),
-            if (profileUrl != null) const SizedBox(width: 10),
+              const SizedBox(width: 10),
+            ],
             Expanded(
               child: ElevatedButton.icon(
                 icon: const Icon(Icons.close),
@@ -440,25 +412,68 @@ class _MultipassRelocationSheetState
     );
   }
 
-  // ── Error ───────────────────────────────────────────────────────────────────
+  // ── No SSSS stored (old account) ───────────────────────────────────────────
+  //
+  // For accounts created before ssss_player was persisted, the automatic flow
+  // cannot work. Offer the manual alternative: open /scan on the relay.
 
-  Widget _buildErrorBody(ThemeData theme, ColorScheme colorScheme) {
+  Widget _buildNoSsss(ThemeData theme, ColorScheme colorScheme) {
+    final String scanUrl =
+        '${(_upassportHome ?? Env.upassportUrl).replaceAll(RegExp(r'/+$'), '')}/scan';
+    return Column(
+      children: <Widget>[
+        Icon(Icons.qr_code_scanner, size: 48, color: colorScheme.primary),
+        const SizedBox(height: 12),
+        Text(tr('multipass_relocation_no_ssss_title'),
+            style: theme.textTheme.titleSmall
+                ?.copyWith(fontWeight: FontWeight.bold),
+            textAlign: TextAlign.center),
+        const SizedBox(height: 8),
+        Text(tr('multipass_relocation_no_ssss_body'),
+            style: theme.textTheme.bodyMedium, textAlign: TextAlign.center),
+        const SizedBox(height: 10),
+        _warningBox(
+            theme, colorScheme, tr('multipass_relocation_no_ssss_warning')),
+        const SizedBox(height: 20),
+        Row(
+          children: <Widget>[
+            Expanded(
+              child: OutlinedButton(
+                onPressed: () => Navigator.pop(context),
+                child: Text(tr('multipass_relocation_cancel')),
+              ),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: ElevatedButton.icon(
+                icon: const Icon(Icons.qr_code_scanner),
+                label: Text(tr('multipass_relocation_go_scan')),
+                onPressed: () {
+                  Navigator.pop(context);
+                  openUrl(scanUrl);
+                },
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  // ── Error ──────────────────────────────────────────────────────────────────
+
+  Widget _buildError(ThemeData theme, ColorScheme colorScheme) {
     return Column(
       children: <Widget>[
         Icon(Icons.error_outline, size: 48, color: colorScheme.error),
         const SizedBox(height: 12),
-        Text(
-          tr('multipass_relocation_error_title'),
-          style: theme.textTheme.titleSmall?.copyWith(
-              fontWeight: FontWeight.bold, color: colorScheme.error),
-          textAlign: TextAlign.center,
-        ),
+        Text(tr('multipass_relocation_error_title'),
+            style: theme.textTheme.titleSmall?.copyWith(
+                fontWeight: FontWeight.bold, color: colorScheme.error),
+            textAlign: TextAlign.center),
         const SizedBox(height: 8),
-        Text(
-          _errorMessage ?? tr('multipass_relocation_error_generic'),
-          style: theme.textTheme.bodySmall,
-          textAlign: TextAlign.center,
-        ),
+        Text(_errorMessage ?? tr('multipass_relocation_error_generic'),
+            style: theme.textTheme.bodySmall, textAlign: TextAlign.center),
         const SizedBox(height: 20),
         Row(
           children: <Widget>[
@@ -482,10 +497,10 @@ class _MultipassRelocationSheetState
     );
   }
 
-  // ─── helpers ───────────────────────────────────────────────────────────────
+  // ── Shared helpers ─────────────────────────────────────────────────────────
 
-  Widget _step(ThemeData theme, ColorScheme colorScheme, String number,
-      String text) {
+  Widget _step(
+      ThemeData theme, ColorScheme colorScheme, String number, String text) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 8),
       child: Row(
@@ -495,8 +510,8 @@ class _MultipassRelocationSheetState
             width: 22,
             height: 22,
             alignment: Alignment.center,
-            decoration: BoxDecoration(
-                color: colorScheme.primary, shape: BoxShape.circle),
+            decoration:
+                BoxDecoration(color: colorScheme.primary, shape: BoxShape.circle),
             child: Text(number,
                 style: theme.textTheme.bodySmall?.copyWith(
                     color: colorScheme.onPrimary,
@@ -504,6 +519,29 @@ class _MultipassRelocationSheetState
           ),
           const SizedBox(width: 10),
           Expanded(child: Text(text, style: theme.textTheme.bodyMedium)),
+        ],
+      ),
+    );
+  }
+
+  Widget _warningBox(ThemeData theme, ColorScheme colorScheme, String text) {
+    return Container(
+      padding: const EdgeInsets.all(10),
+      decoration: BoxDecoration(
+        color: colorScheme.errorContainer.withValues(alpha: 0.25),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Icon(Icons.warning_amber_rounded, color: colorScheme.error, size: 18),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Text(text,
+                style: theme.textTheme.bodySmall?.copyWith(
+                    color: colorScheme.error,
+                    fontStyle: FontStyle.italic)),
+          ),
         ],
       ),
     );

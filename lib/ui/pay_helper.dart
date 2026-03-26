@@ -474,7 +474,7 @@ Future<bool> _tryKind7PaymentFallback({
     );
 
     logger('[pay_helper] Kind 7 fallback result: sent=$sent'
-        ', +${zenAmount}Ẑ → ${recipient.pubKey.substring(0, 8)}...');
+        ', +$zenAmountẐ → ${recipient.pubKey.substring(0, 8)}...');
     return sent;
   } catch (e) {
     logger('[pay_helper] Kind 7 fallback error: $e');

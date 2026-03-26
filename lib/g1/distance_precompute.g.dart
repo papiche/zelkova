@@ -14,7 +14,8 @@ DistancePrecompute _$DistancePrecomputeFromJson(Map<String, dynamic> json) =>
       memberCount: (json['memberCount'] as num).toInt(),
       minCertsForReferee: (json['minCertsForReferee'] as num).toInt(),
       results: DistancePrecompute._mapFromJson(
-          json['results'] as Map<String, dynamic>),
+        json['results'] as Map<String, dynamic>,
+      ),
     );
 
 Map<String, dynamic> _$DistancePrecomputeToJson(DistancePrecompute instance) =>

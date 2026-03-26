@@ -45,7 +45,7 @@ class _ProfileEditorDialogState extends State<ProfileEditorDialog> {
   // Picture URL from the live kind-0 profile (shown as preview when no new
   // image has been picked yet).
   String? _existingPictureUrl;
-  String? _existingBannerUrl;
+  // _existingBannerUrl intentionally omitted until banner editing is implemented
 
   @override
   void initState() {
@@ -61,7 +61,6 @@ class _ProfileEditorDialogState extends State<ProfileEditorDialog> {
     _socials = List<Map<String, String>>.from(
         np?.socials ?? widget.currentContact.socials ?? <Map<String, String>>[]);
     _existingPictureUrl = np?.picture;
-    _existingBannerUrl = np?.banner;
   }
 
   @override

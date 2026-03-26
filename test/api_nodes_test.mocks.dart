@@ -25,15 +25,11 @@ import 'package:mockito/src/dummies.dart' as _i4;
 // ignore_for_file: unnecessary_parenthesis
 // ignore_for_file: camel_case_types
 // ignore_for_file: subtype_of_sealed_class
+// ignore_for_file: invalid_use_of_internal_member
 
 class _FakeNodeListState_0 extends _i1.SmartFake implements _i2.NodeListState {
-  _FakeNodeListState_0(
-    Object parent,
-    Invocation parentInvocation,
-  ) : super(
-          parent,
-          parentInvocation,
-        );
+  _FakeNodeListState_0(Object parent, Invocation parentInvocation)
+    : super(parent, parentInvocation);
 }
 
 /// A class which mocks [NodeListCubit].
@@ -45,278 +41,222 @@ class MockNodeListCubit extends _i1.Mock implements _i3.NodeListCubit {
   }
 
   @override
-  String get storagePrefix => (super.noSuchMethod(
-        Invocation.getter(#storagePrefix),
-        returnValue: _i4.dummyValue<String>(
-          this,
-          Invocation.getter(#storagePrefix),
-        ),
-      ) as String);
+  String get storagePrefix =>
+      (super.noSuchMethod(
+            Invocation.getter(#storagePrefix),
+            returnValue: _i4.dummyValue<String>(
+              this,
+              Invocation.getter(#storagePrefix),
+            ),
+          )
+          as String);
 
   @override
-  bool get isLoading => (super.noSuchMethod(
-        Invocation.getter(#isLoading),
-        returnValue: false,
-      ) as bool);
+  bool get isLoading =>
+      (super.noSuchMethod(Invocation.getter(#isLoading), returnValue: false)
+          as bool);
 
   @override
-  List<_i5.Node> get cesiumPlusNodes => (super.noSuchMethod(
-        Invocation.getter(#cesiumPlusNodes),
-        returnValue: <_i5.Node>[],
-      ) as List<_i5.Node>);
+  List<_i5.Node> get cesiumPlusNodes =>
+      (super.noSuchMethod(
+            Invocation.getter(#cesiumPlusNodes),
+            returnValue: <_i5.Node>[],
+          )
+          as List<_i5.Node>);
 
   @override
-  List<_i5.Node> get endpointNodes => (super.noSuchMethod(
-        Invocation.getter(#endpointNodes),
-        returnValue: <_i5.Node>[],
-      ) as List<_i5.Node>);
+  List<_i5.Node> get endpointNodes =>
+      (super.noSuchMethod(
+            Invocation.getter(#endpointNodes),
+            returnValue: <_i5.Node>[],
+          )
+          as List<_i5.Node>);
 
   @override
-  List<_i5.Node> get duniterIndexerNodes => (super.noSuchMethod(
-        Invocation.getter(#duniterIndexerNodes),
-        returnValue: <_i5.Node>[],
-      ) as List<_i5.Node>);
+  List<_i5.Node> get duniterIndexerNodes =>
+      (super.noSuchMethod(
+            Invocation.getter(#duniterIndexerNodes),
+            returnValue: <_i5.Node>[],
+          )
+          as List<_i5.Node>);
 
   @override
-  List<_i5.Node> get duniterDataNodes => (super.noSuchMethod(
-        Invocation.getter(#duniterDataNodes),
-        returnValue: <_i5.Node>[],
-      ) as List<_i5.Node>);
+  List<_i5.Node> get duniterDataNodes =>
+      (super.noSuchMethod(
+            Invocation.getter(#duniterDataNodes),
+            returnValue: <_i5.Node>[],
+          )
+          as List<_i5.Node>);
 
   @override
-  List<_i5.Node> get ipfsGateways => (super.noSuchMethod(
-        Invocation.getter(#ipfsGateways),
-        returnValue: <_i5.Node>[],
-      ) as List<_i5.Node>);
+  List<_i5.Node> get ipfsGateways =>
+      (super.noSuchMethod(
+            Invocation.getter(#ipfsGateways),
+            returnValue: <_i5.Node>[],
+          )
+          as List<_i5.Node>);
 
   @override
-  _i2.NodeListState get state => (super.noSuchMethod(
-        Invocation.getter(#state),
-        returnValue: _FakeNodeListState_0(
-          this,
-          Invocation.getter(#state),
-        ),
-      ) as _i2.NodeListState);
+  _i2.NodeListState get state =>
+      (super.noSuchMethod(
+            Invocation.getter(#state),
+            returnValue: _FakeNodeListState_0(this, Invocation.getter(#state)),
+          )
+          as _i2.NodeListState);
 
   @override
-  _i6.Stream<_i2.NodeListState> get stream => (super.noSuchMethod(
-        Invocation.getter(#stream),
-        returnValue: _i6.Stream<_i2.NodeListState>.empty(),
-      ) as _i6.Stream<_i2.NodeListState>);
+  _i6.Stream<_i2.NodeListState> get stream =>
+      (super.noSuchMethod(
+            Invocation.getter(#stream),
+            returnValue: _i6.Stream<_i2.NodeListState>.empty(),
+          )
+          as _i6.Stream<_i2.NodeListState>);
 
   @override
-  bool get isClosed => (super.noSuchMethod(
-        Invocation.getter(#isClosed),
-        returnValue: false,
-      ) as bool);
+  bool get isClosed =>
+      (super.noSuchMethod(Invocation.getter(#isClosed), returnValue: false)
+          as bool);
 
   @override
-  String get id => (super.noSuchMethod(
-        Invocation.getter(#id),
-        returnValue: _i4.dummyValue<String>(
-          this,
-          Invocation.getter(#id),
-        ),
-      ) as String);
+  String get id =>
+      (super.noSuchMethod(
+            Invocation.getter(#id),
+            returnValue: _i4.dummyValue<String>(this, Invocation.getter(#id)),
+          )
+          as String);
 
   @override
-  String get storageToken => (super.noSuchMethod(
-        Invocation.getter(#storageToken),
-        returnValue: _i4.dummyValue<String>(
-          this,
-          Invocation.getter(#storageToken),
-        ),
-      ) as String);
+  String get storageToken =>
+      (super.noSuchMethod(
+            Invocation.getter(#storageToken),
+            returnValue: _i4.dummyValue<String>(
+              this,
+              Invocation.getter(#storageToken),
+            ),
+          )
+          as String);
 
   @override
-  _i6.Future<void> close() => (super.noSuchMethod(
-        Invocation.method(
-          #close,
-          [],
-        ),
-        returnValue: _i6.Future<void>.value(),
-        returnValueForMissingStub: _i6.Future<void>.value(),
-      ) as _i6.Future<void>);
+  _i6.Future<void> close() =>
+      (super.noSuchMethod(
+            Invocation.method(#close, []),
+            returnValue: _i6.Future<void>.value(),
+            returnValueForMissingStub: _i6.Future<void>.value(),
+          )
+          as _i6.Future<void>);
 
   @override
-  _i6.Future<void> closeCubit() => (super.noSuchMethod(
-        Invocation.method(
-          #closeCubit,
-          [],
-        ),
-        returnValue: _i6.Future<void>.value(),
-        returnValueForMissingStub: _i6.Future<void>.value(),
-      ) as _i6.Future<void>);
+  _i6.Future<void> closeCubit() =>
+      (super.noSuchMethod(
+            Invocation.method(#closeCubit, []),
+            returnValue: _i6.Future<void>.value(),
+            returnValueForMissingStub: _i6.Future<void>.value(),
+          )
+          as _i6.Future<void>);
 
   @override
   void setCurrentGvaNode(_i5.Node? node) => super.noSuchMethod(
-        Invocation.method(
-          #setCurrentGvaNode,
-          [node],
-        ),
-        returnValueForMissingStub: null,
-      );
+    Invocation.method(#setCurrentGvaNode, [node]),
+    returnValueForMissingStub: null,
+  );
 
   @override
   void setLoading(bool? isLoading) => super.noSuchMethod(
-        Invocation.method(
-          #setLoading,
-          [isLoading],
-        ),
-        returnValueForMissingStub: null,
-      );
+    Invocation.method(#setLoading, [isLoading]),
+    returnValueForMissingStub: null,
+  );
 
   @override
   void setDuniterIndexerNodes(List<_i5.Node>? nodes) => super.noSuchMethod(
-        Invocation.method(
-          #setDuniterIndexerNodes,
-          [nodes],
-        ),
-        returnValueForMissingStub: null,
-      );
+    Invocation.method(#setDuniterIndexerNodes, [nodes]),
+    returnValueForMissingStub: null,
+  );
 
   @override
   void setDuniterDataNodes(List<_i5.Node>? nodes) => super.noSuchMethod(
-        Invocation.method(
-          #setDuniterDataNodes,
-          [nodes],
-        ),
-        returnValueForMissingStub: null,
-      );
+    Invocation.method(#setDuniterDataNodes, [nodes]),
+    returnValueForMissingStub: null,
+  );
 
   @override
   void setIpfsGateways(List<_i5.Node>? nodes) => super.noSuchMethod(
-        Invocation.method(
-          #setIpfsGateways,
-          [nodes],
-        ),
-        returnValueForMissingStub: null,
-      );
+    Invocation.method(#setIpfsGateways, [nodes]),
+    returnValueForMissingStub: null,
+  );
 
   @override
   void setCesiumPlusNodes(List<_i5.Node>? nodes) => super.noSuchMethod(
-        Invocation.method(
-          #setCesiumPlusNodes,
-          [nodes],
-        ),
-        returnValueForMissingStub: null,
-      );
+    Invocation.method(#setCesiumPlusNodes, [nodes]),
+    returnValueForMissingStub: null,
+  );
 
   @override
   void setEndpointNodes(List<_i5.Node>? nodes) => super.noSuchMethod(
-        Invocation.method(
-          #setEndpointNodes,
-          [nodes],
-        ),
-        returnValueForMissingStub: null,
-      );
+    Invocation.method(#setEndpointNodes, [nodes]),
+    returnValueForMissingStub: null,
+  );
 
   @override
   _i2.NodeListState? fromJson(Map<String, dynamic>? json) =>
-      (super.noSuchMethod(Invocation.method(
-        #fromJson,
-        [json],
-      )) as _i2.NodeListState?);
+      (super.noSuchMethod(Invocation.method(#fromJson, [json]))
+          as _i2.NodeListState?);
 
   @override
   Map<String, dynamic>? toJson(_i2.NodeListState? state) =>
-      (super.noSuchMethod(Invocation.method(
-        #toJson,
-        [state],
-      )) as Map<String, dynamic>?);
+      (super.noSuchMethod(Invocation.method(#toJson, [state]))
+          as Map<String, dynamic>?);
 
   @override
   void resetCurrentGvaNode() => super.noSuchMethod(
-        Invocation.method(
-          #resetCurrentGvaNode,
-          [],
-        ),
-        returnValueForMissingStub: null,
-      );
+    Invocation.method(#resetCurrentGvaNode, []),
+    returnValueForMissingStub: null,
+  );
 
   @override
   void clearV2Nodes() => super.noSuchMethod(
-        Invocation.method(
-          #clearV2Nodes,
-          [],
-        ),
-        returnValueForMissingStub: null,
-      );
+    Invocation.method(#clearV2Nodes, []),
+    returnValueForMissingStub: null,
+  );
 
   @override
   void emit(_i2.NodeListState? state) => super.noSuchMethod(
-        Invocation.method(
-          #emit,
-          [state],
-        ),
-        returnValueForMissingStub: null,
-      );
+    Invocation.method(#emit, [state]),
+    returnValueForMissingStub: null,
+  );
 
   @override
   void onChange(_i7.Change<_i2.NodeListState>? change) => super.noSuchMethod(
-        Invocation.method(
-          #onChange,
-          [change],
-        ),
-        returnValueForMissingStub: null,
-      );
+    Invocation.method(#onChange, [change]),
+    returnValueForMissingStub: null,
+  );
 
   @override
-  void addError(
-    Object? error, [
-    StackTrace? stackTrace,
-  ]) =>
-      super.noSuchMethod(
-        Invocation.method(
-          #addError,
-          [
-            error,
-            stackTrace,
-          ],
-        ),
-        returnValueForMissingStub: null,
-      );
+  void addError(Object? error, [StackTrace? stackTrace]) => super.noSuchMethod(
+    Invocation.method(#addError, [error, stackTrace]),
+    returnValueForMissingStub: null,
+  );
 
   @override
-  void onError(
-    Object? error,
-    StackTrace? stackTrace,
-  ) =>
-      super.noSuchMethod(
-        Invocation.method(
-          #onError,
-          [
-            error,
-            stackTrace,
-          ],
-        ),
-        returnValueForMissingStub: null,
-      );
+  void onError(Object? error, StackTrace? stackTrace) => super.noSuchMethod(
+    Invocation.method(#onError, [error, stackTrace]),
+    returnValueForMissingStub: null,
+  );
 
   @override
   void hydrate({
     _i7.Storage? storage,
     _i7.OnHydrationError? onError = _i7.defaultOnHydrationError,
-  }) =>
-      super.noSuchMethod(
-        Invocation.method(
-          #hydrate,
-          [],
-          {
-            #storage: storage,
-            #onError: onError,
-          },
-        ),
-        returnValueForMissingStub: null,
-      );
+  }) => super.noSuchMethod(
+    Invocation.method(#hydrate, [], {#storage: storage, #onError: onError}),
+    returnValueForMissingStub: null,
+  );
 
   @override
-  _i6.Future<void> clear() => (super.noSuchMethod(
-        Invocation.method(
-          #clear,
-          [],
-        ),
-        returnValue: _i6.Future<void>.value(),
-        returnValueForMissingStub: _i6.Future<void>.value(),
-      ) as _i6.Future<void>);
+  _i6.Future<void> clear() =>
+      (super.noSuchMethod(
+            Invocation.method(#clear, []),
+            returnValue: _i6.Future<void>.value(),
+            returnValueForMissingStub: _i6.Future<void>.value(),
+          )
+          as _i6.Future<void>);
 }

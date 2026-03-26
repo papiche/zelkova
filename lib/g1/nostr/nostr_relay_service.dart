@@ -622,6 +622,45 @@ class NostrRelayService {
     return _publishEvent(event);
   }
 
+  /// Publish a text note (kind 1 — NIP-01) optionally mentioning a contact.
+  ///
+  /// Used for "Invite to ẐEN" messages sent to Cesium+ contacts who have a
+  /// NOSTR identity on the relay: the note mentions their hex pubkey via a
+  /// `["p", hexPubkey]` tag so the message appears in their notifications.
+  ///
+  /// [hexPrivateKey] — signer's hex private key (derived from nsec)
+  /// [content]       — note content
+  /// [mentionHex]    — (optional) hex pubkey of the mentioned user
+  Future<bool> publishNote({
+    required String hexPrivateKey,
+    required String content,
+    String? mentionHex,
+  }) async {
+    if (!_isConnected) return false;
+
+    final String hexPubkey = bip340.getPublicKey(hexPrivateKey);
+    final int createdAt = DateTime.now().millisecondsSinceEpoch ~/ 1000;
+
+    final List<List<String>> tags = <List<String>>[
+      if (mentionHex != null && mentionHex.isNotEmpty)
+        <String>['p', mentionHex],
+    ];
+
+    final Map<String, dynamic> event = <String, dynamic>{
+      'pubkey': hexPubkey,
+      'created_at': createdAt,
+      'kind': 1,
+      'tags': tags,
+      'content': content,
+    };
+
+    final String eventId = NostrUtils.calculateEventId(event);
+    event['id'] = eventId;
+    event['sig'] = _signEvent(eventId, hexPrivateKey);
+
+    return _publishEvent(event);
+  }
+
   /// Query events with arbitrary filters (NIP-01)
   /// Returns a list of event maps.
   Future<List<Map<String, dynamic>>> queryEvents({

@@ -23,12 +23,13 @@ abstract class _$TransactionCWProxy {
 
   Transaction debugInfo(String? debugInfo);
 
-  /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `Transaction(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
+  /// Creates a new instance with the provided field values.
+  /// Passing `null` to a nullable field nullifies it, while `null` for a non-nullable field is ignored. To update a single field use `Transaction(...).copyWith.fieldName(value)`.
   ///
-  /// Usage
+  /// Example:
   /// ```dart
   /// Transaction(...).copyWith(id: 12, name: "My name")
-  /// ````
+  /// ```
   Transaction call({
     TransactionType type,
     double amount,
@@ -41,46 +42,47 @@ abstract class _$TransactionCWProxy {
   });
 }
 
-/// Proxy class for `copyWith` functionality. This is a callable class and can be used as follows: `instanceOfTransaction.copyWith(...)`. Additionally contains functions for specific fields e.g. `instanceOfTransaction.copyWith.fieldName(...)`
+/// Callable proxy for `copyWith` functionality.
+/// Use as `instanceOfTransaction.copyWith(...)` or call `instanceOfTransaction.copyWith.fieldName(value)` for a single field.
 class _$TransactionCWProxyImpl implements _$TransactionCWProxy {
   const _$TransactionCWProxyImpl(this._value);
 
   final Transaction _value;
 
   @override
-  Transaction type(TransactionType type) => this(type: type);
+  Transaction type(TransactionType type) => call(type: type);
 
   @override
-  Transaction amount(double amount) => this(amount: amount);
+  Transaction amount(double amount) => call(amount: amount);
 
   @override
-  Transaction comment(String comment) => this(comment: comment);
+  Transaction comment(String comment) => call(comment: comment);
 
   @override
-  Transaction time(DateTime time) => this(time: time);
+  Transaction time(DateTime time) => call(time: time);
 
   @override
-  Transaction from(Contact from) => this(from: from);
+  Transaction from(Contact from) => call(from: from);
 
   @override
   Transaction recipients(List<Contact> recipients) =>
-      this(recipients: recipients);
+      call(recipients: recipients);
 
   @override
   Transaction recipientsAmounts(List<double>? recipientsAmounts) =>
-      this(recipientsAmounts: recipientsAmounts);
+      call(recipientsAmounts: recipientsAmounts);
 
   @override
-  Transaction debugInfo(String? debugInfo) => this(debugInfo: debugInfo);
+  Transaction debugInfo(String? debugInfo) => call(debugInfo: debugInfo);
 
   @override
-
-  /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `Transaction(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
+  /// Creates a new instance with the provided field values.
+  /// Passing `null` to a nullable field nullifies it, while `null` for a non-nullable field is ignored. To update a single field use `Transaction(...).copyWith.fieldName(value)`.
   ///
-  /// Usage
+  /// Example:
   /// ```dart
   /// Transaction(...).copyWith(id: 12, name: "My name")
-  /// ````
+  /// ```
   Transaction call({
     Object? type = const $CopyWithPlaceholder(),
     Object? amount = const $CopyWithPlaceholder(),
@@ -92,27 +94,28 @@ class _$TransactionCWProxyImpl implements _$TransactionCWProxy {
     Object? debugInfo = const $CopyWithPlaceholder(),
   }) {
     return Transaction(
-      type: type == const $CopyWithPlaceholder()
+      type: type == const $CopyWithPlaceholder() || type == null
           ? _value.type
           // ignore: cast_nullable_to_non_nullable
           : type as TransactionType,
-      amount: amount == const $CopyWithPlaceholder()
+      amount: amount == const $CopyWithPlaceholder() || amount == null
           ? _value.amount
           // ignore: cast_nullable_to_non_nullable
           : amount as double,
-      comment: comment == const $CopyWithPlaceholder()
+      comment: comment == const $CopyWithPlaceholder() || comment == null
           ? _value.comment
           // ignore: cast_nullable_to_non_nullable
           : comment as String,
-      time: time == const $CopyWithPlaceholder()
+      time: time == const $CopyWithPlaceholder() || time == null
           ? _value.time
           // ignore: cast_nullable_to_non_nullable
           : time as DateTime,
-      from: from == const $CopyWithPlaceholder()
+      from: from == const $CopyWithPlaceholder() || from == null
           ? _value.from
           // ignore: cast_nullable_to_non_nullable
           : from as Contact,
-      recipients: recipients == const $CopyWithPlaceholder()
+      recipients:
+          recipients == const $CopyWithPlaceholder() || recipients == null
           ? _value.recipients
           // ignore: cast_nullable_to_non_nullable
           : recipients as List<Contact>,
@@ -129,7 +132,8 @@ class _$TransactionCWProxyImpl implements _$TransactionCWProxy {
 }
 
 extension $TransactionCopyWith on Transaction {
-  /// Returns a callable class that can be used as follows: `instanceOfTransaction.copyWith(...)` or like so:`instanceOfTransaction.copyWith.fieldName(...)`.
+  /// Returns a callable class used to build a new instance with modified fields.
+  /// Example: `instanceOfTransaction.copyWith(...)` or `instanceOfTransaction.copyWith.fieldName(...)`.
   // ignore: library_private_types_in_public_api
   _$TransactionCWProxy get copyWith => _$TransactionCWProxyImpl(this);
 }
@@ -139,19 +143,19 @@ extension $TransactionCopyWith on Transaction {
 // **************************************************************************
 
 Transaction _$TransactionFromJson(Map<String, dynamic> json) => Transaction(
-      type: $enumDecode(_$TransactionTypeEnumMap, json['type']),
-      amount: (json['amount'] as num).toDouble(),
-      comment: json['comment'] as String,
-      time: DateTime.parse(json['time'] as String),
-      from: Contact.fromJson(json['from'] as Map<String, dynamic>),
-      recipients: (json['recipients'] as List<dynamic>)
-          .map((e) => Contact.fromJson(e as Map<String, dynamic>))
-          .toList(),
-      recipientsAmounts: (json['recipientsAmounts'] as List<dynamic>?)
-          ?.map((e) => (e as num).toDouble())
-          .toList(),
-      debugInfo: json['debugInfo'] as String?,
-    );
+  type: $enumDecode(_$TransactionTypeEnumMap, json['type']),
+  amount: (json['amount'] as num).toDouble(),
+  comment: json['comment'] as String,
+  time: DateTime.parse(json['time'] as String),
+  from: Contact.fromJson(json['from'] as Map<String, dynamic>),
+  recipients: (json['recipients'] as List<dynamic>)
+      .map((e) => Contact.fromJson(e as Map<String, dynamic>))
+      .toList(),
+  recipientsAmounts: (json['recipientsAmounts'] as List<dynamic>?)
+      ?.map((e) => (e as num).toDouble())
+      .toList(),
+  debugInfo: json['debugInfo'] as String?,
+);
 
 Map<String, dynamic> _$TransactionToJson(Transaction instance) =>
     <String, dynamic>{

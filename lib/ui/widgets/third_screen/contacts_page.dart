@@ -9,13 +9,13 @@ import '../../../data/models/contact.dart';
 import '../../../data/models/contact_cubit.dart';
 import '../../../data/models/contact_sort_type.dart';
 import '../../../g1/api.dart';
+import '../../../g1/nostr/nostr_keys.dart';
 import '../../../g1/nostr/nostr_profile.dart';
 import '../../../g1/nostr/nostr_relay_service.dart';
 import '../../ui_helpers.dart';
 import '../bottom_widget.dart';
 import '../connectivity_widget_wrapper_wrapper.dart';
 import '../contact_menu.dart';
-import '../contact_page.dart';
 import '../contacts_actions.dart';
 import '../slidable_contact_tile.dart';
 
@@ -174,8 +174,8 @@ class _ContactsPageState extends State<ContactsPage> {
           title: Text(p.name, overflow: TextOverflow.ellipsis),
           subtitle: Text(
             <String>[
-              if (p.city?.isNotEmpty == true) p.city!,
-              if (p.email?.isNotEmpty == true) p.email!,
+              if (p.city?.isNotEmpty ?? false) p.city!,
+              if (p.email?.isNotEmpty ?? false) p.email!,
             ].join(' · '),
             overflow: TextOverflow.ellipsis,
             style: const TextStyle(fontSize: 12),
@@ -184,7 +184,24 @@ class _ContactsPageState extends State<ContactsPage> {
               ? const Icon(Icons.chevron_right, size: 18)
               : null,
           onTap: g1pub.isNotEmpty
-              ? () => showContactPage(ctx, Contact(pubKey: g1pub))
+              ? () {
+                  // g1pub is a Duniter V2 SS58 address for MULTIPASS.
+                  // Pass nostrHex derived from npub so contact_page can skip
+                  // the relay lookup and display picture/banner immediately.
+                  String? nostrHex;
+                  if (p.npub.isNotEmpty) {
+                    try {
+                      nostrHex = NostrKeys.npubToHex(p.npub);
+                    } catch (_) {}
+                  }
+                  showContactPage(
+                    ctx,
+                    Contact.withAddress(
+                      address: g1pub,
+                      createdOn: DateTime.now().millisecondsSinceEpoch,
+                    ).copyWith(nostrHex: nostrHex),
+                  );
+                }
               : null,
         );
       },

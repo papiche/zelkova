@@ -16,6 +16,8 @@ import '../../../data/models/payment_state.dart';
 import '../../../g1/api.dart';
 import '../../../g1/g1_helper.dart';
 import '../../../g1/g1_v2_helper.dart';
+import '../../../g1/nostr/nostr_profile.dart';
+import '../../../g1/nostr/nostr_relay_service.dart';
 import '../../contact_list_item.dart';
 import '../../contacts_cache.dart';
 import '../../in_dev_helper.dart';
@@ -62,6 +64,13 @@ class _ContactSearchPageState extends State<ContactSearchPage> {
   late bool _isMultiSelect;
   final int minSearchLength = 3;
   late bool _isV2;
+
+  // ── MULTIPASS NOSTR (payment mode only) ────────────────────────────────────
+  // When SearchUse.payment, display MULTIPASS profiles from the local NOSTR
+  // relay instead of Cesium+ profiles (the two sources are incompatible).
+  List<NostrProfile> _allMultipass = <NostrProfile>[];
+  List<NostrProfile> _filteredMultipass = <NostrProfile>[];
+  bool _multipassLoading = false;
 
   // Getter for compatibility with existing code
   List<Contact> get _results => <Contact>[..._localResults, ..._networkResults];
@@ -472,6 +481,13 @@ class _ContactSearchPageState extends State<ContactSearchPage> {
                   }
                   _searchTerm = value;
                   _previousSearchTerm = value;
+                  // In payment mode: filter MULTIPASS locally, skip Cesium search
+                  if (widget.searchUse == SearchUse.payment) {
+                    setState(() {
+                      _filteredMultipass = _filterMultipassByQuery(value);
+                    });
+                    return;
+                  }
                   if (_searchTerm.length >= minSearchLength) {
                     // Don't set _isLoadingNetwork = true here; let _search() control it
                     EasyDebounce.debounce('profile_search_debouncer',
@@ -479,7 +495,14 @@ class _ContactSearchPageState extends State<ContactSearchPage> {
                   }
                 },
               )),
-          if (_isLoadingNetwork &&
+          // ── Payment mode: show MULTIPASS from NOSTR relay ──────────────
+          if (widget.searchUse == SearchUse.payment)
+            Expanded(
+              child: _buildMultipassPaymentList(
+                  context.read<PaymentCubit>()),
+            )
+          // ── Other modes: Cesium+ / WoT search ─────────────────────────
+          else if (_isLoadingNetwork &&
               _localResults.isEmpty &&
               _networkResults.isEmpty)
             const LoadingBox(simple: false)
@@ -644,6 +667,98 @@ class _ContactSearchPageState extends State<ContactSearchPage> {
       _searchController.text = widget.initialSearch!;
       _search();
     }
+    // In payment mode: pre-load MULTIPASS profiles from the local NOSTR relay
+    // instead of relying on Cesium+ (incompatible with V2 MULTIPASS keys).
+    if (widget.searchUse == SearchUse.payment) {
+      _loadMultipassProfiles();
+    }
+  }
+
+  Future<void> _loadMultipassProfiles() async {
+    if (_multipassLoading) return;
+    setState(() => _multipassLoading = true);
+    try {
+      final NostrRelayService relay = NostrRelayService();
+      if (!relay.isConnected) {
+        if (mounted) setState(() => _multipassLoading = false);
+        return;
+      }
+      final List<NostrProfile> profiles =
+          await relay.fetchAllMultipassProfiles();
+      if (mounted) {
+        setState(() {
+          _allMultipass = profiles;
+          _filteredMultipass =
+              _filterMultipassByQuery(_searchController.text);
+          _multipassLoading = false;
+        });
+      }
+    } catch (_) {
+      if (mounted) setState(() => _multipassLoading = false);
+    }
+  }
+
+  List<NostrProfile> _filterMultipassByQuery(String q) {
+    if (q.isEmpty) return List<NostrProfile>.from(_allMultipass);
+    final String lower = q.toLowerCase();
+    return _allMultipass.where((NostrProfile p) {
+      return p.name.toLowerCase().contains(lower) ||
+          (p.city?.toLowerCase().contains(lower) ?? false) ||
+          (p.email?.toLowerCase().contains(lower) ?? false) ||
+          (p.g1pub?.toLowerCase().contains(lower) ?? false);
+    }).toList();
+  }
+
+  Widget _buildMultipassPaymentList(PaymentCubit paymentCubit) {
+    if (_multipassLoading) {
+      return const Center(child: CircularProgressIndicator());
+    }
+    final List<NostrProfile> visible = _filteredMultipass;
+    if (visible.isEmpty) {
+      return Center(child: Text(tr('contacts_nostr_empty')));
+    }
+    return ListView.builder(
+      itemCount: visible.length,
+      itemBuilder: (BuildContext ctx, int i) {
+        final NostrProfile p = visible[i];
+        final String g1pub = p.g1pub ?? '';
+        return ListTile(
+          leading: CircleAvatar(
+            backgroundImage: p.picture != null && p.picture!.isNotEmpty
+                ? NetworkImage(p.picture!)
+                : null,
+            onBackgroundImageError: (_, __) {},
+            child: p.picture == null || p.picture!.isEmpty
+                ? Text(
+                    p.name.isNotEmpty ? p.name[0].toUpperCase() : '?',
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  )
+                : null,
+          ),
+          title: Text(p.name, overflow: TextOverflow.ellipsis),
+          subtitle: Text(
+            <String>[
+              if (p.city?.isNotEmpty ?? false) p.city!,
+              if (p.email?.isNotEmpty ?? false) p.email!,
+            ].join(' · '),
+            overflow: TextOverflow.ellipsis,
+            style: const TextStyle(fontSize: 12),
+          ),
+          onTap: g1pub.isNotEmpty
+              ? () {
+                  // g1pub from NIP-39 is a Duniter V2 SS58 address.
+                  // Must use Contact.withAddress() — Contact(pubKey:) throws
+                  // BadAddressLengthException on V2 keys.
+                  paymentCubit.selectUser(Contact.withAddress(
+                    address: g1pub,
+                    createdOn: DateTime.now().millisecondsSinceEpoch,
+                  ));
+                  Navigator.pop(context);
+                }
+              : null,
+        );
+      },
+    );
   }
 
   Future<void> _handleUri(String? uri) async {

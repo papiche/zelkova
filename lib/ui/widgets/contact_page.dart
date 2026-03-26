@@ -14,6 +14,9 @@ import 'package:text_scroll/text_scroll.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../data/models/app_cubit.dart';
+import '../../env.dart';
+import '../../g1/cesium_message_service.dart';
+import '../../g1/crypto/cesium_wallet.dart';
 import '../../data/models/contact.dart';
 import '../../data/models/contact_cubit.dart';
 import '../../data/models/contact_wot_info.dart';
@@ -21,7 +24,6 @@ import '../../data/models/identity_status.dart';
 import '../../data/models/multi_wallet_transaction_cubit.dart';
 import '../../data/models/stored_account.dart';
 import '../../data/wot_info_fetcher.dart';
-import '../../g1/g1_v2_helper.dart';
 import '../../g1/nostr/nostr_keys.dart';
 import '../../g1/nostr/nostr_profile.dart';
 import '../../g1/nostr/nostr_relay_service.dart';
@@ -59,6 +61,11 @@ class _ContactPageState extends State<ContactPage> with RouteAware {
   late Stream<ContactWotInfo> _wotInfoStream;
   String? _bannerUrl;
   NostrProfile? _nostrProfile;
+  bool _isNostrFollowed = false;
+
+  // Expert-mode secrets (own MULTIPASS only)
+  String? _expertNsec;
+  String? _expertSsss;  // ssss_player — used as QR for /scan terminal
   Map<String, dynamic>? _ocUrls; // OC urls depuis MULTIPASS si me=true
   late ScrollController _scrollController;
   bool _isRefreshing = false;
@@ -107,11 +114,11 @@ class _ContactPageState extends State<ContactPage> with RouteAware {
     showDialog<void>(
       context: context,
       builder: (BuildContext ctx) => AlertDialog(
-        title: Row(
+        title: const Row(
           children: <Widget>[
-            const Icon(Icons.electric_bolt, color: Color(0xFFBF5AFF)),
-            const SizedBox(width: 8),
-            const Text('Clef NOSTR', style: TextStyle(fontSize: 16)),
+            Icon(Icons.electric_bolt, color: Color(0xFFBF5AFF)),
+            SizedBox(width: 8),
+            Text('Clef NOSTR', style: TextStyle(fontSize: 16)),
           ],
         ),
         content: Column(
@@ -123,7 +130,7 @@ class _ContactPageState extends State<ContactPage> with RouteAware {
             SizedBox(
               width: 200,
               height: 200,
-              child: QrImageView(data: npub, version: QrVersions.auto),
+              child: QrImageView(data: npub),
             ),
             const SizedBox(height: 8),
             SelectableText(
@@ -176,8 +183,14 @@ class _ContactPageState extends State<ContactPage> with RouteAware {
         }
       }
 
-      // Step 1b: Fallback — chercher via tag NIP-39 g1pub sur le relay
+      // Step 1b: Use pre-computed nostrHex passed by the caller (e.g. NOSTR contacts list)
+      nostrHex ??= widget.contact.nostrHex;
+      // Step 1c: Lookup by G1 pubKey (V1)
       nostrHex ??= await relay.findNostrHexByG1Pub(widget.contact.pubKey);
+      // Step 1d: Lookup by V2 address — for MULTIPASS contacts opened from NOSTR list
+      if (nostrHex == null && widget.contact.address.isNotEmpty) {
+        nostrHex = await relay.findNostrHexByG1Pub(widget.contact.address);
+      }
 
       if (nostrHex == null || !mounted) return;
 
@@ -190,17 +203,154 @@ class _ContactPageState extends State<ContactPage> with RouteAware {
         unawaited(_publishContactToKind3(relay, nostrHex));
       }
 
-      // Step 4: Fetch full profile for UI display
+      // Step 4: Fetch full profile + check follow status
       final NostrProfile? profile = await relay.fetchProfile(nostrHex);
       if (profile != null && mounted) {
         setState(() {
           _nostrProfile = profile;
-          if (profile.banner?.isNotEmpty == true) {
+          if (profile.banner?.isNotEmpty ?? false) {
             _bannerUrl = profile.banner;
           }
         });
       }
+
+      // Step 5: Check follow status (are we following this nostrHex?)
+      try {
+        final String? nsec = await SharedPreferencesHelperV2().getNostrNsec();
+        if (nsec != null && nsec.isNotEmpty) {
+          final String myHex =
+              NostrRelayService.derivePublicKey(NostrKeys.nsecToHex(nsec));
+          final List<String> follows = await relay.fetchContacts(myHex);
+          if (mounted) setState(() => _isNostrFollowed = follows.contains(nostrHex));
+        }
+      } catch (_) {}
+
+      // Step 6: Load expert secrets (own MULTIPASS, expert mode only)
+      try {
+        final String myPubKey =
+            SharedPreferencesHelper().getCurrentAccount().pubKey;
+        if (widget.contact.pubKey == myPubKey ||
+            widget.contact.address == myPubKey) {
+          final String? nsecRaw =
+              await SharedPreferencesHelperV2().getNostrNsec();
+          final Map<String, dynamic>? mpData =
+              await SharedPreferencesHelperV2().getMultipassData();
+          if (mounted) {
+            setState(() {
+              _expertNsec = nsecRaw;
+              _expertSsss = mpData?['ssss_player'] as String?;
+            });
+          }
+        }
+      } catch (_) {}
     } catch (_) {}
+  }
+
+  /// Toggle follow/unfollow this contact on NOSTR kind 3.
+  Future<void> _toggleNostrFollow(String contactNostrHex) async {
+    try {
+      final String? nsec = await SharedPreferencesHelperV2().getNostrNsec();
+      if (nsec == null || nsec.isEmpty) return;
+      final NostrRelayService relay = NostrRelayService();
+      if (!relay.isConnected) return;
+      final String hexPriv = NostrKeys.nsecToHex(nsec);
+      final String myHex = NostrRelayService.derivePublicKey(hexPriv);
+      final List<String> current = await relay.fetchContacts(myHex);
+
+      List<String> updated;
+      if (_isNostrFollowed) {
+        updated = current.where((String h) => h != contactNostrHex).toList();
+      } else {
+        updated = <String>[...current, contactNostrHex];
+      }
+      await relay.publishContacts(
+          hexPrivateKey: hexPriv, hexPubkeys: updated);
+      if (mounted) setState(() => _isNostrFollowed = !_isNostrFollowed);
+    } catch (_) {}
+  }
+
+  /// Send a ẐEN invitation via ALL available channels:
+  ///
+  ///   1. NOSTR kind-1 note (if the contact has a NOSTR hex pubkey on the relay)
+  ///   2. Cesium+ Elastic Search message (if the sender has a MULTIPASS — i.e.
+  ///      CesiumWallet salt/pepper — and the recipient has a G1 V1 pubkey)
+  ///
+  /// The invitation text contains:
+  ///   • {UPASSPORT_URL}/ipns/coracle.copylaradio.com  ← ẐEN app (Coracle)
+  ///   • {UPASSPORT_URL}/nostr                         ← demo / landing page
+  ///
+  /// References for Cesium+ message format:
+  ///   jaklis/lib/cesium.py  — sendMsg()
+  ///   jaklis/lib/cesiumCommon.py — signing helpers
+  Future<void> _sendZenInvitation([String? contactNostrHex]) async {
+    // Build invitation text (shared by both channels)
+    final String appUrl =
+        '${Env.upassportUrl}/ipns/coracle.copylaradio.com';
+    final String demoUrl = '${Env.upassportUrl}/nostr';
+    final String content = tr('zen_invitation_message',
+        namedArgs: <String, String>{
+          'app_url': appUrl,
+          'demo_url': demoUrl,
+        });
+    final String title = tr('zen_invite');
+
+    bool nostrSent = false;
+    bool cesiumSent = false;
+
+    // ── Channel 1: NOSTR kind-1 ──────────────────────────────────────────
+    if (contactNostrHex != null && contactNostrHex.isNotEmpty) {
+      try {
+        final String? nsec = await SharedPreferencesHelperV2().getNostrNsec();
+        if (nsec != null && nsec.isNotEmpty) {
+          final NostrRelayService relay = NostrRelayService();
+          if (relay.isConnected) {
+            nostrSent = await relay.publishNote(
+              hexPrivateKey: NostrKeys.nsecToHex(nsec),
+              content: content,
+              mentionHex: contactNostrHex,
+            );
+          }
+        }
+      } catch (_) {}
+    }
+
+    // ── Channel 2: Cesium+ Elastic Search ───────────────────────────────
+    // Only if the sender has a MULTIPASS (salt + pepper) and the recipient
+    // has a V1 G1 pubkey (Base58 on the web of trust).
+    final String recipientPubKey = widget.contact.pubKey;
+    if (recipientPubKey.isNotEmpty) {
+      try {
+        final Map<String, dynamic>? mpData =
+            await SharedPreferencesHelperV2().getMultipassData();
+        if (mpData != null) {
+          final String salt = mpData['salt'] as String? ?? '';
+          final String pepper = mpData['pepper'] as String? ?? '';
+          if (salt.isNotEmpty && pepper.isNotEmpty) {
+            final CesiumWallet senderWallet = CesiumWallet(salt, pepper);
+            cesiumSent = await CesiumMessageService.sendMessage(
+              senderWallet: senderWallet,
+              recipientPubKey: recipientPubKey,
+              title: title,
+              content: content,
+            );
+          }
+        }
+      } catch (_) {}
+    }
+
+    if (mounted) {
+      final bool anySent = nostrSent || cesiumSent;
+      final String channels = <String>[
+        if (nostrSent) 'NOSTR',
+        if (cesiumSent) 'Cesium+',
+      ].join(' & ');
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(anySent
+            ? tr('zen_invitation_sent') + (channels.isNotEmpty ? ' ($channels)' : '')
+            : tr('zen_invitation_failed')),
+        duration: const Duration(seconds: 4),
+      ));
+    }
   }
 
   /// Register this contact's NOSTR hex in our kind 3 follow list.
@@ -345,6 +495,32 @@ class _ContactPageState extends State<ContactPage> with RouteAware {
           label: tr('form_contact_title'),
           onTap: () {
             onEditContact(context, contact);
+          },
+        ),
+      // Follow / Unfollow on NOSTR kind 3 — shown when viewing another MULTIPASS profile
+      if (!me && _nostrProfile != null && widget.contact.nostrHex != null)
+        SpeedDialChild(
+          child: Icon(
+              _isNostrFollowed ? Icons.person_remove : Icons.person_add_alt_1),
+          label: _isNostrFollowed
+              ? tr('nostr_unfollow')
+              : tr('nostr_follow'),
+          onTap: () {
+            if (widget.contact.nostrHex != null) {
+              _toggleNostrFollow(widget.contact.nostrHex!);
+            }
+          },
+        ),
+      // Invite to ẐEN — shown for any non-me contact with a G1 pubkey.
+      // Sends via NOSTR (if NOSTR hex available) AND/OR Cesium+ (if sender
+      // has a MULTIPASS with salt/pepper and recipient has a V1 G1 pubkey).
+      if (!me && widget.contact.pubKey.isNotEmpty)
+        SpeedDialChild(
+          child: const Icon(Icons.mail_outline),
+          label: tr('zen_invite'),
+          onTap: () {
+            // Pass nostrHex if available — null causes NOSTR channel to be skipped
+            _sendZenInvitation(widget.contact.nostrHex);
           },
         ),
       if (!isContact && !me)
@@ -562,6 +738,95 @@ class _ContactPageState extends State<ContactPage> with RouteAware {
             ),
           ],
 
+          // ── Section Expert : nsec + QR SSSS (own account, expert mode only) ─
+          if (wotInfo.isme &&
+              context.read<AppCubit>().state.expertMode &&
+              (_expertNsec != null || _expertSsss != null)) ...<Widget>[
+            const Divider(),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 8, 16, 4),
+              child: Row(
+                children: <Widget>[
+                  const Icon(Icons.developer_mode,
+                      size: 16, color: Colors.orange),
+                  const SizedBox(width: 6),
+                  Text(
+                    tr('expert_secrets_title'),
+                    style: TextStyle(
+                        fontWeight: FontWeight.w700,
+                        color: Colors.orange[700],
+                        fontSize: 12),
+                  ),
+                ],
+              ),
+            ),
+            // nsec — private NOSTR key
+            if (_expertNsec != null)
+              ListTile(
+                dense: true,
+                leading: const Icon(Icons.vpn_key, color: Colors.orange),
+                title: Text(
+                  'nsec (🔑 privée)',
+                  style: const TextStyle(
+                      fontWeight: FontWeight.w700, fontSize: 12),
+                ),
+                subtitle: SelectableText(
+                  _expertNsec!,
+                  style: const TextStyle(
+                      fontFamily: 'monospace', fontSize: 10),
+                ),
+                trailing: IconButton(
+                  icon: const Icon(Icons.copy, size: 18),
+                  tooltip: tr('expert_copy_nsec'),
+                  onPressed: () {
+                    Clipboard.setData(ClipboardData(text: _expertNsec!));
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                          content: Text(tr('expert_nsec_copied')),
+                          duration: const Duration(seconds: 2)),
+                    );
+                  },
+                ),
+              ),
+
+            // SSSS QR — scan at Astroport /scan terminal
+            if (_expertSsss != null && _expertSsss!.isNotEmpty) ...<Widget>[
+              Padding(
+                padding: const EdgeInsets.fromLTRB(16, 6, 16, 2),
+                child: Text(
+                  tr('expert_ssss_qr_title'),
+                  style: const TextStyle(
+                      fontWeight: FontWeight.w600, fontSize: 12),
+                ),
+              ),
+              Center(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 16, vertical: 8),
+                  child: SizedBox(
+                    // Fixed size required: QrImageView uses LayoutBuilder
+                    // which crashes inside AlertDialog without constraints.
+                    width: 220,
+                    height: 220,
+                    child: QrImageView(
+                      data: _expertSsss!,
+                      version: QrVersions.auto,
+                    ),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
+                child: Text(
+                  tr('expert_ssss_qr_hint'),
+                  style: TextStyle(
+                      color: Colors.grey[600], fontSize: 10),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ],
+          ],
+
           // ── Section recharge ẐEN — affiché sur le propre profil ──────────
           if (wotInfo.isme) ...<Widget>[
             const Divider(),
@@ -575,7 +840,7 @@ class _ContactPageState extends State<ContactPage> with RouteAware {
                     fontSize: 13),
               ),
             ),
-            if (_ocUrls?['cloud']?.toString().isNotEmpty == true)
+            if (_ocUrls?['cloud']?.toString().isNotEmpty ?? false)
               ListTile(
                 leading: const Icon(Icons.cloud,
                     color: Color(0xFF00BB77)),
@@ -595,7 +860,7 @@ class _ContactPageState extends State<ContactPage> with RouteAware {
                 onTap: () => _openExternalUrl(
                     'https://opencollective.com/monnaie-libre/projects/coeurbox/contribute/cotisation-services-cloud-usage-98388'),
               ),
-            if (_ocUrls?['membre']?.toString().isNotEmpty == true)
+            if (_ocUrls?['membre']?.toString().isNotEmpty ?? false)
               ListTile(
                 leading: const Icon(Icons.autorenew,
                     color: Color(0xFFDD6633)),
@@ -835,7 +1100,7 @@ class _ContactPageState extends State<ContactPage> with RouteAware {
                       opacity: isAvatarExpanded ? 0.0 : 1.0,
                       duration: const Duration(milliseconds: 300),
                       // Picture NOSTR en avatar compact si disponible
-                      child: _nostrProfile?.picture?.isNotEmpty == true
+                      child: _nostrProfile?.picture?.isNotEmpty ?? false
                           ? CircleAvatar(
                               radius: 44,
                               backgroundImage:
@@ -851,8 +1116,7 @@ class _ContactPageState extends State<ContactPage> with RouteAware {
                         alignment: Alignment.bottomRight,
                         children: <Widget>[
                           // Priority: NOSTR picture URL → Cesium+ binary
-                          _nostrProfile?.picture?.isNotEmpty == true
-                              ? Container(
+                          if (_nostrProfile?.picture?.isNotEmpty == true) Container(
                                   width: double.infinity,
                                   height: double.infinity,
                                   decoration: BoxDecoration(
@@ -862,8 +1126,7 @@ class _ContactPageState extends State<ContactPage> with RouteAware {
                                       onError: (_, __) {},
                                     ),
                                   ),
-                                )
-                              : contact.avatar != null
+                                ) else contact.avatar != null
                                   ? Container(
                                       width: double.infinity,
                                       height: double.infinity,
@@ -928,7 +1191,7 @@ class _ContactPageState extends State<ContactPage> with RouteAware {
             ),
             // NOSTR bio/about — shown when avatar is expanded
             if (isAvatarExpanded && _nostrProfile != null) ...<Widget>[
-              if (_nostrProfile!.city?.isNotEmpty == true)
+              if (_nostrProfile!.city?.isNotEmpty ?? false)
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 2),
                   child: Row(
@@ -943,7 +1206,7 @@ class _ContactPageState extends State<ContactPage> with RouteAware {
                     ],
                   ),
                 ),
-              if (_nostrProfile!.about?.isNotEmpty == true)
+              if (_nostrProfile!.about?.isNotEmpty ?? false)
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 4),
                   child: Text(

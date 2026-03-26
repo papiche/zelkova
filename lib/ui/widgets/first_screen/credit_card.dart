@@ -7,6 +7,7 @@ import '../../../data/models/stored_account.dart';
 import '../../../data/models/wallet_themes.dart';
 import '../../../g1/g1_helper.dart';
 import '../../../g1/nostr/nostr_keys.dart';
+import '../../../g1/nostr/nostr_profile.dart';
 import '../../../g1/nostr/nostr_relay_service.dart';
 import '../../../shared_prefs_helper.dart';
 import '../../../shared_prefs_helper_v2.dart';
@@ -70,13 +71,13 @@ class _CreditCardState extends State<CreditCard> {
       }
       nostrHex ??= await relay.findNostrHexByG1Pub(widget.account.pubKey);
       if (nostrHex == null) return;
-      final nostrProfile = await relay.fetchProfile(nostrHex);
+      final NostrProfile? nostrProfile = await relay.fetchProfile(nostrHex);
       if (nostrProfile != null && mounted) {
         setState(() {
-          _nostrBannerUrl = nostrProfile.banner?.isNotEmpty == true
+          _nostrBannerUrl = nostrProfile.banner?.isNotEmpty ?? false
               ? nostrProfile.banner
               : null;
-          _nostrPictureUrl = nostrProfile.picture?.isNotEmpty == true
+          _nostrPictureUrl = nostrProfile.picture?.isNotEmpty ?? false
               ? nostrProfile.picture
               : null;
         });

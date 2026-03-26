@@ -9,18 +9,18 @@ part of 'multi_wallet_transaction_state.dart';
 abstract class _$MultiWalletTransactionStateCWProxy {
   MultiWalletTransactionState map(Map<String, TransactionState> map);
 
-  /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `MultiWalletTransactionState(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
+  /// Creates a new instance with the provided field values.
+  /// Passing `null` to a nullable field nullifies it, while `null` for a non-nullable field is ignored. To update a single field use `MultiWalletTransactionState(...).copyWith.fieldName(value)`.
   ///
-  /// Usage
+  /// Example:
   /// ```dart
   /// MultiWalletTransactionState(...).copyWith(id: 12, name: "My name")
-  /// ````
-  MultiWalletTransactionState call({
-    Map<String, TransactionState> map,
-  });
+  /// ```
+  MultiWalletTransactionState call({Map<String, TransactionState> map});
 }
 
-/// Proxy class for `copyWith` functionality. This is a callable class and can be used as follows: `instanceOfMultiWalletTransactionState.copyWith(...)`. Additionally contains functions for specific fields e.g. `instanceOfMultiWalletTransactionState.copyWith.fieldName(...)`
+/// Callable proxy for `copyWith` functionality.
+/// Use as `instanceOfMultiWalletTransactionState.copyWith(...)` or call `instanceOfMultiWalletTransactionState.copyWith.fieldName(value)` for a single field.
 class _$MultiWalletTransactionStateCWProxyImpl
     implements _$MultiWalletTransactionStateCWProxy {
   const _$MultiWalletTransactionStateCWProxyImpl(this._value);
@@ -29,21 +29,21 @@ class _$MultiWalletTransactionStateCWProxyImpl
 
   @override
   MultiWalletTransactionState map(Map<String, TransactionState> map) =>
-      this(map: map);
+      call(map: map);
 
   @override
-
-  /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `MultiWalletTransactionState(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
+  /// Creates a new instance with the provided field values.
+  /// Passing `null` to a nullable field nullifies it, while `null` for a non-nullable field is ignored. To update a single field use `MultiWalletTransactionState(...).copyWith.fieldName(value)`.
   ///
-  /// Usage
+  /// Example:
   /// ```dart
   /// MultiWalletTransactionState(...).copyWith(id: 12, name: "My name")
-  /// ````
+  /// ```
   MultiWalletTransactionState call({
     Object? map = const $CopyWithPlaceholder(),
   }) {
     return MultiWalletTransactionState(
-      map == const $CopyWithPlaceholder()
+      map == const $CopyWithPlaceholder() || map == null
           ? _value.map
           // ignore: cast_nullable_to_non_nullable
           : map as Map<String, TransactionState>,
@@ -52,7 +52,8 @@ class _$MultiWalletTransactionStateCWProxyImpl
 }
 
 extension $MultiWalletTransactionStateCopyWith on MultiWalletTransactionState {
-  /// Returns a callable class that can be used as follows: `instanceOfMultiWalletTransactionState.copyWith(...)` or like so:`instanceOfMultiWalletTransactionState.copyWith.fieldName(...)`.
+  /// Returns a callable class used to build a new instance with modified fields.
+  /// Example: `instanceOfMultiWalletTransactionState.copyWith(...)` or `instanceOfMultiWalletTransactionState.copyWith.fieldName(...)`.
   // ignore: library_private_types_in_public_api
   _$MultiWalletTransactionStateCWProxy get copyWith =>
       _$MultiWalletTransactionStateCWProxyImpl(this);
@@ -63,16 +64,13 @@ extension $MultiWalletTransactionStateCopyWith on MultiWalletTransactionState {
 // **************************************************************************
 
 MultiWalletTransactionState _$MultiWalletTransactionStateFromJson(
-        Map<String, dynamic> json) =>
-    MultiWalletTransactionState(
-      (json['map'] as Map<String, dynamic>).map(
-        (k, e) =>
-            MapEntry(k, TransactionState.fromJson(e as Map<String, dynamic>)),
-      ),
-    );
+  Map<String, dynamic> json,
+) => MultiWalletTransactionState(
+  (json['map'] as Map<String, dynamic>).map(
+    (k, e) => MapEntry(k, TransactionState.fromJson(e as Map<String, dynamic>)),
+  ),
+);
 
 Map<String, dynamic> _$MultiWalletTransactionStateToJson(
-        MultiWalletTransactionState instance) =>
-    <String, dynamic>{
-      'map': instance.map,
-    };
+  MultiWalletTransactionState instance,
+) => <String, dynamic>{'map': instance.map};

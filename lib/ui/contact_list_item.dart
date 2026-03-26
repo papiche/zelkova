@@ -127,7 +127,6 @@ class _ContactListItemState extends State<ContactListItem> {
             tileColor(widget.index, context).withOpacity(0.2),
         backgroundImage: NetworkImage(_nostrProfile!.picture!),
         onBackgroundImageError: (_, __) {},
-        child: null,
       );
     }
     return avatar(
@@ -140,18 +139,18 @@ class _ContactListItemState extends State<ContactListItem> {
   ListTile _buildListTile(Contact contact, BuildContext context,
       bool hasProfile, Widget avatarWidget, NostrProfile? nostrProfile) {
     // NOSTR displayName overrides Cesium+ name if available
-    final String title = nostrProfile?.displayName?.isNotEmpty == true
+    final String title = nostrProfile?.displayName?.isNotEmpty ?? false
         ? nostrProfile!.displayName!
-        : (nostrProfile?.name?.isNotEmpty == true
-            ? nostrProfile!.name!
+        : (nostrProfile?.name?.isNotEmpty ?? false
+            ? nostrProfile!.name
             : contact.title);
 
     // Subtitle: city / about  from NOSTR, or Cesium+ subtitle
     String? subtitleText;
     if (nostrProfile != null && hasProfile) {
-      if (nostrProfile.city?.isNotEmpty == true) {
+      if (nostrProfile.city?.isNotEmpty ?? false) {
         subtitleText = nostrProfile.city;
-      } else if (nostrProfile.about?.isNotEmpty == true) {
+      } else if (nostrProfile.about?.isNotEmpty ?? false) {
         final String about = nostrProfile.about!;
         subtitleText =
             about.length > 50 ? '${about.substring(0, 50)}…' : about;

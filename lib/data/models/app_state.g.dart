@@ -39,12 +39,13 @@ abstract class _$AppStateCWProxy {
 
   AppState v2AutoActivated(bool v2AutoActivated);
 
-  /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `AppState(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
+  /// Creates a new instance with the provided field values.
+  /// Passing `null` to a nullable field nullifies it, while `null` for a non-nullable field is ignored. To update a single field use `AppState(...).copyWith.fieldName(value)`.
   ///
-  /// Usage
+  /// Example:
   /// ```dart
   /// AppState(...).copyWith(id: 12, name: "My name")
-  /// ````
+  /// ```
   AppState call({
     bool introViewed,
     bool warningViewed,
@@ -65,78 +66,79 @@ abstract class _$AppStateCWProxy {
   });
 }
 
-/// Proxy class for `copyWith` functionality. This is a callable class and can be used as follows: `instanceOfAppState.copyWith(...)`. Additionally contains functions for specific fields e.g. `instanceOfAppState.copyWith.fieldName(...)`
+/// Callable proxy for `copyWith` functionality.
+/// Use as `instanceOfAppState.copyWith(...)` or call `instanceOfAppState.copyWith.fieldName(value)` for a single field.
 class _$AppStateCWProxyImpl implements _$AppStateCWProxy {
   const _$AppStateCWProxyImpl(this._value);
 
   final AppState _value;
 
   @override
-  AppState introViewed(bool introViewed) => this(introViewed: introViewed);
+  AppState introViewed(bool introViewed) => call(introViewed: introViewed);
 
   @override
   AppState warningViewed(bool warningViewed) =>
-      this(warningViewed: warningViewed);
+      call(warningViewed: warningViewed);
 
   @override
   AppState warningBrowserViewed(bool warningBrowserViewed) =>
-      this(warningBrowserViewed: warningBrowserViewed);
+      call(warningBrowserViewed: warningBrowserViewed);
 
   @override
   AppState warningBraveViewed(bool warningBraveViewed) =>
-      this(warningBraveViewed: warningBraveViewed);
+      call(warningBraveViewed: warningBraveViewed);
 
   @override
-  AppState expertMode(bool expertMode) => this(expertMode: expertMode);
+  AppState expertMode(bool expertMode) => call(expertMode: expertMode);
 
   @override
   AppState walletCreatedViewed(bool? walletCreatedViewed) =>
-      this(walletCreatedViewed: walletCreatedViewed);
+      call(walletCreatedViewed: walletCreatedViewed);
 
   @override
-  AppState v2mode(bool v2mode) => this(v2mode: v2mode);
+  AppState v2mode(bool v2mode) => call(v2mode: v2mode);
 
   @override
-  AppState currency(Currency? currency) => this(currency: currency);
+  AppState currency(Currency? currency) => call(currency: currency);
 
   @override
-  AppState currentUd(double? currentUd) => this(currentUd: currentUd);
+  AppState currentUd(double? currentUd) => call(currentUd: currentUd);
 
   @override
   AppState currentUdLastUpdate(DateTime? currentUdLastUpdate) =>
-      this(currentUdLastUpdate: currentUdLastUpdate);
+      call(currentUdLastUpdate: currentUdLastUpdate);
 
   @override
   AppState tutorials(Map<String, bool>? tutorials) =>
-      this(tutorials: tutorials);
+      call(tutorials: tutorials);
 
   @override
   AppState hasRecentExport(bool? hasRecentExport) =>
-      this(hasRecentExport: hasRecentExport);
+      call(hasRecentExport: hasRecentExport);
 
   @override
   AppState recentExportReminderInDays(int? recentExportReminderInDays) =>
-      this(recentExportReminderInDays: recentExportReminderInDays);
+      call(recentExportReminderInDays: recentExportReminderInDays);
 
   @override
   AppState distancePrecompute(DistancePrecompute? distancePrecompute) =>
-      this(distancePrecompute: distancePrecompute);
+      call(distancePrecompute: distancePrecompute);
 
   @override
-  AppState wotInfo(ContactWotInfo? wotInfo) => this(wotInfo: wotInfo);
+  AppState wotInfo(ContactWotInfo? wotInfo) => call(wotInfo: wotInfo);
 
   @override
   AppState v2AutoActivated(bool v2AutoActivated) =>
-      this(v2AutoActivated: v2AutoActivated);
+      call(v2AutoActivated: v2AutoActivated);
 
   @override
-
-  /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `AppState(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
+  /// Creates a new instance with the provided field values.
+  /// Passing `null` to a nullable field nullifies it, while `null` for a non-nullable field is ignored. To update a single field use `AppState(...).copyWith.fieldName(value)`.
   ///
-  /// Usage
+  /// Example:
   /// ```dart
   /// AppState(...).copyWith(id: 12, name: "My name")
-  /// ````
+  /// ```
   AppState call({
     Object? introViewed = const $CopyWithPlaceholder(),
     Object? warningViewed = const $CopyWithPlaceholder(),
@@ -156,23 +158,30 @@ class _$AppStateCWProxyImpl implements _$AppStateCWProxy {
     Object? v2AutoActivated = const $CopyWithPlaceholder(),
   }) {
     return AppState(
-      introViewed: introViewed == const $CopyWithPlaceholder()
+      introViewed:
+          introViewed == const $CopyWithPlaceholder() || introViewed == null
           ? _value.introViewed
           // ignore: cast_nullable_to_non_nullable
           : introViewed as bool,
-      warningViewed: warningViewed == const $CopyWithPlaceholder()
+      warningViewed:
+          warningViewed == const $CopyWithPlaceholder() || warningViewed == null
           ? _value.warningViewed
           // ignore: cast_nullable_to_non_nullable
           : warningViewed as bool,
-      warningBrowserViewed: warningBrowserViewed == const $CopyWithPlaceholder()
+      warningBrowserViewed:
+          warningBrowserViewed == const $CopyWithPlaceholder() ||
+              warningBrowserViewed == null
           ? _value.warningBrowserViewed
           // ignore: cast_nullable_to_non_nullable
           : warningBrowserViewed as bool,
-      warningBraveViewed: warningBraveViewed == const $CopyWithPlaceholder()
+      warningBraveViewed:
+          warningBraveViewed == const $CopyWithPlaceholder() ||
+              warningBraveViewed == null
           ? _value.warningBraveViewed
           // ignore: cast_nullable_to_non_nullable
           : warningBraveViewed as bool,
-      expertMode: expertMode == const $CopyWithPlaceholder()
+      expertMode:
+          expertMode == const $CopyWithPlaceholder() || expertMode == null
           ? _value.expertMode
           // ignore: cast_nullable_to_non_nullable
           : expertMode as bool,
@@ -180,7 +189,7 @@ class _$AppStateCWProxyImpl implements _$AppStateCWProxy {
           ? _value.walletCreatedViewed
           // ignore: cast_nullable_to_non_nullable
           : walletCreatedViewed as bool?,
-      v2mode: v2mode == const $CopyWithPlaceholder()
+      v2mode: v2mode == const $CopyWithPlaceholder() || v2mode == null
           ? _value.v2mode
           // ignore: cast_nullable_to_non_nullable
           : v2mode as bool,
@@ -206,9 +215,9 @@ class _$AppStateCWProxyImpl implements _$AppStateCWProxy {
           : hasRecentExport as bool?,
       recentExportReminderInDays:
           recentExportReminderInDays == const $CopyWithPlaceholder()
-              ? _value.recentExportReminderInDays
-              // ignore: cast_nullable_to_non_nullable
-              : recentExportReminderInDays as int?,
+          ? _value.recentExportReminderInDays
+          // ignore: cast_nullable_to_non_nullable
+          : recentExportReminderInDays as int?,
       distancePrecompute: distancePrecompute == const $CopyWithPlaceholder()
           ? _value.distancePrecompute
           // ignore: cast_nullable_to_non_nullable
@@ -217,7 +226,9 @@ class _$AppStateCWProxyImpl implements _$AppStateCWProxy {
           ? _value.wotInfo
           // ignore: cast_nullable_to_non_nullable
           : wotInfo as ContactWotInfo?,
-      v2AutoActivated: v2AutoActivated == const $CopyWithPlaceholder()
+      v2AutoActivated:
+          v2AutoActivated == const $CopyWithPlaceholder() ||
+              v2AutoActivated == null
           ? _value.v2AutoActivated
           // ignore: cast_nullable_to_non_nullable
           : v2AutoActivated as bool,
@@ -226,7 +237,8 @@ class _$AppStateCWProxyImpl implements _$AppStateCWProxy {
 }
 
 extension $AppStateCopyWith on AppState {
-  /// Returns a callable class that can be used as follows: `instanceOfAppState.copyWith(...)` or like so:`instanceOfAppState.copyWith.fieldName(...)`.
+  /// Returns a callable class used to build a new instance with modified fields.
+  /// Example: `instanceOfAppState.copyWith(...)` or `instanceOfAppState.copyWith.fieldName(...)`.
   // ignore: library_private_types_in_public_api
   _$AppStateCWProxy get copyWith => _$AppStateCWProxyImpl(this);
 }
@@ -236,48 +248,47 @@ extension $AppStateCopyWith on AppState {
 // **************************************************************************
 
 AppState _$AppStateFromJson(Map<String, dynamic> json) => AppState(
-      introViewed: json['introViewed'] as bool? ?? false,
-      warningViewed: json['warningViewed'] as bool? ?? false,
-      warningBrowserViewed: json['warningBrowserViewed'] as bool? ?? false,
-      warningBraveViewed: json['warningBraveViewed'] as bool? ?? false,
-      expertMode: json['expertMode'] as bool? ?? false,
-      walletCreatedViewed: json['walletCreatedViewed'] as bool?,
-      v2mode: json['v2mode'] as bool? ?? false,
-      currency: $enumDecodeNullable(_$CurrencyEnumMap, json['currency']),
-      currentUd: (json['currentUd'] as num?)?.toDouble(),
-      currentUdLastUpdate: json['currentUdLastUpdate'] == null
-          ? null
-          : DateTime.parse(json['currentUdLastUpdate'] as String),
-      tutorials: (json['tutorials'] as Map<String, dynamic>?)?.map(
-        (k, e) => MapEntry(k, e as bool),
-      ),
-      hasRecentExport: json['hasRecentExport'] as bool?,
-      recentExportReminderInDays:
-          (json['recentExportReminderInDays'] as num?)?.toInt(),
-      distancePrecompute: json['distancePrecompute'] == null
-          ? null
-          : DistancePrecompute.fromJson(
-              json['distancePrecompute'] as Map<String, dynamic>),
-    );
+  introViewed: json['introViewed'] as bool? ?? false,
+  warningViewed: json['warningViewed'] as bool? ?? false,
+  warningBrowserViewed: json['warningBrowserViewed'] as bool? ?? false,
+  warningBraveViewed: json['warningBraveViewed'] as bool? ?? false,
+  expertMode: json['expertMode'] as bool? ?? false,
+  walletCreatedViewed: json['walletCreatedViewed'] as bool?,
+  v2mode: json['v2mode'] as bool? ?? false,
+  currency: $enumDecodeNullable(_$CurrencyEnumMap, json['currency']),
+  currentUd: (json['currentUd'] as num?)?.toDouble(),
+  currentUdLastUpdate: json['currentUdLastUpdate'] == null
+      ? null
+      : DateTime.parse(json['currentUdLastUpdate'] as String),
+  tutorials: (json['tutorials'] as Map<String, dynamic>?)?.map(
+    (k, e) => MapEntry(k, e as bool),
+  ),
+  hasRecentExport: json['hasRecentExport'] as bool?,
+  recentExportReminderInDays: (json['recentExportReminderInDays'] as num?)
+      ?.toInt(),
+  distancePrecompute: json['distancePrecompute'] == null
+      ? null
+      : DistancePrecompute.fromJson(
+          json['distancePrecompute'] as Map<String, dynamic>,
+        ),
+);
 
 Map<String, dynamic> _$AppStateToJson(AppState instance) => <String, dynamic>{
-      'introViewed': instance.introViewed,
-      'hasRecentExport': instance.hasRecentExport,
-      'recentExportReminderInDays': instance.recentExportReminderInDays,
-      'walletCreatedViewed': instance.walletCreatedViewed,
-      'warningViewed': instance.warningViewed,
-      'warningBrowserViewed': instance.warningBrowserViewed,
-      'warningBraveViewed': instance.warningBraveViewed,
-      'expertMode': instance.expertMode,
-      'v2mode': instance.v2mode,
-      'currency': _$CurrencyEnumMap[instance.currency]!,
-      'currentUd': instance.currentUd,
-      if (instance.currentUdLastUpdate?.toIso8601String() case final value?)
-        'currentUdLastUpdate': value,
-      'tutorials': instance.tutorials,
-      if (instance.distancePrecompute case final value?)
-        'distancePrecompute': value,
-    };
+  'introViewed': instance.introViewed,
+  'hasRecentExport': instance.hasRecentExport,
+  'recentExportReminderInDays': instance.recentExportReminderInDays,
+  'walletCreatedViewed': instance.walletCreatedViewed,
+  'warningViewed': instance.warningViewed,
+  'warningBrowserViewed': instance.warningBrowserViewed,
+  'warningBraveViewed': instance.warningBraveViewed,
+  'expertMode': instance.expertMode,
+  'v2mode': instance.v2mode,
+  'currency': _$CurrencyEnumMap[instance.currency]!,
+  'currentUd': instance.currentUd,
+  'currentUdLastUpdate': ?instance.currentUdLastUpdate?.toIso8601String(),
+  'tutorials': instance.tutorials,
+  'distancePrecompute': ?instance.distancePrecompute,
+};
 
 const _$CurrencyEnumMap = {
   Currency.G1: 'G1',

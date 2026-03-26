@@ -280,7 +280,7 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
     setState(() {
       _swarmStations = sorted;
       // Update selection to nearest station that has slots + is active
-      final _SwarmStation? nearest = sorted.firstWhere(
+      final _SwarmStation nearest = sorted.firstWhere(
         (_SwarmStation s) => s.active && s.nostrSlots > 0,
         orElse: () => sorted.first,
       );
@@ -428,7 +428,7 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
             Text(
               'Votre Carte de Dépôt numérique,\n'
               'raccordée à votre réseau social\n'
-              '(amis et amis d\'amis)',
+              "(amis et amis d'amis)",
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     color: cs.onSurface.withOpacity(0.65), height: 1.6),
@@ -443,7 +443,7 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
                 'Votre clé NOSTR, vos données\nPas de GAFAM, pas de serveur central'),
             const SizedBox(height: 12),
             _buildAdvantageRow('💱', 'Ẑ convertibles en €',
-                'Défraiement possible par dépôt de facture NOSTR.\nVotre argent ne dort pas : il finance\nl\'acquisition et le partage du Bien Commun.'),
+                "Défraiement possible par dépôt de facture NOSTR.\nVotre argent ne dort pas : il finance\nl'acquisition et le partage du Bien Commun."),
             const SizedBox(height: 32),
 
             // ── Comment recharger ────────────────────────────────────────────
@@ -492,13 +492,13 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
                 borderRadius: BorderRadius.circular(10),
                 border: Border.all(color: Colors.blue.withValues(alpha: 0.2)),
               ),
-              child: Row(
+              child: const Row(
                 children: <Widget>[
-                  const Icon(Icons.info_outline, size: 16, color: Colors.blue),
-                  const SizedBox(width: 8),
-                  const Expanded(
+                  Icon(Icons.info_outline, size: 16, color: Colors.blue),
+                  SizedBox(width: 8),
+                  Expanded(
                     child: Text(
-                      'Créez votre MULTIPASS d\'abord,\n'
+                      "Créez votre MULTIPASS d'abord,\n"
                       'puis rechargez avec la même adresse email.',
                       style: TextStyle(fontSize: 11, color: Colors.blue, height: 1.4),
                     ),
@@ -512,7 +512,7 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
             Container(
               padding: const EdgeInsets.all(14),
               decoration: BoxDecoration(
-                color: cs.surfaceVariant.withOpacity(0.4),
+                color: cs.surfaceContainerHighest.withOpacity(0.4),
                 borderRadius: BorderRadius.circular(12),
                 border: Border.all(color: cs.outlineVariant),
               ),
@@ -524,7 +524,7 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
                           fontWeight: FontWeight.w700),
                   ),
                   const SizedBox(height: 6),
-                  _buildDistribRow('33 %', 'Crédit d\'usage sur votre MULTIPASS', const Color(0xFF00E5FF)),
+                  _buildDistribRow('33 %', "Crédit d'usage sur votre MULTIPASS", const Color(0xFF00E5FF)),
                   _buildDistribRow('33 %', 'R&D (Astroport.ONE · G1FabLab)', const Color(0xFFBF5AFF)),
                   _buildDistribRow('33 %', 'Actifs durables (forêts-jardins)', const Color(0xFF00FF9D)),
                   _buildDistribRow(' 1 %', 'Capitaine (gestion de la station)', const Color(0xFFFF7C42)),
@@ -781,7 +781,7 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
                 ],
                 const Spacer(),
                 if (_isLoading)
-                  Center(child: _MultipassCreationLoader())
+                  const Center(child: _MultipassCreationLoader())
                 else
                   ElevatedButton(
                     onPressed: _createMultipass,
@@ -1468,9 +1468,9 @@ class _MultipassCreationLoaderState extends State<_MultipassCreationLoader>
     <String>['🌱', 'Génération de vos clés cryptographiques…', 'Ed25519 · Schnorr · NOSTR'],
     <String>['🌐', 'Connexion au réseau UPlanet…', 'Votre station Astroport locale'],
     <String>['⚡', 'Création de votre identité NOSTR…', 'Souveraine, décentralisée'],
-    <String>['🤝', 'Inscription dans la toile de confiance Ğ1…', 'Amis et amis d\'amis'],
+    <String>['🤝', 'Inscription dans la toile de confiance Ğ1…', "Amis et amis d'amis"],
     <String>['💚', 'Attribution de votre MULTIPASS…', 'Votre Carte de Dépôt numérique'],
-    <String>['🎉', 'Prêt·e à rejoindre l\'écosystème ẐEN !', '100% Logiciels Libres'],
+    <String>['🎉', "Prêt·e à rejoindre l'écosystème ẐEN !", '100% Logiciels Libres'],
   ];
 
   static const List<String> _people = <String>[
@@ -1523,8 +1523,7 @@ class _MultipassCreationLoaderState extends State<_MultipassCreationLoader>
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         border: Border.all(
-                            color: Colors.purple.withValues(alpha: 0.15),
-                            width: 1),
+                            color: Colors.purple.withValues(alpha: 0.15)),
                       ),
                     ),
                     // Emoji central pulsant

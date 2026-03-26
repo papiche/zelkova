@@ -25,12 +25,13 @@ abstract class _$StoredAccountCWProxy {
 
   StoredAccount lastUsed(int? lastUsed);
 
-  /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `StoredAccount(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
+  /// Creates a new instance with the provided field values.
+  /// Passing `null` to a nullable field nullifies it, while `null` for a non-nullable field is ignored. To update a single field use `StoredAccount(...).copyWith.fieldName(value)`.
   ///
-  /// Usage
+  /// Example:
   /// ```dart
   /// StoredAccount(...).copyWith(id: 12, name: "My name")
-  /// ````
+  /// ```
   StoredAccount call({
     String pubKey,
     String address,
@@ -44,49 +45,50 @@ abstract class _$StoredAccountCWProxy {
   });
 }
 
-/// Proxy class for `copyWith` functionality. This is a callable class and can be used as follows: `instanceOfStoredAccount.copyWith(...)`. Additionally contains functions for specific fields e.g. `instanceOfStoredAccount.copyWith.fieldName(...)`
+/// Callable proxy for `copyWith` functionality.
+/// Use as `instanceOfStoredAccount.copyWith(...)` or call `instanceOfStoredAccount.copyWith.fieldName(value)` for a single field.
 class _$StoredAccountCWProxyImpl implements _$StoredAccountCWProxy {
   const _$StoredAccountCWProxyImpl(this._value);
 
   final StoredAccount _value;
 
   @override
-  StoredAccount pubKey(String pubKey) => this(pubKey: pubKey);
+  StoredAccount pubKey(String pubKey) => call(pubKey: pubKey);
 
   @override
-  StoredAccount address(String address) => this(address: address);
+  StoredAccount address(String address) => call(address: address);
 
   @override
-  StoredAccount contact(Contact contact) => this(contact: contact);
+  StoredAccount contact(Contact contact) => call(contact: contact);
 
   @override
-  StoredAccount theme(WalletTheme theme) => this(theme: theme);
+  StoredAccount theme(WalletTheme theme) => call(theme: theme);
 
   @override
-  StoredAccount type(AccountType type) => this(type: type);
+  StoredAccount type(AccountType type) => call(type: type);
 
   @override
-  StoredAccount seed(Uint8List? seed) => this(seed: seed);
+  StoredAccount seed(Uint8List? seed) => call(seed: seed);
 
   @override
   StoredAccount derivationPath(String? derivationPath) =>
-      this(derivationPath: derivationPath);
+      call(derivationPath: derivationPath);
 
   @override
   StoredAccount derivationParentId(String? derivationParentId) =>
-      this(derivationParentId: derivationParentId);
+      call(derivationParentId: derivationParentId);
 
   @override
-  StoredAccount lastUsed(int? lastUsed) => this(lastUsed: lastUsed);
+  StoredAccount lastUsed(int? lastUsed) => call(lastUsed: lastUsed);
 
   @override
-
-  /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `StoredAccount(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
+  /// Creates a new instance with the provided field values.
+  /// Passing `null` to a nullable field nullifies it, while `null` for a non-nullable field is ignored. To update a single field use `StoredAccount(...).copyWith.fieldName(value)`.
   ///
-  /// Usage
+  /// Example:
   /// ```dart
   /// StoredAccount(...).copyWith(id: 12, name: "My name")
-  /// ````
+  /// ```
   StoredAccount call({
     Object? pubKey = const $CopyWithPlaceholder(),
     Object? address = const $CopyWithPlaceholder(),
@@ -99,23 +101,23 @@ class _$StoredAccountCWProxyImpl implements _$StoredAccountCWProxy {
     Object? lastUsed = const $CopyWithPlaceholder(),
   }) {
     return StoredAccount(
-      pubKey: pubKey == const $CopyWithPlaceholder()
+      pubKey: pubKey == const $CopyWithPlaceholder() || pubKey == null
           ? _value.pubKey
           // ignore: cast_nullable_to_non_nullable
           : pubKey as String,
-      address: address == const $CopyWithPlaceholder()
+      address: address == const $CopyWithPlaceholder() || address == null
           ? _value.address
           // ignore: cast_nullable_to_non_nullable
           : address as String,
-      contact: contact == const $CopyWithPlaceholder()
+      contact: contact == const $CopyWithPlaceholder() || contact == null
           ? _value.contact
           // ignore: cast_nullable_to_non_nullable
           : contact as Contact,
-      theme: theme == const $CopyWithPlaceholder()
+      theme: theme == const $CopyWithPlaceholder() || theme == null
           ? _value.theme
           // ignore: cast_nullable_to_non_nullable
           : theme as WalletTheme,
-      type: type == const $CopyWithPlaceholder()
+      type: type == const $CopyWithPlaceholder() || type == null
           ? _value.type
           // ignore: cast_nullable_to_non_nullable
           : type as AccountType,
@@ -140,7 +142,8 @@ class _$StoredAccountCWProxyImpl implements _$StoredAccountCWProxy {
 }
 
 extension $StoredAccountCopyWith on StoredAccount {
-  /// Returns a callable class that can be used as follows: `instanceOfStoredAccount.copyWith(...)` or like so:`instanceOfStoredAccount.copyWith.fieldName(...)`.
+  /// Returns a callable class used to build a new instance with modified fields.
+  /// Example: `instanceOfStoredAccount.copyWith(...)` or `instanceOfStoredAccount.copyWith.fieldName(...)`.
   // ignore: library_private_types_in_public_api
   _$StoredAccountCWProxy get copyWith => _$StoredAccountCWProxyImpl(this);
 }

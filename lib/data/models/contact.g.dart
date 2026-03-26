@@ -51,12 +51,13 @@ abstract class _$ContactCWProxy {
 
   Contact nostrHex(String? nostrHex);
 
-  /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `Contact(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
+  /// Creates a new instance with the provided field values.
+  /// Passing `null` to a nullable field nullifies it, while `null` for a non-nullable field is ignored. To update a single field use `Contact(...).copyWith.fieldName(value)`.
   ///
-  /// Usage
+  /// Example:
   /// ```dart
   /// Contact(...).copyWith(id: 12, name: "My name")
-  /// ````
+  /// ```
   Contact call({
     String? nick,
     String pubKey,
@@ -83,89 +84,90 @@ abstract class _$ContactCWProxy {
   });
 }
 
-/// Proxy class for `copyWith` functionality. This is a callable class and can be used as follows: `instanceOfContact.copyWith(...)`. Additionally contains functions for specific fields e.g. `instanceOfContact.copyWith.fieldName(...)`
+/// Callable proxy for `copyWith` functionality.
+/// Use as `instanceOfContact.copyWith(...)` or call `instanceOfContact.copyWith.fieldName(value)` for a single field.
 class _$ContactCWProxyImpl implements _$ContactCWProxy {
   const _$ContactCWProxyImpl(this._value);
 
   final Contact _value;
 
   @override
-  Contact nick(String? nick) => this(nick: nick);
+  Contact nick(String? nick) => call(nick: nick);
 
   @override
-  Contact pubKey(String pubKey) => this(pubKey: pubKey);
+  Contact pubKey(String pubKey) => call(pubKey: pubKey);
 
   @override
-  Contact address(String? address) => this(address: address);
+  Contact address(String? address) => call(address: address);
 
   @override
-  Contact avatar(Uint8List? avatar) => this(avatar: avatar);
+  Contact avatar(Uint8List? avatar) => call(avatar: avatar);
 
   @override
-  Contact avatarCid(String? avatarCid) => this(avatarCid: avatarCid);
+  Contact avatarCid(String? avatarCid) => call(avatarCid: avatarCid);
 
   @override
-  Contact notes(String? notes) => this(notes: notes);
+  Contact notes(String? notes) => call(notes: notes);
 
   @override
-  Contact name(String? name) => this(name: name);
+  Contact name(String? name) => call(name: name);
 
   @override
-  Contact description(String? description) => this(description: description);
+  Contact description(String? description) => call(description: description);
 
   @override
-  Contact city(String? city) => this(city: city);
+  Contact city(String? city) => call(city: city);
 
   @override
-  Contact dataCid(String? dataCid) => this(dataCid: dataCid);
+  Contact dataCid(String? dataCid) => call(dataCid: dataCid);
 
   @override
-  Contact geoLoc(LatLng? geoLoc) => this(geoLoc: geoLoc);
+  Contact geoLoc(LatLng? geoLoc) => call(geoLoc: geoLoc);
 
   @override
   Contact indexRequestCid(String? indexRequestCid) =>
-      this(indexRequestCid: indexRequestCid);
+      call(indexRequestCid: indexRequestCid);
 
   @override
-  Contact socials(List<Map<String, String>>? socials) => this(socials: socials);
+  Contact socials(List<Map<String, String>>? socials) => call(socials: socials);
 
   @override
-  Contact time(DateTime? time) => this(time: time);
+  Contact time(DateTime? time) => call(time: time);
 
   @override
   Contact certsIssued(List<Cert>? certsIssued) =>
-      this(certsIssued: certsIssued);
+      call(certsIssued: certsIssued);
 
   @override
   Contact certsReceived(List<Cert>? certsReceived) =>
-      this(certsReceived: certsReceived);
+      call(certsReceived: certsReceived);
 
   @override
-  Contact status(IdentityStatus? status) => this(status: status);
+  Contact status(IdentityStatus? status) => call(status: status);
 
   @override
-  Contact isMember(bool? isMember) => this(isMember: isMember);
+  Contact isMember(bool? isMember) => call(isMember: isMember);
 
   @override
-  Contact createdOn(int? createdOn) => this(createdOn: createdOn);
+  Contact createdOn(int? createdOn) => call(createdOn: createdOn);
 
   @override
-  Contact index(int? index) => this(index: index);
+  Contact index(int? index) => call(index: index);
 
   @override
-  Contact expireOn(int? expireOn) => this(expireOn: expireOn);
+  Contact expireOn(int? expireOn) => call(expireOn: expireOn);
 
   @override
-  Contact nostrHex(String? nostrHex) => this(nostrHex: nostrHex);
+  Contact nostrHex(String? nostrHex) => call(nostrHex: nostrHex);
 
   @override
-
-  /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `Contact(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
+  /// Creates a new instance with the provided field values.
+  /// Passing `null` to a nullable field nullifies it, while `null` for a non-nullable field is ignored. To update a single field use `Contact(...).copyWith.fieldName(value)`.
   ///
-  /// Usage
+  /// Example:
   /// ```dart
   /// Contact(...).copyWith(id: 12, name: "My name")
-  /// ````
+  /// ```
   Contact call({
     Object? nick = const $CopyWithPlaceholder(),
     Object? pubKey = const $CopyWithPlaceholder(),
@@ -195,7 +197,7 @@ class _$ContactCWProxyImpl implements _$ContactCWProxy {
           ? _value.nick
           // ignore: cast_nullable_to_non_nullable
           : nick as String?,
-      pubKey: pubKey == const $CopyWithPlaceholder()
+      pubKey: pubKey == const $CopyWithPlaceholder() || pubKey == null
           ? _value.pubKey
           // ignore: cast_nullable_to_non_nullable
           : pubKey as String,
@@ -284,7 +286,8 @@ class _$ContactCWProxyImpl implements _$ContactCWProxy {
 }
 
 extension $ContactCopyWith on Contact {
-  /// Returns a callable class that can be used as follows: `instanceOfContact.copyWith(...)` or like so:`instanceOfContact.copyWith.fieldName(...)`.
+  /// Returns a callable class used to build a new instance with modified fields.
+  /// Example: `instanceOfContact.copyWith(...)` or `instanceOfContact.copyWith.fieldName(...)`.
   // ignore: library_private_types_in_public_api
   _$ContactCWProxy get copyWith => _$ContactCWProxyImpl(this);
 }
@@ -294,34 +297,33 @@ extension $ContactCopyWith on Contact {
 // **************************************************************************
 
 Contact _$ContactFromJson(Map<String, dynamic> json) => Contact(
-      nick: json['nick'] as String?,
-      pubKey: json['pubKey'] as String,
-      address: json['address'] as String?,
-      avatar: uIntFromList(json['avatar']),
-      avatarCid: json['avatarCid'] as String?,
-      notes: json['notes'] as String?,
-      name: json['name'] as String?,
-      dataCid: json['dataCid'] as String?,
-      indexRequestCid: json['indexRequestCid'] as String?,
-      time:
-          json['time'] == null ? null : DateTime.parse(json['time'] as String),
-      isMember: json['isMember'] as bool?,
-      createdOn: (json['createdOn'] as num?)?.toInt(),
-      index: (json['index'] as num?)?.toInt(),
-    );
+  nick: json['nick'] as String?,
+  pubKey: json['pubKey'] as String,
+  address: json['address'] as String?,
+  avatar: uIntFromList(json['avatar']),
+  avatarCid: json['avatarCid'] as String?,
+  notes: json['notes'] as String?,
+  name: json['name'] as String?,
+  dataCid: json['dataCid'] as String?,
+  indexRequestCid: json['indexRequestCid'] as String?,
+  time: json['time'] == null ? null : DateTime.parse(json['time'] as String),
+  isMember: json['isMember'] as bool?,
+  createdOn: (json['createdOn'] as num?)?.toInt(),
+  index: (json['index'] as num?)?.toInt(),
+);
 
 Map<String, dynamic> _$ContactToJson(Contact instance) => <String, dynamic>{
-      'nick': instance.nick,
-      'pubKey': instance.pubKey,
-      'address': instance.address,
-      'avatar': uIntToList(instance.avatar),
-      'notes': instance.notes,
-      'name': instance.name,
-      'avatarCid': instance.avatarCid,
-      'dataCid': instance.dataCid,
-      'indexRequestCid': instance.indexRequestCid,
-      'time': instance.time?.toIso8601String(),
-      'isMember': instance.isMember,
-      'createdOn': instance.createdOn,
-      'index': instance.index,
-    };
+  'nick': instance.nick,
+  'pubKey': instance.pubKey,
+  'address': instance.address,
+  'avatar': uIntToList(instance.avatar),
+  'notes': instance.notes,
+  'name': instance.name,
+  'avatarCid': instance.avatarCid,
+  'dataCid': instance.dataCid,
+  'indexRequestCid': instance.indexRequestCid,
+  'time': instance.time?.toIso8601String(),
+  'isMember': instance.isMember,
+  'createdOn': instance.createdOn,
+  'index': instance.index,
+};

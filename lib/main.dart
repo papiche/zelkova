@@ -59,9 +59,9 @@ import 'g1/nostr/nostr_relay_service.dart';
 import 'g1/service_manager.dart';
 import 'g1/zen_tag_service.dart';
 import 'services/background_wallet_sync_service.dart';
+import 'services/nip101_service.dart';
 import 'services/open_collective_service.dart';
 import 'services/upassport_api_service.dart';
-import 'services/nip101_service.dart';
 import 'shared_prefs_helper.dart';
 import 'shared_prefs_helper_v2.dart';
 import 'ui/biometrics/biometric_auth_service.dart';
@@ -72,11 +72,11 @@ import 'ui/notification_controller.dart';
 import 'ui/notification_translations_helper.dart';
 import 'ui/pay_helper.dart';
 import 'ui/screens/skeleton_screen.dart';
+import 'ui/screens/wallet_creation_screen.dart';
 import 'ui/ui_helpers.dart';
 import 'ui/widgets/connectivity_widget_wrapper_wrapper.dart';
 import 'ui/widgets/lazy_upgrade_alert.dart';
 import 'ui/widgets/pages/biometric_lock_screen.dart';
-import 'ui/screens/wallet_creation_screen.dart';
 
 const String fetchWalletsTransactionsTask =
     'org.comunes.g1nkgo.fetchWalletsTransactionsTask';

@@ -63,7 +63,9 @@ class MultipassResponse {
       nostrns: json['nostrns'] as String? ?? '',
       lat: json['lat'] as String? ?? '',
       lon: json['lon'] as String? ?? '',
-      ssssPlayer: json['ssss_player'] as String? ?? '',
+      // API /g1nostr (g1.sh) returns "ssss" but the storage key is ssss_player.
+      // Accept both field names for forward and backward compatibility.
+      ssssPlayer: (json['ssss'] ?? json['ssss_player']) as String? ?? '',
       isOrigin: json['is_origin'] as bool? ?? false,
       ocUrls: OcUrls.fromJson(json['oc_urls'] as Map<String, dynamic>?),
       uplanetHome: json['uplanet_home'] as String? ?? '',

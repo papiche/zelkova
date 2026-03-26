@@ -32,9 +32,9 @@ class _SandboxState extends State<Sandbox> {
       if (!service.isConfigured) {
         _addLog('Service not configured (needs API URL, key, slug).');
       } else {
-        final transactions = await service.fetchTransactions(limit: 5);
+        final List<OCTransaction> transactions = await service.fetchTransactions(limit: 5);
         _addLog('Fetched ${transactions.length} transactions');
-        for (final tx in transactions.take(3)) {
+        for (final OCTransaction tx in transactions.take(3)) {
           _addLog('  - ${tx.description}: ${tx.amount} ${tx.currency}');
         }
       }
@@ -49,9 +49,9 @@ class _SandboxState extends State<Sandbox> {
     setState(() => _loading = true);
     try {
       final UPassportApiService service = GetIt.instance<UPassportApiService>();
-      final balance = await service.getBalance('testpubkey');
+      final BalanceInfo balance = await service.getBalance('testpubkey');
       _addLog('Balance: ${balance.balance}');
-      final zenCard = await service.getZenCard('test@example.com');
+      final ZenCardInfo zenCard = await service.getZenCard('test@example.com');
       _addLog('ZenCard email: ${zenCard.email}');
     } catch (e) {
       _addLog('Error: $e');
@@ -64,9 +64,9 @@ class _SandboxState extends State<Sandbox> {
     setState(() => _loading = true);
     try {
       final Nip101Service service = GetIt.instance<Nip101Service>();
-      final permits = await service.getPermitDefinitions(limit: 2);
+      final List<PermitDefinition> permits = await service.getPermitDefinitions(limit: 2);
       _addLog('Fetched ${permits.length} permit definitions');
-      for (final permit in permits) {
+      for (final PermitDefinition permit in permits) {
         _addLog('  - ${permit.name} (${permit.id})');
       }
       // Try to fetch a DID document (requires a valid DID)
@@ -88,9 +88,9 @@ class _SandboxState extends State<Sandbox> {
         _addLog('Connecting...');
         await relay.connect('wss://relay.damus.io');
       }
-      final events = await relay.queryEvents(kinds: [0, 3], limit: 2);
+      final List<Map<String, dynamic>> events = await relay.queryEvents(kinds: <int>[0, 3], limit: 2);
       _addLog('Queried ${events.length} events');
-      for (final event in events.take(2)) {
+      for (final Map<String, dynamic> event in events.take(2)) {
         _addLog('  - kind ${event['kind']} from ${event['pubkey']?.substring(0, 8)}');
       }
     } catch (e) {
@@ -105,7 +105,7 @@ class _SandboxState extends State<Sandbox> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Sandbox - NIP-101 Integration'),
-        actions: [
+        actions: <Widget>[
           IconButton(
             icon: const Icon(Icons.clear_all),
             onPressed: () => setState(() => _log = ''),
@@ -113,23 +113,23 @@ class _SandboxState extends State<Sandbox> {
         ],
       ),
       body: Column(
-        children: [
+        children: <Widget>[
           Expanded(
             child: SingleChildScrollView(
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
+                  children: <Widget>[
                     const Text(
-                      'Test des nouveaux services d\'intégration Astroport',
+                      "Test des nouveaux services d'intégration Astroport",
                       style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
                     const SizedBox(height: 20),
                     Wrap(
                       spacing: 8,
                       runSpacing: 8,
-                      children: [
+                      children: <Widget>[
                         ElevatedButton(
                           onPressed: _loading ? null : _testOpenCollective,
                           child: const Text('Open Collective'),
@@ -176,7 +176,7 @@ class _SandboxState extends State<Sandbox> {
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                     const Text(
-                      'Ces boutons testent l\'intégration des nouveaux services Dart créés pour NIP-101, Open Collective, UPassport et NOSTR. Les services sont enregistrés dans GetIt et peuvent être utilisés dans toute l\'application.',
+                      "Ces boutons testent l'intégration des nouveaux services Dart créés pour NIP-101, Open Collective, UPassport et NOSTR. Les services sont enregistrés dans GetIt et peuvent être utilisés dans toute l'application.",
                     ),
                   ],
                 ),

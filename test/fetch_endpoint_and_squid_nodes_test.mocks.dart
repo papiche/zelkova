@@ -28,36 +28,22 @@ import 'package:mockito/src/dummies.dart' as _i6;
 // ignore_for_file: unnecessary_parenthesis
 // ignore_for_file: camel_case_types
 // ignore_for_file: subtype_of_sealed_class
+// ignore_for_file: invalid_use_of_internal_member
 
 class _FakeResponse_0 extends _i1.SmartFake implements _i2.Response {
-  _FakeResponse_0(
-    Object parent,
-    Invocation parentInvocation,
-  ) : super(
-          parent,
-          parentInvocation,
-        );
+  _FakeResponse_0(Object parent, Invocation parentInvocation)
+    : super(parent, parentInvocation);
 }
 
 class _FakeStreamedResponse_1 extends _i1.SmartFake
     implements _i2.StreamedResponse {
-  _FakeStreamedResponse_1(
-    Object parent,
-    Invocation parentInvocation,
-  ) : super(
-          parent,
-          parentInvocation,
-        );
+  _FakeStreamedResponse_1(Object parent, Invocation parentInvocation)
+    : super(parent, parentInvocation);
 }
 
 class _FakeNodeListState_2 extends _i1.SmartFake implements _i3.NodeListState {
-  _FakeNodeListState_2(
-    Object parent,
-    Invocation parentInvocation,
-  ) : super(
-          parent,
-          parentInvocation,
-        );
+  _FakeNodeListState_2(Object parent, Invocation parentInvocation)
+    : super(parent, parentInvocation);
 }
 
 /// A class which mocks [Client].
@@ -69,46 +55,30 @@ class MockClient extends _i1.Mock implements _i2.Client {
   }
 
   @override
-  _i4.Future<_i2.Response> head(
-    Uri? url, {
-    Map<String, String>? headers,
-  }) =>
+  _i4.Future<_i2.Response> head(Uri? url, {Map<String, String>? headers}) =>
       (super.noSuchMethod(
-        Invocation.method(
-          #head,
-          [url],
-          {#headers: headers},
-        ),
-        returnValue: _i4.Future<_i2.Response>.value(_FakeResponse_0(
-          this,
-          Invocation.method(
-            #head,
-            [url],
-            {#headers: headers},
-          ),
-        )),
-      ) as _i4.Future<_i2.Response>);
+            Invocation.method(#head, [url], {#headers: headers}),
+            returnValue: _i4.Future<_i2.Response>.value(
+              _FakeResponse_0(
+                this,
+                Invocation.method(#head, [url], {#headers: headers}),
+              ),
+            ),
+          )
+          as _i4.Future<_i2.Response>);
 
   @override
-  _i4.Future<_i2.Response> get(
-    Uri? url, {
-    Map<String, String>? headers,
-  }) =>
+  _i4.Future<_i2.Response> get(Uri? url, {Map<String, String>? headers}) =>
       (super.noSuchMethod(
-        Invocation.method(
-          #get,
-          [url],
-          {#headers: headers},
-        ),
-        returnValue: _i4.Future<_i2.Response>.value(_FakeResponse_0(
-          this,
-          Invocation.method(
-            #get,
-            [url],
-            {#headers: headers},
-          ),
-        )),
-      ) as _i4.Future<_i2.Response>);
+            Invocation.method(#get, [url], {#headers: headers}),
+            returnValue: _i4.Future<_i2.Response>.value(
+              _FakeResponse_0(
+                this,
+                Invocation.method(#get, [url], {#headers: headers}),
+              ),
+            ),
+          )
+          as _i4.Future<_i2.Response>);
 
   @override
   _i4.Future<_i2.Response> post(
@@ -118,28 +88,23 @@ class MockClient extends _i1.Mock implements _i2.Client {
     _i5.Encoding? encoding,
   }) =>
       (super.noSuchMethod(
-        Invocation.method(
-          #post,
-          [url],
-          {
-            #headers: headers,
-            #body: body,
-            #encoding: encoding,
-          },
-        ),
-        returnValue: _i4.Future<_i2.Response>.value(_FakeResponse_0(
-          this,
-          Invocation.method(
-            #post,
-            [url],
-            {
-              #headers: headers,
-              #body: body,
-              #encoding: encoding,
-            },
-          ),
-        )),
-      ) as _i4.Future<_i2.Response>);
+            Invocation.method(
+              #post,
+              [url],
+              {#headers: headers, #body: body, #encoding: encoding},
+            ),
+            returnValue: _i4.Future<_i2.Response>.value(
+              _FakeResponse_0(
+                this,
+                Invocation.method(
+                  #post,
+                  [url],
+                  {#headers: headers, #body: body, #encoding: encoding},
+                ),
+              ),
+            ),
+          )
+          as _i4.Future<_i2.Response>);
 
   @override
   _i4.Future<_i2.Response> put(
@@ -149,28 +114,23 @@ class MockClient extends _i1.Mock implements _i2.Client {
     _i5.Encoding? encoding,
   }) =>
       (super.noSuchMethod(
-        Invocation.method(
-          #put,
-          [url],
-          {
-            #headers: headers,
-            #body: body,
-            #encoding: encoding,
-          },
-        ),
-        returnValue: _i4.Future<_i2.Response>.value(_FakeResponse_0(
-          this,
-          Invocation.method(
-            #put,
-            [url],
-            {
-              #headers: headers,
-              #body: body,
-              #encoding: encoding,
-            },
-          ),
-        )),
-      ) as _i4.Future<_i2.Response>);
+            Invocation.method(
+              #put,
+              [url],
+              {#headers: headers, #body: body, #encoding: encoding},
+            ),
+            returnValue: _i4.Future<_i2.Response>.value(
+              _FakeResponse_0(
+                this,
+                Invocation.method(
+                  #put,
+                  [url],
+                  {#headers: headers, #body: body, #encoding: encoding},
+                ),
+              ),
+            ),
+          )
+          as _i4.Future<_i2.Response>);
 
   @override
   _i4.Future<_i2.Response> patch(
@@ -180,28 +140,23 @@ class MockClient extends _i1.Mock implements _i2.Client {
     _i5.Encoding? encoding,
   }) =>
       (super.noSuchMethod(
-        Invocation.method(
-          #patch,
-          [url],
-          {
-            #headers: headers,
-            #body: body,
-            #encoding: encoding,
-          },
-        ),
-        returnValue: _i4.Future<_i2.Response>.value(_FakeResponse_0(
-          this,
-          Invocation.method(
-            #patch,
-            [url],
-            {
-              #headers: headers,
-              #body: body,
-              #encoding: encoding,
-            },
-          ),
-        )),
-      ) as _i4.Future<_i2.Response>);
+            Invocation.method(
+              #patch,
+              [url],
+              {#headers: headers, #body: body, #encoding: encoding},
+            ),
+            returnValue: _i4.Future<_i2.Response>.value(
+              _FakeResponse_0(
+                this,
+                Invocation.method(
+                  #patch,
+                  [url],
+                  {#headers: headers, #body: body, #encoding: encoding},
+                ),
+              ),
+            ),
+          )
+          as _i4.Future<_i2.Response>);
 
   @override
   _i4.Future<_i2.Response> delete(
@@ -211,49 +166,36 @@ class MockClient extends _i1.Mock implements _i2.Client {
     _i5.Encoding? encoding,
   }) =>
       (super.noSuchMethod(
-        Invocation.method(
-          #delete,
-          [url],
-          {
-            #headers: headers,
-            #body: body,
-            #encoding: encoding,
-          },
-        ),
-        returnValue: _i4.Future<_i2.Response>.value(_FakeResponse_0(
-          this,
-          Invocation.method(
-            #delete,
-            [url],
-            {
-              #headers: headers,
-              #body: body,
-              #encoding: encoding,
-            },
-          ),
-        )),
-      ) as _i4.Future<_i2.Response>);
+            Invocation.method(
+              #delete,
+              [url],
+              {#headers: headers, #body: body, #encoding: encoding},
+            ),
+            returnValue: _i4.Future<_i2.Response>.value(
+              _FakeResponse_0(
+                this,
+                Invocation.method(
+                  #delete,
+                  [url],
+                  {#headers: headers, #body: body, #encoding: encoding},
+                ),
+              ),
+            ),
+          )
+          as _i4.Future<_i2.Response>);
 
   @override
-  _i4.Future<String> read(
-    Uri? url, {
-    Map<String, String>? headers,
-  }) =>
+  _i4.Future<String> read(Uri? url, {Map<String, String>? headers}) =>
       (super.noSuchMethod(
-        Invocation.method(
-          #read,
-          [url],
-          {#headers: headers},
-        ),
-        returnValue: _i4.Future<String>.value(_i6.dummyValue<String>(
-          this,
-          Invocation.method(
-            #read,
-            [url],
-            {#headers: headers},
-          ),
-        )),
-      ) as _i4.Future<String>);
+            Invocation.method(#read, [url], {#headers: headers}),
+            returnValue: _i4.Future<String>.value(
+              _i6.dummyValue<String>(
+                this,
+                Invocation.method(#read, [url], {#headers: headers}),
+              ),
+            ),
+          )
+          as _i4.Future<String>);
 
   @override
   _i4.Future<_i7.Uint8List> readBytes(
@@ -261,39 +203,29 @@ class MockClient extends _i1.Mock implements _i2.Client {
     Map<String, String>? headers,
   }) =>
       (super.noSuchMethod(
-        Invocation.method(
-          #readBytes,
-          [url],
-          {#headers: headers},
-        ),
-        returnValue: _i4.Future<_i7.Uint8List>.value(_i7.Uint8List(0)),
-      ) as _i4.Future<_i7.Uint8List>);
+            Invocation.method(#readBytes, [url], {#headers: headers}),
+            returnValue: _i4.Future<_i7.Uint8List>.value(_i7.Uint8List(0)),
+          )
+          as _i4.Future<_i7.Uint8List>);
 
   @override
   _i4.Future<_i2.StreamedResponse> send(_i2.BaseRequest? request) =>
       (super.noSuchMethod(
-        Invocation.method(
-          #send,
-          [request],
-        ),
-        returnValue:
-            _i4.Future<_i2.StreamedResponse>.value(_FakeStreamedResponse_1(
-          this,
-          Invocation.method(
-            #send,
-            [request],
-          ),
-        )),
-      ) as _i4.Future<_i2.StreamedResponse>);
+            Invocation.method(#send, [request]),
+            returnValue: _i4.Future<_i2.StreamedResponse>.value(
+              _FakeStreamedResponse_1(
+                this,
+                Invocation.method(#send, [request]),
+              ),
+            ),
+          )
+          as _i4.Future<_i2.StreamedResponse>);
 
   @override
   void close() => super.noSuchMethod(
-        Invocation.method(
-          #close,
-          [],
-        ),
-        returnValueForMissingStub: null,
-      );
+    Invocation.method(#close, []),
+    returnValueForMissingStub: null,
+  );
 }
 
 /// A class which mocks [NodeListCubit].
@@ -305,278 +237,222 @@ class MockNodeListCubit extends _i1.Mock implements _i8.NodeListCubit {
   }
 
   @override
-  String get storagePrefix => (super.noSuchMethod(
-        Invocation.getter(#storagePrefix),
-        returnValue: _i6.dummyValue<String>(
-          this,
-          Invocation.getter(#storagePrefix),
-        ),
-      ) as String);
+  String get storagePrefix =>
+      (super.noSuchMethod(
+            Invocation.getter(#storagePrefix),
+            returnValue: _i6.dummyValue<String>(
+              this,
+              Invocation.getter(#storagePrefix),
+            ),
+          )
+          as String);
 
   @override
-  bool get isLoading => (super.noSuchMethod(
-        Invocation.getter(#isLoading),
-        returnValue: false,
-      ) as bool);
+  bool get isLoading =>
+      (super.noSuchMethod(Invocation.getter(#isLoading), returnValue: false)
+          as bool);
 
   @override
-  List<_i9.Node> get cesiumPlusNodes => (super.noSuchMethod(
-        Invocation.getter(#cesiumPlusNodes),
-        returnValue: <_i9.Node>[],
-      ) as List<_i9.Node>);
+  List<_i9.Node> get cesiumPlusNodes =>
+      (super.noSuchMethod(
+            Invocation.getter(#cesiumPlusNodes),
+            returnValue: <_i9.Node>[],
+          )
+          as List<_i9.Node>);
 
   @override
-  List<_i9.Node> get endpointNodes => (super.noSuchMethod(
-        Invocation.getter(#endpointNodes),
-        returnValue: <_i9.Node>[],
-      ) as List<_i9.Node>);
+  List<_i9.Node> get endpointNodes =>
+      (super.noSuchMethod(
+            Invocation.getter(#endpointNodes),
+            returnValue: <_i9.Node>[],
+          )
+          as List<_i9.Node>);
 
   @override
-  List<_i9.Node> get duniterIndexerNodes => (super.noSuchMethod(
-        Invocation.getter(#duniterIndexerNodes),
-        returnValue: <_i9.Node>[],
-      ) as List<_i9.Node>);
+  List<_i9.Node> get duniterIndexerNodes =>
+      (super.noSuchMethod(
+            Invocation.getter(#duniterIndexerNodes),
+            returnValue: <_i9.Node>[],
+          )
+          as List<_i9.Node>);
 
   @override
-  List<_i9.Node> get duniterDataNodes => (super.noSuchMethod(
-        Invocation.getter(#duniterDataNodes),
-        returnValue: <_i9.Node>[],
-      ) as List<_i9.Node>);
+  List<_i9.Node> get duniterDataNodes =>
+      (super.noSuchMethod(
+            Invocation.getter(#duniterDataNodes),
+            returnValue: <_i9.Node>[],
+          )
+          as List<_i9.Node>);
 
   @override
-  List<_i9.Node> get ipfsGateways => (super.noSuchMethod(
-        Invocation.getter(#ipfsGateways),
-        returnValue: <_i9.Node>[],
-      ) as List<_i9.Node>);
+  List<_i9.Node> get ipfsGateways =>
+      (super.noSuchMethod(
+            Invocation.getter(#ipfsGateways),
+            returnValue: <_i9.Node>[],
+          )
+          as List<_i9.Node>);
 
   @override
-  _i3.NodeListState get state => (super.noSuchMethod(
-        Invocation.getter(#state),
-        returnValue: _FakeNodeListState_2(
-          this,
-          Invocation.getter(#state),
-        ),
-      ) as _i3.NodeListState);
+  _i3.NodeListState get state =>
+      (super.noSuchMethod(
+            Invocation.getter(#state),
+            returnValue: _FakeNodeListState_2(this, Invocation.getter(#state)),
+          )
+          as _i3.NodeListState);
 
   @override
-  _i4.Stream<_i3.NodeListState> get stream => (super.noSuchMethod(
-        Invocation.getter(#stream),
-        returnValue: _i4.Stream<_i3.NodeListState>.empty(),
-      ) as _i4.Stream<_i3.NodeListState>);
+  _i4.Stream<_i3.NodeListState> get stream =>
+      (super.noSuchMethod(
+            Invocation.getter(#stream),
+            returnValue: _i4.Stream<_i3.NodeListState>.empty(),
+          )
+          as _i4.Stream<_i3.NodeListState>);
 
   @override
-  bool get isClosed => (super.noSuchMethod(
-        Invocation.getter(#isClosed),
-        returnValue: false,
-      ) as bool);
+  bool get isClosed =>
+      (super.noSuchMethod(Invocation.getter(#isClosed), returnValue: false)
+          as bool);
 
   @override
-  String get id => (super.noSuchMethod(
-        Invocation.getter(#id),
-        returnValue: _i6.dummyValue<String>(
-          this,
-          Invocation.getter(#id),
-        ),
-      ) as String);
+  String get id =>
+      (super.noSuchMethod(
+            Invocation.getter(#id),
+            returnValue: _i6.dummyValue<String>(this, Invocation.getter(#id)),
+          )
+          as String);
 
   @override
-  String get storageToken => (super.noSuchMethod(
-        Invocation.getter(#storageToken),
-        returnValue: _i6.dummyValue<String>(
-          this,
-          Invocation.getter(#storageToken),
-        ),
-      ) as String);
+  String get storageToken =>
+      (super.noSuchMethod(
+            Invocation.getter(#storageToken),
+            returnValue: _i6.dummyValue<String>(
+              this,
+              Invocation.getter(#storageToken),
+            ),
+          )
+          as String);
 
   @override
-  _i4.Future<void> close() => (super.noSuchMethod(
-        Invocation.method(
-          #close,
-          [],
-        ),
-        returnValue: _i4.Future<void>.value(),
-        returnValueForMissingStub: _i4.Future<void>.value(),
-      ) as _i4.Future<void>);
+  _i4.Future<void> close() =>
+      (super.noSuchMethod(
+            Invocation.method(#close, []),
+            returnValue: _i4.Future<void>.value(),
+            returnValueForMissingStub: _i4.Future<void>.value(),
+          )
+          as _i4.Future<void>);
 
   @override
-  _i4.Future<void> closeCubit() => (super.noSuchMethod(
-        Invocation.method(
-          #closeCubit,
-          [],
-        ),
-        returnValue: _i4.Future<void>.value(),
-        returnValueForMissingStub: _i4.Future<void>.value(),
-      ) as _i4.Future<void>);
+  _i4.Future<void> closeCubit() =>
+      (super.noSuchMethod(
+            Invocation.method(#closeCubit, []),
+            returnValue: _i4.Future<void>.value(),
+            returnValueForMissingStub: _i4.Future<void>.value(),
+          )
+          as _i4.Future<void>);
 
   @override
   void setCurrentGvaNode(_i9.Node? node) => super.noSuchMethod(
-        Invocation.method(
-          #setCurrentGvaNode,
-          [node],
-        ),
-        returnValueForMissingStub: null,
-      );
+    Invocation.method(#setCurrentGvaNode, [node]),
+    returnValueForMissingStub: null,
+  );
 
   @override
   void setLoading(bool? isLoading) => super.noSuchMethod(
-        Invocation.method(
-          #setLoading,
-          [isLoading],
-        ),
-        returnValueForMissingStub: null,
-      );
+    Invocation.method(#setLoading, [isLoading]),
+    returnValueForMissingStub: null,
+  );
 
   @override
   void setDuniterIndexerNodes(List<_i9.Node>? nodes) => super.noSuchMethod(
-        Invocation.method(
-          #setDuniterIndexerNodes,
-          [nodes],
-        ),
-        returnValueForMissingStub: null,
-      );
+    Invocation.method(#setDuniterIndexerNodes, [nodes]),
+    returnValueForMissingStub: null,
+  );
 
   @override
   void setDuniterDataNodes(List<_i9.Node>? nodes) => super.noSuchMethod(
-        Invocation.method(
-          #setDuniterDataNodes,
-          [nodes],
-        ),
-        returnValueForMissingStub: null,
-      );
+    Invocation.method(#setDuniterDataNodes, [nodes]),
+    returnValueForMissingStub: null,
+  );
 
   @override
   void setIpfsGateways(List<_i9.Node>? nodes) => super.noSuchMethod(
-        Invocation.method(
-          #setIpfsGateways,
-          [nodes],
-        ),
-        returnValueForMissingStub: null,
-      );
+    Invocation.method(#setIpfsGateways, [nodes]),
+    returnValueForMissingStub: null,
+  );
 
   @override
   void setCesiumPlusNodes(List<_i9.Node>? nodes) => super.noSuchMethod(
-        Invocation.method(
-          #setCesiumPlusNodes,
-          [nodes],
-        ),
-        returnValueForMissingStub: null,
-      );
+    Invocation.method(#setCesiumPlusNodes, [nodes]),
+    returnValueForMissingStub: null,
+  );
 
   @override
   void setEndpointNodes(List<_i9.Node>? nodes) => super.noSuchMethod(
-        Invocation.method(
-          #setEndpointNodes,
-          [nodes],
-        ),
-        returnValueForMissingStub: null,
-      );
+    Invocation.method(#setEndpointNodes, [nodes]),
+    returnValueForMissingStub: null,
+  );
 
   @override
   _i3.NodeListState? fromJson(Map<String, dynamic>? json) =>
-      (super.noSuchMethod(Invocation.method(
-        #fromJson,
-        [json],
-      )) as _i3.NodeListState?);
+      (super.noSuchMethod(Invocation.method(#fromJson, [json]))
+          as _i3.NodeListState?);
 
   @override
   Map<String, dynamic>? toJson(_i3.NodeListState? state) =>
-      (super.noSuchMethod(Invocation.method(
-        #toJson,
-        [state],
-      )) as Map<String, dynamic>?);
+      (super.noSuchMethod(Invocation.method(#toJson, [state]))
+          as Map<String, dynamic>?);
 
   @override
   void resetCurrentGvaNode() => super.noSuchMethod(
-        Invocation.method(
-          #resetCurrentGvaNode,
-          [],
-        ),
-        returnValueForMissingStub: null,
-      );
+    Invocation.method(#resetCurrentGvaNode, []),
+    returnValueForMissingStub: null,
+  );
 
   @override
   void clearV2Nodes() => super.noSuchMethod(
-        Invocation.method(
-          #clearV2Nodes,
-          [],
-        ),
-        returnValueForMissingStub: null,
-      );
+    Invocation.method(#clearV2Nodes, []),
+    returnValueForMissingStub: null,
+  );
 
   @override
   void emit(_i3.NodeListState? state) => super.noSuchMethod(
-        Invocation.method(
-          #emit,
-          [state],
-        ),
-        returnValueForMissingStub: null,
-      );
+    Invocation.method(#emit, [state]),
+    returnValueForMissingStub: null,
+  );
 
   @override
   void onChange(_i10.Change<_i3.NodeListState>? change) => super.noSuchMethod(
-        Invocation.method(
-          #onChange,
-          [change],
-        ),
-        returnValueForMissingStub: null,
-      );
+    Invocation.method(#onChange, [change]),
+    returnValueForMissingStub: null,
+  );
 
   @override
-  void addError(
-    Object? error, [
-    StackTrace? stackTrace,
-  ]) =>
-      super.noSuchMethod(
-        Invocation.method(
-          #addError,
-          [
-            error,
-            stackTrace,
-          ],
-        ),
-        returnValueForMissingStub: null,
-      );
+  void addError(Object? error, [StackTrace? stackTrace]) => super.noSuchMethod(
+    Invocation.method(#addError, [error, stackTrace]),
+    returnValueForMissingStub: null,
+  );
 
   @override
-  void onError(
-    Object? error,
-    StackTrace? stackTrace,
-  ) =>
-      super.noSuchMethod(
-        Invocation.method(
-          #onError,
-          [
-            error,
-            stackTrace,
-          ],
-        ),
-        returnValueForMissingStub: null,
-      );
+  void onError(Object? error, StackTrace? stackTrace) => super.noSuchMethod(
+    Invocation.method(#onError, [error, stackTrace]),
+    returnValueForMissingStub: null,
+  );
 
   @override
   void hydrate({
     _i10.Storage? storage,
     _i10.OnHydrationError? onError = _i10.defaultOnHydrationError,
-  }) =>
-      super.noSuchMethod(
-        Invocation.method(
-          #hydrate,
-          [],
-          {
-            #storage: storage,
-            #onError: onError,
-          },
-        ),
-        returnValueForMissingStub: null,
-      );
+  }) => super.noSuchMethod(
+    Invocation.method(#hydrate, [], {#storage: storage, #onError: onError}),
+    returnValueForMissingStub: null,
+  );
 
   @override
-  _i4.Future<void> clear() => (super.noSuchMethod(
-        Invocation.method(
-          #clear,
-          [],
-        ),
-        returnValue: _i4.Future<void>.value(),
-        returnValueForMissingStub: _i4.Future<void>.value(),
-      ) as _i4.Future<void>);
+  _i4.Future<void> clear() =>
+      (super.noSuchMethod(
+            Invocation.method(#clear, []),
+            returnValue: _i4.Future<void>.value(),
+            returnValueForMissingStub: _i4.Future<void>.value(),
+          )
+          as _i4.Future<void>);
 }

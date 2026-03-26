@@ -242,7 +242,7 @@ class _CardDrawerState extends State<CardDrawer> {
                 const SizedBox(height: 8.0),
                 const Text(
                   'G1FabLab · AMAP Numérique Citoyenne\n'
-                  'Ğ1 apporte la Liberté · Ẑen apporte l\'Égalité · ❤️ apporte la Fraternité',
+                  "Ğ1 apporte la Liberté · Ẑen apporte l'Égalité · ❤️ apporte la Fraternité",
                   style: TextStyle(fontSize: 12),
                 ),
                 const SizedBox(height: 8.0),

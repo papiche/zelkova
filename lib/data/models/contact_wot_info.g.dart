@@ -11,48 +11,47 @@ abstract class _$ContactWotInfoCWProxy {
 
   ContactWotInfo you(Contact you);
 
-  /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `ContactWotInfo(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
+  /// Creates a new instance with the provided field values.
+  /// Passing `null` to a nullable field nullifies it, while `null` for a non-nullable field is ignored. To update a single field use `ContactWotInfo(...).copyWith.fieldName(value)`.
   ///
-  /// Usage
+  /// Example:
   /// ```dart
   /// ContactWotInfo(...).copyWith(id: 12, name: "My name")
-  /// ````
-  ContactWotInfo call({
-    Contact me,
-    Contact you,
-  });
+  /// ```
+  ContactWotInfo call({Contact me, Contact you});
 }
 
-/// Proxy class for `copyWith` functionality. This is a callable class and can be used as follows: `instanceOfContactWotInfo.copyWith(...)`. Additionally contains functions for specific fields e.g. `instanceOfContactWotInfo.copyWith.fieldName(...)`
+/// Callable proxy for `copyWith` functionality.
+/// Use as `instanceOfContactWotInfo.copyWith(...)` or call `instanceOfContactWotInfo.copyWith.fieldName(value)` for a single field.
 class _$ContactWotInfoCWProxyImpl implements _$ContactWotInfoCWProxy {
   const _$ContactWotInfoCWProxyImpl(this._value);
 
   final ContactWotInfo _value;
 
   @override
-  ContactWotInfo me(Contact me) => this(me: me);
+  ContactWotInfo me(Contact me) => call(me: me);
 
   @override
-  ContactWotInfo you(Contact you) => this(you: you);
+  ContactWotInfo you(Contact you) => call(you: you);
 
   @override
-
-  /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `ContactWotInfo(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
+  /// Creates a new instance with the provided field values.
+  /// Passing `null` to a nullable field nullifies it, while `null` for a non-nullable field is ignored. To update a single field use `ContactWotInfo(...).copyWith.fieldName(value)`.
   ///
-  /// Usage
+  /// Example:
   /// ```dart
   /// ContactWotInfo(...).copyWith(id: 12, name: "My name")
-  /// ````
+  /// ```
   ContactWotInfo call({
     Object? me = const $CopyWithPlaceholder(),
     Object? you = const $CopyWithPlaceholder(),
   }) {
     return ContactWotInfo(
-      me: me == const $CopyWithPlaceholder()
+      me: me == const $CopyWithPlaceholder() || me == null
           ? _value.me
           // ignore: cast_nullable_to_non_nullable
           : me as Contact,
-      you: you == const $CopyWithPlaceholder()
+      you: you == const $CopyWithPlaceholder() || you == null
           ? _value.you
           // ignore: cast_nullable_to_non_nullable
           : you as Contact,
@@ -61,7 +60,8 @@ class _$ContactWotInfoCWProxyImpl implements _$ContactWotInfoCWProxy {
 }
 
 extension $ContactWotInfoCopyWith on ContactWotInfo {
-  /// Returns a callable class that can be used as follows: `instanceOfContactWotInfo.copyWith(...)` or like so:`instanceOfContactWotInfo.copyWith.fieldName(...)`.
+  /// Returns a callable class used to build a new instance with modified fields.
+  /// Example: `instanceOfContactWotInfo.copyWith(...)` or `instanceOfContactWotInfo.copyWith.fieldName(...)`.
   // ignore: library_private_types_in_public_api
   _$ContactWotInfoCWProxy get copyWith => _$ContactWotInfoCWProxyImpl(this);
 }

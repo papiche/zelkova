@@ -1,402 +1,297 @@
-# Ğ1nkgo
+# Ğ1nkgo — branche `zen`
 
 ![Ğ1nkgo logo](./assets/img/logo.png 'Ğ1nkgo logo')
 
-Ğ1nkgo (aka Ginkgo) is a lightweight, easy to use Ğ1 wallet for Duniter v1 written in Flutter. The app allows
-users to manage their Ğ1 currency and it's focused in simplicity.
+> **Fork de la branche zen** : [git.duniter.org/zicmama/ginkgo/-/tree/zen](https://git.duniter.org/zicmama/ginkgo/-/tree/zen)
+>
+> Ğ1nkgo est un portefeuille ẐEN/Ğ1 (Duniter v2) écrit en Flutter, orienté **simplicité** et **intégration UPlanet**.
+> Cette branche `zen` étend le portefeuille de base avec le système d'identité MULTIPASS UPlanet / NOSTR.
 
+---
 
-## Features
+## ✨ Fonctionnalités nouvelles (branche `zen`)
 
-- Introduction for beginners
-- Generation of Cesium wallet and persistence (if you refresh the page, it should display the same
-  wallet address).
-- A point-of-sale device that generates a QR code for the public address and other QR codes with
-  amounts (which lightweight wallets will understand).
-- Send Ğ1 transactions
-- Transactions history page and Balance with persistence to load last transactions on boot
-- Contact management and cache (to avoid too much API petitions)
-- Internationalization (i18n)
-- QR code reader
-- Import/export of your wallet
-- Automatic discover and selection of nodes, error recovery & retry
-- Customizable via [env file](https://git.duniter.org/vjrj/ginkgo/-/blob/master/assets/env.production.txt)
-- Inline tutorials
-- Pagination of transactions
-- Some contextual help (for example, by tapping on "Validity").
+### 🪪 MULTIPASS UPlanet
 
-## Screenshots
+- **Création de compte MULTIPASS** lors de l'onboarding : email + géolocalisation → appel à l'API UPassport `/g1nostr` → dérivation de clé G1 + identité NOSTR
+- **Sélecteur de station SWARM** au moment de l'inscription : liste les relais UPlanet disponibles avec capacités MP, ZenCard, PAF, bilan hebdo ; **tri automatique par distance GPS** après géolocalisation ; fiche de détail cliquable par station (URLs, espaces disque, économie)
+- **Clé SSSS** correctement stockée et utilisée pour le déménagement
 
-| Wallet                                                           | Terminal card                                                          |
-| ---------------------------------------------------------------- | ---------------------------------------------------------------------- |
-| ![Card](./assets/img/card.png 'A walled in form of credit card') | ![Terminal card](./assets/img/terminal.png 'A terminal card metaphor') |
+### 🏠 Déménagement MULTIPASS
 
-## Demo
+Bouton **"Vous voulez déménager ?"** dans le drawer (visible uniquement pour les comptes MULTIPASS) :
 
-This is a demo used for testing a development, please use a production server for stability:
+1. Le dialog charge le `ssss_player` stocké localement
+2. Envoie `POST {uspot}/upassport` avec `parametre=<ssss>` + `imageData=0000`
+3. Le serveur déclenche `nostr_DESTROY_TW.sh` qui :
+   - Exporte tous les events NOSTR vers IPFS (backup chiffré)
+   - Retourne le solde Ğ1 au compte primordial (cash-back)
+   - Génère un `.next.disco` pour la restauration sur le nouveau relai
+   - Publie le CID du backup dans le profil NOSTR désactivé (source de vérité)
+4. Sur le nouveau relai, l'utilisateur saisit son email → restauration automatique via `nostr_RESTORE_TW.sh`
 
-[https://g1demo.comunes.net/](https://g1demo.comunes.net/)
+Si la clé SSSS n'est pas disponible localement (compte ancien), affiche les instructions pour le terminal `/scan` manuel.
 
-## Ğ1nkgo in production
+### 👥 Contacts — sources séparées
 
-- [https://g1nkgo.comunes.org](https://g1nkgo.comunes.org)
-- (...)
+L'onglet Contacts propose désormais un **toggle `Cesium+` / `⚡ MULTIPASS`** :
 
-## Translations
+| Mode | Source | Comportement |
+|---|---|---|
+| Cesium+ | API Cesium+ + WoT Duniter | Recherche textuelle réseau |
+| MULTIPASS | Relai NOSTR local (kind 0) | Affichage immédiat, filtre local |
 
-First of all, you can contribute translating Ğ1nkgo to your language:
+- La **page Payer** affiche directement les MULTIPASS du relai local (sans Cesium+)
+- Tap sur un MULTIPASS → profil avec **picture**, **banner** et **bio NOSTR**
 
-[https://weblate.duniter.org/projects/g1nkgo/g1nkgo/](https://weblate.duniter.org/projects/g1nkgo/g1nkgo/)
+### 🧑‍🤝‍🧑 Profil NOSTR enrichi
 
-## Docker
+- `picture` et `banner` affichées pour les profils des autres MULTIPASS (via `nostrHex` transmis depuis la liste, lookup par adresse V2 en fallback)
+- Bouton **Suivre / Ne plus suivre** dans le SpeedDial quand on visite le profil d'un autre MULTIPASS → publie le kind 3 (follow list NOSTR)
+- Édition du profil pré-remplie avec les valeurs actuelles du kind 0 (name, about, city, picture)
+- Aperçu de la picture actuelle dans le sélecteur d'avatar
 
-mkdir -p ~/.ginkgo/nginx-conf
-mkdir -p ~/.ginkgo/www
+### 🌐 Liste des nœuds — stations Astroport
 
-## Dev contributions
+En mode Expert, la page Nœuds affiche le widget **AstroSwarmWidget** :
 
-### Prerequisites
+- Charge le JSON SWARM depuis `{Env.upassportUrl}`
+- Liste toutes les stations de la constellation avec : hostname, ville, URLs (UPassport cliquable, IPFS, Relay), capacités (MP/ZenCard libres, espace disque), bilan hebdo coloré (vert/rouge)
+- **Test de connectivité** asynchrone par station : `GET {uspot}/health` avec timeout 6s → dot 🟢 joignable / 🔴 inaccessible (DNS cassé, nginx mal configuré) / spinner en cours
 
-This repository requires [Flutter](https://flutter.dev/docs/get-started/install) to be installed and
-present in your development environment.
+---
 
-Clone the project and enter the project folder.
+## Features (branche master conservées)
 
-```sh
-git clone https://git.duniter.org/vjrj/ginkgo.git
-cd ginkgo
-```
+- Introduction pour les débutants
+- Génération de portefeuille MULTIPASS
+- Terminal point de vente (QR code avec montant)
+- Envoi de transactions ẐEN (UPLANETNAME.Ğ1 est seul habilité à envoyer ou recevoir des Ğ1 sur UPlanet ẐEN)
+- Historique des transactions et graphique de solde
+- Gestion de contacts avec cache
+- Internationalisation (13 langues... need corrections...)
+- Lecteur QR code
+- Déménagement du portefeuille
+- Découverte et sélection automatique des nœuds
+- Tutoriels en ligne
+- Pagination des transactions
 
-Get the dependencies.
+---
 
-```sh
-flutter pub get
-```
-
-### Launch all the tests
-
-```sh
-# Unit tests
-flutter test
-
-# Integration tests (requires Patrol CLI)
-patrol test
-
-# Integration test for specific file
-patrol test integration_test/app_smoke_test.dart
-```
-
-**Note:** Integration tests use the [Patrol](https://pub.dev/packages/patrol) framework. See [integration_test/README.md](./integration_test/README.md) for detailed instructions.
-
-### Build & deploy
-
-#### Prerequisites
-
-Create a `.env` configuration file (and `.env-dev` for development) in the root of the project. Use the `dot.env.sample` file as template.
-
-See [this issue](https://github.com/frencojobs/envify/issues/6#issuecomment-966892148) if you try to change the `.env` and somehow is cached.
-
-#### Build for web
-
-Use first this command to enable web support:
-
-```sh
-flutter config --enable-web
-```
-
-Then, build the app:
-
-```sh
-flutter build web --no-tree-shake-icons
-```
-
-NB: Add `--release` for a production build.
-
-If you are using a web browser different from Chrome, you should first find your browser's executable (example for Brave):
-
-```sh
-which brave-browser
-```
-
-Then, you should add the executable path to the environment variable `CHROME_EXECUTABLE` by typing the following command:
-
-```sh
-export CHROME_EXECUTABLE=/usr/bin/brave-browser
-```
-
-NB: This is a temporary solution that will be reset when you close your terminal. If you want to make it permanent, you should add this variable to your `.bashrc` or `.zshrc` file:
-
-```sh
-nano ~/.bashrc
-```
-
-Then, add the following line at the end of the file:
-
-```sh
-export CHROME_EXECUTABLE=/usr/bin/brave-browser
-```
-
-Finally, reload your terminal:
-
-```sh
-source ~/.bashrc
-```
-
-#### Build and deploy to your server
-
-```sh
-rsync --progress=info2 --delete -aH build/web/ youruser@yourserver:/var/www/ginkgo/
-```
-
-#### Build and deploy Android to Google Play
-
-##### Prerequisites
-
-Set up fastlane:
-
-```sh
-cd android
-fastlane init
-```
-
-Configure your Google Play API key at `/home/vjrj/etc/ginkgo_play_api_key.json` or update the path in `android/fastlane/Fastfile`.
-
-##### Build and upload to production
-
-Build the app bundle (with 16KB page size support for Android 15+):
-
-```sh
-flutter clean
-flutter pub get
-flutter build appbundle --release
-```
-
-Then deploy to Google Play production track:
-
-```sh
-cd android
-fastlane deploy_production_upload
-```
-
-This will upload the AAB to the production track with all metadata and assets.
-
-##### Alternative: Deploy to internal testing first
-
-To test on internal track before production:
-
-```sh
-cd android
-fastlane deploy_internal
-```
-
-##### Validate Google Play API connection
-
-To verify your API key is working:
-
-```sh
-cd android
-fastlane validate
-```
-
-### Run dev environment
-
-Run the app via command line or through your development environment. It will run the default built version.
-
-```sh
-flutter run
-```
-
-NB: If there are more than one built version, there will be a prompt asking for the version you want to use (for example, web or desktop)
-
-If you want to directly run a specific version (for example, the web version), use:
-
-```sh
-flutter run -d "chrome"
-```
-
-In order to do gva operations, you should disable cors in the flutter run config:
+## Architecture
 
 ```
---web-browser-flag "--disable-web-security"
+lib/
+├── g1/
+│   ├── multipass_service.dart      — création MULTIPASS via /g1nostr
+│   └── nostr/
+│       ├── nostr_relay_service.dart — WebSocket NOSTR (kind 0/3/30850)
+│       │     • fetchAllMultipassProfiles()  ← NOUVEAU
+│       │     • fetchRecentProfiles()         ← NOUVEAU
+│       ├── nostr_profile.dart       — parser kind 0 (_normalizeUrl)
+│       └── nostr_keys.dart          — nsec/npub ↔ hex
+├── services/
+│   └── multipass_service.dart      — création ancienne méthode
+└── ui/
+    ├── screens/
+    │   ├── wallet_creation_screen.dart  — onboarding + SWARM selector
+    │   └── node_list_page.dart          — nœuds + AstroSwarmWidget
+    └── widgets/
+        ├── card_drawer.dart             — bouton "Déménager ?"
+        ├── contact_page.dart            — profil NOSTR + Follow/Unfollow
+        ├── multipass_relocation_dialog.dart  — dialog déménagement
+        ├── node_list/
+        │   └── astro_swarm_widget.dart  — stations Astroport NOUVEAU
+        └── third_screen/
+            └── contacts_page.dart       — toggle NOSTR/Cesium+
 ```
 
-![cors disable](./assets/img/cors.png 'CORS disabled')
+---
 
-### Linux Build
+## Sources de données et workflows
 
-#### Prerequisites
+### 1. Astroport — `{UPASSPORT_URL}` (GET `/`)
 
-Install `patchelf` before building Linux packages (required to fix [Flutter issue #65400](https://github.com/flutter/flutter/issues/65400)):
-
-```sh
-sudo apt-get install patchelf
-```
-
-#### Build Linux bundle and Debian package
-
-```sh
-./build.sh linux
-```
-
-This will:
-1. Build the Linux release bundle
-2. Fix RPATH in plugin libraries (Flutter bug #65400)
-3. Create a tarball at `../builds-ginkgo/ginkgo-linux-$VERSION.tgz`
-4. Build a Debian package at `../builds-ginkgo/g1nkgo-$VERSION-amd64.deb`
-
-#### Known Issues
-
-**Flutter bug #65400**: Flutter Linux builds embed the developer's absolute build path in plugin libraries. Without the RPATH fix, the application would only work on the build machine. Our build script automatically fixes this using `patchelf`.
-
-### Debian package
-
-We use [flutter_to_debian](https://pub.dev/documentation/flutter_to_debian/latest/)
-
-**Note:** Use `./build.sh linux` to build the Debian package with automatic RPATH fixes. Manual builds can be done with:
-
-```sh
-flutter_to_debian
-```
-
-Expected output:
+Endpoint principal de chaque station UPlanet. Retourne la description complète de la constellation.
 
 ```
-checking for debian 📦 in root project...  ✅
-
-start building debian package... ♻️  ♻️  ♻️
-
-No skeleton found
-🔥🔥🔥 (debian 📦) build done successfully  ✅
-
-😎 find your .deb at
-build/linux/x64/release/debian/g1nkgo_2.0.3_amd64.deb
+GET https://u.copylaradio.com/
 ```
 
-The version number in the filename will vary based on your current application version.
+| Champ JSON | Données extraites | Usage dans Ginkgo |
+|---|---|---|
+| `uSPOT` | URL UPassport de la station principale | Sélecteur de station, déménagement |
+| `myIPFS` | Gateway IPFS (`https://ipfs.copylaradio.com`) | URLs Coracle, liens backup |
+| `myRELAY` | Relay NOSTR WSS | Connexion NostrRelayService |
+| `NCARD` / `ZCARD` | Nb MULTIPASS / ZenCard actifs | Badge dans le sélecteur |
+| `PAF` | Prélèvement hebdomadaire (Ẑ) | Affichage économie station |
+| `BILAN` | Bilan comptable hebdo | Couleur vert/rouge |
+| `SWARM[]` | Tableau des stations de la constellation | `_loadSwarmStations()` → liste de choix |
+| `PLAYERs[]` | MULTIPASS enregistrés sur ce relai | (réservé) |
+| `UMAPs[]` | Cellules géographiques actives | (réservé) |
 
-### Easy Localization
+**Champs par station SWARM :**
 
-To add translations, add a .json translation file in the [assets/translations](./assets/translations)
-folder, by prefixing the file with the language code (for example, `en.json` for English).
-The file should be in the format:
+| Champ | Données |
+|---|---|
+| `hostname`, `IPCity` | Nom/ville de la station (label du sélecteur) |
+| `uSPOT` | URL UPassport de cette station |
+| `myIPFS` | Gateway IPFS de cette station |
+| `myRELAY` | Relay NOSTR de cette station |
+| `STATION_LAT`, `STATION_LON` | GPS → tri par distance Haversine |
+| `capacities.nostr_slots` | Slots MULTIPASS libres (badge MP) |
+| `capacities.zencard_slots` | Slots ZenCard libres |
+| `capacities.storage_details.root.available_gb` | Espace disque |
+| `services.upassport.active` | UPassport en ligne ? (🟢/🔴) |
+| `economy.captain_remuneration` | PAF hebdo capitaine |
+| `economy.multipass_count` | MULTIPASS actifs |
+
+---
+
+### 2. Astroport — `POST {UPASSPORT_URL}/g1nostr` (Création MULTIPASS)
+
+Crée l'identité MULTIPASS : dérive les clés G1 + NOSTR, stocke le profil kind 0.
+
+```
+POST https://u.copylaradio.com/g1nostr
+Content-Type: application/x-www-form-urlencoded
+
+email=&lang=fr&lat=48.85&lon=2.35&format=json
+```
+
+**Réponse JSON `.multipass.json`** :
+
+| Champ | Données |
+|---|---|
+| `g1pub` | Adresse G1 SS58 du portefeuille MULTIPASS |
+| `nsec` | Clé privée NOSTR (bech32) — stockée dans SecureStorage |
+| `npub` | Clé publique NOSTR (bech32) |
+| `ssss` | Part SSSS du joueur (format `M-xxx:k51qzi...`) — utilisée pour le **déménagement** |
+| `nostrns` | IPNS CID du vault NOSTR |
+| `salt`, `pepper` | Credentials ZenCard |
+
+TODO: Ajouter UPLANETNAME_G1 (Ğ1/Ẑ) et UPLANETG1PUB (historique ẑen) et UPLANETNAME_SOCIETY (historique ẐEN)
+
+---
+
+### 3. Astroport — `POST {UPASSPORT_URL}/upassport` (Scan QR / Terminal)
+
+Route générique du terminal de scan. Comportement selon le PIN :
+
+| `imageData` (PIN) | Comportement serveur |
+|---|---|
+| *(omis)* | Affichage du profil NOSTR correspondant |
+| `0000` | **Déménagement** : déclenche `nostr_DESTROY_TW.sh` → backup IPFS chiffré + cash-back Ğ1 |
+| `9999` | Terminal paiement MULTIPASS |
+| `1111` | Interface BRO/Blog NOSTRTube |
+| `8888` | Enregistreur vocal NOSTR |
+
+```
+POST https://u.copylaradio.com/upassport
+parametre=<ssss_player>&imageData=0000&zlat=0.00&zlon=0.00
+```
+
+---
+
+### 4. Duniter Substrate — WebSocket (polkadart)
+
+Endpoints `wss://...` — protocole Substrate RPC via `polkadart`.
+
+| Requête RPC | Données | Usage |
+|---|---|---|
+| `System.account(address)` | Solde libre, solde total | Affichage balance |
+| `Smiths.membershipOf(pubKey)` | Statut membre WoT | Actions WoT (certifier, renouveler) |
+| `Certification.certsOf(pubKey)` | Liste des certifications | Boutons certifier |
+| `UniversalDividend.currentUd()` | Valeur du DU actuel (en centimes) | Conversion Ğ1 ↔ DU |
+
+---
+
+### 5. Duniter Indexer — Squid GraphQL
+
+Endpoints `https://*.../v1/graphql` — indexeur Squid pour l'historique.
+
+| Query GraphQL | Données extraites | Usage |
+|---|---|---|
+| `account(id: $id)` | Solde, dernier bloc | Balance screen |
+| `transfersConnection` | Historique transactions (envoi/réception, montant, commentaire, date) | 4ème onglet |
+| `identitiesConnection` | Recherche par nom (WoT search) | Recherche contacts |
+| `certifications` | Certifications émises/reçues | Profil contact |
+| `accountByAddress` | Conversion adresse → pubKey | Navigation profil V2 |
+
+**Sélection de nœud :** Ginkgo choisit le nœud Squid avec le bloc le plus récent et la version la plus haute (`Filtering indexer nodes by highest version`).
+
+---
+
+### 6. NOSTR Relay Local — WebSocket (strfry)
+
+Relay local (`wss://relay.copylaradio.com` ou `ws://127.0.0.1:7777`), protocole NIP-01.
+
+| Kind | Nom | Données | Usage dans Ginkgo |
+|---|---|---|---|
+| `0` | Profil | `name, picture, banner, about, city, g1pub (NIP-39)` | Avatar, bannière, bio contact |
+| `3` | Follow list | `["p", hexPubKey]` tags | Bouton Follow/Unfollow, routing paiements kind 7 |
+| `30850` | Économie station (custom) | `capacity_multipass, capacity_zencard, cost_paf, revenue_total, bilan` | `SwarmEconomyWidget` (onglet Nœuds) |
+
+**Filtres NOSTR utilisés :**
 
 ```json
-{
-  "key": "value"
-}
+// Toutes les profils MULTIPASS (avec tag g1pub)
+{"kinds": [0], "limit": 200}
+// → filtré côté client : tags.any(t => t[0]=="i" && t[1].startsWith("g1pub:"))
+
+// Profil par hex pubkey
+{"kinds": [0], "authors": ["<hexPubkey>"]}
+
+// Recherche par tag NIP-39 g1pub
+{"kinds": [0], "#i": ["g1pub:<duniterAddress>"], "limit": 1}
+
+// Économie station (kind 30850, 30 derniers jours)
+{"kinds": [30850], "since": <epoch-30j>}
 ```
 
-Then, add the language in the [main.dart](./lib/main.dart) file:
+---
 
-```dart
-supportedLocales: const <Locale>[
-    Locale('en', ''),
-],
+## Configuration
+
+Copier `dot.env.sample` vers `.env` et `.env.dev`. Le champ `UPASSPORT_URL` pointe vers le relai UPlanet de votre station.
+
+```bash
+UPASSPORT_URL=https://u.copylaradio.com
 ```
 
-Go to [ios/Runner/Info.plist](./ios/Runner/Info.plist) and update the following code adding the language:
+Après modification, régénérer les sources :
 
+```bash
+dart run build_runner build --delete-conflicting-outputs
 ```
 
-<key>CFBundleLocalizations</key>
-<array>
-    <string>en</string>
-</array>
+---
 
+## Build
+
+```bash
+# Web
+./build_web_ipfs.sh debug development
+
+# Android
+./build_apk.sh debug production
+
+# Linux + .deb
+# (voir CLAUDE.md)
 ```
 
-Finally, add the language to the User Interface in the [screen](./lib/fifth_screen.dart) file:
+---
 
-```dart
-DropdownMenuItem<Locale>(
-  value: Locale('en'),
-  child: Text('English'),
-),
-```
+## Liens
 
-## Troubleshooting
+- **Branche zen** : [git.duniter.org/zicmama/ginkgo/-/tree/zen](https://git.duniter.org/zicmama/ginkgo/-/tree/zen)
+- **Branche master (origine)** : [git.duniter.org/vjrj/ginkgo](https://git.duniter.org/vjrj/ginkgo)
+- **UPassport API** : [u.copylaradio.com](https://u.copylaradio.com)
+- **NIP-101 / UPlanet** : [github.com/papiche/NIP-101](https://github.com/papiche/NIP-101)
+- **Traductions (Weblate)** : [weblate.duniter.org/projects/g1nkgo/g1nkgo/](https://weblate.duniter.org/projects/g1nkgo/g1nkgo/)
 
-1. If you cannot build the app, try to run `flutter clean` and then `flutter pub get`.
-2. If it still doesn't work, try to delete the `build` folder and run `flutter pub get` again.
-3. At least, you can try to run `flutter pub upgrade` to upgrade all the dependencies.
-4. And in last resort, you can try to delete the `pubspec.lock` file and run `flutter pub get` again.
-5. Finally, there is a troubleshooting command in flutter: `flutter doctor -v`.
+---
 
-### Android 16KB Page Size Support
+## Licence
 
-Since November 1st, 2025, Google Play requires all new and updated apps targeting Android 15+ devices to support 16KB memory page sizes. 
-
-The app uses Flutter 3.41.2+, which includes automatic support for 16KB page size alignment. The build process handles this automatically when building with `flutter build appbundle --release`.
-
-To verify 16KB alignment in the generated AAB:
-
-```sh
-/path/to/android-sdk/build-tools/36.0.0/zipalign -v -c -P 16 4 build/app/outputs/bundle/release/app-release.aab
-```
-
-A successful verification shows "Verification successful" at the end.
-
-## Credits
-
-### Translations
-
-- ast: dixebral
-- ca: calbasi
-- da: Gerhard Pischinger
-- de: anfeichtinger, Christophe Parot, FW, Ruten Rolf, Wahlen
-- en: anfeichtinger, Daniel Bañobre Dopico
-- eo: flodef, Solaiye, Yves Bachimont
-- es: Aldara ES
-- eu: Anna Ayala Alcalá, Gobtous, Goiztizar, Solaiye
-- fr: Christophe Parot, Cristina Abella, d0p1, flodef, Gobtous, Hugo Trentesaux, italpaola, Maaltir, Michel_du_64, niko, Olivier Michel, poka, Solaiye, vincentux
-- gl: Daniel Bañobre Dopico, Vijitâtman
-- it: Alis0r, Anna Ayala Alcalá, italpaola
-- nl: Maria Rosa Costa i Alandi
-- pt: Carlos Neto, Christophe Parot
-
-Thanks!
-
-### Others
-
-- Ğ1 logos from duniter.org
-- undraw intro images: https://undraw.co/license
-- Chipcard https://commons.wikimedia.org/wiki/File:Chipcard.svg under the Creative Commons
-  Attribution-Share Alike 3.0 Unported license.
-- [POS svg from wikimedia](https://commons.wikimedia.org/wiki/File:Card_Terminal_POS_Flat_Icon_Vector.svg) CC-BY-SA 4.0
-- Open Sans: Copyright 2020 The Open Sans Project Authors (https://github.com/googlefonts/opensans) under the SIL Open Font License, Version 1.1.
-- NotoEmoji: Copyright 2013 Google LLC under the SIL Open Font License, Version 1.1.
-- Dejavu are (c) Bitstream  DejaVu changes are in public domain.
-
------------------------------------------------------------
-SIL OPEN FONT LICENSE Version 1.1 - 26 February 2007
------------------------------------------------------------
-
-
-### Pub packages used
-
-This repository makes use of the following pub packages:
-
-| Package                                                             | Version | Usage                                                 |
-| ------------------------------------------------------------------- | ------- | ----------------------------------------------------- |
-| [Durt](https://pub.dev/packages/durt)                               | ^0.1.6  | Duniter crypto lib                                    |
-| [Bloc](https://pub.dev/packages/bloc)                               | ^8.1.0  | State management                                      |
-| [Flutter Bloc](https://pub.dev/packages/flutter_bloc)               | ^8.1.1  | State management                                      |
-| [Hydrated Bloc](https://pub.dev/packages/hydrated_bloc)             | ^9.0.0  | Persists Bloc state with Hive                         |
-| [Equatable](https://pub.dev/packages/equatable)                     | ^2.0.5  | Easily compare custom classes, used for Bloc states\* |
-| [Flutter Lints](https://pub.dev/packages/flutter_lints)             | ^2.0.1  | Stricter linting rules                                |
-| [Path Provider](https://pub.dev/packages/path_provider)             | ^2.0.11 | Get the save path for Hive                            |
-| [Flutter Displaymode](https://pub.dev/packages/flutter_displaymode) | ^0.5.0  | Support high refresh rate displays                    |
-| [Easy Localization](https://pub.dev/packages/easy_localization)     | ^3.0.1  | Makes localization easy                               |
-| [Hive](https://pub.dev/packages/hive)                               | ^2.2.3  | Platform independent storage.                         |
-| [Url Launcher](https://pub.dev/packages/url_launcher)               | ^6.1.7  | Open urls in Browser                                  |
-| [Ionicons](https://pub.dev/packages/ionicons)                       | ^0.2.2  | Modern icon library                                   |
-
-Thanks!
-
-## License
-
-GNU AGPL v3 (see LICENSE)
-
-```
-
-```
+GNU AGPL v3 (voir [LICENSE](./LICENSE))

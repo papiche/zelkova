@@ -194,13 +194,17 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
         final _SwarmStation? primary = _SwarmStation.fromJson(primaryMap);
         if (primary != null) stations.add(primary);
 
-        // SWARM stations
+        // SWARM stations — skip duplicates (same uSPOT already added as primary)
         final List<dynamic> swarm =
             root['SWARM'] as List<dynamic>? ?? <dynamic>[];
         for (final dynamic raw in swarm) {
           if (raw is Map<String, dynamic>) {
             final _SwarmStation? s = _SwarmStation.fromJson(raw);
-            if (s != null) stations.add(s);
+            if (s != null &&
+                !stations.any((_SwarmStation existing) =>
+                    existing.uspot == s.uspot)) {
+              stations.add(s);
+            }
           }
         }
 

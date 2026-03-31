@@ -136,11 +136,11 @@ class SharedPreferencesHelper with ChangeNotifier {
   @override
   void addListener(VoidCallback listener) {
     super.addListener(listener);
-    v1.SharedPreferencesHelperV1().addListener(listener);
-    v2.SharedPreferencesHelperV2().addListener(listener);
-    /* if (_d is ChangeNotifier) {
-      (_d as ChangeNotifier).addListener(listener);
-    } */
+    if (_useV2) {
+      v2.SharedPreferencesHelperV2().addListener(listener);
+    } else {
+      v1.SharedPreferencesHelperV1().addListener(listener);
+    }
   }
 
   @override

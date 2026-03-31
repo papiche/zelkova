@@ -107,7 +107,7 @@ void workManagerCallbackDispatcher() {
       );
 
       // Handle null task case
-      if (task == null || task.isEmpty) {
+      if (task.isEmpty) {
         logger.warning('Received null or empty task in WorkManager');
         return Future<bool>.value(true);
       }
@@ -746,7 +746,7 @@ class _GinkgoAppState extends State<GinkgoApp> {
     super.initState();
 
     if (!kIsWeb) {
-      _initDeepLinkListener();
+      unawaited(_initDeepLinkListener());
     }
     // Only after at least the action method is set, the notification events are delivered
     NotificationController.startListeningNotificationEvents();
@@ -1064,14 +1064,14 @@ class _GinkgoAppState extends State<GinkgoApp> {
     );
   }
 
-  MaxWidthBox _buildMaterialAppChild(BuildContext context, Widget? widget) {
+  MaxWidthBox _buildMaterialAppChild(BuildContext context, Widget? child) {
     return MaxWidthBox(
       maxWidth:
           ResponsiveBreakpoints.of(context).largerThan(MOBILE) ? 960 : 480,
       backgroundColor: const Color(0xFFF5F5F5),
-      child: /* widget! */ BouncingScrollWrapper.builder(
+      child: BouncingScrollWrapper.builder(
         context,
-        widget!,
+        child!,
         dragWithMouse: true,
       ),
     );
@@ -1412,7 +1412,7 @@ Future<void> hiveInit() async {
     storageDirectory: storageDir,
   );
 
-  _clearCacheIfNeeded(storageDir);
+  await _clearCacheIfNeeded(storageDir);
 
   try {
     loggerDev('Initializing Hive');
@@ -1449,7 +1449,6 @@ Future<void> _initHiveStorage() async {
     await Hive.initFlutter();
     return;
   }
-
   final Directory appDataDir = await getAppDataDirectory();
   Hive.init(appDataDir.path);
   _registerHiveAdapters();

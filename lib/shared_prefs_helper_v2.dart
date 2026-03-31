@@ -223,13 +223,10 @@ class SharedPreferencesHelperV2
             'Warning: Removing duplicate account with pubKey: ${acc.pubKey}');
       }
     }
-
-    if (unique.length != accounts.length) {
-      accounts.clear();
-      accounts.addAll(unique);
-      logger(
-          'Deduplication: Removed ${accounts.length - unique.length} duplicate(s)');
-    }
+    final int removed = accounts.length - unique.length;
+    accounts.clear();
+    accounts.addAll(unique);
+    logger('Deduplication: Removed $removed duplicate(s)');
   }
 
   bool _hasDuplicatePubKeys() {

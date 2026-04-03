@@ -61,10 +61,19 @@ nano .env   # Renseigner UPASSPORT_URL et NOSTR_RELAY
 UPASSPORT_URL=https://u.copylaradio.com   # serveur dev UPlanet ORIGIN
 NOSTR_RELAY=wss://relay.copylaradio.com
 CURRENCY=ẐEN
-GENESIS_HASH=                              # hash réseau Duniter V2
-ENDPOINTS=https://gw1.duniter.fr
-DUNITER_INDEXER_NODES=https://indexer.duniter.fr
-CESIUM_PLUS_NODES=https://g1.data.le-sou.org
+
+# Hash genesis du réseau Ğ1 production (Duniter V2)
+GENESIS_HASH=0xfeb770bbb0344dabc8366b0d1f889a8e4e6ca09b914006655fe795920deb6d56
+
+# Nœuds RPC (WebSocket) — plusieurs = fallback automatique
+ENDPOINTS=wss://rpc.duniter.org wss://g1.axiom-team.fr/ws/ wss://g1.p2p.legal/ws wss://g1.gyroi.de wss://g1.coinduf.eu
+
+# Indexers Squid (GraphQL) — plusieurs = fallback automatique
+DUNITER_INDEXER_NODES=https://indexer.duniter.org/v1/graphql https://g1-squid.axiom-team.fr/v1/graphql https://squid.g1.gyroi.de/v1/graphql
+
+CESIUM_PLUS_NODES=https://g1.data.e-is.pro https://g1.data.le-sou.org
+IPFS_GATEWAYS=https://ipfs.copylaradio.com
+
 GITHUB_REPO=papiche/zelkova               # pour le feedback
 # GITHUB_TOKEN=ghp_xxx                    # token pour créer les issues
 ```

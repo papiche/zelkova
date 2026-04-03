@@ -1,4 +1,4 @@
-package org.comunes.g1nkgo
+package one.astroport.zelkova
 
 import android.os.Bundle
 import io.flutter.embedding.android.FlutterFragmentActivity

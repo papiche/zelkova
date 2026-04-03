@@ -372,4 +372,15 @@ class Contact extends Equatable implements IsJsonSerializable<Contact> {
       extractPublicKey(pubKey) == extractPublicKey(other.pubKey);
 
   bool get createdOnV2 => createdOn != null && createdOn! > 0;
+
+  /// Retourne true si ce contact est un MULTIPASS (identité NOSTR / ẐEN Card).
+  ///
+  /// Un MULTIPASS possède un identifiant NOSTR hex connu.  Le nostrHex est
+  /// peuplé à l'exécution lors du chargement d'un profil kind-0 depuis le
+  /// relay, soit via la liste MULTIPASS, soit via la page de contact.
+  ///
+  /// Note : nostrHex n'est pas persisté en JSON (voir annotation JsonKey).
+  /// Pour les contacts stockés localement, la valeur est null jusqu'au
+  /// rechargement depuis le relay.
+  bool get isMultipass => nostrHex != null && nostrHex!.isNotEmpty;
 }

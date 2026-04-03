@@ -532,12 +532,20 @@ class _ContactPageState extends State<ContactPage> with RouteAware {
           },
         ),
       if (!me)
+        // Paiement ẐEN uniquement entre MULTIPASS.
+        // Pour un portefeuille Ğ1 non-MULTIPASS → message Cesium+ uniquement.
         SpeedDialChild(
-          child: const Icon(Icons.send),
-          label: tr('send_g1'),
+          child: Icon(contact.isMultipass ? Icons.send : Icons.mail_outline),
+          label: contact.isMultipass ? tr('send_g1') : tr('send_g1_message_only'),
           onTap: () {
-            Navigator.pop(context);
-            onSentContact(context, contact);
+            if (contact.isMultipass) {
+              Navigator.pop(context);
+              onSentContact(context, contact);
+            } else {
+              // Wallet Ğ1 non-MULTIPASS : envoyer message Cesium+ uniquement
+              // (null = skip canal NOSTR, seulement Cesium+ Elastic Search)
+              _sendZenInvitation(null);
+            }
           },
         ),
     ];

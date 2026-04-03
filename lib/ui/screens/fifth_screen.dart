@@ -1,4 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
@@ -24,6 +25,8 @@ import '../widgets/fifth_screen/link_card.dart';
 import '../widgets/fifth_screen/node_list_card.dart';
 import '../widgets/fifth_screen/text_divider.dart';
 import '../widgets/pages/settings_page.dart';
+import 'apk_share_screen.dart';
+import 'feedback_screen.dart';
 
 class FifthScreen extends StatefulWidget {
   const FifthScreen({super.key});
@@ -151,6 +154,18 @@ class _FifthScreenState extends State<FifthScreen> {
                           icon: Icons.upload,
                           onTap: () =>
                               showSelectImportMethodDialog(context, 0)),
+                      // Partage APK P2P — uniquement sur mobile (pas Web)
+                      if (!kIsWeb)
+                        LinkCard(
+                          title: 'share_app',
+                          icon: Icons.adaptive.share,
+                          onTap: () => Navigator.push(
+                            context,
+                            MaterialPageRoute<void>(
+                              builder: (_) => const ApkShareScreen(),
+                            ),
+                          ),
+                        ),
                     ],
                   ),
                   if (state.expertMode)
@@ -162,12 +177,17 @@ class _FifthScreenState extends State<FifthScreen> {
                             NodeManager().getCurrentGvaNode()!.url)),
                   if (state.expertMode) const NodeListCard(),
                   const TextDivider(text: 'info_links'),
-                  if (state.expertMode)
-                    LinkCard(
-                        title: 'bug_report',
-                        icon: Icons.bug_report,
-                        url: Uri.parse(
-                            'https://git.duniter.org/vjrj/ginkgo/-/issues')),
+                  // Rapport de bug / feedback — formulaire natif via /api/feedback
+                  LinkCard(
+                    title: 'bug_report',
+                    icon: Icons.bug_report,
+                    onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute<void>(
+                        builder: (_) => const FeedbackScreen(),
+                      ),
+                    ),
+                  ),
                   if (state.expertMode)
                     LinkCard(
                         title: 'code_card_title',

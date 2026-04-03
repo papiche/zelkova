@@ -9,6 +9,7 @@ import '../../../data/models/contact.dart';
 import '../../../data/models/contact_cubit.dart';
 import '../../../data/models/contact_sort_type.dart';
 import '../../../g1/api.dart';
+import '../../../g1/g1_v2_helper.dart';
 import '../../../g1/nostr/nostr_keys.dart';
 import '../../../g1/nostr/nostr_profile.dart';
 import '../../../g1/nostr/nostr_relay_service.dart';
@@ -180,27 +181,41 @@ class _ContactsPageState extends State<ContactsPage> {
             overflow: TextOverflow.ellipsis,
             style: const TextStyle(fontSize: 12),
           ),
-          trailing: g1pub.isNotEmpty
+          trailing: (g1pub.isNotEmpty || (p.g1v2?.isNotEmpty ?? false))
               ? const Icon(Icons.chevron_right, size: 18)
               : null,
-          onTap: g1pub.isNotEmpty
+          onTap: (g1pub.isNotEmpty || (p.g1v2?.isNotEmpty ?? false))
               ? () {
-                  // g1pub is a Duniter V2 SS58 address for MULTIPASS.
-                  // Pass nostrHex derived from npub so contact_page can skip
-                  // the relay lookup and display picture/banner immediately.
+                  // Dériver nostrHex depuis npub pour éviter une requête réseau.
                   String? nostrHex;
                   if (p.npub.isNotEmpty) {
                     try {
                       nostrHex = NostrKeys.npubToHex(p.npub);
                     } catch (_) {}
                   }
-                  showContactPage(
-                    ctx,
-                    Contact.withAddress(
+                  // Priorité: g1v2 (SS58) > g1pub validé SS58 > g1pub v1 base58.
+                  // Contact.withAddress() exige un SS58 valide (lève une erreur
+                  // sinon) — utilisé seulement après validation isValidV2Address.
+                  final String? g1v2 = p.g1v2;
+                  final Contact contact;
+                  if (g1v2 != null && g1v2.isNotEmpty) {
+                    contact = Contact.withAddress(
+                      address: g1v2,
+                      createdOn: DateTime.now().millisecondsSinceEpoch,
+                    ).copyWith(nostrHex: nostrHex);
+                  } else if (isValidV2Address(g1pub)) {
+                    contact = Contact.withAddress(
                       address: g1pub,
                       createdOn: DateTime.now().millisecondsSinceEpoch,
-                    ).copyWith(nostrHex: nostrHex),
-                  );
+                    ).copyWith(nostrHex: nostrHex);
+                  } else {
+                    // g1pub est une pubkey v1 base58 (anciens profils)
+                    contact = Contact(
+                      pubKey: g1pub,
+                      createdOn: DateTime.now().millisecondsSinceEpoch,
+                    ).copyWith(nostrHex: nostrHex);
+                  }
+                  showContactPage(ctx, contact);
                 }
               : null,
         );

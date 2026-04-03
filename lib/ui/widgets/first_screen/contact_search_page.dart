@@ -16,6 +16,7 @@ import '../../../data/models/payment_state.dart';
 import '../../../g1/api.dart';
 import '../../../g1/g1_helper.dart';
 import '../../../g1/g1_v2_helper.dart';
+import '../../../g1/nostr/nostr_keys.dart';
 import '../../../g1/nostr/nostr_profile.dart';
 import '../../../g1/nostr/nostr_relay_service.dart';
 import '../../contact_list_item.dart';
@@ -744,15 +745,39 @@ class _ContactSearchPageState extends State<ContactSearchPage> {
             overflow: TextOverflow.ellipsis,
             style: const TextStyle(fontSize: 12),
           ),
-          onTap: g1pub.isNotEmpty
+          onTap: (g1pub.isNotEmpty || (p.g1v2?.isNotEmpty ?? false))
               ? () {
-                  // g1pub from NIP-39 is a Duniter V2 SS58 address.
-                  // Must use Contact.withAddress() — Contact(pubKey:) throws
-                  // BadAddressLengthException on V2 keys.
-                  paymentCubit.selectUser(Contact.withAddress(
-                    address: g1pub,
-                    createdOn: DateTime.now().millisecondsSinceEpoch,
-                  ));
+                  // Attach nostrHex pour le fallback kind-7 au paiement.
+                  String? nostrHex;
+                  if (p.npub.isNotEmpty) {
+                    try {
+                      nostrHex = NostrKeys.npubToHex(p.npub);
+                    } catch (_) {}
+                  }
+                  // Priorité: g1v2 (SS58) > g1pub validé SS58 > g1pub v1 base58.
+                  final String? g1v2 = p.g1v2;
+                  Contact contact;
+                  if (g1v2 != null && g1v2.isNotEmpty) {
+                    contact = Contact.withAddress(
+                      address: g1v2,
+                      createdOn: DateTime.now().millisecondsSinceEpoch,
+                    );
+                  } else if (isValidV2Address(g1pub)) {
+                    contact = Contact.withAddress(
+                      address: g1pub,
+                      createdOn: DateTime.now().millisecondsSinceEpoch,
+                    );
+                  } else {
+                    // g1pub est une pubkey v1 base58 (anciens profils MULTIPASS)
+                    contact = Contact(
+                      pubKey: g1pub,
+                      createdOn: DateTime.now().millisecondsSinceEpoch,
+                    );
+                  }
+                  if (nostrHex != null) {
+                    contact = contact.copyWith(nostrHex: nostrHex);
+                  }
+                  paymentCubit.selectUser(contact);
                   Navigator.pop(context);
                 }
               : null,

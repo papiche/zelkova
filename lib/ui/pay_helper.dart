@@ -52,6 +52,32 @@ Future<bool> payWithRetry(
       paymentCubit.sending();
       final String fromPubKey = SharedPreferencesHelper().getPubKey();
 
+      // ── Guard: le transfert ẐEN est uniquement entre MULTIPASS ────────────
+      // Un portefeuille Ğ1 non-MULTIPASS (sans nostrHex) ne peut que recevoir
+      // un message Cesium+ depuis la page de contact.
+      for (final Contact recipient in recipients) {
+        if (!recipient.isMultipass) {
+          paymentCubit.sentFailed();
+          if (context.mounted) {
+            await showDialog<void>(
+              context: context,
+              builder: (BuildContext ctx) => AlertDialog(
+                title: Text(tr('zen_multipass_only_title')),
+                content: Text(tr('zen_multipass_only_desc')),
+                actions: <Widget>[
+                  TextButton(
+                    onPressed: () => Navigator.of(ctx).pop(),
+                    child: Text(tr('close')),
+                  ),
+                ],
+              ),
+            );
+          }
+          return false;
+        }
+      }
+      // ─────────────────────────────────────────────────────────────────────
+
       final Currency paymentCurrency = currency ?? Currency.ZEN;
       final bool? confirmed = await _confirmSend(context, amount.toString(),
           fromPubKey, recipients, isRetry, paymentCurrency, isToMultiple,

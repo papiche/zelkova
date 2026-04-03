@@ -221,7 +221,7 @@ String cleanComment(String? comment) {
 bool showShare() => onlyInDevelopment || !kIsWeb;
 
 String assets(String str) =>
-    (kIsWeb && kReleaseMode) || (isAndroid()) || (!kIsWeb && Platform.isLinux)
+    kIsWeb || isAndroid() || (!kIsWeb && Platform.isLinux)
         ? 'assets/$str'
         : str;
 
@@ -284,7 +284,7 @@ Color selectedPatternLock() => Colors.red;
 Color notSelectedPatternLock() => Colors.amber;
 
 String ginkgoNetIcon =
-    'https://git.duniter.org/vjrj/ginkgo/-/raw/master/web/icons/favicon-32x32.png';
+    'https://astroport.one/zelkova/icons/favicon-32x32.png';
 
 final GlobalKey<ScaffoldMessengerState> globalMessengerKey =
     GlobalKey<ScaffoldMessengerState>(debugLabel: 'globalMessengerKey');

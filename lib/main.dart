@@ -79,9 +79,9 @@ import 'ui/widgets/lazy_upgrade_alert.dart';
 import 'ui/widgets/pages/biometric_lock_screen.dart';
 
 const String fetchWalletsTransactionsTask =
-    'org.comunes.g1nkgo.fetchWalletsTransactionsTask';
+    'one.astroport.zelkova.fetchWalletsTransactionsTask';
 const String debugBackgroundPingTask =
-    'org.comunes.g1nkgo.debugBackgroundPingTask';
+    'one.astroport.zelkova.debugBackgroundPingTask';
 
 /// Helper function to detect if the error is a duplicate keyboard event
 /// This is a known Flutter issue where the HardwareKeyboard layer
@@ -990,7 +990,7 @@ class _GinkgoAppState extends State<GinkgoApp> {
                   ],
                   child: MaterialApp(
                     /// Localization is not available for the title.
-                    title: 'Ẑinkgo',
+                    title: 'Ẑelkova',
                     navigatorKey: GinkgoApp.navigatorKey,
                     navigatorObservers: <NavigatorObserver>[
                       GinkgoApp.routeObserver,

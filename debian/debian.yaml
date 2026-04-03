@@ -1,11 +1,11 @@
 flutter_app: 
-  command: g1nkgo
+  command: zelkova
   arch: x64
   parent: /usr/local/lib
   nonInteractive: false
 
 control:
-  Package: g1nkgo
+  Package: zelkova
   Version: 2.0.4
   Architecture: amd64
   Priority: optional

@@ -1,5 +1,5 @@
 #!/bin/bash
-## Build Ginkgo APK (debug or release)
+## Build Ẑelkova APK (debug or release)
 ## Usage: ./build_apk.sh [debug|release] [development|production]
 set -e
 
@@ -8,7 +8,7 @@ cd "$(dirname "$0")"
 BUILD_TYPE="${1:-debug}"
 FLAVOR="${2:-production}"
 
-echo "=== Ginkgo APK Build ==="
+echo "=== Ẑelkova APK Build ==="
 echo "Type: $BUILD_TYPE | Flavor: $FLAVOR"
 
 ## Check flutter
@@ -35,13 +35,13 @@ if [ "$BUILD_TYPE" = "release" ]; then
                 -storetype JKS \
                 -keyalg RSA -keysize 2048 -validity 10000 \
                 -alias upload \
-                -dname "CN=Ginkgo Dev, OU=Dev, O=Comunes, L=Unknown, ST=Unknown, C=XX" \
-                -storepass ginkgo123 -keypass ginkgo123
+                -dname "CN=Ẑelkova Dev, OU=Dev, O=Comunes, L=Unknown, ST=Unknown, C=XX" \
+                -storepass zelkova123 -keypass zelkova123
             echo "Generated dev keystore: $KS"
         fi
         cat > "$KP" <<EOF
-storePassword=ginkgo123
-keyPassword=ginkgo123
+storePassword=zelkova123
+keyPassword=zelkova123
 keyAlias=upload
 storeFile=../upload-keystore.jks
 EOF
@@ -79,8 +79,8 @@ if [ -n "$APK" ]; then
     echo "APK: $APK ($SIZE)"
     echo ""
     ## Copy to a convenient location
-    cp "$APK" "ginkgo-${FLAVOR}-${BUILD_TYPE}.apk"
-    echo "Copied to: ginkgo-${FLAVOR}-${BUILD_TYPE}.apk"
+    cp "$APK" "zelkova-${FLAVOR}-${BUILD_TYPE}.apk"
+    echo "Copied to: zelkova-${FLAVOR}-${BUILD_TYPE}.apk"
 else
     echo ""
     echo "APK built. Check $APK_DIR/"

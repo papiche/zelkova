@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:easy_debounce/easy_throttle.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:we_slide/we_slide.dart';
@@ -333,7 +334,9 @@ class _TransactionsListWidgetState extends State<TransactionsListWidget> {
           title: Text(tr('transactions')),
           actions: <Widget>[
             // Debug: Button to toggle fake error for testing
-            if (inDevelopment)
+            // Restricted to kDebugMode only (not profile/release) to avoid
+            // accidental activation on deployed debug web builds.
+            if (kDebugMode)
               IconButton(
                 icon: Icon(
                   _fakeErrorForDev ? Icons.error : Icons.bug_report,
@@ -423,11 +426,11 @@ class _TransactionsListWidgetState extends State<TransactionsListWidget> {
     logger(
         '[_buildContent] START - _showUD=$_showUD, regularTxs=${_transactions.length}, udTxs=${_udTransactions.length}, pendingTxs=${_pendingTransactions.length}, isInitialLoading=$_isInitialLoading, isLoadingMore=$_isLoadingMore');
 
-    // Show error state if there's a real error or fake error in development
+    // Show error state if there's a real error or fake error in debug mode
     if (_error != null && _transactions.isEmpty) {
-      // In development, if fake error is enabled, show it
-      // In production, only show real errors
-      if (inDevelopment && _fakeErrorForDev) {
+      // In debug mode only, if fake error is enabled, show it.
+      // kDebugMode is more restrictive than inDevelopment (excludes profile mode).
+      if (kDebugMode && _fakeErrorForDev) {
         return TransactionsListError(
           error: _error,
           onRetry: () {

@@ -25,7 +25,7 @@ for arg in "$@"; do
             cat <<EOF
 Usage: $0 [BUILD_MODE] [FLAVOR] [OPTIONS]
 
-Build Ginkgo web for IPFS deployment.
+Build Ẑelkova web for IPFS deployment.
 
 Arguments:
   BUILD_MODE          debug, release, or profile (default: release)
@@ -77,7 +77,7 @@ case $FLAVOR in
         ;;
 esac
 
-echo "=== Ginkgo Web Build ==="
+echo "=== Ẑelkova Web Build ==="
 echo "Mode:   $BUILD_MODE"
 echo "Flavor: $FLAVOR"
 echo "Patch:  $PATCH_IPFS"

@@ -12,13 +12,13 @@ Sert :
 Usage :
     python server.py
     # ou avec uvicorn :
-    uvicorn server:app --host 0.0.0.0 --port 8080 --reload
+    uvicorn server:app --host 0.0.0.0 --port 9980 --reload
 
 Variables d'environnement (.env) :
     GITHUB_TOKEN    = ghp_xxxxxxxx    (token GitHub, scope: repo)
     GITHUB_REPO     = papiche/zelkova (org/repo pour les issues)
     ZELKOVA_APP_URL = https://zelkova.astroport.one  (URL de la PWA)
-    PORT            = 8080
+    PORT            = 9980
 
 Nécessite : pip install fastapi uvicorn python-dotenv httpx aiofiles
 """
@@ -261,7 +261,7 @@ async def _relay_to_upassport(p: FeedbackPayload, body: str) -> dict:
 # ── Entrée principale ─────────────────────────────────────────────────────────
 if __name__ == "__main__":
     import uvicorn
-    port = int(os.getenv("PORT", 8080))
+    port = int(os.getenv("PORT", 9980))
     logger.info(f"🌳 Ẑelkova Landing → http://0.0.0.0:{port}")
     logger.info(f"   GitHub repo : {GITHUB_REPO}")
     logger.info(f"   UPassport   : {UPASSPORT_URL}")

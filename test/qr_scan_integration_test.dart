@@ -14,9 +14,9 @@
 /// workflow from QR scan to payment state update works correctly.
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:ginkgo/data/models/payment_cubit.dart';
-import 'package:ginkgo/data/models/payment_state.dart';
-import 'package:ginkgo/g1/g1_helper.dart';
+import 'package:zelkova/data/models/payment_cubit.dart';
+import 'package:zelkova/data/models/payment_state.dart';
+import 'package:zelkova/g1/g1_helper.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 
 // Mock storage for HydratedBloc

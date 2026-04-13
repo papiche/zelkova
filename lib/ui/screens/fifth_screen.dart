@@ -192,12 +192,12 @@ class _FifthScreenState extends State<FifthScreen> {
                     LinkCard(
                         title: 'code_card_title',
                         icon: Icons.code_rounded,
-                        url: Uri.parse('https://git.duniter.org/vjrj/ginkgo')),
+                        url: Uri.parse('https://github.com/papiche/zelkova')),
                   LinkCard(
                       title: 'code_translate',
                       icon: Icons.translate,
                       url: Uri.parse(
-                          'https://weblate.duniter.org/projects/g1nkgo/g1nkgo/')),
+                          'https://github.com/papiche/zelkova/issues')),
                   // const TextDivider(text: 'faq_title'),
                   // const FAQ(),
                   const BottomWidget()

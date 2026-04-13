@@ -175,7 +175,7 @@ class _CardDrawerState extends State<CardDrawer> {
                             Map<String, dynamic> issueData, bool isSuccess) {
                       if (isSuccess) {
                         showDialog(
-                          context: GinkgoApp.navigatorKey.currentContext!,
+                          context: ZelkovaApp.navigatorKey.currentContext!,
                           builder: (BuildContext dialogContext) {
                             return AlertDialog(
                               title: Text(tr('issueCreatedTitle')),
@@ -205,7 +205,7 @@ class _CardDrawerState extends State<CardDrawer> {
                         );
                       } else {
                         showDialog(
-                          context: GinkgoApp.navigatorKey.currentContext!,
+                          context: ZelkovaApp.navigatorKey.currentContext!,
                           builder: (BuildContext dialogContext) {
                             return AlertDialog(
                               title: Text(tr('issueCreationErrorTitle')),
@@ -233,9 +233,9 @@ class _CardDrawerState extends State<CardDrawer> {
                 ),
                 */
             LazyAboutListTile(
-              icon: g1nkgoIcon,
+              icon: zelkovaIcon,
               applicationName: tr('app_name'),
-              applicationIcon: g1nkgoIcon,
+              applicationIcon: zelkovaIcon,
               applicationLegalese:
                   '© ${DateTime.now().year.toString() == '2023' ? '2023' : '2023-${DateTime.now().year}'} Comunes Association • G1FabLab#monnaie-libre, under AGPLv3',
               aboutBoxChildren: <Widget>[
@@ -249,10 +249,10 @@ class _CardDrawerState extends State<CardDrawer> {
                 InkWell(
                   onTap: () async {
                     await openUrl(
-                        'https://git.duniter.org/zicmama/ginkgo/-/tree/zen');
+                        'https://github.com/papiche/zelkova');
                   },
                   child: const Text(
-                    '🔗 git.duniter.org/zicmama/ginkgo · branche zen',
+                    '🔗 github.com/papiche/zelkova',
                     style: TextStyle(
                         color: Colors.blue,
                         decoration: TextDecoration.underline,
@@ -265,10 +265,10 @@ class _CardDrawerState extends State<CardDrawer> {
               // fallbackVersion: 'dev',
             ),
             /* AboutListTile(
-                      icon: g1nkgoIcon,
+                      icon: zelkovaIcon,
                       applicationName: tr('app_name'),
                       applicationVersion: 'Version: ${snapshot.data!.version}',
-                      applicationIcon: g1nkgoIcon,
+                      applicationIcon: zelkovaIcon,
                       applicationLegalese:
                           '© ${DateTime.now().year.toString() == '2023' ? '2023' : '2023-${DateTime.now().year}'} Comunes Association, under AGPLv3',
                       aboutBoxChildren: const <Widget>[

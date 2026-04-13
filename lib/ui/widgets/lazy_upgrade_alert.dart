@@ -59,7 +59,7 @@ class _LazyUpgradeAlertState extends State<LazyUpgradeAlert> {
     try {
       _upgrader = Upgrader(
         debugLogging: true,
-        messages: GinkgoUpgraderMessages(),
+        messages: ZelkovaUpgraderMessages(),
       );
 
       // In development, clear settings to avoid corrupted states

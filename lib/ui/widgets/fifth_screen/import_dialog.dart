@@ -555,7 +555,7 @@ Future<void> showSelectImportMethodDialog(
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        if (importType == ImportType.fileG1nkgoV1Export) {
+        if (importType == ImportType.fileZelkovaV1Export) {
           return const ImportDialog();
         } else {
           return ImportClipboardDialog(
@@ -673,7 +673,7 @@ Future<String> importWallet(BuildContext context,
       return importWithFilePicker();
     }
 
-    final Directory? directory = await getGinkgoDownloadDirectory();
+    final Directory? directory = await getZelkovaDownloadDirectory();
     if (directory == null) {
       logger('Downloads directory not found');
       try {

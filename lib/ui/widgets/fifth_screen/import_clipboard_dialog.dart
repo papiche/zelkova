@@ -37,7 +37,7 @@ class _ImportClipboardDialogState extends State<ImportClipboardDialog> {
     loggerDev('Text to validate: $preview${text.length > 50 ? '...' : ''}');
 
     switch (widget.importType) {
-      case ImportType.clipboardG1nkgoV1Export:
+      case ImportType.clipboardZelkovaV1Export:
         if (text.isEmpty) {
           loggerDev('Error: empty g1nkgo export');
           setState(() => _errorMessage = tr('error_empty_g1nkgo'));
@@ -64,7 +64,7 @@ class _ImportClipboardDialogState extends State<ImportClipboardDialog> {
           return;
         }
         break;
-      case ImportType.fileG1nkgoV1Export:
+      case ImportType.fileZelkovaV1Export:
         throw UnimplementedError('Not supported here');
     }
 
@@ -114,7 +114,7 @@ class _ImportClipboardDialogState extends State<ImportClipboardDialog> {
     bool showQrButton = false;
 
     switch (widget.importType) {
-      case ImportType.clipboardG1nkgoV1Export:
+      case ImportType.clipboardZelkovaV1Export:
         title = tr('import_wallet_from_clipboard');
         description = tr('import_wallet_from_clipboard_desc');
         showQrButton = false;
@@ -128,7 +128,7 @@ class _ImportClipboardDialogState extends State<ImportClipboardDialog> {
         title = tr('import_wallet_from_clipboard_mnemonic');
         description = tr('import_wallet_from_clipboard_mnemonic_desc');
         showQrButton = false;
-      case ImportType.fileG1nkgoV1Export:
+      case ImportType.fileZelkovaV1Export:
         throw UnimplementedError('Other import types are not supported here');
     }
     return AlertDialog(

@@ -55,6 +55,6 @@ android/app/.cxx/
 test_bundle.dart
 
 # Build output APKs
-ginkgo-*.apk
+zelkova-*.apk
 *.jks
 android/key.properties

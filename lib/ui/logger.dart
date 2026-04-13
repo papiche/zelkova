@@ -8,7 +8,7 @@ import 'in_dev_helper.dart';
 final Logger log = Logger();
 
 final EasyLogger logger = EasyLogger(
-  name: 'ginkgo',
+  name: 'zelkova',
   defaultLevel: LevelMessages.debug,
   enableBuildModes: <BuildMode>[
     BuildMode.debug,

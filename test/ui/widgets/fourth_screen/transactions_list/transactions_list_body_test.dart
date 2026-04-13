@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:ginkgo/data/models/app_cubit.dart';
-import 'package:ginkgo/data/models/transaction.dart';
-import 'package:ginkgo/ui/widgets/fourth_screen/transactions_list/transactions_list_body.dart';
+import 'package:zelkova/data/models/app_cubit.dart';
+import 'package:zelkova/data/models/transaction.dart';
+import 'package:zelkova/ui/widgets/fourth_screen/transactions_list/transactions_list_body.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:provider/provider.dart';
 

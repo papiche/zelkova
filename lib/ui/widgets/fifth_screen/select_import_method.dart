@@ -19,13 +19,13 @@ class SelectImportMethodDialog extends StatelessWidget {
               leading: const Icon(Icons.file_present),
               title: Text(tr('file_import')),
               onTap: () =>
-                  Navigator.of(context).pop(ImportType.fileG1nkgoV1Export),
+                  Navigator.of(context).pop(ImportType.fileZelkovaV1Export),
             ),
             ListTile(
               leading: const Icon(Icons.content_paste),
               title: Text(tr('clipboard_import')),
               onTap: () =>
-                  Navigator.of(context).pop(ImportType.clipboardG1nkgoV1Export),
+                  Navigator.of(context).pop(ImportType.clipboardZelkovaV1Export),
             ),
             ListTile(
               leading: const Icon(Icons.key),

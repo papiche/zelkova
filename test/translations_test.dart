@@ -40,6 +40,11 @@ void main() {
       '{currentInstalledVersion}',
       r'{$}',
       '{}',
+      // Zelkova-specific template arguments
+      '{app_url}',
+      '{demo_url}',
+      '{code}',
+      '{max}',
     ];
 
     // All supported languages

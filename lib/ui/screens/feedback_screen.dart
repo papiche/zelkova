@@ -105,7 +105,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
         title: _titleController.text.trim(),
         description: _descriptionController.text.trim(),
         platform: _platform,
-        appVersion: 'ginkgo',
+        appVersion: 'zelkova',
         technicalInfo: _technicalInfo,
       );
 

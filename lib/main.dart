@@ -181,7 +181,7 @@ void main() async {
       return true;
     };
 
-    logger.info('Starting Ginkgo app');
+    logger.info('Starting Ẑelkova app');
 
     // Initialize Workmanager for background task scheduling (mobile only, not Web)
     // Web platform does not support background tasks via WorkManager
@@ -370,7 +370,7 @@ void main() async {
                     ),
                     // Add other BlocProviders here if needed
                   ],
-                  child: GinkgoApp(
+                  child: ZelkovaApp(
                     darkTheme: darkTheme,
                     lightTheme: lightTheme,
                   ),
@@ -529,8 +529,8 @@ PageViewModel createPageViewModel(
   );
 }
 
-class GinkgoApp extends StatefulWidget {
-  const GinkgoApp({
+class ZelkovaApp extends StatefulWidget {
+  const ZelkovaApp({
     super.key,
     required this.lightTheme,
     required this.darkTheme,
@@ -548,10 +548,10 @@ class GinkgoApp extends StatefulWidget {
   final ThemeData lightTheme;
 
   @override
-  State<GinkgoApp> createState() => _GinkgoAppState();
+  State<ZelkovaApp> createState() => _ZelkovaAppState();
 }
 
-class _GinkgoAppState extends State<GinkgoApp> {
+class _ZelkovaAppState extends State<ZelkovaApp> {
   /// Migration flag to clear old gtest nodes (one-time operation)
   static const String _v2NodesMigrationKey = 'v2_nodes_migration_2026_03_07';
 
@@ -991,9 +991,9 @@ class _GinkgoAppState extends State<GinkgoApp> {
                   child: MaterialApp(
                     /// Localization is not available for the title.
                     title: 'Ẑelkova',
-                    navigatorKey: GinkgoApp.navigatorKey,
+                    navigatorKey: ZelkovaApp.navigatorKey,
                     navigatorObservers: <NavigatorObserver>[
-                      GinkgoApp.routeObserver,
+                      ZelkovaApp.routeObserver,
                     ],
                     scaffoldMessengerKey: globalMessengerKey,
 

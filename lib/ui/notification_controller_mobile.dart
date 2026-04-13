@@ -154,7 +154,7 @@ class NotificationController {
 
     // Navigate to notifications page (this should actually go to transactions tab)
     // FIXME (vjrj): Consider navigating directly to transactions tab instead
-    GinkgoApp.navigatorKey.currentState?.pushNamedAndRemoveUntil(
+    ZelkovaApp.navigatorKey.currentState?.pushNamedAndRemoveUntil(
         '/notification-page',
         (Route<dynamic> route) =>
             (route.settings.name != '/notification-page') || route.isFirst,
@@ -163,7 +163,7 @@ class NotificationController {
     // Switch to transactions tab (SecondScreen - index 1)
     try {
       final BottomNavCubit? navCubit =
-          GinkgoApp.navigatorKey.currentContext?.read<BottomNavCubit>();
+          ZelkovaApp.navigatorKey.currentContext?.read<BottomNavCubit>();
       navCubit?.getSecondScreen();
     } catch (e) {
       logger('Error switching to transactions tab from notification: $e');
@@ -191,7 +191,7 @@ class NotificationController {
     }
 
     // Check if context is available (guards against background isolate usage)
-    final BuildContext? context = GinkgoApp.navigatorKey.currentContext;
+    final BuildContext? context = ZelkovaApp.navigatorKey.currentContext;
     if (context == null) {
       return false;
     }
@@ -303,9 +303,9 @@ class NotificationController {
               title: title,
               body: desc,
               largeIcon:
-                  'https://git.duniter.org/vjrj/ginkgo/-/raw/master/assets/img/coin.png',
+                  'https://raw.githubusercontent.com/papiche/zelkova/main/assets/img/logo.png',
               bigPicture:
-                  'https://git.duniter.org/vjrj/ginkgo/-/raw/master/assets/img/gbrevedot_color.svg',
+                  'https://raw.githubusercontent.com/papiche/zelkova/main/assets/img/gbrevedot_color.png',
               //'asset://assets/images/balloons-in-sky.jpg',
               notificationLayout: NotificationLayout.BigPicture,
               payload: <String, String>{
@@ -355,7 +355,7 @@ class NotificationController {
     try {
       final dn.NotificationsClient client = dn.NotificationsClient();
       try {
-        await client.notify(title, body: desc, appName: 'Ginkgo');
+        await client.notify(title, body: desc, appName: 'Ẑelkova');
       } finally {
         await client.close();
       }
@@ -365,7 +365,7 @@ class NotificationController {
           '[NOTIFICATION] DBus notification failed ($e), trying notify-send');
       try {
         await Process.run('notify-send', <String>[
-          '--app-name=Ginkgo',
+          '--app-name=Ẑelkova',
           title,
           desc,
         ]);

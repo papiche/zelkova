@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:ginkgo/data/models/app_cubit.dart';
-import 'package:ginkgo/data/models/contact.dart';
-import 'package:ginkgo/data/models/multi_wallet_transaction_cubit.dart';
-import 'package:ginkgo/data/models/multi_wallet_transaction_state.dart';
-import 'package:ginkgo/data/models/transaction.dart';
-import 'package:ginkgo/data/models/transaction_state.dart';
-import 'package:ginkgo/data/models/transaction_type.dart';
-import 'package:ginkgo/data/models/utxo_cubit.dart';
-import 'package:ginkgo/g1/currency.dart';
-import 'package:ginkgo/ui/widgets/fourth_screen/transactions_list/transactions_list_widget.dart';
+import 'package:zelkova/data/models/app_cubit.dart';
+import 'package:zelkova/data/models/contact.dart';
+import 'package:zelkova/data/models/multi_wallet_transaction_cubit.dart';
+import 'package:zelkova/data/models/multi_wallet_transaction_state.dart';
+import 'package:zelkova/data/models/transaction.dart';
+import 'package:zelkova/data/models/transaction_state.dart';
+import 'package:zelkova/data/models/transaction_type.dart';
+import 'package:zelkova/data/models/utxo_cubit.dart';
+import 'package:zelkova/g1/currency.dart';
+import 'package:zelkova/ui/widgets/fourth_screen/transactions_list/transactions_list_widget.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 

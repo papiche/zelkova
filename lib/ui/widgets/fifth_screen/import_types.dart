@@ -1,6 +1,6 @@
 enum ImportType {
-  fileG1nkgoV1Export,
-  clipboardG1nkgoV1Export,
+  fileZelkovaV1Export,
+  clipboardZelkovaV1Export,
   clipboardPubKey,
   clipboardMnemonic,
 }

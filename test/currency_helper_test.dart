@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:ginkgo/ui/currency_helper.dart';
+import 'package:zelkova/ui/currency_helper.dart';
 import 'package:intl/intl.dart';
 
 void main() {

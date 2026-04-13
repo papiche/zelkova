@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:math';
 
 import 'package:crypto/crypto.dart';
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
 import '../env.dart';
@@ -102,14 +103,22 @@ class CesiumMessageService {
     return false;
   }
 
+  /// Exposed for unit tests only.
+  @visibleForTesting
+  static String compactSortedJsonForTest(Map<String, dynamic> map) =>
+      _compactSortedJson(map);
+
   /// Produce a compact JSON string with keys sorted alphabetically.
   /// Matches Python's json.dumps(data, sort_keys=True, separators=(',', ':'))
+  /// with the default ensure_ascii=True — non-ASCII characters are \uXXXX-escaped
+  /// (BMP) or encoded as UTF-16 surrogate pairs (\uD8xx\uDCxx) for emoji and
+  /// other supplementary-plane characters (U+10000+).
   static String _compactSortedJson(Map<String, dynamic> map) {
     final List<String> keys = map.keys.toList()..sort();
     final StringBuffer sb = StringBuffer('{');
     for (int i = 0; i < keys.length; i++) {
       if (i > 0) sb.write(',');
-      sb.write('"${keys[i]}"');
+      sb.write(_escapeString(keys[i]));
       sb.write(':');
       sb.write(_jsonValue(map[keys[i]]));
     }
@@ -117,10 +126,37 @@ class CesiumMessageService {
     return sb.toString();
   }
 
-  static String _jsonValue(dynamic v) {
-    if (v is String) {
-      return '"${v.replaceAll(r'\', r'\\').replaceAll('"', r'\"').replaceAll('\n', r'\n')}"';
+  /// Encode a string as a JSON string literal, escaping all non-ASCII characters
+  /// as \uXXXX exactly like Python's json.dumps with ensure_ascii=True (the default).
+  /// Dart strings are UTF-16 internally, so supplementary-plane characters (emoji,
+  /// etc.) are already stored as two surrogate code units — each gets its own
+  /// \uXXXX escape, matching what Python produces.
+  static String _escapeString(String v) {
+    final StringBuffer sb = StringBuffer('"');
+    for (int i = 0; i < v.length; i++) {
+      final int unit = v.codeUnitAt(i);
+      if (unit == 0x22) {
+        sb.write(r'\"');
+      } else if (unit == 0x5C) {
+        sb.write(r'\\');
+      } else if (unit == 0x0A) {
+        sb.write(r'\n');
+      } else if (unit == 0x0D) {
+        sb.write(r'\r');
+      } else if (unit == 0x09) {
+        sb.write(r'\t');
+      } else if (unit < 0x20 || unit > 0x7E) {
+        sb.write('\\u${unit.toRadixString(16).padLeft(4, '0')}');
+      } else {
+        sb.writeCharCode(unit);
+      }
     }
+    sb.write('"');
+    return sb.toString();
+  }
+
+  static String _jsonValue(dynamic v) {
+    if (v is String) return _escapeString(v);
     if (v is int || v is double || v is bool) return v.toString();
     if (v == null) return 'null';
     if (v is Map<String, dynamic>) return _compactSortedJson(v);

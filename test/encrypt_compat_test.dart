@@ -2,8 +2,8 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:ginkgo/g1/g1_helper.dart';
-import 'package:ginkgo/secure_crypto_helper.dart';
+import 'package:zelkova/g1/g1_helper.dart';
+import 'package:zelkova/secure_crypto_helper.dart';
 
 void main() {
   group('Encryption Verification (Post Migration)', () {

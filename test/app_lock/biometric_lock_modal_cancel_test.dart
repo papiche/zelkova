@@ -1,8 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:ginkgo/main.dart';
-import 'package:ginkgo/ui/widgets/pages/biometric_lock_screen.dart';
+import 'package:zelkova/main.dart';
+import 'package:zelkova/ui/widgets/pages/biometric_lock_screen.dart';
 import 'package:local_auth_platform_interface/local_auth_platform_interface.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -28,7 +28,7 @@ void main() {
         path: 'assets/translations',
         fallbackLocale: const Locale('en'),
         child: MaterialApp(
-          navigatorKey: GinkgoApp.navigatorKey,
+          navigatorKey: ZelkovaApp.navigatorKey,
           home: Builder(
             builder: (BuildContext context) {
               return ElevatedButton(

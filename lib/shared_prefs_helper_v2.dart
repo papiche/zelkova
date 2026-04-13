@@ -551,6 +551,23 @@ class SharedPreferencesHelperV2
     return jsonDecode(data) as Map<String, dynamic>;
   }
 
+  /// Update the oc_urls field in stored MULTIPASS data.
+  ///
+  /// Used to refresh OC subscription links without recreating the account.
+  Future<void> updateMultipassOcUrls(
+      Map<String, dynamic> ocUrls, [String? pubKey]) async {
+    final String? key = pubKey ?? (isEmpty ? null : getPubKey());
+    if (key == null) return;
+    final String storageKey =
+        '${StorageKeys.multipassDataPrefix}${extractPublicKey(key)}';
+    final String? raw = await _storage.read(key: storageKey);
+    if (raw == null) return;
+    final Map<String, dynamic> stored =
+        jsonDecode(raw) as Map<String, dynamic>;
+    stored['oc_urls'] = ocUrls;
+    await _storage.write(key: storageKey, value: jsonEncode(stored));
+  }
+
   @override
   Future<KeyPair> getKeyPair([int? index, StoredAccount? account]) async {
     final StoredAccount acc = account ?? accounts[index ?? _getCurrentIndex()];

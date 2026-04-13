@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:ginkgo/shared_prefs_helper.dart';
-import 'package:ginkgo/ui/biometrics/biometric_auth_service.dart';
-import 'package:ginkgo/ui/widgets/pages/authentication_settings_page.dart';
+import 'package:zelkova/shared_prefs_helper.dart';
+import 'package:zelkova/ui/biometrics/biometric_auth_service.dart';
+import 'package:zelkova/ui/widgets/pages/authentication_settings_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../secure_storage_mock.dart';

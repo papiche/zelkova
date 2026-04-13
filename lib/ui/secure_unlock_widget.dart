@@ -453,7 +453,7 @@ Future<Uint8List?> requestSecureUnlock({
   bool isSetup = false,
   String? customMessage,
 }) async {
-  final NavigatorState? navigator = GinkgoApp.navigatorKey.currentState;
+  final NavigatorState? navigator = ZelkovaApp.navigatorKey.currentState;
   if (navigator == null) {
     return null;
   }

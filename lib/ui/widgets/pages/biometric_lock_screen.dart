@@ -138,7 +138,7 @@ Future<bool> showBiometricLockScreen({bool force = false}) async {
     return false;
   }
 
-  final NavigatorState? navigator = GinkgoApp.navigatorKey.currentState;
+  final NavigatorState? navigator = ZelkovaApp.navigatorKey.currentState;
   if (navigator == null) {
     return false;
   }

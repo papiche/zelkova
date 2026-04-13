@@ -55,7 +55,7 @@ class NotificationController {
   static Future<bool> displayNotificationRationale(
       {bool allowPermissionPrompt = true}) async {
     // Guard against null context (e.g., headless/background execution)
-    final BuildContext? context = GinkgoApp.navigatorKey.currentContext;
+    final BuildContext? context = ZelkovaApp.navigatorKey.currentContext;
     if (context == null) {
       return false;
     }
@@ -182,7 +182,7 @@ class NotificationController {
       if (web.Notification.permission == 'granted') {
         final web.NotificationOptions options = web.NotificationOptions(
           body: desc,
-          icon: ginkgoNetIcon,
+          icon: zelkovaNetIcon,
           tag: walletPubKey ?? 'notification',
         );
         final web.Notification notification = web.Notification(title, options);
@@ -205,7 +205,7 @@ class NotificationController {
               await swContainer.ready.toDart;
           final web.NotificationOptions options = web.NotificationOptions(
             body: desc,
-            icon: ginkgoNetIcon,
+            icon: zelkovaNetIcon,
             tag: walletPubKey ?? 'notification',
           );
           await swReg.showNotification(title, options).toDart;
@@ -238,7 +238,7 @@ class NotificationController {
     // Switch to transactions tab (SecondScreen - index 1)
     try {
       final BottomNavCubit? navCubit =
-          GinkgoApp.navigatorKey.currentContext?.read<BottomNavCubit>();
+          ZelkovaApp.navigatorKey.currentContext?.read<BottomNavCubit>();
       navCubit?.getSecondScreen();
     } catch (e) {
       logger('Error switching to transactions tab from notification: $e');

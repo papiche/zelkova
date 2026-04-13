@@ -1,9 +1,9 @@
 import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:ginkgo/data/models/app_cubit.dart';
-import 'package:ginkgo/data/models/app_state.dart';
-import 'package:ginkgo/g1/currency.dart';
+import 'package:zelkova/data/models/app_cubit.dart';
+import 'package:zelkova/data/models/app_state.dart';
+import 'package:zelkova/g1/currency.dart';
 import 'package:hive_ce/hive.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 

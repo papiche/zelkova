@@ -1,8 +1,8 @@
 import 'dart:typed_data';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:ginkgo/data/models/stored_account.dart';
-import 'package:ginkgo/shared_prefs_helper.dart';
+import 'package:zelkova/data/models/stored_account.dart';
+import 'package:zelkova/shared_prefs_helper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'secure_storage_mock.dart' show registerMockSecureStorage;

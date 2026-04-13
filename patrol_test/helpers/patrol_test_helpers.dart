@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
-import 'package:ginkgo/data/models/app_cubit.dart';
+import 'package:zelkova/data/models/app_cubit.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 
 /// Helpers para tests de Patrol

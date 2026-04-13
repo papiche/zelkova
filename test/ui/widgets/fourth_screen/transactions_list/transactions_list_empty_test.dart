@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:ginkgo/ui/widgets/fourth_screen/transactions_list/transactions_list_empty.dart';
+import 'package:zelkova/ui/widgets/fourth_screen/transactions_list/transactions_list_empty.dart';
 
 void main() {
   group('TransactionsListEmpty', () {

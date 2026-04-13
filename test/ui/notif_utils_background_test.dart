@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:ginkgo/ui/notif_utils.dart';
-import 'package:ginkgo/ui/notification_translations_helper.dart';
+import 'package:zelkova/ui/notif_utils.dart';
+import 'package:zelkova/ui/notification_translations_helper.dart';
 
 // Sample Spanish translations for testing
 const String _spanishTranslations = '''

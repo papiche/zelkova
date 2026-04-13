@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:ginkgo/main.dart' as app;
+import 'package:zelkova/main.dart' as app;
 
 import 'helpers/test_helpers.dart';
 

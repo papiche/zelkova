@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:ginkgo/data/models/contact.dart';
-import 'package:ginkgo/ui/contacts_cache.dart';
+import 'package:zelkova/data/models/contact.dart';
+import 'package:zelkova/ui/contacts_cache.dart';
 
 void main() {
   // Valid G1 public key format from existing tests

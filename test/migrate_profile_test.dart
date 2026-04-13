@@ -2,8 +2,8 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:ginkgo/g1/api.dart';
-import 'package:ginkgo/g1/crypto/cesium_wallet.dart';
+import 'package:zelkova/g1/api.dart';
+import 'package:zelkova/g1/crypto/cesium_wallet.dart';
 import 'package:polkadart/scale_codec.dart';
 import 'package:polkadart_keyring/polkadart_keyring.dart';
 

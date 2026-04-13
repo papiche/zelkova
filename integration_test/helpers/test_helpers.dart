@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:ginkgo/services/derivation_scan_service.dart';
+import 'package:zelkova/services/derivation_scan_service.dart';
 
 // ignore: avoid_classes_with_only_static_members
 /// Helper functions for integration tests

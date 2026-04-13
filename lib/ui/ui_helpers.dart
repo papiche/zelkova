@@ -240,12 +240,12 @@ Future<Directory?> getAppSpecificExternalFilesDirectory(
   }
 }
 
-ImageIcon get g1nkgoIcon => ImageIcon(
-      AssetImage(ginkgoIconLocation),
+ImageIcon get zelkovaIcon => ImageIcon(
+      AssetImage(zelkovaIconLocation),
       size: 24,
     );
 
-String get ginkgoIconLocation => assets('img/favicon.png');
+String get zelkovaIconLocation => assets('img/favicon.png');
 
 String capitalize(String s) => s[0].toUpperCase() + s.substring(1);
 
@@ -283,7 +283,7 @@ Color selectedPatternLock() => Colors.red;
 
 Color notSelectedPatternLock() => Colors.amber;
 
-String ginkgoNetIcon =
+String zelkovaNetIcon =
     'https://astroport.one/zelkova/icons/favicon-32x32.png';
 
 final GlobalKey<ScaffoldMessengerState> globalMessengerKey =
@@ -395,7 +395,7 @@ Future<bool> requestStoragePermission(BuildContext context) async {
   return true;
 }
 
-Future<Directory?> getGinkgoDownloadDirectory() async {
+Future<Directory?> getZelkovaDownloadDirectory() async {
   try {
     // Try to get Downloads directory first
     final Directory? downloadsDir = await getDownloadsDirectory();

@@ -706,7 +706,7 @@ class _ExportDialogState extends State<ExportDialog> {
         return false;
       }
 
-      final Directory? directory = await getGinkgoDownloadDirectory();
+      final Directory? directory = await getZelkovaDownloadDirectory();
       final String fileName = fileNameArg ?? getWalletFileName();
       if (isAndroid()) {
         final String? outputPath = await FilePicker.platform.saveFile(
@@ -787,7 +787,7 @@ class _ExportDialogState extends State<ExportDialog> {
   String getWalletFileName() {
     final DateTime now = DateTime.now();
     final String formattedDate = todayS(now);
-    const String baseFileName = 'ginkgo-export';
+    const String baseFileName = 'zelkova-export';
     return '$baseFileName-$formattedDate.json';
   }
 

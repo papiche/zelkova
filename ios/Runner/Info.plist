@@ -11,7 +11,7 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>G1nkgo</string>
+	<string>Ẑelkova</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
@@ -73,7 +73,7 @@
   </array>
   <key>BGTaskSchedulerPermittedIdentifiers</key>
 	<array>
-	<string>org.comunes.g1nkgo.fetchWalletsTransactionsTask</string>
+	<string>one.astroport.zelkova.fetchWalletsTransactionsTask</string>
   </array>
   <!-- PermissionType.mediaLibrary -->
   <key>NSAppleMusicUsageDescription</key>

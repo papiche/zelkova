@@ -3,18 +3,18 @@ import 'dart:math';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:ginkgo/data/models/contact.dart';
-import 'package:ginkgo/data/models/node.dart';
-import 'package:ginkgo/data/models/node_lists_default.dart';
-import 'package:ginkgo/data/models/node_manager.dart';
-import 'package:ginkgo/data/models/payment_state.dart';
-import 'package:ginkgo/data/models/transaction.dart';
-import 'package:ginkgo/data/models/transaction_type.dart';
-import 'package:ginkgo/g1/crypto/cesium_wallet.dart';
-import 'package:ginkgo/g1/duniter_endpoint_helper.dart';
-import 'package:ginkgo/g1/g1_export_auth_utils.dart';
-import 'package:ginkgo/g1/g1_helper.dart';
-import 'package:ginkgo/ui/logger.dart';
+import 'package:zelkova/data/models/contact.dart';
+import 'package:zelkova/data/models/node.dart';
+import 'package:zelkova/data/models/node_lists_default.dart';
+import 'package:zelkova/data/models/node_manager.dart';
+import 'package:zelkova/data/models/payment_state.dart';
+import 'package:zelkova/data/models/transaction.dart';
+import 'package:zelkova/data/models/transaction_type.dart';
+import 'package:zelkova/g1/crypto/cesium_wallet.dart';
+import 'package:zelkova/g1/duniter_endpoint_helper.dart';
+import 'package:zelkova/g1/g1_export_auth_utils.dart';
+import 'package:zelkova/g1/g1_helper.dart';
+import 'package:zelkova/ui/logger.dart';
 
 String _generateRandomPatternPassword(Random random) {
   final int length = random.nextInt(8) + 2; // Password length between 2 and 9.

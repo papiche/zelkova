@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:ginkgo/data/models/stored_account.dart';
-import 'package:ginkgo/main.dart' as app;
-import 'package:ginkgo/shared_prefs_helper.dart';
+import 'package:zelkova/data/models/stored_account.dart';
+import 'package:zelkova/main.dart' as app;
+import 'package:zelkova/shared_prefs_helper.dart';
 
 import 'helpers/test_helpers.dart';
 

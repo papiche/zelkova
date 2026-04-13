@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:ginkgo/data/models/contact.dart';
-import 'package:ginkgo/data/models/stored_account.dart';
-import 'package:ginkgo/data/models/wallet_themes.dart';
-import 'package:ginkgo/ui/widgets/first_screen/credit_card.dart';
+import 'package:zelkova/data/models/contact.dart';
+import 'package:zelkova/data/models/stored_account.dart';
+import 'package:zelkova/data/models/wallet_themes.dart';
+import 'package:zelkova/ui/widgets/first_screen/credit_card.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
 void main() {

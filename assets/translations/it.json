@@ -582,7 +582,7 @@
   "settings_notifications_enable_action": "Abilita notifiche",
   "settings_notifications_enabled_snack": "Le notifiche sono state abilitate!",
   "settings_battery_optimizations_title": "Ottimizzazione della batteria",
-  "settings_battery_optimization_info": "Per garantire una sincronizzazione in background e notifiche affidabili, escludi Ginkgo dall'ottimizzazione della batteria.",
+  "settings_battery_optimization_info": "Per garantire una sincronizzazione in background e notifiche affidabili, escludi Ẑelkova dall'ottimizzazione della batteria.",
   "settings_background_limitations_title": "Sincronizzazione in background",
   "update_available_title": "Aggiornamento disponibile",
   "update_available_message": "Nuova versione: {{currentAppStoreVersion}}\nVersione attuale: {{currentInstalledVersion}}",

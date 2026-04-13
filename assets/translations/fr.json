@@ -703,7 +703,7 @@
   "please_wait_deletion": "Veuillez attendre avant de supprimer un autre portefeuille",
   "export_failed": "Echec de l'export. Veuillez réessayer en utilisant une méthode d'export différente.",
   "settings_notifications_enabled_snack": "Les notifications ont été activées !",
-  "settings_battery_optimization_info": "Pour une synchronisation en second plan et des notifications fiables, excluez Ginkgo de l'optimisation de la batterie.",
+  "settings_battery_optimization_info": "Pour une synchronisation en second plan et des notifications fiables, excluez Ẑelkova de l'optimisation de la batterie.",
   "settings_background_limitations_body": "Si le système restreint l'activité en second plan ou si vous forcez l'arrêt de l'application, la synchronisation des transactions et les notifications pourront ne pas fonctionner correctement.",
   "brave_warning_desc": "Vous utilisez le navigateur Brave. A cause de la protection Brave Shields, vos portefeuilles peuvent être supprimés quand vous fermez le navigateur.\n\nPour éviter de perdre vos fonds :\n\n1. Exportez régulièrement votre portefeuille (section Info → Exporter un portefeuille)\n2. Désactivez Brave Shields pour ce site (cliquez sur l'icône lion dans la barre d'adresse)\n3. Envisagez d'utiliser Chrome ou Firefox pour une meilleure compatibilité\n\nVeuillez exporter votre portefeuille maintenant si vous ne l'avez pas déjà fait.",
   "theme_mode": "Thème",

@@ -52,7 +52,7 @@ class NotificationController {
   static Future<bool> displayNotificationRationale(
       {bool allowPermissionPrompt = true}) async {
     // Guard against null context (e.g., headless/background execution)
-    final BuildContext? context = GinkgoApp.navigatorKey.currentContext;
+    final BuildContext? context = ZelkovaApp.navigatorKey.currentContext;
     if (context == null) {
       return false;
     }

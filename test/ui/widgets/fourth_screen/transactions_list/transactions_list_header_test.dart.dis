@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:ginkgo/data/models/utxo_cubit.dart';
-import 'package:ginkgo/g1/currency.dart';
-import 'package:ginkgo/ui/widgets/fourth_screen/transactions_list/transactions_list_header.dart';
+import 'package:zelkova/data/models/utxo_cubit.dart';
+import 'package:zelkova/g1/currency.dart';
+import 'package:zelkova/ui/widgets/fourth_screen/transactions_list/transactions_list_header.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 

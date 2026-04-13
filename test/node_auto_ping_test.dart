@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:ginkgo/data/models/node.dart';
-import 'package:ginkgo/data/models/node_manager.dart';
-import 'package:ginkgo/data/models/node_type.dart';
+import 'package:zelkova/data/models/node.dart';
+import 'package:zelkova/data/models/node_manager.dart';
+import 'package:zelkova/data/models/node_type.dart';
 
 void main() {
   group('Node Discovery & Auto-Ping Tests', () {

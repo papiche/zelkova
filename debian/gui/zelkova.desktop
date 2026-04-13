@@ -1,10 +1,10 @@
 [Desktop Entry]
 Version=1.0
-Name=G1nkgo
-GenericName=G1nkgo
-Comment=G1nkgo - A digital wallet based on Duniter for the G1 currency
+Name=Ẑelkova
+GenericName=Ẑelkova
+Comment=Ẑelkova - Portefeuille ẐEN MULTIPASS pour l'écosystème UPlanet
 Terminal=false
 Type=Application
 Categories=Utility
-Keywords=Flutter;duniter;g1
-#Exec=/usr/local/lib/zelkova/ginkgo
+Keywords=Flutter;duniter;g1;zen;uplanet
+#Exec=/usr/local/lib/zelkova/zelkova

@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:ginkgo/data/models/payment_state.dart';
-import 'package:ginkgo/g1/g1_helper.dart';
-import 'package:ginkgo/g1/g1_v2_helper.dart';
+import 'package:zelkova/data/models/payment_state.dart';
+import 'package:zelkova/g1/g1_helper.dart';
+import 'package:zelkova/g1/g1_v2_helper.dart';
 
 void main() {
   group('parseScannedUri - V1 PubKeys', () {

@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:ginkgo/ui/ui_helpers.dart';
+import 'package:zelkova/ui/ui_helpers.dart';
 
 void main() {
   group('calculate function with integers', () {

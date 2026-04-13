@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:ginkgo/g1/g1_helper.dart';
-import 'package:ginkgo/g1/g1_v2_helper.dart';
+import 'package:zelkova/g1/g1_helper.dart';
+import 'package:zelkova/g1/g1_v2_helper.dart';
 
 void main() {
   group('Import Clipboard Validation Logic', () {

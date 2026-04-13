@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:ginkgo/services/background_wallet_sync_service.dart';
+import 'package:zelkova/services/background_wallet_sync_service.dart';
 
 void main() {
   group('BackgroundWalletSyncService', () {

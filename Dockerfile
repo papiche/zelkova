@@ -1,4 +1,4 @@
-# Dockerfile - Ginkgo Ğ1 Wallet Web
+# Dockerfile - Ẑelkova ẐEN MULTIPASS Wallet
 # Multi-stage build: Flutter web build → nginx
 
 # Stage 1: Build Flutter web app

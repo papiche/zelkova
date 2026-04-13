@@ -9,7 +9,7 @@ import 'package:upgrader/upgrader.dart';
 ///
 /// All UI strings are translated using the key-value pairs defined in
 /// assets/translations/en.json and assets/translations/es.json
-class GinkgoUpgraderMessages extends UpgraderMessages {
+class ZelkovaUpgraderMessages extends UpgraderMessages {
   @override
   String get buttonTitleIgnore => tr('update_ignore_button');
 

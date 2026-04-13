@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:ginkgo/ui/notification_translations_helper.dart';
+import 'package:zelkova/ui/notification_translations_helper.dart';
 
 void main() {
   group('NotificationTranslationsHelper', () {

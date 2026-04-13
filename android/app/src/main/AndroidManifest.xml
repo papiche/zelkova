@@ -18,7 +18,7 @@
     <application
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher"
-        android:label="G1nkgo"
+        android:label="Ẑelkova"
         android:supportsRtl="true"
         android:allowBackup="true"
         android:fullBackupContent="@xml/backup_scheme"

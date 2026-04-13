@@ -715,7 +715,7 @@
   "settings_notifications_enabled_snack": "Notifications have been enabled!",
   "settings_battery_optimizations_title": "Battery optimization",
   "settings_battery_optimizations_desc": "Background sync requires proper battery settings",
-  "settings_battery_optimization_info": "For reliable background sync and notifications, exclude Ginkgo from battery optimization.",
+  "settings_battery_optimization_info": "For reliable background sync and notifications, exclude Ẑelkova from battery optimization.",
   "settings_background_limitations_title": "Background sync",
   "settings_background_limitations_body": "If the system restricts background activity or you force-stop the app, transaction sync and notifications may not work properly.",
   "update_available_title": "Update Available",

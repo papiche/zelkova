@@ -117,7 +117,7 @@ class FeedbackService {
               'user_g1pub': ids['g1pub'],
               'user_npub': ids['npub_hex'],
               'user_npub_bech32': ids['npub_bech32'],
-              'user_display_name': 'Ginkgo User',
+              'user_display_name': 'Ẑelkova User',
             }),
           )
           .timeout(const Duration(seconds: 15));

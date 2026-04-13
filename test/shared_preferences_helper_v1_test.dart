@@ -1,11 +1,11 @@
 import 'package:fast_base58/fast_base58.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:ginkgo/data/models/stored_account.dart';
-import 'package:ginkgo/data/models/wallet_themes.dart';
-import 'package:ginkgo/g1/crypto/cesium_wallet.dart';
-import 'package:ginkgo/g1/g1_helper.dart';
-import 'package:ginkgo/shared_prefs_helper.dart';
+import 'package:zelkova/data/models/stored_account.dart';
+import 'package:zelkova/data/models/wallet_themes.dart';
+import 'package:zelkova/g1/crypto/cesium_wallet.dart';
+import 'package:zelkova/g1/g1_helper.dart';
+import 'package:zelkova/shared_prefs_helper.dart';
 import 'package:polkadart_keyring/polkadart_keyring.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

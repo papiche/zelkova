@@ -2,10 +2,10 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:ginkgo/data/models/contact.dart';
-import 'package:ginkgo/data/models/contact_cubit.dart';
-import 'package:ginkgo/g1/g1_v2_helper.dart';
-import 'package:ginkgo/ui/contacts_cache.dart';
+import 'package:zelkova/data/models/contact.dart';
+import 'package:zelkova/data/models/contact_cubit.dart';
+import 'package:zelkova/g1/g1_v2_helper.dart';
+import 'package:zelkova/ui/contacts_cache.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 
 class _MockStorage implements Storage {

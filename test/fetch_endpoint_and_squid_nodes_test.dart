@@ -2,10 +2,10 @@ import 'dart:convert';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
-import 'package:ginkgo/data/models/node.dart';
-import 'package:ginkgo/data/models/node_list_cubit.dart';
-import 'package:ginkgo/data/models/node_manager.dart';
-import 'package:ginkgo/data/models/node_type.dart';
+import 'package:zelkova/data/models/node.dart';
+import 'package:zelkova/data/models/node_list_cubit.dart';
+import 'package:zelkova/data/models/node_manager.dart';
+import 'package:zelkova/data/models/node_type.dart';
 import 'package:http/http.dart' as http;
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';

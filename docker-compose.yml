@@ -1,12 +1,12 @@
 services:
-  g1nkgo:
-    image: comunes/g1nkgo:latest
+  zelkova:
+    image: comunes/zelkova:latest
     build:
       context: .
-    container_name: g1nkgo
+    container_name: zelkova
     restart: always
     ports:
-      - "${GINKGO_PORT:-1801}:80"
+      - "${ZELKOVA_PORT:-1801}:80"
     environment:
       - TZ=${TZ:-Europe/Copenhagen}
       # Sentry

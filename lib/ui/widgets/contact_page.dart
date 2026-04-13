@@ -391,7 +391,7 @@ class _ContactPageState extends State<ContactPage> with RouteAware {
     super.didChangeDependencies();
     final ModalRoute<dynamic>? route = ModalRoute.of(context);
     if (route != null) {
-      GinkgoApp.routeObserver.subscribe(this, route);
+      ZelkovaApp.routeObserver.subscribe(this, route);
     }
   }
 
@@ -410,7 +410,7 @@ class _ContactPageState extends State<ContactPage> with RouteAware {
 
   @override
   void dispose() {
-    GinkgoApp.routeObserver.unsubscribe(this);
+    ZelkovaApp.routeObserver.unsubscribe(this);
     _scrollController.dispose();
     _txsCubit.removeStateForKey(widget.contact.pubKey);
     super.dispose();

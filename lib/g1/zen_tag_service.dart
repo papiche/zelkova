@@ -1,8 +1,4 @@
-import 'dart:convert';
-
-import 'package:http/http.dart' as http;
-
-import '../env.dart';
+import '../services/astroport_station_service.dart';
 import '../shared_prefs_helper_v2.dart';
 import '../ui/logger.dart';
 
@@ -69,41 +65,11 @@ class ZenTagService {
     }
   }
 
-  /// Fetch UPLANETNAME_G1 from the station's 12345.json.
-  /// Convention: UPASSPORT_URL = https://u.{domain}
-  ///           → IPFS gateway  = https://ipfs.{domain}
-  ///           → 12345.json    = https://ipfs.{domain}/12345/
+  /// Fetch UPLANETNAME_G1 from the station via AstroportStationService.
   Future<String> _fetchFromStation() async {
-    try {
-      final Uri upassportUri = Uri.parse(Env.upassportUrl);
-      final String host = upassportUri.host;
-      String ipfsHost;
-      if (host.startsWith('u.')) {
-        ipfsHost = 'ipfs.${host.substring(2)}';
-      } else {
-        final List<String> parts = host.split('.');
-        if (parts.length >= 2) {
-          parts[0] = 'ipfs';
-          ipfsHost = parts.join('.');
-        } else {
-          return '';
-        }
-      }
-
-      final Uri stationUrl = Uri.https(ipfsHost, '/12345/');
-      final http.Response response = await http
-          .get(stationUrl)
-          .timeout(const Duration(seconds: 10));
-
-      if (response.statusCode == 200) {
-        final Map<String, dynamic> stationData =
-            jsonDecode(response.body) as Map<String, dynamic>;
-        return stationData['UPLANETNAME_G1'] as String? ?? '';
-      }
-    } catch (e) {
-      loggerDev('ZenTagService: station fetch error: $e');
-    }
-    return '';
+    final Map<String, dynamic>? data =
+        await AstroportStationService().fetchStationData();
+    return data?['UPLANETNAME_G1'] as String? ?? '';
   }
 
   /// Append `:ZEN:XXXXXXXX` suffix to an address for display/QR/clipboard.

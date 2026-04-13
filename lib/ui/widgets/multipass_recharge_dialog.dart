@@ -1,11 +1,11 @@
-import 'dart:convert';
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../g1/nostr/nostr_relay_service.dart';
+import '../../services/open_collective_service.dart';
 import '../../shared_prefs_helper_v2.dart';
+import '../../ui/logger.dart';
 
 /// Shows the UPlanet subscription/recharge dialog.
 /// Reads OC URLs from persisted MULTIPASS data.
@@ -44,51 +44,34 @@ class _MultipassRechargeDialogState extends State<MultipassRechargeDialog> {
     });
   }
 
-  /// Re-fetches OC URLs from the UPassport server and updates stored data.
+  /// Re-fetches OC URLs from the station's kind 30800 cooperative-config
+  /// NOSTR event and updates stored data.
   ///
-  /// This fixes the case where the account was created before OC integration
-  /// was available on the station, leaving oc_urls empty.
+  /// Flow:
+  ///   1. AstroportStationService fetches /UPLANET/G1HEX (secp256k1 pubkey of
+  ///      the cooperative-config publisher, distinct from UPLANETNAME_G1 which
+  ///      is Ed25519 — different elliptic curves, not interconvertible).
+  ///   2. Query the relay for kind 30800 d="cooperative-config" from that pubkey.
+  ///   3. Persist the OC_URL_* fields to SharedPreferences.
   Future<void> _refreshOcUrls() async {
-    final Map<String, dynamic>? data = _multipassData;
-    if (data == null) return;
-
-    final String email = data['email'] as String? ?? '';
-    final String uplanetHome = data['uplanet_home'] as String? ?? '';
-    if (email.isEmpty || uplanetHome.isEmpty) return;
-
     setState(() => _refreshing = true);
-
     try {
-      final http.Response response = await http
-          .post(
-            Uri.parse('$uplanetHome/g1nostr'),
-            body: <String, String>{'email': email, 'format': 'json'},
-          )
-          .timeout(const Duration(seconds: 20));
-
-      if (response.statusCode == 200) {
-        final Map<String, dynamic> serverData =
-            jsonDecode(response.body) as Map<String, dynamic>;
-        final Map<String, dynamic>? newOcUrls =
-            serverData['oc_urls'] as Map<String, dynamic>?;
-        if (newOcUrls != null) {
-          await SharedPreferencesHelperV2().updateMultipassOcUrls(newOcUrls);
-          final Map<String, dynamic>? updated =
-              await SharedPreferencesHelperV2().getMultipassData();
-          if (mounted) {
-            setState(() {
-              _multipassData = updated;
-              _refreshing = false;
-            });
-            return;
-          }
-        }
+      final Map<String, String> urls =
+          await OpenCollectiveService.fetchOcUrls(NostrRelayService());
+      if (urls.isNotEmpty) {
+        await SharedPreferencesHelperV2()
+            .updateMultipassOcUrls(urls.cast<String, dynamic>());
+        final Map<String, dynamic>? updated =
+            await SharedPreferencesHelperV2().getMultipassData();
+        if (mounted) setState(() => _multipassData = updated);
+      } else {
+        loggerDev('MultipassRechargeDialog: no OC URLs found in kind 30800');
       }
-    } catch (_) {
-      // Network error — fall through to reset refreshing flag
+    } catch (e) {
+      loggerDev('MultipassRechargeDialog: _refreshOcUrls error: $e');
+    } finally {
+      if (mounted) setState(() => _refreshing = false);
     }
-
-    if (mounted) setState(() => _refreshing = false);
   }
 
   @override

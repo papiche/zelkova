@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 
 import '../g1/nostr/nostr_relay_service.dart';
 import '../ui/logger.dart';
+import 'astroport_station_service.dart';
 
 /// Represents an Open Collective transaction (contribution or expense)
 class OCTransaction {
@@ -93,11 +94,71 @@ class OpenCollectiveService {
   final String apiKey;
   final String collectiveSlug;
 
-  /// Create an instance by fetching configuration from NOSTR economic health events.
-  /// Requires NostrRelayService to be connected and a valid UPLANETNAME_G1 event.
+  /// Fetch Open Collective contribution URLs from the station's NOSTR kind 30800
+  /// cooperative-config event.
+  ///
+  /// Flow:
+  ///   1. Fetch /UPLANET/G1HEX from the station (secp256k1 hex of the key that
+  ///      published kind 30800 d="cooperative-config").
+  ///   2. Query the relay for that event.
+  ///   3. Parse OC_URL_* fields from the cleartext JSON content.
+  ///
+  /// Returns an empty map on any error (network, relay, missing fields).
+  static Future<Map<String, String>> fetchOcUrls(
+      NostrRelayService relayService) async {
+    try {
+      final String? g1Hex =
+          await AstroportStationService().fetchUplanetG1Hex();
+      if (g1Hex == null || g1Hex.isEmpty) {
+        logger('[OpenCollectiveService] UPLANET/G1HEX not available');
+        return <String, String>{};
+      }
+
+      final List<Map<String, dynamic>> events =
+          await relayService.queryEvents(
+        kinds: <int>[30800],
+        authors: <String>[g1Hex],
+        tags: <List<String>>[
+          <String>['d', 'cooperative-config'],
+        ],
+        limit: 1,
+      );
+
+      if (events.isEmpty) {
+        logger('[OpenCollectiveService] No kind 30800 cooperative-config found');
+        return <String, String>{};
+      }
+
+      final Map<String, dynamic> content =
+          jsonDecode(events.first['content'] as String) as Map<String, dynamic>;
+
+      final Map<String, String> urls = <String, String>{};
+      for (final String key in <String>[
+        'OC_URL_CLOUD',
+        'OC_URL_MEMBRE',
+        'OC_URL_SATELLITE',
+        'OC_URL_CONSTELLATION',
+      ]) {
+        final String? val = content[key] as String?;
+        if (val != null && val.isNotEmpty) {
+          // Map server-side key to the canonical lowercase key used in SharedPrefs
+          urls[key.replaceFirst('OC_URL_', '').toLowerCase()] = val;
+        }
+      }
+      return urls;
+    } catch (e) {
+      logger('[OpenCollectiveService] fetchOcUrls error: $e');
+      return <String, String>{};
+    }
+  }
+
+  /// Create an instance by fetching configuration from the station's kind 30800
+  /// cooperative-config NOSTR event.
   static Future<OpenCollectiveService> fromNostr(NostrRelayService relayService) async {
-    // TODO: Query kind 30850 events with tag "config:open_collective" or similar.
-    // For now, return empty.
+    // OC URLs live in kind 30800 d="cooperative-config" published by the
+    // station's G1.nostr key (keygen UPLANETNAME.G1 / UPLANETNAME.G1).
+    // The full OC service config (apiKey, collectiveSlug) would require
+    // decryption with UPLANETNAME — not available client-side.
     return OpenCollectiveService.empty();
   }
 

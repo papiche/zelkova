@@ -283,20 +283,16 @@ Tous les SVG sources sont dans `assets/img/`. Les PNG ont été générés par I
 | APPLICATION_ID Linux | `one.astroport.zelkova` |
 | Binaire Linux | `zelkova` |
 | WorkManager tasks | `one.astroport.zelkova.*` |
-| Domaine cible | `astroport.one` *(en cours de déploiement)* |
+| Architecture Web3 | http://astroport.one |
 | Serveur dev | `u.copylaradio.com` (UPlanet ORIGIN) |
 
 ---
 
 ## 🗺️ Feuille de route
 
-Voir **[ZELKOVA_ROADMAP.md](ZELKOVA_ROADMAP.md)** pour les synergies TrocZen à intégrer :
-
+- [ ] Test et Debug : Profil / connexion SSSS / export "nsec" / 
 - [ ] Journal d'audit SQLite (bilan ẐEN / conformité RGPD)
 - [ ] Visualisation toile de confiance N1/N2 (NOSTR)
-- [ ] Calcul DU offline hyperrelativiste
-- [ ] Compétences WoTx (NOSTR kinds 30500-30503)
-- [ ] Circuits de Bons ẐEN offline (marchés locaux)
 
 ---
 
@@ -307,10 +303,10 @@ Voir **[ZELKOVA_ROADMAP.md](ZELKOVA_ROADMAP.md)** pour les synergies TrocZen à 
 | GitHub Zelkova | https://github.com/papiche/zelkova |
 | Astroport.ONE | https://github.com/papiche/Astroport.ONE |
 | UPassport | https://github.com/papiche/UPassport |
-| TrocZen | (dans ce workspace) |
+| TrocZen | https://github.com/papiche/troczen |
 | Ginkgo (source) | https://git.duniter.org/vjrj/ginkgo |
 | Documentation Flutter | https://docs.flutter.dev |
-| Installer Astroport.ONE | `bash <(curl -sL https://astroport.one/install.sh)` |
+| Installer Astroport.ONE | `bash <(curl -sL https://astroport.com/install.sh)` |
 
 ---
 

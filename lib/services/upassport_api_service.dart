@@ -1,6 +1,8 @@
+import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../env.dart';
+import '../g1/nostr/nostr_relay_service.dart';
 import '../ui/logger.dart';
 
 /// Represents balance information from UPassport API
@@ -129,8 +131,19 @@ class UmapInfo {
   final DateTime lastActivity;
 }
 
+/// Thrown by [UPassportApiService.sendZen] when the station returns HTTP 401,
+/// meaning the MULTIPASS is registered on a different station of the swarm.
+/// The caller should trigger the SSSS relocation dialog.
+class ZenSendRoamingRequiredException implements Exception {
+  const ZenSendRoamingRequiredException(this.npub);
+  final String npub;
+
+  @override
+  String toString() => 'ZenSendRoamingRequiredException: $npub is on a remote station';
+}
+
 /// Service to interact with UPassport API (FastAPI)
-class UPassportApiService { // For NIP-42 authentication
+class UPassportApiService {
 
   UPassportApiService({String? customUrl, this.nostrPubKey})
       : baseUrl = customUrl ?? Env.upassportUrl;
@@ -171,13 +184,46 @@ class UPassportApiService { // For NIP-42 authentication
     }
   }
 
-  /// Send ZEN tokens (requires NIP-42 authentication)
+  /// Send ZEN tokens with NIP-42 authentication.
+  ///
+  /// Flow:
+  ///   1. Fetch a challenge from UPassport GET /api/nip42/challenge
+  ///   2. Publish kind-22242 AUTH event to the NOSTR relay
+  ///   3. Wait 800 ms for the station to process the auth marker
+  ///   4. POST /zen_send
+  ///   5. HTTP 401 → throws [ZenSendRoamingRequiredException] (MULTIPASS on
+  ///      another station — caller must show the SSSS relocation dialog)
+  ///
+  /// [hexPrivateKey] must be the hex-encoded nsec of the sender.
   Future<bool> sendZen({
     required String amount,
     required String sourceG1pub,
     required String destG1pub,
     required String npub,
+    required String hexPrivateKey,
   }) async {
+    // Step 1 — get NIP-42 challenge
+    String challenge = '';
+    try {
+      challenge = await getNip42Challenge(npub);
+    } catch (e) {
+      logger('[UPassportApiService] NIP-42 challenge fetch failed: $e');
+    }
+
+    // Step 2 — publish kind-22242 to relay
+    if (challenge.isNotEmpty) {
+      final bool published = await NostrRelayService().publishNip42Auth(
+        challenge,
+        hexPrivateKey,
+      );
+      if (!published) {
+        logger('[UPassportApiService] NIP-42 AUTH publish failed, continuing anyway');
+      }
+      // Step 3 — let the station process the auth marker
+      await Future<void>.delayed(const Duration(milliseconds: 800));
+    }
+
+    // Step 4 — POST zen_send
     final Uri url = Uri.parse('$baseUrl/zen_send');
     final Map<String, String> body = <String, String>{
       'zen': amount,
@@ -191,9 +237,12 @@ class UPassportApiService { // For NIP-42 authentication
     if (response.statusCode == 200) {
       final Map<String, dynamic> data =
           jsonDecode(response.body) as Map<String, dynamic>;
-      return data['success'] as bool? ?? false;
+      return data['ok'] as bool? ?? false;
+    } else if (response.statusCode == 401) {
+      // Step 5 — MULTIPASS is on a remote station: trigger SSSS roaming
+      throw ZenSendRoamingRequiredException(npub);
     } else {
-      logger('[UPassportApiService] Failed to send ZEN: ${response.statusCode}');
+      logger('[UPassportApiService] zen_send error ${response.statusCode}: ${response.body}');
       return false;
     }
   }

@@ -740,6 +740,40 @@ class NostrRelayService {
     );
   }
 
+  /// Publish a NIP-42 AUTH event (kind 22242).
+  /// Called after receiving an AUTH challenge from the relay, or proactively
+  /// before zen_send to prove MULTIPASS ownership on this station.
+  ///
+  /// [challenge] — the nonce string from the relay AUTH message or
+  ///               from UPassport's GET /api/nip42 challenge endpoint.
+  /// [hexPrivateKey] — signer's hex private key.
+  /// Returns true if the relay acknowledged the event.
+  Future<bool> publishNip42Auth(String challenge, String hexPrivateKey) async {
+    if (!_isConnected) return false;
+
+    final String hexPubkey = bip340.getPublicKey(hexPrivateKey);
+    final int createdAt = DateTime.now().millisecondsSinceEpoch ~/ 1000;
+
+    final Map<String, dynamic> event = <String, dynamic>{
+      'kind': 22242,
+      'pubkey': hexPubkey,
+      'created_at': createdAt,
+      'tags': <List<String>>[
+        <String>['challenge', challenge],
+        if (_currentRelayUrl != null)
+          <String>['relay', _currentRelayUrl!],
+      ],
+      'content': '',
+    };
+
+    final String eventId = NostrUtils.calculateEventId(event);
+    event['id'] = eventId;
+    event['sig'] = _signEvent(eventId, hexPrivateKey);
+
+    loggerDev('[NostrRelay] Publishing NIP-42 AUTH (kind 22242) challenge=${challenge.substring(0, challenge.length > 8 ? 8 : challenge.length)}...');
+    return _publishEvent(event);
+  }
+
   /// Dispose resources
   Future<void> dispose() async {
     _connectionController.close();

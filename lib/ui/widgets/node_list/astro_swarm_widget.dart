@@ -194,8 +194,10 @@ class _AstroStation {
     required this.zencardSlots,
     required this.availableGb,
     required this.paf,
-    required this.ncard,
-    required this.zcard,
+    required this.ncardPrice,
+    required this.zcardPrice,
+    required this.multipassCount,
+    required this.zencardCount,
     required this.bilan,
     required this.upassportActive,
     required this.isPrimary,
@@ -210,8 +212,10 @@ class _AstroStation {
   final int zencardSlots;
   final double availableGb;
   final int paf;
-  final int ncard;
-  final int zcard;
+  final int ncardPrice;
+  final int zcardPrice;
+  final int multipassCount;
+  final int zencardCount;
   final String bilan;
   final bool upassportActive;
   final bool isPrimary;
@@ -221,7 +225,9 @@ class _AstroStation {
         myIpfs: myIpfs, relay: relay,
         nostrSlots: nostrSlots, zencardSlots: zencardSlots,
         availableGb: availableGb, paf: paf,
-        ncard: ncard, zcard: zcard, bilan: bilan,
+        ncardPrice: ncardPrice, zcardPrice: zcardPrice,
+        multipassCount: multipassCount, zencardCount: zencardCount,
+        bilan: bilan,
         upassportActive: upassportActive, isPrimary: isPrimary,
       );
 
@@ -252,10 +258,10 @@ class _AstroStation {
               ?? (cap['available_space_gb'] as num?)?.toDouble() ?? 0,
       paf: int.tryParse(m['PAF']?.toString() ?? '') ??
           (eco['captain_remuneration'] as num?)?.toInt() ?? 0,
-      ncard: int.tryParse(m['NCARD']?.toString() ?? '') ??
-          (eco['multipass_count'] as num?)?.toInt() ?? 0,
-      zcard: int.tryParse(m['ZCARD']?.toString() ?? '') ??
-          (eco['zencard_count'] as num?)?.toInt() ?? 0,
+      ncardPrice: int.tryParse(m['NCARD']?.toString() ?? '') ?? 0,
+      zcardPrice: int.tryParse(m['ZCARD']?.toString() ?? '') ?? 0,
+      multipassCount: (eco['multipass_count'] as num?)?.toInt() ?? 0,
+      zencardCount: (eco['zencard_count'] as num?)?.toInt() ?? 0,
       bilan: m['BILAN']?.toString() ?? '',
       upassportActive: up['active'] as bool? ?? false,
       isPrimary: false,
@@ -321,7 +327,7 @@ class _StationTile extends StatelessWidget {
             ?.copyWith(fontWeight: FontWeight.w600),
       ),
       subtitle: Text(
-        '${station.ncard}MP · ${station.zcard}ZC · PAF ${station.paf}Ẑ',
+        '${station.multipassCount}MP · ${station.zencardCount}ZC · PAF ${station.paf}Ẑ',
         style: theme.textTheme.bodySmall
             ?.copyWith(color: cs.onSurface.withValues(alpha: 0.6)),
       ),

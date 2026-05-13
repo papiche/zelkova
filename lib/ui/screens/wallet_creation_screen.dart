@@ -34,8 +34,10 @@ class _SwarmStation {
     required this.captainSlots,
     required this.availableSpaceGb,
     // Economy
-    required this.ncard,
-    required this.zcard,
+    required this.ncardPrice,
+    required this.zcardPrice,
+    required this.multipassCount,
+    required this.zencardCount,
     required this.paf,
     required this.machineValueZen,
     required this.bilan,
@@ -56,9 +58,11 @@ class _SwarmStation {
   final int captainSlots;
   final double availableSpaceGb;
   // Weekly economics
-  final int ncard;          // active MULTIPASS count
-  final int zcard;          // active ZenCard count
-  final int paf;            // weekly levy (ZEN) per MULTIPASS
+  final int ncardPrice;      // MULTIPASS weekly price (Ẑ/week)
+  final int zcardPrice;      // ZenCard weekly price (Ẑ/week)
+  final int multipassCount;  // active MULTIPASS users
+  final int zencardCount;    // active ZenCard holders
+  final int paf;             // weekly platform fee (Ẑ/week)
   final double machineValueZen; // machine purchase price (ZEN)
   final String bilan;       // weekly accounting balance
 
@@ -103,10 +107,10 @@ class _SwarmStation {
       availableSpaceGb: (root['available_gb'] as num?)?.toDouble()
           ?? (cap['available_space_gb'] as num?)?.toDouble() ?? 0,
       // economics
-      ncard: int.tryParse(m['NCARD']?.toString() ?? '') ??
-          (eco['multipass_count'] as num?)?.toInt() ?? 0,
-      zcard: int.tryParse(m['ZCARD']?.toString() ?? '') ??
-          (eco['zencard_count'] as num?)?.toInt() ?? 0,
+      ncardPrice: int.tryParse(m['NCARD']?.toString() ?? '') ?? 0,
+      zcardPrice: int.tryParse(m['ZCARD']?.toString() ?? '') ?? 0,
+      multipassCount: (eco['multipass_count'] as num?)?.toInt() ?? 0,
+      zencardCount: (eco['zencard_count'] as num?)?.toInt() ?? 0,
       paf: int.tryParse(m['PAF']?.toString() ?? '') ??
           (eco['captain_remuneration'] as num?)?.toInt() ?? 0,
       machineValueZen: double.tryParse(m['MACHINE_VALUE_ZEN']?.toString() ?? '')
@@ -892,7 +896,7 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
               ),
               // PAF + BILAN + NCARD/ZCARD summary
               Text(
-                'PAF ${s.paf}Ẑ/sem · ${s.ncard}MP · ${s.zcard}ZC · '
+                'PAF ${s.paf}Ẑ/sem · ${s.multipassCount}MP · ${s.zencardCount}ZC · '
                 'bilan ${bilanInt > 0 ? '+' : ''}${s.bilan}Ẑ',
                 style: theme.textTheme.labelSmall?.copyWith(
                     color: cs.onSurface.withValues(alpha: 0.55)),
@@ -1032,8 +1036,10 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
 
                 // Economy
                 _detailSection(theme, cs, '💰 Économie hebdomadaire', <Widget>[
-                  _detailRow(theme, cs, 'MULTIPASS actifs', '${s.ncard}'),
-                  _detailRow(theme, cs, 'ZenCards actifs',  '${s.zcard}'),
+                  _detailRow(theme, cs, 'MULTIPASS actifs', '${s.multipassCount}'),
+                  _detailRow(theme, cs, 'ZenCards actifs',  '${s.zencardCount}'),
+                  _detailRow(theme, cs, 'Tarif MULTIPASS', '${s.ncardPrice} Ẑ/sem'),
+                  _detailRow(theme, cs, 'Tarif ZenCard', '${s.zcardPrice} Ẑ/sem'),
                   _detailRow(theme, cs, 'PAF (prélèvement)', '${s.paf} Ẑ/sem'),
                   _detailRow(theme, cs, 'Valeur machine',
                       '${s.machineValueZen.toStringAsFixed(0)} Ẑ'),

@@ -289,7 +289,7 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
       _swarmStations = sorted;
       // Update selection to nearest station that has slots + is active
       final _SwarmStation nearest = sorted.firstWhere(
-        (_SwarmStation s) => s.active && s.nostrSlots > 0,
+        (_SwarmStation s) => s.active,
         orElse: () => sorted.first,
       );
       if (nearest != null) _selectedUspot = nearest.uspot;
@@ -867,7 +867,7 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
 
   Widget _buildStationItem(
       _SwarmStation s, ThemeData theme, ColorScheme cs) {
-    final bool hasSlots = s.nostrSlots > 0;
+    final bool hasSlots = s.active;
     final int bilanInt = int.tryParse(s.bilan) ?? 0;
     final Color bilanColor = bilanInt >= 0 ? Colors.green : Colors.red;
     return Row(
@@ -918,7 +918,9 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Text(
-                '${s.nostrSlots}MP',
+                s.availableSpaceGb > 0
+                    ? '${s.availableSpaceGb.toStringAsFixed(0)}Go'
+                    : '${s.multipassCount}MP',
                 style: theme.textTheme.labelSmall?.copyWith(
                   color: hasSlots ? cs.onPrimaryContainer : cs.onErrorContainer,
                   fontWeight: FontWeight.w700,
@@ -1024,10 +1026,10 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
 
                 // Capacities
                 _detailSection(theme, cs, '📦 Capacités', <Widget>[
-                  _detailRow(theme, cs, 'MULTIPASS disponibles',
-                      '${s.nostrSlots}'),
-                  _detailRow(theme, cs, 'ZenCard disponibles',
-                      '${s.zencardSlots}'),
+                  _detailRow(theme, cs, 'MULTIPASS actifs',
+                      '${s.multipassCount}'),
+                  _detailRow(theme, cs, 'ZenCard actifs',
+                      '${s.zencardCount}'),
                   _detailRow(theme, cs, 'Réservés capitaine',
                       '${s.captainSlots}'),
                   _detailRow(theme, cs, 'Espace disque',

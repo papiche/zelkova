@@ -25,10 +25,10 @@ class StationEconomyData {
     this.priceMultipass = 1,
     this.priceZencard = 4,
     this.multipassUsed = 0,
-    this.multipassTotal = 250,
+    this.multipassTotal = 0,
     this.zencardRenters = 0,
     this.zencardOwners = 0,
-    this.zencardCapacity = 24,
+    this.zencardCapacity = 0,
     this.weeksRunway = 0,
     this.revenueTotal = 0,
     this.revenueMultipass = 0,
@@ -36,6 +36,13 @@ class StationEconomyData {
     this.stationLat = 0,
     this.stationLon = 0,
     this.solarOffset,
+    this.hwPowerScore = 0,
+    this.hwTier = 'light',
+    this.hwGpuVramGb = 0,
+    this.hwCpuCores = 1,
+    this.hwRamGb = 0,
+    this.hwBoots = const <Map<String, dynamic>>[],
+    this.stationUrl,
   });
 
   /// Parse from NOSTR event tags (kind 30850)
@@ -53,19 +60,22 @@ class StationEconomyData {
 
     String tag(String name) {
       for (final dynamic t in tags) {
-        final List<dynamic> tag = t as List<dynamic>;
-        if (tag.isNotEmpty && tag[0].toString() == name && tag.length >= 2) {
-          return tag[1].toString();
+        final List<dynamic> entry = t as List<dynamic>;
+        if (entry.isNotEmpty &&
+            entry[0].toString() == name &&
+            entry.length >= 2) {
+          return entry[1].toString();
         }
       }
       return '';
     }
 
-    double tagDouble(String name) =>
-        double.tryParse(tag(name)) ?? 0;
+    double tagDouble(String name) => double.tryParse(tag(name)) ?? 0;
     int tagInt(String name) => int.tryParse(tag(name)) ?? 0;
 
     final String stationId = tag('station');
+    final Map<String, dynamic>? hw =
+        content['hardware'] as Map<String, dynamic>?;
 
     return StationEconomyData(
       stationId: stationId,
@@ -75,9 +85,8 @@ class StationEconomyData {
               ? '...${stationId.substring(stationId.length - 8)}'
               : stationId),
       swarmId: tag('swarm_id').isNotEmpty ? tag('swarm_id') : 'default',
-      healthStatus: tag('health:status').isNotEmpty
-          ? tag('health:status')
-          : 'healthy',
+      healthStatus:
+          tag('health:status').isNotEmpty ? tag('health:status') : 'healthy',
       bilan: tagDouble('health:bilan'),
       generatedAt: content['generated_at'] as String?,
       createdAt: createdAt,
@@ -102,10 +111,45 @@ class StationEconomyData {
       revenueZencard: tagDouble('revenue:zencard'),
       stationLat: tagDouble('geo:lat'),
       stationLon: tagDouble('geo:lon'),
-      solarOffset: tag('sync:solar_offset').isNotEmpty
-          ? tag('sync:solar_offset')
-          : null,
+      solarOffset:
+          tag('sync:solar_offset').isNotEmpty ? tag('sync:solar_offset') : null,
+      hwPowerScore: tagInt('hw:power_score'),
+      hwTier: tag('hw:tier').isNotEmpty ? tag('hw:tier') : 'light',
+      hwGpuVramGb: tagDouble('hw:gpu_vram_gb'),
+      hwCpuCores:
+          hw != null ? (hw['cpu_cores'] as int? ?? tagInt('hw:cpu_cores')) : tagInt('hw:cpu_cores'),
+      hwRamGb: hw != null
+          ? ((hw['ram_gb'] as num?)?.toDouble() ?? tagDouble('hw:ram_gb'))
+          : tagDouble('hw:ram_gb'),
+      hwBoots: _parseBoots(hw, content, tag('hw:boots')),
+      stationUrl: tag('station:url').isNotEmpty ? tag('station:url') : null,
     );
+  }
+
+  static List<Map<String, dynamic>> _parseBoots(
+    Map<String, dynamic>? hw,
+    Map<String, dynamic> content,
+    String bootsTag,
+  ) {
+    final dynamic raw = hw?['boots'] ?? content['boots'];
+    if (raw is List<dynamic>) {
+      return raw
+          .map((dynamic e) =>
+              Map<String, dynamic>.from(e as Map<String, dynamic>))
+          .toList();
+    }
+    if (bootsTag.isNotEmpty) {
+      try {
+        final dynamic parsed = const JsonDecoder().convert(bootsTag);
+        if (parsed is List<dynamic>) {
+          return parsed
+              .map((dynamic e) =>
+                  Map<String, dynamic>.from(e as Map<String, dynamic>))
+              .toList();
+        }
+      } catch (_) {}
+    }
+    return const <Map<String, dynamic>>[];
   }
 
   final String stationId;
@@ -130,7 +174,7 @@ class StationEconomyData {
   final double priceMultipass;
   final double priceZencard;
 
-  // Local station capacities
+  // Local station capacities (0 = unknown/not published)
   final int multipassUsed;
   final int multipassTotal;
   final int zencardRenters;
@@ -148,7 +192,32 @@ class StationEconomyData {
   final double stationLon;
   final String? solarOffset;
 
+  // Hardware
+  final int hwPowerScore;
+  final String hwTier;
+  final double hwGpuVramGb;
+  final int hwCpuCores;
+  final double hwRamGb;
+  final List<Map<String, dynamic>> hwBoots;
+
+  // UPassport endpoint for this station (tag station:url)
+  final String? stationUrl;
+
+  bool get isGpuBrain => hwTier == 'brain' && hwGpuVramGb > 0;
+  String get tierEmoji =>
+      isGpuBrain ? '🔥🎮' : hwTier == 'brain' ? '🔥' : hwTier == 'standard' ? '⚡' : '🌿';
+
   int get totalUsers => multipassUsed + zencardRenters + zencardOwners;
+
+  // Capacity helpers — returns null when total is unknown
+  int? get mpSaturationPct =>
+      multipassTotal > 0 ? (multipassUsed * 100 ~/ multipassTotal).clamp(0, 100) : null;
+  int get zcUsed => zencardRenters + zencardOwners;
+  int? get zcSaturationPct =>
+      zencardCapacity > 0 ? (zcUsed * 100 ~/ zencardCapacity).clamp(0, 100) : null;
+  bool get isSaturated =>
+      (mpSaturationPct != null && mpSaturationPct! >= 90) ||
+      (zcSaturationPct != null && zcSaturationPct! >= 90);
 
   bool get isHealthy => healthStatus == 'healthy';
   bool get isWarning =>

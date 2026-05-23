@@ -48,7 +48,7 @@ class ZenCardInfo {
     return ZenCardInfo(
       email: json['email'] as String? ?? '',
       transactions: (json['transactions'] as List<dynamic>?)
-              ?.map((t) => t as Map<String, dynamic>)
+              ?.map((dynamic t) => t as Map<String, dynamic>)
               .toList() ??
           <Map<String, dynamic>>[],
       totalShares: (json['total_shares'] as num?)?.toDouble() ?? 0.0,
@@ -147,7 +147,7 @@ class UPassportApiService {
 
   UPassportApiService({String? customUrl, this.nostrPubKey})
       : baseUrl = customUrl ?? Env.upassportUrl;
-  final String baseUrl;
+  String baseUrl;
   final String? nostrPubKey;
 
   /// Get balance for a G1 public key or email
@@ -259,7 +259,7 @@ class UPassportApiService {
           jsonDecode(response.body) as Map<String, dynamic>;
       final List<dynamic> credentials = data['credentials'] as List<dynamic>? ?? <dynamic>[];
       return credentials
-          .map((c) => PermitCredential.fromJson(c as Map<String, dynamic>))
+          .map((dynamic c) => PermitCredential.fromJson(c as Map<String, dynamic>))
           .toList();
     } else {
       logger('[UPassportApiService] Failed to get permits: ${response.statusCode}');
@@ -287,7 +287,7 @@ class UPassportApiService {
           jsonDecode(response.body) as Map<String, dynamic>;
       final List<dynamic> umaps = data['umaps'] as List<dynamic>? ?? <dynamic>[];
       return umaps
-          .map((u) => UmapInfo.fromJson(u as Map<String, dynamic>))
+          .map((dynamic u) => UmapInfo.fromJson(u as Map<String, dynamic>))
           .toList();
     } else {
       logger('[UPassportApiService] Failed to get nearby UMAPs: ${response.statusCode}');

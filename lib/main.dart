@@ -47,6 +47,7 @@ import 'data/models/node_list_state.dart';
 import 'data/models/node_manager.dart';
 import 'data/models/node_type.dart';
 import 'data/models/payment_cubit.dart';
+import 'data/models/selected_station_cubit.dart';
 import 'data/models/theme_cubit.dart';
 import 'data/models/transaction.dart';
 import 'env.dart';
@@ -1115,6 +1116,7 @@ Future<void> initGetItAll() async {
     final AppCubit appCubit = AppCubit();
     getIt.registerSingleton<AppCubit>(appCubit);
     getIt.registerSingleton<NodeListCubit>(NodeListCubit());
+    getIt.registerSingleton<SelectedStationCubit>(SelectedStationCubit());
     getIt.registerSingleton<ServiceManager>(
       ServiceManager(),
     );

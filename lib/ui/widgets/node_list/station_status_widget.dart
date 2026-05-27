@@ -276,7 +276,7 @@ class _StationStatusWidgetState extends State<StationStatusWidget> {
     final Map<String, _ServiceDef> serviceDefs = <String, _ServiceDef>{
       'ipfs': _ServiceDef('IPFS', Icons.cloud_queue),
       'astroport': _ServiceDef('Astroport', Icons.rocket_launch),
-      'uspot': _ServiceDef('UPassport', Icons.badge),
+      'upassport': _ServiceDef('UPassport', Icons.badge),
       'nostr_relay': _ServiceDef('NOSTR', Icons.forum),
       'nextcloud': _ServiceDef('NextCloud', Icons.cloud),
       'g1billet': _ServiceDef('G1Billet', Icons.receipt_long),

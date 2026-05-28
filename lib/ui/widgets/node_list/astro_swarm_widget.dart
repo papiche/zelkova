@@ -201,6 +201,8 @@ class _AstroStation {
     required this.bilan,
     required this.upassportActive,
     required this.isPrimary,
+    required this.capErr,
+    required this.svcErr,
   });
 
   final String hostname;
@@ -219,6 +221,9 @@ class _AstroStation {
   final String bilan;
   final bool upassportActive;
   final bool isPrimary;
+  // Protocole Astroport : true si le champ renvoyé contient {"_status":≥400,"_error":"..."}
+  final bool capErr;
+  final bool svcErr;
 
   _AstroStation copyWithPrimary({required bool isPrimary}) => _AstroStation(
         hostname: hostname, city: city, uspot: uspot,
@@ -229,15 +234,25 @@ class _AstroStation {
         multipassCount: multipassCount, zencardCount: zencardCount,
         bilan: bilan,
         upassportActive: upassportActive, isPrimary: isPrimary,
+        capErr: capErr, svcErr: svcErr,
       );
+
+  // Détecte {"_status": ≥ 400, "_error": "..."} — protocole d'erreur Astroport
+  static bool _isAstroErr(Map<String, dynamic>? m) {
+    if (m == null) return false;
+    final Object? status = m['_status'];
+    return status is num && status.toInt() >= 400;
+  }
 
   static _AstroStation? fromJson(Map<String, dynamic> m) {
     final String? uspot = m['uSPOT'] as String?;
     if (uspot == null || uspot.isEmpty) return null;
-    final Map<String, dynamic> cap =
-        (m['capacities'] as Map<String, dynamic>?) ?? <String, dynamic>{};
-    final Map<String, dynamic> svc =
-        (m['services'] as Map<String, dynamic>?) ?? <String, dynamic>{};
+    final Map<String, dynamic>? rawCap = m['capacities'] as Map<String, dynamic>?;
+    final Map<String, dynamic>? rawSvc = m['services'] as Map<String, dynamic>?;
+    final bool capErr = _isAstroErr(rawCap);
+    final bool svcErr = _isAstroErr(rawSvc);
+    final Map<String, dynamic> cap = capErr ? <String, dynamic>{} : (rawCap ?? <String, dynamic>{});
+    final Map<String, dynamic> svc = svcErr ? <String, dynamic>{} : (rawSvc ?? <String, dynamic>{});
     final Map<String, dynamic> up =
         (svc['upassport'] as Map<String, dynamic>?) ?? <String, dynamic>{};
     final Map<String, dynamic> rootStorage =
@@ -265,6 +280,8 @@ class _AstroStation {
       bilan: m['BILAN']?.toString() ?? '',
       upassportActive: up['active'] as bool? ?? false,
       isPrimary: false,
+      capErr: capErr,
+      svcErr: svcErr,
     );
   }
 }
@@ -334,17 +351,21 @@ class _StationTile extends StatelessWidget {
       trailing: Container(
         padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
         decoration: BoxDecoration(
-          color: station.nostrSlots > 0
-              ? cs.primaryContainer
-              : cs.errorContainer,
+          color: station.capErr
+              ? cs.tertiaryContainer
+              : station.nostrSlots > 0
+                  ? cs.primaryContainer
+                  : cs.errorContainer,
           borderRadius: BorderRadius.circular(8),
         ),
         child: Text(
-          '${station.nostrSlots}MP libre',
+          station.capErr ? '? MP' : '${station.nostrSlots}MP libre',
           style: theme.textTheme.labelSmall?.copyWith(
-            color: station.nostrSlots > 0
-                ? cs.onPrimaryContainer
-                : cs.onErrorContainer,
+            color: station.capErr
+                ? cs.onTertiaryContainer
+                : station.nostrSlots > 0
+                    ? cs.onPrimaryContainer
+                    : cs.onErrorContainer,
             fontWeight: FontWeight.w700,
             fontSize: 9,
           ),
@@ -361,7 +382,7 @@ class _StationTile extends StatelessWidget {
               _infoRow(theme, cs, 'IPFS', station.myIpfs),
               _infoRow(theme, cs, 'Relay', station.relay),
               _infoRow(theme, cs, 'ZenCard',
-                  '${station.zencardSlots} libres'),
+                  station.capErr ? '? (capacités indisponibles)' : '${station.zencardSlots} libres'),
               _infoRow(theme, cs, 'Espace disque',
                   '${station.availableGb.toStringAsFixed(0)} Go'),
               Row(

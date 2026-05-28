@@ -127,13 +127,26 @@ class _StationStatusWidgetState extends State<StationStatusWidget> {
     final String ipfsnodeid =
         data['ipfsnodeid'] as String? ?? '';
 
+    // Protocole Astroport : détecter {"_status":≥400,"_error":"..."}
+    bool isAstroErr(Map<String, dynamic>? m) {
+      if (m == null) return false;
+      final Object? s = m['_status'];
+      return s is num && s.toInt() >= 400;
+    }
+
     // Services from heartbox_analysis
+    final Map<String, dynamic>? rawServices =
+        data['services'] as Map<String, dynamic>?;
+    final bool svcErr = isAstroErr(rawServices);
     final Map<String, dynamic> services =
-        data['services'] as Map<String, dynamic>? ?? <String, dynamic>{};
+        svcErr ? <String, dynamic>{} : (rawServices ?? <String, dynamic>{});
 
     // Capacities from heartbox_analysis
+    final Map<String, dynamic>? rawCap =
+        data['capacities'] as Map<String, dynamic>?;
+    final bool capErr = isAstroErr(rawCap);
     final Map<String, dynamic> capacities =
-        data['capacities'] as Map<String, dynamic>? ?? <String, dynamic>{};
+        capErr ? <String, dynamic>{} : (rawCap ?? <String, dynamic>{});
 
     return Card(
       margin: const EdgeInsets.all(12),
@@ -242,7 +255,7 @@ class _StationStatusWidgetState extends State<StationStatusWidget> {
             ),
 
           // Capacities
-          if (capacities.isNotEmpty)
+          if (capErr || capacities.isNotEmpty)
             Padding(
               padding: const EdgeInsets.fromLTRB(12, 8, 12, 12),
               child: Column(
@@ -259,7 +272,16 @@ class _StationStatusWidgetState extends State<StationStatusWidget> {
                       ),
                     ),
                   ),
-                  _buildCapacitiesRow(capacities, colors),
+                  if (capErr)
+                    Text(
+                      '⚠ Capacités indisponibles',
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: colors.error,
+                      ),
+                    )
+                  else
+                    _buildCapacitiesRow(capacities, colors),
                 ],
               ),
             ),

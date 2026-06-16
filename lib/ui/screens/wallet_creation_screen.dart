@@ -254,6 +254,18 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
           }
         }
 
+        // Exclure les stations localhost
+        stations.removeWhere((_SwarmStation s) =>
+            s.hostname.contains('127.0.0.1') ||
+            s.uspot.contains('127.0.0.1'));
+
+        // Tri initial : actives en premier avec shuffle aléatoire
+        final math.Random initRng = math.Random();
+        stations.sort((_SwarmStation a, _SwarmStation b) {
+          if (a.active != b.active) return a.active ? -1 : 1;
+          return initRng.nextBool() ? -1 : 1;
+        });
+
         if (mounted) {
           setState(() {
             _swarmStations = stations;
@@ -335,29 +347,37 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
     } catch (_) {}
   }
 
-  /// Sort _swarmStations by Haversine distance from user's position.
-  /// Stations at (0, 0) (no GPS data) are pushed to the end.
+  /// Trie les stations : actives en premier, puis par distance haversine + jitter aléatoire.
+  /// Les stations sans GPS sont poussées en fin de liste.
   void _sortStationsByDistance(double userLat, double userLon) {
     if (_swarmStations.isEmpty) return;
+    // Jitter aléatoire stable pour ce tri (évite les comparateurs non-déterministes)
+    final math.Random rng = math.Random();
+    final Map<String, double> jitter = <String, double>{
+      for (final _SwarmStation s in _swarmStations)
+        s.uspot: rng.nextDouble() * 30.0, // jusqu'à 30 km de bruit
+    };
     final List<_SwarmStation> sorted = List<_SwarmStation>.from(_swarmStations);
     sorted.sort((_SwarmStation a, _SwarmStation b) {
+      // Stations actives (uptime) d'abord
+      if (a.active != b.active) return a.active ? -1 : 1;
       final bool aNoGps = a.lat == 0 && a.lon == 0;
       final bool bNoGps = b.lat == 0 && b.lon == 0;
-      if (aNoGps && bNoGps) return 0;
+      if (aNoGps && bNoGps) {
+        return ((jitter[a.uspot] ?? 0) - (jitter[b.uspot] ?? 0)).sign.toInt();
+      }
       if (aNoGps) return 1;
       if (bNoGps) return -1;
-      final double da = a.distanceFrom(userLat, userLon);
-      final double db = b.distanceFrom(userLat, userLon);
+      final double da = a.distanceFrom(userLat, userLon) + (jitter[a.uspot] ?? 0);
+      final double db = b.distanceFrom(userLat, userLon) + (jitter[b.uspot] ?? 0);
       return da.compareTo(db);
     });
     setState(() {
       _swarmStations = sorted;
-      // Update selection to nearest station that has slots + is active
-      final _SwarmStation nearest = sorted.firstWhere(
+      _selectedUspot = sorted.firstWhere(
         (_SwarmStation s) => s.active,
         orElse: () => sorted.first,
-      );
-      if (nearest != null) _selectedUspot = nearest.uspot;
+      ).uspot;
     });
   }
 

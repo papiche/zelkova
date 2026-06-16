@@ -133,8 +133,20 @@ class _SwarmStation {
   }
 }
 
+/// Résultat d'une recherche Nominatim (OpenStreetMap geocoding).
+class _NominatimResult {
+  const _NominatimResult({
+    required this.name,
+    required this.lat,
+    required this.lon,
+  });
+  final String name;
+  final double lat;
+  final double lon;
+}
+
 /// Onboarding screen for first launch:
-/// Page 0 — Présentation des 4 options de contribution OC (carousel)
+/// Page 0 — Accueil UPlanet (identité souveraine, monnaie libre)
 /// Page 1 — Formulaire email + géolocalisation → création MULTIPASS
 /// Page 2 — Profil ondulatoire ATOMIC (optionnel) : naissance, conception, KIN
 /// Vue succès — Liens Open Collective personnalisés + bouton "C'est parti"
@@ -163,10 +175,13 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
   String _selectedUspot = Env.upassportUrl; // URL used for MULTIPASS creation
 
   // ── ATOMIC birth profile (optional) ──────────────────────────────────────
-  final TextEditingController _birthPlaceController = TextEditingController();
   DateTime? _birthDate;
   TimeOfDay? _birthTime;
   double _birthWeight = 3.5;
+  String _birthPlaceName = '';  // human-readable city label
+  double _birthLat = 0.0;       // from Nominatim (0.01° precision)
+  double _birthLon = 0.0;       // from Nominatim (0.01° precision)
+  int _polarity = 0;            // 0 = homme, 1 = femme
 
   @override
   void initState() {
@@ -178,7 +193,6 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
   void dispose() {
     _pageController.dispose();
     _emailController.dispose();
-    _birthPlaceController.dispose();
     super.dispose();
   }
 
@@ -333,11 +347,26 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
   }
 
   Future<void> _doCreate({String? passCode}) async {
-    final String? birthPlace = _birthPlaceController.text.trim().isNotEmpty
-        ? _birthPlaceController.text.trim()
-        : null;
+    final String? birthPlace =
+        _birthPlaceName.isNotEmpty ? _birthPlaceName : null;
     final String? birthWeight =
         _birthWeight != 3.5 ? _birthWeight.toStringAsFixed(1) : null;
+
+    // Conception estimée : ~280 jours avant la naissance (harmonique).
+    String? conceptionDatetime;
+    String? conceptionPlace;
+    if (_birthDate != null) {
+      final DateTime conceived =
+          _birthDate!.subtract(const Duration(days: 280));
+      conceptionDatetime = '${conceived.year.toString().padLeft(4, '0')}'
+          '-${conceived.month.toString().padLeft(2, '0')}'
+          '-${conceived.day.toString().padLeft(2, '0')}'
+          'T12:00';
+      if (_birthLat != 0.0 || _birthLon != 0.0) {
+        conceptionPlace =
+            '${_birthLat.toStringAsFixed(2)}, ${_birthLon.toStringAsFixed(2)}';
+      }
+    }
 
     try {
       final MultipassResponse response = await MultipassService.createMultipass(
@@ -350,6 +379,8 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
         birthDatetime: _buildBirthDatetime(),
         birthPlace: birthPlace,
         birthWeight: birthWeight,
+        conceptionDatetime: conceptionDatetime,
+        conceptionPlace: conceptionPlace,
       );
       await _saveAndShowResult(response);
     } on MultipassExistsException {
@@ -560,8 +591,8 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
               const SizedBox(height: 12),
               Text(
                 'Votre identité numérique souveraine,\n'
-                "adossée à la monnaie libre Ğ1\n"
-                "et reliée à votre réseau social.",
+                'reliée à votre réseau social\n'
+                "et à l'écosystème coopératif UPlanet.",
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                       color: Theme.of(context)
@@ -575,7 +606,7 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
               const SizedBox(height: 10),
               _buildPoint('⚡', 'Identité NOSTR — vos clés, vos données'),
               const SizedBox(height: 10),
-              _buildPoint('💱', 'Monnaie libre Ğ1 — sans intermédiaire'),
+              _buildPoint('🤝', 'Réseau coopératif — sans GAFAM'),
             ],
           ),
         ),
@@ -1413,6 +1444,40 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
 
   // ── Page 2 : Profil ondulatoire ATOMIC (optionnel) ────────────────────────
 
+  // ── Nominatim geocoding ────────────────────────────────────────────────────
+
+  Future<Iterable<_NominatimResult>> _searchNominatim(String query) async {
+    if (query.trim().length < 3) return const <_NominatimResult>[];
+    try {
+      final Uri uri = Uri.parse(
+        'https://nominatim.openstreetmap.org/search'
+        '?q=${Uri.encodeComponent(query.trim())}'
+        '&format=json&limit=5&accept-language=fr',
+      );
+      final http.Response r = await http.get(uri, headers: <String, String>{
+        'User-Agent': 'Zelkova/1.0 UPlanet support@qo-op.com',
+        'Accept-Language': 'fr',
+      }).timeout(const Duration(seconds: 6));
+      if (r.statusCode != 200) return const <_NominatimResult>[];
+      final List<dynamic> data = jsonDecode(r.body) as List<dynamic>;
+      return data.map((dynamic e) {
+        final Map<String, dynamic> m = e as Map<String, dynamic>;
+        final List<String> parts =
+            (m['display_name'] as String).split(', ');
+        final String name = parts.take(3).join(', ');
+        return _NominatimResult(
+          name: name,
+          lat: double.parse(m['lat'] as String),
+          lon: double.parse(m['lon'] as String),
+        );
+      });
+    } catch (_) {
+      return const <_NominatimResult>[];
+    }
+  }
+
+  // ── Page 2 : Profil ondulatoire ATOMIC (optionnel) ────────────────────────
+
   Widget _buildAtomicPage() {
     final ThemeData theme = Theme.of(context);
     return Scaffold(
@@ -1429,9 +1494,9 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
           padding: const EdgeInsets.fromLTRB(20, 16, 20, 120),
           children: <Widget>[
             Text(
-              'Vos données de naissance permettent de calculer votre Kin Maya (Tzolkin '
-              '1-260) et votre signature ondulatoire φ. Ces informations sont stockées '
-              'chiffrées sur votre station UPlanet.',
+              'Vos données de naissance permettent de calculer votre Kin Maya '
+              '(Tzolkin 1-260) et votre signature ondulatoire φ. '
+              'Ces informations sont chiffrées sur votre station UPlanet.',
               style: theme.textTheme.bodySmall?.copyWith(
                 color: theme.colorScheme.onSurface.withValues(alpha: 0.65),
                 height: 1.4,
@@ -1439,8 +1504,33 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
             ),
             const SizedBox(height: 24),
 
+            // ── Polarité ──────────────────────────────────────────────────
+            Text('Polarité biologique',
+                style: theme.textTheme.labelLarge
+                    ?.copyWith(fontWeight: FontWeight.w600)),
+            const SizedBox(height: 8),
+            SegmentedButton<int>(
+              segments: const <ButtonSegment<int>>[
+                ButtonSegment<int>(
+                    value: 0,
+                    label: Text('Homme'),
+                    icon: Icon(Icons.male)),
+                ButtonSegment<int>(
+                    value: 1,
+                    label: Text('Femme'),
+                    icon: Icon(Icons.female)),
+              ],
+              selected: <int>{_polarity},
+              onSelectionChanged: (Set<int> s) =>
+                  setState(() => _polarity = s.first),
+              style: SegmentedButton.styleFrom(
+                minimumSize: const Size(0, 44),
+              ),
+            ),
+            const SizedBox(height: 20),
+
             // ── Date de naissance ─────────────────────────────────────────
-            Text('Date de naissance',
+            Text('Date de naissance *',
                 style: theme.textTheme.labelLarge
                     ?.copyWith(fontWeight: FontWeight.w600)),
             const SizedBox(height: 8),
@@ -1448,7 +1538,7 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
               onPressed: () async {
                 final DateTime? picked = await showDatePicker(
                   context: context,
-                  initialDate: _birthDate ?? DateTime(1990, 6, 1),
+                  initialDate: _birthDate ?? DateTime(1985, 6, 1),
                   firstDate: DateTime(1900),
                   lastDate: DateTime.now(),
                   helpText: 'Date de naissance',
@@ -1471,7 +1561,7 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
             ),
             const SizedBox(height: 16),
 
-            // ── Heure de naissance (optionnelle) ─────────────────────────
+            // ── Heure de naissance — format 24h forcé ─────────────────────
             Text('Heure de naissance (optionnelle)',
                 style: theme.textTheme.labelLarge
                     ?.copyWith(fontWeight: FontWeight.w600)),
@@ -1482,7 +1572,13 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
                   context: context,
                   initialTime:
                       _birthTime ?? const TimeOfDay(hour: 12, minute: 0),
-                  helpText: 'Heure de naissance',
+                  helpText: 'Heure de naissance (format 24h)',
+                  // Force le format 24h indépendamment de la locale système
+                  builder: (BuildContext ctx, Widget? child) => MediaQuery(
+                    data: MediaQuery.of(ctx)
+                        .copyWith(alwaysUse24HourFormat: true),
+                    child: child!,
+                  ),
                 );
                 if (picked != null) setState(() => _birthTime = picked);
               },
@@ -1499,25 +1595,113 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
                     borderRadius: BorderRadius.circular(12)),
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 20),
 
-            // ── Lieu de naissance ─────────────────────────────────────────
+            // ── Lieu de naissance (Nominatim) ─────────────────────────────
             Text('Lieu de naissance',
                 style: theme.textTheme.labelLarge
                     ?.copyWith(fontWeight: FontWeight.w600)),
             const SizedBox(height: 8),
-            TextField(
-              controller: _birthPlaceController,
-              keyboardType: TextInputType.text,
-              textCapitalization: TextCapitalization.sentences,
-              decoration: InputDecoration(
-                hintText: 'Ville, Pays',
-                prefixIcon: const Icon(Icons.place_outlined),
-                border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12)),
+            if (_birthPlaceName.isNotEmpty)
+              Container(
+                margin: const EdgeInsets.only(bottom: 8),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                decoration: BoxDecoration(
+                  color: Colors.green.withValues(alpha: 0.08),
+                  borderRadius: BorderRadius.circular(10),
+                  border:
+                      Border.all(color: Colors.green.withValues(alpha: 0.3)),
+                ),
+                child: Row(
+                  children: <Widget>[
+                    const Icon(Icons.check_circle,
+                        color: Colors.green, size: 16),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: Text(
+                        _birthPlaceName,
+                        style: const TextStyle(
+                            fontSize: 13, fontWeight: FontWeight.w500),
+                      ),
+                    ),
+                    Text(
+                      '${_birthLat.toStringAsFixed(2)}°, '
+                      '${_birthLon.toStringAsFixed(2)}°',
+                      style: theme.textTheme.bodySmall?.copyWith(
+                          color: theme.colorScheme.onSurface
+                              .withValues(alpha: 0.5)),
+                    ),
+                  ],
+                ),
               ),
+            Autocomplete<_NominatimResult>(
+              optionsBuilder: (TextEditingValue tv) =>
+                  _searchNominatim(tv.text),
+              displayStringForOption: (_NominatimResult r) => r.name,
+              onSelected: (_NominatimResult r) {
+                setState(() {
+                  _birthPlaceName = r.name;
+                  _birthLat = double.parse(r.lat.toStringAsFixed(2));
+                  _birthLon = double.parse(r.lon.toStringAsFixed(2));
+                });
+              },
+              fieldViewBuilder: (
+                BuildContext ctx,
+                TextEditingController fieldCtrl,
+                FocusNode focusNode,
+                VoidCallback onSubmitted,
+              ) {
+                return TextField(
+                  controller: fieldCtrl,
+                  focusNode: focusNode,
+                  keyboardType: TextInputType.text,
+                  textCapitalization: TextCapitalization.sentences,
+                  decoration: InputDecoration(
+                    hintText: 'Tapez une ville…',
+                    prefixIcon: const Icon(Icons.search),
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12)),
+                    helperText: 'Résultats OpenStreetMap · 3 caractères min.',
+                  ),
+                );
+              },
+              optionsViewBuilder: (
+                BuildContext ctx,
+                AutocompleteOnSelected<_NominatimResult> onSelected,
+                Iterable<_NominatimResult> options,
+              ) {
+                return Align(
+                  alignment: Alignment.topLeft,
+                  child: Material(
+                    elevation: 6,
+                    borderRadius: BorderRadius.circular(10),
+                    child: ConstrainedBox(
+                      constraints: const BoxConstraints(maxWidth: 400),
+                      child: ListView(
+                        padding: EdgeInsets.zero,
+                        shrinkWrap: true,
+                        children: options.map((_NominatimResult r) {
+                          return ListTile(
+                            dense: true,
+                            leading: const Icon(Icons.place, size: 16),
+                            title: Text(r.name,
+                                style: const TextStyle(fontSize: 13)),
+                            subtitle: Text(
+                              '${r.lat.toStringAsFixed(2)}°, '
+                              '${r.lon.toStringAsFixed(2)}°',
+                              style: const TextStyle(fontSize: 11),
+                            ),
+                            onTap: () => onSelected(r),
+                          );
+                        }).toList(),
+                      ),
+                    ),
+                  ),
+                );
+              },
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: 20),
 
             // ── Poids de naissance ────────────────────────────────────────
             Row(
@@ -1552,8 +1736,7 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
                 icon: const Text('✨', style: TextStyle(fontSize: 18)),
                 label: const Text(
                   'Créer mon MULTIPASS avec profil KIN',
-                  style:
-                      TextStyle(fontWeight: FontWeight.w700, fontSize: 15),
+                  style: TextStyle(fontWeight: FontWeight.w700, fontSize: 15),
                 ),
                 style: ElevatedButton.styleFrom(
                   minimumSize: const Size(double.infinity, 52),
@@ -1565,11 +1748,11 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
               Padding(
                 padding: const EdgeInsets.only(top: 8),
                 child: Text(
-                  'Sélectionnez une date de naissance pour activer.',
+                  '* Date de naissance requise pour activer.',
                   textAlign: TextAlign.center,
                   style: theme.textTheme.bodySmall?.copyWith(
-                      color: theme.colorScheme.onSurface
-                          .withValues(alpha: 0.5)),
+                      color:
+                          theme.colorScheme.onSurface.withValues(alpha: 0.5)),
                 ),
               ),
             if (_errorMessage != null) ...<Widget>[

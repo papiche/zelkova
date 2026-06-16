@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:math' as math;
 
 import 'package:audioplayers/audioplayers.dart';
+import 'package:flutter/services.dart';
 import 'package:calendar_date_picker2/calendar_date_picker2.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
@@ -774,8 +775,8 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
                   ),
                   label: Text(
                     _birthDate != null
-                        ? '✨ Profil KIN configuré — modifier'
-                        : '🌊 Ajouter mon profil ondulatoire (optionnel)',
+                        ? '✅ Date de naissance saisie — modifier'
+                        : '🔑 Récupération & portabilité — date de naissance',
                     style: const TextStyle(fontSize: 13),
                   ),
                   style: OutlinedButton.styleFrom(
@@ -1669,26 +1670,29 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
   // ── KIN : affichage et son ────────────────────────────────────────────────
 
   Widget _buildKinSection() {
-    final DateTime birth        = _birthDate!;
-    final KinResult birthKin    = calculateMayaKin(birth);
-    final KinResult concepKin   = calculateConceptionKin(birth, weight: _birthWeight);
+    final DateTime birth      = _birthDate!;
+    final KinResult birthKin  = calculateMayaKin(birth);
+    final KinResult concepKin = calculateConceptionKin(birth, weight: _birthWeight);
+    final String matchUrl     = _buildAtomicMatchUrl(birthKin);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
+        // ── En-tête ───────────────────────────────────────────────────────
         Padding(
           padding: const EdgeInsets.only(bottom: 10),
           child: Row(
             children: <Widget>[
-              const Text('🌊', style: TextStyle(fontSize: 20)),
+              const Text('🌀', style: TextStyle(fontSize: 18)),
               const SizedBox(width: 8),
-              Text(
-                'Profil KIN Tzolkin',
-                style: Theme.of(context).textTheme.titleSmall
-                    ?.copyWith(fontWeight: FontWeight.w700),
+              Expanded(
+                child: Text(
+                  'KIN Tzolkin · Signature vibratoire',
+                  style: Theme.of(context).textTheme.titleSmall
+                      ?.copyWith(fontWeight: FontWeight.w700),
+                ),
               ),
-              if (_nostrDidPublished) ...<Widget>[
-                const SizedBox(width: 8),
+              if (_nostrDidPublished)
                 Chip(
                   label: const Text('NOSTR ✓',
                       style: TextStyle(fontSize: 10, color: Colors.white)),
@@ -1696,29 +1700,29 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
                   padding: EdgeInsets.zero,
                   visualDensity: VisualDensity.compact,
                 ),
-              ],
             ],
           ),
         ),
+
+        // ── Cartes KIN ───────────────────────────────────────────────────
         _buildKinCard(kin: birthKin, label: 'Naissance'),
         const SizedBox(height: 8),
         _buildKinCard(kin: concepKin, label: 'Conception', secondary: true),
         const SizedBox(height: 12),
-        // ── Bouton son personnel ────────────────────────────────────────────
+
+        // ── Son personnel ────────────────────────────────────────────────
         SizedBox(
           width: double.infinity,
           child: OutlinedButton.icon(
             onPressed: _soundPlaying ? null : () => _playKinSound(birthKin),
             icon: _soundPlaying
                 ? const SizedBox(
-                    width: 16,
-                    height: 16,
-                    child: CircularProgressIndicator(strokeWidth: 2),
-                  )
+                    width: 16, height: 16,
+                    child: CircularProgressIndicator(strokeWidth: 2))
                 : const Icon(Icons.music_note, size: 18),
-            label: Text(_soundPlaying
-                ? 'Lecture en cours…'
-                : 'Jouer mon son personnel'),
+            label: Text(
+              _soundPlaying ? 'Lecture en cours…' : 'Jouer ma signature sonore',
+            ),
             style: OutlinedButton.styleFrom(
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10)),
@@ -1732,11 +1736,159 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
               '${_result!.uplanetHome.isNotEmpty ? _result!.uplanetHome : _selectedUspot}/atomic',
             ),
             icon: const Icon(Icons.open_in_new, size: 14),
-            label: const Text('Voir profil complet en ligne',
+            label: const Text('Voir mon profil complet en ligne',
                 style: TextStyle(fontSize: 12)),
           ),
         ),
+
+        // ── Lien MATCH ───────────────────────────────────────────────────
+        if (matchUrl.isNotEmpty) ...<Widget>[
+          const SizedBox(height: 16),
+          _buildMatchShareSection(matchUrl),
+        ],
       ],
+    );
+  }
+
+  /// Construit l'URL de partage MATCH pour atomic_match.html.
+  /// Paramètres attendus par la page JS :
+  ///   d=YYYYMMDD · t=HHMM · lo=lonInt · k=kinNum · n=displayName
+  String _buildAtomicMatchUrl(KinResult birthKin) {
+    if (_birthDate == null || _result == null) return '';
+
+    final String d = '${_birthDate!.year.toString().padLeft(4, '0')}'
+        '${_birthDate!.month.toString().padLeft(2, '0')}'
+        '${_birthDate!.day.toString().padLeft(2, '0')}';
+
+    final TimeOfDay t = _birthTime ?? const TimeOfDay(hour: 12, minute: 0);
+    final String time =
+        '${t.hour.toString().padLeft(2, '0')}${t.minute.toString().padLeft(2, '0')}';
+
+    final double lonRaw =
+        _birthLon != 0.0 ? _birthLon : (double.tryParse(_lon) ?? 0.0);
+    final int lo = lonRaw.round();
+
+    final String email = _emailController.text.trim();
+    final String name = email.contains('@') ? email.split('@').first : email;
+
+    String base = _result!.uplanetHome.isNotEmpty
+        ? _result!.uplanetHome
+        : _selectedUspot;
+    if (base.endsWith('/')) {
+      base = base.substring(0, base.length - 1);
+    }
+
+    return '$base/atomic_match.html'
+        '?d=$d&t=$time&lo=$lo&k=${birthKin.kin}&n=${Uri.encodeComponent(name)}';
+  }
+
+  /// Widget de partage du lien MATCH.
+  Widget _buildMatchShareSection(String url) {
+    final ColorScheme cs = Theme.of(context).colorScheme;
+    return Container(
+      padding: const EdgeInsets.all(14),
+      decoration: BoxDecoration(
+        color: Colors.deepPurple.withValues(alpha: 0.06),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: Colors.deepPurple.withValues(alpha: 0.22)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          // ── Titre ──────────────────────────────────────────────────────
+          Row(
+            children: <Widget>[
+              const Text('💫', style: TextStyle(fontSize: 16)),
+              const SizedBox(width: 6),
+              Expanded(
+                child: Text(
+                  'Mon lien de résonance',
+                  style: TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w700,
+                    color: Colors.deepPurple.shade200,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 4),
+          Text(
+            'Partage ce lien à un·e ami·e. Il·elle saisit sa date de naissance '
+            'et votre résonance cosmique est calculée localement — sans serveur.',
+            style: TextStyle(
+              fontSize: 11,
+              height: 1.4,
+              color: cs.onSurface.withValues(alpha: 0.55),
+            ),
+          ),
+          const SizedBox(height: 10),
+
+          // ── URL prévisualisée ──────────────────────────────────────────
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+            decoration: BoxDecoration(
+              color: Colors.black.withValues(alpha: 0.25),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Text(
+              url,
+              style: TextStyle(
+                fontSize: 9,
+                fontFamily: 'monospace',
+                color: cs.onSurface.withValues(alpha: 0.55),
+              ),
+              maxLines: 3,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+          const SizedBox(height: 10),
+
+          // ── Boutons Copier / Tester ────────────────────────────────────
+          Row(
+            children: <Widget>[
+              Expanded(
+                child: OutlinedButton.icon(
+                  onPressed: () {
+                    Clipboard.setData(ClipboardData(text: url));
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Lien copié dans le presse-papiers'),
+                        duration: Duration(seconds: 2),
+                        behavior: SnackBarBehavior.floating,
+                      ),
+                    );
+                  },
+                  icon: const Icon(Icons.copy, size: 15),
+                  label: const Text('Copier',
+                      style: TextStyle(fontSize: 12)),
+                  style: OutlinedButton.styleFrom(
+                    minimumSize: const Size(0, 38),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8)),
+                  ),
+                ),
+              ),
+              const SizedBox(width: 8),
+              Expanded(
+                child: OutlinedButton.icon(
+                  onPressed: () => _openUrl(url),
+                  icon: const Icon(Icons.open_in_new, size: 15),
+                  label: const Text('Tester',
+                      style: TextStyle(fontSize: 12)),
+                  style: OutlinedButton.styleFrom(
+                    minimumSize: const Size(0, 38),
+                    foregroundColor: Colors.deepPurple.shade300,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8)),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 
@@ -1947,7 +2099,7 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
           icon: const Icon(Icons.arrow_back),
           onPressed: _goBackToFormPage,
         ),
-        title: const Text('🌊 Profil ondulatoire'),
+        title: const Text('🔑 Récupération & portabilité'),
         elevation: 0,
       ),
       body: SafeArea(
@@ -1955,15 +2107,40 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
           padding: const EdgeInsets.fromLTRB(20, 16, 20, 120),
           children: <Widget>[
             Text(
-              'Vos données de naissance permettent de calculer votre Kin Maya '
-              '(Tzolkin 1-260) et votre signature ondulatoire φ. '
-              'Ces informations sont chiffrées sur votre station UPlanet.',
+              'Vos données de naissance permettent de récupérer votre MULTIPASS '
+              'sur n\'importe quel appareil, de calculer votre KIN Maya (Tzolkin 1-260) '
+              'et découvrir le lien de résonance avec vos amis... et leurs amis.',
               style: theme.textTheme.bodySmall?.copyWith(
                 color: theme.colorScheme.onSurface.withValues(alpha: 0.65),
                 height: 1.4,
               ),
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: 20),
+
+            // ── Email (reprise depuis page 1 si vide) ─────────────────────
+            TextFormField(
+              controller: _emailController,
+              keyboardType: TextInputType.emailAddress,
+              autocorrect: false,
+              decoration: InputDecoration(
+                labelText: tr('email'),
+                hintText: 'exemple@email.com',
+                prefixIcon: const Icon(Icons.email_outlined),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(14),
+                ),
+              ),
+              validator: (String? v) {
+                if (v == null || v.trim().isEmpty) {
+                  return tr('email_required');
+                }
+                if (!RegExp(r'^[^@]+@[^@]+\.[^@]+$').hasMatch(v.trim())) {
+                  return tr('email_invalid');
+                }
+                return null;
+              },
+            ),
+            const SizedBox(height: 20),
 
             // ── Polarité ──────────────────────────────────────────────────
             Text('Polarité biologique',

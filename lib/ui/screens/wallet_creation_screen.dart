@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:math' as math;
 
+import 'package:audioplayers/audioplayers.dart';
 import 'package:calendar_date_picker2/calendar_date_picker2.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
@@ -17,7 +18,10 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../data/models/app_cubit.dart';
 import '../../env.dart';
 import '../../g1/atomic_keys.dart';
+import '../../g1/kin_calculator.dart';
+import '../../g1/kin_sound.dart';
 import '../../g1/multipass_service.dart';
+import '../../g1/nostr/atomic_did_publisher.dart';
 import '../../g1/zen_tag_service.dart';
 import '../../shared_prefs_helper_v2.dart';
 import '../logger.dart';
@@ -192,6 +196,11 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
   bool _pbkdf2Running = false;  // true pendant le calcul PBKDF2 (~10s)
   String _locationName = '';    // nom lisible de Ma Position (reverse geocode)
 
+  // ── KIN + son personnel ───────────────────────────────────────────────────
+  AudioPlayer? _audioPlayer;
+  bool _soundPlaying = false;
+  bool _nostrDidPublished = false;
+
   @override
   void initState() {
     super.initState();
@@ -202,6 +211,7 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
   void dispose() {
     _pageController.dispose();
     _emailController.dispose();
+    _audioPlayer?.dispose();
     super.dispose();
   }
 
@@ -475,6 +485,7 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
         conceptionPlace: conceptionPlace,
       );
       await _saveAndShowResult(response);
+      _publishNostrDidAsync(response);
     } on MultipassExistsException {
       if (!mounted) return;
       setState(() => _isLoading = false);
@@ -1626,31 +1637,7 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
                   if (_birthDate != null) ...<Widget>[
                     const SizedBox(height: 16),
                     const Divider(),
-                    Card(
-                      margin: const EdgeInsets.only(bottom: 8),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12)),
-                      color: Colors.indigo.shade50,
-                      elevation: 0,
-                      child: ListTile(
-                        leading:
-                            const Text('🌊', style: TextStyle(fontSize: 22)),
-                        title: const Text(
-                          'Profil KIN enregistré',
-                          style: TextStyle(fontWeight: FontWeight.w600),
-                        ),
-                        subtitle: Text(
-                          'Naissance : ${_birthDate!.day.toString().padLeft(2, '0')}/'
-                          '${_birthDate!.month.toString().padLeft(2, '0')}/'
-                          '${_birthDate!.year}',
-                          style: const TextStyle(fontSize: 12),
-                        ),
-                        trailing: const Icon(Icons.open_in_new, size: 16),
-                        onTap: () => _openUrl(
-                          '${_result!.uplanetHome.isNotEmpty ? _result!.uplanetHome : _selectedUspot}/atomic',
-                        ),
-                      ),
-                    ),
+                    _buildKinSection(),
                   ],
                   if (_result!.uplanetHome.isNotEmpty) ...<Widget>[
                     const SizedBox(height: 16),
@@ -1677,6 +1664,227 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
+  }
+
+  // ── KIN : affichage et son ────────────────────────────────────────────────
+
+  Widget _buildKinSection() {
+    final DateTime birth        = _birthDate!;
+    final KinResult birthKin    = calculateMayaKin(birth);
+    final KinResult concepKin   = calculateConceptionKin(birth);
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.only(bottom: 10),
+          child: Row(
+            children: <Widget>[
+              const Text('🌊', style: TextStyle(fontSize: 20)),
+              const SizedBox(width: 8),
+              Text(
+                'Profil KIN Tzolkin',
+                style: Theme.of(context).textTheme.titleSmall
+                    ?.copyWith(fontWeight: FontWeight.w700),
+              ),
+              if (_nostrDidPublished) ...<Widget>[
+                const SizedBox(width: 8),
+                Chip(
+                  label: const Text('NOSTR ✓',
+                      style: TextStyle(fontSize: 10, color: Colors.white)),
+                  backgroundColor: Colors.purple.shade400,
+                  padding: EdgeInsets.zero,
+                  visualDensity: VisualDensity.compact,
+                ),
+              ],
+            ],
+          ),
+        ),
+        _buildKinCard(kin: birthKin, label: 'Naissance'),
+        const SizedBox(height: 8),
+        _buildKinCard(kin: concepKin, label: 'Conception', secondary: true),
+        const SizedBox(height: 12),
+        // ── Bouton son personnel ────────────────────────────────────────────
+        SizedBox(
+          width: double.infinity,
+          child: OutlinedButton.icon(
+            onPressed: _soundPlaying ? null : () => _playKinSound(birthKin),
+            icon: _soundPlaying
+                ? const SizedBox(
+                    width: 16,
+                    height: 16,
+                    child: CircularProgressIndicator(strokeWidth: 2),
+                  )
+                : const Icon(Icons.music_note, size: 18),
+            label: Text(_soundPlaying
+                ? 'Lecture en cours…'
+                : 'Jouer mon son personnel'),
+            style: OutlinedButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10)),
+            ),
+          ),
+        ),
+        const SizedBox(height: 4),
+        Center(
+          child: TextButton.icon(
+            onPressed: () => _openUrl(
+              '${_result!.uplanetHome.isNotEmpty ? _result!.uplanetHome : _selectedUspot}/atomic',
+            ),
+            icon: const Icon(Icons.open_in_new, size: 14),
+            label: const Text('Voir profil complet en ligne',
+                style: TextStyle(fontSize: 12)),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildKinCard({
+    required KinResult kin,
+    required String label,
+    bool secondary = false,
+  }) {
+    final Color accent = _kinColor(kin.color);
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: accent.withValues(alpha: secondary ? 0.05 : 0.09),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+            color: accent.withValues(alpha: secondary ? 0.25 : 0.4),
+            width: secondary ? 1.0 : 1.5),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Row(
+            children: <Widget>[
+              Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                decoration: BoxDecoration(
+                  color: accent.withValues(alpha: 0.85),
+                  borderRadius: BorderRadius.circular(6),
+                ),
+                child: Text(
+                  'KIN ${kin.kin} • ${kin.color}',
+                  style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 11,
+                      fontWeight: FontWeight.w700),
+                ),
+              ),
+              const SizedBox(width: 8),
+              Text(
+                label,
+                style: TextStyle(
+                    fontSize: 11,
+                    color: Theme.of(context)
+                        .colorScheme
+                        .onSurface
+                        .withValues(alpha: 0.5)),
+              ),
+            ],
+          ),
+          const SizedBox(height: 6),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.baseline,
+            textBaseline: TextBaseline.alphabetic,
+            children: <Widget>[
+              Text(
+                kin.glyph,
+                style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w800,
+                    color: accent),
+              ),
+              const SizedBox(width: 8),
+              Text(
+                'Tone ${kin.toneNumber} — ${kin.tone}',
+                style: TextStyle(
+                    fontSize: 12,
+                    color: Theme.of(context)
+                        .colorScheme
+                        .onSurface
+                        .withValues(alpha: 0.7)),
+              ),
+            ],
+          ),
+          if (!secondary) ...<Widget>[
+            const SizedBox(height: 4),
+            Text(
+              '${kin.action} · ${kin.power} · ${kin.essence}',
+              style: TextStyle(
+                  fontSize: 11,
+                  fontStyle: FontStyle.italic,
+                  color: Theme.of(context)
+                      .colorScheme
+                      .onSurface
+                      .withValues(alpha: 0.55)),
+            ),
+          ],
+        ],
+      ),
+    );
+  }
+
+  Color _kinColor(String color) {
+    switch (color) {
+      case 'Rouge':
+        return Colors.red.shade600;
+      case 'Blanc':
+        return Colors.blueGrey.shade400;
+      case 'Bleu':
+        return Colors.blue.shade600;
+      case 'Jaune':
+        return Colors.amber.shade700;
+      case 'Vert':
+        return Colors.green.shade600;
+      default:
+        return Colors.indigo.shade400;
+    }
+  }
+
+  Future<void> _playKinSound(KinResult birthKin) async {
+    if (_soundPlaying) return;
+    setState(() => _soundPlaying = true);
+    try {
+      await _audioPlayer?.dispose();
+      _audioPlayer = await playKinSound(birthKin.toneNumber, _polarity);
+      _audioPlayer?.onPlayerComplete.listen((_) {
+        if (mounted) setState(() => _soundPlaying = false);
+      });
+    } catch (e) {
+      loggerDev('KIN sound error: $e');
+      if (mounted) setState(() => _soundPlaying = false);
+    }
+  }
+
+  void _publishNostrDidAsync(MultipassResponse response) {
+    if (response.nsec.isEmpty) return;
+    final String relayUrl = _swarmStations
+            .where((_SwarmStation s) => s.relay.isNotEmpty)
+            .map((_SwarmStation s) => s.relay)
+            .firstOrNull ??
+        '';
+    if (relayUrl.isEmpty) return;
+
+    final KinResult? birthKin =
+        _birthDate != null ? calculateMayaKin(_birthDate!) : null;
+    final KinResult? concepKin =
+        _birthDate != null ? calculateConceptionKin(_birthDate!) : null;
+
+    publishAtomicDid(
+      nsec: response.nsec,
+      relayUrl: relayUrl,
+      birthKin: birthKin,
+      conceptionKin: concepKin,
+      email: response.email,
+    ).then((bool ok) {
+      if (ok && mounted) setState(() => _nostrDidPublished = true);
+    });
   }
 
   // ── Page 2 : Profil ondulatoire ATOMIC (optionnel) ────────────────────────

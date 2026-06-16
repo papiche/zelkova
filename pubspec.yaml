@@ -118,6 +118,7 @@ dependencies:
   ferry_hive_ce_store: any
   latlong2: ^0.9.1
   flutter_map: ^7.0.2
+  audioplayers: ^6.0.0
   flutter_speed_dial: ^7.0.0
   flutter_zxing: ^2.2.1
   screenshot: ^3.0.0

@@ -537,269 +537,67 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
   static const String _ocConstellationUrl =
       'https://opencollective.com/monnaie-libre/projects/coeurbox/contribute/love-box-deluxe-gpu-49182';
 
-  // ── Page 0 : Présentation MULTIPASS + 2 options de recharge ───────────────
+  // ── Page 0 : Accueil MULTIPASS ────────────────────────────────────────────
 
   Widget _buildContributionPage() {
-    final ColorScheme cs = Theme.of(context).colorScheme;
     return Scaffold(
       body: SafeArea(
-        child: ListView(
-          padding: const EdgeInsets.fromLTRB(20, 36, 20, 120),
-          children: <Widget>[
-            // ── Hero ────────────────────────────────────────────────────────
-            const Text('🌌', textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 52)),
-            const SizedBox(height: 12),
-            Text(
-              'Le MULTIPASS UPlanet',
-              textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                    fontWeight: FontWeight.w800, letterSpacing: -0.5),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              'Votre Carte de Dépôt numérique,\n'
-              'raccordée à votre réseau social\n'
-              "(amis et amis d'amis)",
-              textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: cs.onSurface.withOpacity(0.65), height: 1.6),
-            ),
-            const SizedBox(height: 28),
-
-            // ── 3 avantages ──────────────────────────────────────────────────
-            _buildAdvantageRow('🔓', '100% Logiciels Libres',
-                'Aucun frais de transaction\nCode ouvert sous licence AGPL'),
-            const SizedBox(height: 12),
-            _buildAdvantageRow('⚡', 'Identité souveraine',
-                'Votre clé NOSTR, vos données\nPas de GAFAM, pas de serveur central'),
-            const SizedBox(height: 12),
-            _buildAdvantageRow('💱', 'Ẑ convertibles en €',
-                "Défraiement possible par dépôt de facture NOSTR.\nVotre argent ne dort pas : il finance\nl'acquisition et le partage du Bien Commun."),
-            const SizedBox(height: 32),
-
-            // ── Comment recharger ────────────────────────────────────────────
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-              decoration: BoxDecoration(
-                color: cs.primaryContainer.withOpacity(0.3),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Text(
-                'Comment recharger votre MULTIPASS ?',
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(28, 0, 28, 120),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              const Text('🌌',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 72)),
+              const SizedBox(height: 20),
+              Text(
+                'Bienvenue sur UPlanet',
                 textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                      fontWeight: FontWeight.w800,
-                      color: cs.primary),
+                style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                      fontWeight: FontWeight.w800, letterSpacing: -0.5),
               ),
-            ),
-            const SizedBox(height: 16),
-
-            // ── Card A : Recharge ponctuelle ─────────────────────────────────
-            _buildRechargeInfo(
-              emoji: '☁️',
-              title: tr('subscription_recharge_title'),
-              subtitle: 'Montant libre · Crédité immédiatement',
-              desc: 'Idéal pour commencer. Stockage IPFS, réseau NOSTR, IA locale.',
-              badge: 'MONTANT LIBRE',
-              badgeColor: const Color(0xFF00BB77),
-            ),
-            const SizedBox(height: 12),
-
-            // ── Card B : Adhésion mensuelle ───────────────────────────────────
-            _buildRechargeInfo(
-              emoji: '🏠',
-              title: tr('subscription_monthly_title'),
-              subtitle: '5 Ẑ/semaine · Accès continu à tous les services',
-              desc: 'Comme une adhésion à votre asso favorite : vous cotisez, vous bénéficiez, vous décidez.',
-              badge: 'RÉCURRENT',
-              badgeColor: const Color(0xFFDD6633),
-            ),
-            const SizedBox(height: 8),
-            // Note : l'email sera nécessaire pour OC après création
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-              decoration: BoxDecoration(
-                color: Colors.blue.withValues(alpha: 0.08),
-                borderRadius: BorderRadius.circular(10),
-                border: Border.all(color: Colors.blue.withValues(alpha: 0.2)),
+              const SizedBox(height: 12),
+              Text(
+                'Votre identité numérique souveraine,\n'
+                "adossée à la monnaie libre Ğ1\n"
+                "et reliée à votre réseau social.",
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      color: Theme.of(context)
+                          .colorScheme
+                          .onSurface
+                          .withValues(alpha: 0.65),
+                      height: 1.6),
               ),
-              child: const Row(
-                children: <Widget>[
-                  Icon(Icons.info_outline, size: 16, color: Colors.blue),
-                  SizedBox(width: 8),
-                  Expanded(
-                    child: Text(
-                      "Créez votre MULTIPASS d'abord,\n"
-                      'puis rechargez avec la même adresse email.',
-                      style: TextStyle(fontSize: 11, color: Colors.blue, height: 1.4),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 24),
-
-            // ── Note économique ──────────────────────────────────────────────
-            Container(
-              padding: const EdgeInsets.all(14),
-              decoration: BoxDecoration(
-                color: cs.surfaceContainerHighest.withOpacity(0.4),
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: cs.outlineVariant),
-              ),
-              child: Column(
-                children: <Widget>[
-                  Text(
-                    '💰 Où va votre cotisation ?',
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          fontWeight: FontWeight.w700),
-                  ),
-                  const SizedBox(height: 6),
-                  _buildDistribRow('33 %', "Crédit d'usage sur votre MULTIPASS", const Color(0xFF00E5FF)),
-                  _buildDistribRow('33 %', 'R&D (Astroport.ONE · G1FabLab)', const Color(0xFFBF5AFF)),
-                  _buildDistribRow('33 %', 'Actifs durables (forêts-jardins)', const Color(0xFF00FF9D)),
-                  _buildDistribRow(' 1 %', 'Capitaine (gestion de la station)', const Color(0xFFFF7C42)),
-                ],
-              ),
-            ),
-          ],
+              const SizedBox(height: 36),
+              _buildPoint('🔓', '100% Logiciels Libres · AGPL'),
+              const SizedBox(height: 10),
+              _buildPoint('⚡', 'Identité NOSTR — vos clés, vos données'),
+              const SizedBox(height: 10),
+              _buildPoint('💱', 'Monnaie libre Ğ1 — sans intermédiaire'),
+            ],
+          ),
         ),
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: _goToFormPage,
-        label: Text(tr('create_multipass')),
+        label: const Text('Commencer'),
         icon: const Icon(Icons.arrow_forward),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 
-  Widget _buildAdvantageRow(String emoji, String title, String desc) {
+  Widget _buildPoint(String emoji, String text) {
     return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-        Text(emoji, style: const TextStyle(fontSize: 24)),
-        const SizedBox(width: 14),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Text(title,
-                  style: const TextStyle(
-                      fontWeight: FontWeight.w700, fontSize: 14)),
-              Text(desc,
-                  style: TextStyle(
-                      fontSize: 12,
-                      color: Theme.of(context)
-                          .colorScheme
-                          .onSurface
-                          .withOpacity(0.6),
-                      height: 1.4)),
-            ],
-          ),
-        ),
+        Text(emoji, style: const TextStyle(fontSize: 20)),
+        const SizedBox(width: 10),
+        Text(text,
+            style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500)),
       ],
-    );
-  }
-
-  Widget _buildRechargeInfo({
-    required String emoji,
-    required String title,
-    required String subtitle,
-    required String desc,
-    required String badge,
-    required Color badgeColor,
-  }) {
-    return Card(
-      elevation: 0,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16),
-        side: BorderSide(color: badgeColor.withOpacity(0.4), width: 1.5),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Row(
-              children: <Widget>[
-                Text(emoji, style: const TextStyle(fontSize: 24)),
-                const SizedBox(width: 10),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text(title,
-                          style: TextStyle(
-                              fontWeight: FontWeight.w800,
-                              fontSize: 14,
-                              color: badgeColor)),
-                      Text(subtitle,
-                          style: TextStyle(
-                              fontSize: 12,
-                              color: Theme.of(context)
-                                  .colorScheme
-                                  .onSurface
-                                  .withOpacity(0.6))),
-                    ],
-                  ),
-                ),
-                Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-                  decoration: BoxDecoration(
-                    color: badgeColor.withOpacity(0.15),
-                    borderRadius: BorderRadius.circular(8),
-                    border: Border.all(color: badgeColor.withOpacity(0.4)),
-                  ),
-                  child: Text(badge,
-                      style: TextStyle(
-                          fontSize: 9,
-                          fontWeight: FontWeight.w800,
-                          color: badgeColor)),
-                ),
-              ],
-            ),
-            const SizedBox(height: 8),
-            Text(desc,
-                style: TextStyle(
-                    fontSize: 12,
-                    color: Theme.of(context)
-                        .colorScheme
-                        .onSurface
-                        .withValues(alpha: 0.65),
-                    height: 1.4)),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildDistribRow(String pct, String label, Color color) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 2),
-      child: Row(
-        children: <Widget>[
-          Container(
-              width: 8, height: 8,
-              decoration: BoxDecoration(color: color, shape: BoxShape.circle)),
-          const SizedBox(width: 8),
-          Text(pct,
-              style: TextStyle(
-                  fontWeight: FontWeight.w700, fontSize: 11, color: color)),
-          const SizedBox(width: 6),
-          Expanded(
-            child: Text(label,
-                style: TextStyle(
-                    fontSize: 11,
-                    color: Theme.of(context)
-                        .colorScheme
-                        .onSurface
-                        .withOpacity(0.65))),
-          ),
-        ],
-      ),
     );
   }
 

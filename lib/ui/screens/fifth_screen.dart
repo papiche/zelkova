@@ -18,9 +18,7 @@ import '../ui_helpers.dart';
 import '../widgets/bottom_widget.dart';
 import '../widgets/card_drawer.dart';
 import '../widgets/contacts_actions.dart';
-import '../widgets/fifth_screen/export_dialog.dart';
 import '../widgets/fifth_screen/fifth_tutorial.dart';
-import '../widgets/fifth_screen/import_dialog.dart';
 import '../widgets/fifth_screen/link_card.dart';
 import '../widgets/fifth_screen/node_list_card.dart';
 import '../widgets/fifth_screen/text_divider.dart';
@@ -50,8 +48,6 @@ class _FifthScreenState extends State<FifthScreen> {
         SharedPreferencesHelper prefsHelper, Widget? child) {
       return BlocBuilder<AppCubit, AppState>(
           builder: (BuildContext context, AppState state) {
-        final String pluralSuffix =
-            SharedPreferencesHelper().hasMultipleWallets ? 's' : '';
         return Scaffold(
           appBar: AppBar(
             key: infoMainKey,
@@ -141,19 +137,6 @@ class _FifthScreenState extends State<FifthScreen> {
                             }
                           },
                         ),
-                      LinkCard(
-                          key: exportMainKey,
-                          title: 'export_key$pluralSuffix',
-                          icon: Icons.download,
-                          onTap: () async {
-                            openExportWalletsSelector(
-                                context, state.expertMode);
-                          }),
-                      LinkCard(
-                          title: 'import_key$pluralSuffix',
-                          icon: Icons.upload,
-                          onTap: () =>
-                              showSelectImportMethodDialog(context, 0)),
                       // Partage APK P2P — uniquement sur mobile (pas Web)
                       if (!kIsWeb)
                         LinkCard(
@@ -193,11 +176,6 @@ class _FifthScreenState extends State<FifthScreen> {
                         title: 'code_card_title',
                         icon: Icons.code_rounded,
                         url: Uri.parse('https://github.com/papiche/zelkova')),
-                  LinkCard(
-                      title: 'code_translate',
-                      icon: Icons.translate,
-                      url: Uri.parse(
-                          'https://github.com/papiche/zelkova/issues')),
                   // const TextDivider(text: 'faq_title'),
                   // const FAQ(),
                   const BottomWidget()

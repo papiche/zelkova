@@ -5,10 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../data/models/app_cubit.dart';
 import '../../../data/models/app_state.dart';
 import '../../../data/models/theme_cubit.dart';
-import '../../../shared_prefs_helper.dart';
 import '../../../ui/notification_controller.dart';
-import '../fifth_screen/export_dialog.dart';
-import '../fifth_screen/import_dialog.dart';
 import 'authentication_settings_page.dart';
 
 class SettingsPage extends StatefulWidget {
@@ -170,29 +167,6 @@ class _SettingsPageState extends State<SettingsPage> {
                 ),
               ],
               */
-
-              // BACKUP & RESTORE SECTION
-              const SizedBox(height: 10),
-              ListTile(
-                leading: const Icon(Icons.download),
-                title: Text(tr(SharedPreferencesHelper().hasMultipleWallets
-                    ? 'export_keys'
-                    : 'export_key')),
-                trailing: const Icon(Icons.chevron_right),
-                onTap: () {
-                  openExportWalletsSelector(context, state.expertMode);
-                },
-              ),
-              ListTile(
-                leading: const Icon(Icons.upload),
-                title: Text(tr(SharedPreferencesHelper().hasMultipleWallets
-                    ? 'import_keys'
-                    : 'import_key')),
-                trailing: const Icon(Icons.chevron_right),
-                onTap: () {
-                  showSelectImportMethodDialog(context, 0);
-                },
-              ),
 
               // SECURITY SECTION (v2 only)
               if (context.read<AppCubit>().isV2) ...<Widget>[

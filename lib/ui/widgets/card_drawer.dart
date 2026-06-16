@@ -9,7 +9,6 @@ import 'package:sentry_flutter/sentry_flutter.dart';
 
 import '../../data/models/app_cubit.dart';
 import '../../data/models/app_state.dart';
-import '../../env.dart';
 import '../../shared_prefs_helper_v2.dart';
 import '../in_dev_helper.dart';
 import '../screens/sandbox.dart';
@@ -17,8 +16,6 @@ import '../ui_helpers.dart';
 import 'backup_reminder_dialog.dart';
 import 'first_screen/card_stack.dart';
 import 'lazy_about_info.dart';
-import 'market_analysis/market_analysis_page.dart';
-import 'multipass_relocation_dialog.dart';
 import 'pages/settings_page.dart';
 
 typedef IssueCreatedCallback = void Function(
@@ -77,26 +74,7 @@ class _CardDrawerState extends State<CardDrawer> {
                         ],
                       ),
                     ))),
-            // For MULTIPASS users: show relocation banner instead of export reminder.
-            // For regular wallets: show the usual export-reminder warning.
-            if (_isMultipass)
-              ListTile(
-                tileColor: Colors.blue[50],
-                leading: const Icon(
-                  Icons.moving,
-                  color: Colors.blueAccent,
-                ),
-                title: Text(
-                  tr('multipass_relocation_banner_title'),
-                  style: const TextStyle(color: Colors.blue),
-                ),
-                subtitle: Text(
-                  tr('multipass_relocation_banner_subtitle'),
-                  style: const TextStyle(fontSize: 11),
-                ),
-                onTap: () => showMultipassRelocationDialog(context),
-              )
-            else if (!state.hasRecentExport)
+            if (!_isMultipass && !state.hasRecentExport)
               ListTile(
                 tileColor: Colors.red[100],
                 leading: const Icon(
@@ -104,9 +82,7 @@ class _CardDrawerState extends State<CardDrawer> {
                   color: Colors.redAccent,
                 ),
                 title: Text(tr('export_reminder_title'),
-                    style: const TextStyle(
-                      color: Colors.blue,
-                    )),
+                    style: const TextStyle(color: Colors.blue)),
                 onTap: () => showBackupReminderDialog(context),
               ),
             const CardStack(),
@@ -136,29 +112,12 @@ class _CardDrawerState extends State<CardDrawer> {
                   );
                 },
               ),
-            if (!kIsWeb || state.v2mode)
-              ListTile(
-                leading: const Icon(Icons.analytics),
-                title: Text(tr('market_analysis')),
-                onTap: () {
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return const MarketAnalysisPage();
-                    },
-                  );
-                },
-              ),
             ListTile(
               leading: const Icon(Icons.forum_outlined),
-              title: const Text('Coracle — Réseau Social UPlanet'),
+              title: const Text('Votre Réseau'),
               subtitle: const Text('NOSTR · décentralisé · souverain'),
               onTap: () async {
-                // Utilise la première passerelle IPFS connue
-                final String ipfsGw = Env.ipfsGateways.isNotEmpty
-                    ? Env.ipfsGateways.split(' ').first.trimRight()
-                    : 'https://gyroi.de';
-                await openUrl('$ipfsGw/ipns/coracle.copylaradio.com');
+                await openUrl('https://coracle.copylaradio.com');
               },
             ),
             /*

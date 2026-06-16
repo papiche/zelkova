@@ -146,6 +146,9 @@ class MultipassService {
     String? birthPlace,
     String? conceptionPlace,
     String? birthWeight,
+    // Clés PBKDF2-SHA256 dérivées côté client (base64url 43 chars)
+    String? salt,
+    String? pepper,
   }) async {
     final String baseUrl = serverUrl ?? Env.upassportUrl;
     final Uri uri = Uri.parse('$baseUrl/g1nostr');
@@ -157,6 +160,8 @@ class MultipassService {
       'lon': lon,
       'format': 'json',
       if (passCode != null && passCode.isNotEmpty) 'pass_code': passCode,
+      if (salt != null && salt.isNotEmpty) 'salt': salt,
+      if (pepper != null && pepper.isNotEmpty) 'pepper': pepper,
       if (birthDatetime != null && birthDatetime.isNotEmpty)
         'birth_datetime': birthDatetime,
       if (conceptionDatetime != null && conceptionDatetime.isNotEmpty)

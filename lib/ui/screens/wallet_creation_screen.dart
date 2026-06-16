@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:math' as math;
 
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
@@ -11,6 +12,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../../data/models/app_cubit.dart';
 import '../../env.dart';
+import '../../g1/atomic_keys.dart';
 import '../../g1/multipass_service.dart';
 import '../../g1/zen_tag_service.dart';
 import '../../shared_prefs_helper_v2.dart';
@@ -182,6 +184,7 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
   double _birthLat = 0.0;       // from Nominatim (0.01° precision)
   double _birthLon = 0.0;       // from Nominatim (0.01° precision)
   int _polarity = 0;            // 0 = homme, 1 = femme
+  bool _pbkdf2Running = false;  // true pendant le calcul PBKDF2 (~10s)
 
   @override
   void initState() {
@@ -328,11 +331,61 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
       setState(() => _errorMessage = 'Email requis.');
       return;
     }
-    setState(() {
-      _isLoading = true;
-      _errorMessage = null;
-    });
-    await _doCreate();
+
+    String computedSalt = '';
+    String computedPepper = '';
+
+    if (_birthDate != null) {
+      setState(() {
+        _isLoading = true;
+        _pbkdf2Running = true;
+        _errorMessage = null;
+      });
+      try {
+        (computedSalt, computedPepper) = await _computeAtomicKeys();
+      } catch (e) {
+        if (!mounted) return;
+        setState(() {
+          _isLoading = false;
+          _pbkdf2Running = false;
+          _errorMessage = 'Erreur cryptographique : $e';
+        });
+        return;
+      }
+      if (!mounted) return;
+      setState(() => _pbkdf2Running = false);
+    } else {
+      setState(() {
+        _isLoading = true;
+        _errorMessage = null;
+      });
+    }
+
+    await _doCreate(salt: computedSalt, pepper: computedPepper);
+  }
+
+  /// Dérive (salt, pepper) via PBKDF2-SHA256 dans un isolate séparé.
+  Future<(String, String)> _computeAtomicKeys() async {
+    final TimeOfDay t = _birthTime ?? const TimeOfDay(hour: 12, minute: 0);
+    final DateTime localBirth = DateTime(
+      _birthDate!.year, _birthDate!.month, _birthDate!.day, t.hour, t.minute,
+    );
+    final int utcOffset = _birthLon != 0.0 ? (_birthLon / 15).round() : 0;
+    final String birthDtUtc = localToUtcStr(localBirth, utcOffset);
+    final DateTime localCon = localBirth.subtract(const Duration(days: 280));
+    final String conDtUtc = localToUtcStr(
+      DateTime(localCon.year, localCon.month, localCon.day, 12, 0),
+      utcOffset,
+    );
+    final double lat = _birthLat != 0.0 ? _birthLat : (double.tryParse(_lat) ?? 0.0);
+    final double lon = _birthLon != 0.0 ? _birthLon : (double.tryParse(_lon) ?? 0.0);
+    return compute(
+      computeAtomicKeyPair,
+      (
+        buildSaltRaw(birthDtUtc: birthDtUtc, birthLat: lat, birthLon: lon, polarity: _polarity, weight: _birthWeight),
+        buildPepperRaw(conDtUtc: conDtUtc, conLat: lat, conLon: lon, weight: _birthWeight),
+      ),
+    );
   }
 
   /// Build the ISO-8601 birth datetime from state, or null if not set.
@@ -346,7 +399,7 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
         ':${t.minute.toString().padLeft(2, '0')}';
   }
 
-  Future<void> _doCreate({String? passCode}) async {
+  Future<void> _doCreate({String? passCode, String salt = '', String pepper = ''}) async {
     final String? birthPlace =
         _birthPlaceName.isNotEmpty ? _birthPlaceName : null;
     final String? birthWeight =
@@ -376,6 +429,8 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
         lon: _lon,
         serverUrl: _selectedUspot,
         passCode: passCode,
+        salt: salt.isNotEmpty ? salt : null,
+        pepper: pepper.isNotEmpty ? pepper : null,
         birthDatetime: _buildBirthDatetime(),
         birthPlace: birthPlace,
         birthWeight: birthWeight,
@@ -392,7 +447,7 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
         _isLoading = true;
         _errorMessage = null;
       });
-      await _doCreate(passCode: code);
+      await _doCreate(passCode: code, salt: salt, pepper: pepper);
     } on MultipassInvalidPassException {
       if (!mounted) return;
       setState(() {
@@ -762,7 +817,9 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
                   ),
                 ),
                 const Spacer(),
-                if (_isLoading)
+                if (_pbkdf2Running)
+                  const Center(child: _Pbkdf2Loader())
+                else if (_isLoading)
                   const Center(child: _MultipassCreationLoader())
                 else
                   ElevatedButton(
@@ -1728,7 +1785,9 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
             const SizedBox(height: 32),
 
             // ── Bouton Créer ──────────────────────────────────────────────
-            if (_isLoading)
+            if (_pbkdf2Running)
+              const Center(child: _Pbkdf2Loader())
+            else if (_isLoading)
               const Center(child: _MultipassCreationLoader())
             else
               ElevatedButton.icon(
@@ -1799,6 +1858,83 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
   }
 }
 
+// ── Animation PBKDF2 : cadenas pulsant ────────────────────────────────────────
+
+class _Pbkdf2Loader extends StatefulWidget {
+  const _Pbkdf2Loader();
+
+  @override
+  State<_Pbkdf2Loader> createState() => _Pbkdf2LoaderState();
+}
+
+class _Pbkdf2LoaderState extends State<_Pbkdf2Loader>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _scale;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 900),
+    )..repeat(reverse: true);
+    _scale = Tween<double>(begin: 0.85, end: 1.15).animate(
+      CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
+    );
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final ColorScheme cs = Theme.of(context).colorScheme;
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          ScaleTransition(
+            scale: _scale,
+            child: const Text('🔐', style: TextStyle(fontSize: 48)),
+          ),
+          const SizedBox(height: 12),
+          const Text(
+            'Dérivation des clés ATOMIC…',
+            style: TextStyle(fontWeight: FontWeight.w600, fontSize: 15),
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 4),
+          Text(
+            'PBKDF2-SHA256 · 600 000 itérations · ~10s',
+            style: TextStyle(
+              fontSize: 11,
+              color: cs.onSurface.withValues(alpha: 0.6),
+            ),
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 16),
+          const LinearProgressIndicator(),
+          const SizedBox(height: 10),
+          Text(
+            'Les clés sont calculées sur votre appareil.\n'
+            'Ce calcul garantit la récupérabilité de votre MULTIPASS.',
+            style: TextStyle(
+              fontSize: 10,
+              color: cs.onSurface.withValues(alpha: 0.5),
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 // ── Animation d'attente : tourbillon de personnes ─────────────────────────────
 
 class _MultipassCreationLoader extends StatefulWidget {
@@ -1819,7 +1955,7 @@ class _MultipassCreationLoaderState extends State<_MultipassCreationLoader>
     <String>['🌱', 'Génération de vos clés cryptographiques…', 'Ed25519 · Schnorr · NOSTR'],
     <String>['🌐', 'Connexion au réseau UPlanet…', 'Votre station Astroport locale'],
     <String>['⚡', 'Création de votre identité NOSTR…', 'Souveraine, décentralisée'],
-    <String>['🤝', 'Inscription dans la toile de confiance Ğ1…', "Amis et amis d'amis"],
+    <String>['🤝', 'Inscription dans la toile de confiance…', "Amis et amis d'amis"],
     <String>['💚', 'Attribution de votre MULTIPASS…', 'Votre Carte de Dépôt numérique'],
     <String>['🎉', "Prêt·e à rejoindre l'écosystème ẐEN !", '100% Logiciels Libres'],
   ];

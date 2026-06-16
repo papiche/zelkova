@@ -742,143 +742,671 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
   // ── Page 1 : Formulaire email + géolocalisation ────────────────────────────
 
   Widget _buildFormPage() {
+    final ThemeData theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: _goBackToContributions,
         ),
-        title: Text(tr('multipass_onboarding_title')),
+        title: const Text('Créer mon MULTIPASS'),
         elevation: 0,
       ),
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(24),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(
-                  tr('multipass_onboarding_description'),
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: Theme.of(context)
-                            .colorScheme
-                            .onSurface
-                            .withOpacity(0.65),
-                      ),
+        child: Form(
+          key: _formKey,
+          child: ListView(
+            padding: const EdgeInsets.fromLTRB(20, 16, 20, 120),
+            children: <Widget>[
+              Text(
+                'Votre identité souveraine, vos clés cryptographiques et votre KIN Maya '
+                'sont dérivés de vos données de naissance — récupérables sur tout appareil.',
+                style: theme.textTheme.bodySmall?.copyWith(
+                  color: theme.colorScheme.onSurface.withValues(alpha: 0.65),
+                  height: 1.4,
                 ),
-                const SizedBox(height: 16),
-                // ── Profil ondulatoire (optionnel) — en haut ───────────────
-                OutlinedButton.icon(
-                  onPressed: _goToAtomicPage,
-                  icon: Icon(
-                    _birthDate != null ? Icons.auto_awesome : Icons.waves,
-                    size: 18,
-                  ),
-                  label: Text(
-                    _birthDate != null
-                        ? '✅ Date de naissance saisie — modifier'
-                        : '🔑 Récupération & portabilité — date de naissance',
-                    style: const TextStyle(fontSize: 13),
-                  ),
-                  style: OutlinedButton.styleFrom(
-                    minimumSize: const Size(double.infinity, 44),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
+              ),
+              const SizedBox(height: 20),
+
+              // ── Email ─────────────────────────────────────────────────────
+              TextFormField(
+                controller: _emailController,
+                keyboardType: TextInputType.emailAddress,
+                autocorrect: false,
+                decoration: InputDecoration(
+                  labelText: tr('email'),
+                  prefixIcon: const Icon(Icons.email_outlined),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(14),
                   ),
                 ),
-                const SizedBox(height: 16),
-                TextFormField(
-                  controller: _emailController,
-                  keyboardType: TextInputType.emailAddress,
-                  autocorrect: false,
-                  decoration: InputDecoration(
-                    labelText: tr('email'),
-                    prefixIcon: const Icon(Icons.email_outlined),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(14),
+                validator: (String? value) {
+                  if (value == null || value.trim().isEmpty) {
+                    return tr('email_required');
+                  }
+                  if (!RegExp(r'^[^@]+@[^@]+\.[^@]+$').hasMatch(value.trim())) {
+                    return tr('email_invalid');
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 20),
+
+              // ── Ma position (domicile) ────────────────────────────────────
+              Text(
+                'Ma position (domicile)',
+                style: theme.textTheme.labelLarge
+                    ?.copyWith(fontWeight: FontWeight.w600),
+              ),
+              const SizedBox(height: 8),
+              _buildLocationSection(),
+              const SizedBox(height: 20),
+
+              // ── Station Astroport ─────────────────────────────────────────
+              if (_swarmLoading)
+                const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 8),
+                  child: Center(
+                    child: SizedBox(
+                      width: 20,
+                      height: 20,
+                      child: CircularProgressIndicator(strokeWidth: 2),
                     ),
                   ),
-                  validator: (String? value) {
-                    if (value == null || value.trim().isEmpty) {
-                      return tr('email_required');
-                    }
-                    if (!RegExp(r'^[^@]+@[^@]+\.[^@]+$')
-                        .hasMatch(value.trim())) {
-                      return tr('email_invalid');
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(height: 16),
-                // Station selector — loaded from SWARM
-                if (_swarmLoading)
-                  const Padding(
-                    padding: EdgeInsets.symmetric(vertical: 8),
-                    child: Center(
-                      child: SizedBox(
-                        width: 20,
-                        height: 20,
-                        child: CircularProgressIndicator(strokeWidth: 2),
-                      ),
-                    ),
-                  )
-                else if (_swarmStations.isNotEmpty)
-                  _buildStationSelector(),
-                const SizedBox(height: 16),
-                _buildLocationSection(),
-                if (_errorMessage != null) ...<Widget>[
-                  const SizedBox(height: 12),
-                  Container(
-                    padding: const EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                      color: Theme.of(context)
-                          .colorScheme
-                          .error
-                          .withValues(alpha: 0.1),
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(
-                        color: Theme.of(context)
-                            .colorScheme
-                            .error
-                            .withValues(alpha: 0.3),
-                      ),
-                    ),
+                )
+              else if (_swarmStations.isNotEmpty)
+                _buildStationSelector(),
+              const SizedBox(height: 24),
+
+              // ── Séparateur Profil KIN ─────────────────────────────────────
+              Row(
+                children: <Widget>[
+                  const Expanded(child: Divider()),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 12),
                     child: Text(
-                      _errorMessage!,
-                      style: TextStyle(
-                        color: Theme.of(context).colorScheme.error,
-                        fontSize: 13,
+                      '🌀 Profil KIN · Récupération & portabilité',
+                      style: theme.textTheme.labelMedium?.copyWith(
+                        fontWeight: FontWeight.w700,
+                        color: theme.colorScheme.primary,
                       ),
                     ),
+                  ),
+                  const Expanded(child: Divider()),
+                ],
+              ),
+              const SizedBox(height: 16),
+
+              // ── Polarité ──────────────────────────────────────────────────
+              Text('Polarité biologique',
+                  style: theme.textTheme.labelLarge
+                      ?.copyWith(fontWeight: FontWeight.w600)),
+              const SizedBox(height: 8),
+              SegmentedButton<int>(
+                segments: const <ButtonSegment<int>>[
+                  ButtonSegment<int>(
+                      value: 0,
+                      label: Text('Homme'),
+                      icon: Icon(Icons.male)),
+                  ButtonSegment<int>(
+                      value: 1,
+                      label: Text('Femme'),
+                      icon: Icon(Icons.female)),
+                ],
+                selected: <int>{_polarity},
+                onSelectionChanged: (Set<int> s) =>
+                    setState(() => _polarity = s.first),
+                style: SegmentedButton.styleFrom(
+                  minimumSize: const Size(0, 44),
+                ),
+              ),
+              const SizedBox(height: 20),
+
+              // ── Date de naissance * ───────────────────────────────────────
+              Text('Date de naissance *',
+                  style: theme.textTheme.labelLarge
+                      ?.copyWith(fontWeight: FontWeight.w600)),
+              const SizedBox(height: 8),
+              GestureDetector(
+                onTap: () async {
+                  final List<DateTime?>? result =
+                      await showCalendarDatePicker2Dialog(
+                    context: context,
+                    config: CalendarDatePicker2WithActionButtonsConfig(
+                      calendarType: CalendarDatePicker2Type.single,
+                      firstDate: DateTime(1900),
+                      lastDate: DateTime.now(),
+                      selectedDayHighlightColor: theme.colorScheme.primary,
+                      centerAlignModePicker: true,
+                      animateToDisplayedMonthDate: true,
+                    ),
+                    dialogSize: const Size(340, 420),
+                    value: <DateTime?>[_birthDate],
+                    borderRadius: const BorderRadius.all(Radius.circular(16)),
+                  );
+                  if (result != null && result.isNotEmpty && result.first != null) {
+                    setState(() => _birthDate = result.first);
+                  }
+                },
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: _birthDate != null
+                          ? theme.colorScheme.primary.withValues(alpha: 0.6)
+                          : theme.colorScheme.outline,
+                    ),
+                    borderRadius: BorderRadius.circular(12),
+                    color: _birthDate != null
+                        ? theme.colorScheme.primary.withValues(alpha: 0.04)
+                        : null,
+                  ),
+                  child: Row(
+                    children: <Widget>[
+                      Icon(
+                        Icons.calendar_month,
+                        size: 20,
+                        color: _birthDate != null
+                            ? theme.colorScheme.primary
+                            : theme.colorScheme.onSurface.withValues(alpha: 0.5),
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: _birthDate != null
+                            ? Text(
+                                '${_birthDate!.day.toString().padLeft(2, '0')} '
+                                '${_monthName(_birthDate!.month)} '
+                                '${_birthDate!.year}',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                  color: theme.colorScheme.primary,
+                                ),
+                              )
+                            : Text(
+                                'Choisir une date',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: theme.colorScheme.onSurface
+                                      .withValues(alpha: 0.5),
+                                ),
+                              ),
+                      ),
+                      Icon(
+                        Icons.edit_calendar_outlined,
+                        size: 18,
+                        color: theme.colorScheme.onSurface.withValues(alpha: 0.4),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              const SizedBox(height: 16),
+
+              // ── Heure de naissance (optionnelle) ──────────────────────────
+              Text('Heure de naissance (optionnelle)',
+                  style: theme.textTheme.labelLarge
+                      ?.copyWith(fontWeight: FontWeight.w600)),
+              const SizedBox(height: 8),
+              GestureDetector(
+                onTap: () async {
+                  DateTime tempTime = DateTime(
+                    2000, 1, 1,
+                    _birthTime?.hour ?? 12,
+                    _birthTime?.minute ?? 0,
+                  );
+                  await showModalBottomSheet<void>(
+                    context: context,
+                    shape: const RoundedRectangleBorder(
+                      borderRadius:
+                          BorderRadius.vertical(top: Radius.circular(16)),
+                    ),
+                    builder: (BuildContext ctx) => SizedBox(
+                      height: 280,
+                      child: Column(
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 16, vertical: 8),
+                            child: Row(
+                              children: <Widget>[
+                                TextButton(
+                                  onPressed: () => Navigator.pop(ctx),
+                                  child: Text(tr('cancel')),
+                                ),
+                                const Expanded(
+                                  child: Center(
+                                    child: Text(
+                                      'Heure de naissance',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 15),
+                                    ),
+                                  ),
+                                ),
+                                TextButton(
+                                  onPressed: () {
+                                    if (mounted) {
+                                      setState(() => _birthTime = TimeOfDay(
+                                            hour: tempTime.hour,
+                                            minute: tempTime.minute,
+                                          ));
+                                    }
+                                    Navigator.pop(ctx);
+                                  },
+                                  child: const Text('OK',
+                                      style:
+                                          TextStyle(fontWeight: FontWeight.w700)),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Expanded(
+                            child: CupertinoDatePicker(
+                              mode: CupertinoDatePickerMode.time,
+                              use24hFormat: true,
+                              initialDateTime: tempTime,
+                              onDateTimeChanged: (DateTime dt) =>
+                                  tempTime = dt,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                },
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: _birthTime != null
+                          ? theme.colorScheme.secondary.withValues(alpha: 0.6)
+                          : theme.colorScheme.outline,
+                    ),
+                    borderRadius: BorderRadius.circular(12),
+                    color: _birthTime != null
+                        ? theme.colorScheme.secondary.withValues(alpha: 0.04)
+                        : null,
+                  ),
+                  child: Row(
+                    children: <Widget>[
+                      Icon(
+                        Icons.schedule,
+                        size: 20,
+                        color: _birthTime != null
+                            ? theme.colorScheme.secondary
+                            : theme.colorScheme.onSurface.withValues(alpha: 0.5),
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: _birthTime != null
+                            ? Text(
+                                '${_birthTime!.hour.toString().padLeft(2, '0')}h'
+                                '${_birthTime!.minute.toString().padLeft(2, '0')}',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                  color: theme.colorScheme.secondary,
+                                ),
+                              )
+                            : Text(
+                                'Heure inconnue (midi par défaut)',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: theme.colorScheme.onSurface
+                                      .withValues(alpha: 0.5),
+                                ),
+                              ),
+                      ),
+                      Icon(
+                        Icons.edit_outlined,
+                        size: 18,
+                        color: theme.colorScheme.onSurface.withValues(alpha: 0.4),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              const SizedBox(height: 20),
+
+              // ── Lieu de naissance * ───────────────────────────────────────
+              Text('Lieu de naissance *',
+                  style: theme.textTheme.labelLarge
+                      ?.copyWith(fontWeight: FontWeight.w600)),
+              const SizedBox(height: 8),
+              Row(
+                children: <Widget>[
+                  Expanded(
+                    child: Autocomplete<_NominatimResult>(
+                      optionsBuilder: (TextEditingValue tv) =>
+                          _searchNominatim(tv.text),
+                      displayStringForOption: (_NominatimResult r) => r.name,
+                      onSelected: (_NominatimResult r) {
+                        setState(() {
+                          _birthPlaceName = r.name;
+                          _birthLat = double.parse(r.lat.toStringAsFixed(2));
+                          _birthLon = double.parse(r.lon.toStringAsFixed(2));
+                        });
+                      },
+                      fieldViewBuilder: (
+                        BuildContext ctx,
+                        TextEditingController fieldCtrl,
+                        FocusNode focusNode,
+                        VoidCallback onSubmitted,
+                      ) {
+                        if (_birthPlaceName.isNotEmpty && fieldCtrl.text.isEmpty) {
+                          fieldCtrl.text = _birthPlaceName;
+                        }
+                        return TextField(
+                          controller: fieldCtrl,
+                          focusNode: focusNode,
+                          keyboardType: TextInputType.text,
+                          textCapitalization: TextCapitalization.sentences,
+                          decoration: InputDecoration(
+                            hintText: 'Ville de naissance…',
+                            prefixIcon: const Icon(Icons.search, size: 20),
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12)),
+                            contentPadding:
+                                const EdgeInsets.symmetric(vertical: 14),
+                          ),
+                        );
+                      },
+                      optionsViewBuilder: (
+                        BuildContext ctx,
+                        AutocompleteOnSelected<_NominatimResult> onSelected,
+                        Iterable<_NominatimResult> options,
+                      ) {
+                        return Align(
+                          alignment: Alignment.topLeft,
+                          child: Material(
+                            elevation: 6,
+                            borderRadius: BorderRadius.circular(10),
+                            child: ConstrainedBox(
+                              constraints: const BoxConstraints(maxWidth: 400),
+                              child: ListView(
+                                padding: EdgeInsets.zero,
+                                shrinkWrap: true,
+                                children: options.map((_NominatimResult r) {
+                                  return ListTile(
+                                    dense: true,
+                                    leading: const Icon(Icons.place, size: 16),
+                                    title: Text(r.name,
+                                        style: const TextStyle(fontSize: 13)),
+                                    subtitle: Text(
+                                      '${r.lat.toStringAsFixed(2)}°, '
+                                      '${r.lon.toStringAsFixed(2)}°',
+                                      style: const TextStyle(fontSize: 11),
+                                    ),
+                                    onTap: () => onSelected(r),
+                                  );
+                                }).toList(),
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  OutlinedButton(
+                    onPressed: () async {
+                      final LocationPickerResult? result =
+                          await showLocationPicker(
+                        context: context,
+                        initialLat: _birthLat,
+                        initialLon: _birthLon,
+                        title: 'Lieu de naissance',
+                      );
+                      if (result != null && mounted) {
+                        setState(() {
+                          _birthPlaceName = result.name;
+                          _birthLat = result.lat;
+                          _birthLon = result.lon;
+                        });
+                      }
+                    },
+                    style: OutlinedButton.styleFrom(
+                      minimumSize: const Size(48, 48),
+                      padding: EdgeInsets.zero,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12)),
+                    ),
+                    child: const Icon(Icons.map_outlined, size: 22),
                   ),
                 ],
-                const Spacer(),
-                if (_pbkdf2Running)
-                  const Center(child: _Pbkdf2Loader())
-                else if (_isLoading)
-                  const Center(child: _MultipassCreationLoader())
-                else
-                  ElevatedButton(
-                    onPressed: _createMultipass,
-                    style: ElevatedButton.styleFrom(
-                      minimumSize: const Size(double.infinity, 52),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16),
+              ),
+              // Mini-carte lieu de naissance
+              if (_birthPlaceName.isNotEmpty) ...<Widget>[
+                const SizedBox(height: 8),
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12),
+                    border:
+                        Border.all(color: Colors.green.withValues(alpha: 0.4)),
+                  ),
+                  clipBehavior: Clip.hardEdge,
+                  child: Column(
+                    children: <Widget>[
+                      SizedBox(
+                        height: 150,
+                        child: FlutterMap(
+                          options: MapOptions(
+                            initialCenter: LatLng(_birthLat, _birthLon),
+                            initialZoom: 10.0,
+                            interactionOptions: const InteractionOptions(
+                              flags: InteractiveFlag.none,
+                            ),
+                          ),
+                          children: <Widget>[
+                            TileLayer(
+                              urlTemplate:
+                                  'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                              userAgentPackageName: 'com.zelkova.app',
+                            ),
+                            PolygonLayer(
+                              polygons: <Polygon>[
+                                Polygon(
+                                  points: <LatLng>[
+                                    LatLng(_birthLat, _birthLon),
+                                    LatLng(_birthLat + 0.01, _birthLon),
+                                    LatLng(_birthLat + 0.01, _birthLon + 0.01),
+                                    LatLng(_birthLat, _birthLon + 0.01),
+                                  ],
+                                  color: Colors.green.withValues(alpha: 0.2),
+                                  borderStrokeWidth: 2,
+                                  borderColor: Colors.green.shade700,
+                                ),
+                              ],
+                            ),
+                            MarkerLayer(
+                              markers: <Marker>[
+                                Marker(
+                                  point: LatLng(_birthLat, _birthLon),
+                                  width: 32,
+                                  height: 32,
+                                  child: const Icon(
+                                    Icons.location_pin,
+                                    color: Colors.red,
+                                    size: 30,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                    child: Text(
-                      tr('create_multipass'),
-                      style: const TextStyle(
-                        fontWeight: FontWeight.w700,
-                        fontSize: 16,
+                      Container(
+                        color: Colors.green.shade700.withValues(alpha: 0.08),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 12, vertical: 6),
+                        child: Row(
+                          children: <Widget>[
+                            const Icon(Icons.place,
+                                color: Colors.green, size: 14),
+                            const SizedBox(width: 6),
+                            Expanded(
+                              child: Text(
+                                _birthPlaceName,
+                                style: const TextStyle(
+                                    fontSize: 12, fontWeight: FontWeight.w500),
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 6, vertical: 2),
+                              decoration: BoxDecoration(
+                                color: Colors.green.shade700
+                                    .withValues(alpha: 0.15),
+                                borderRadius: BorderRadius.circular(6),
+                              ),
+                              child: Text(
+                                '⬡ ${_birthLat.toStringAsFixed(2)}_${_birthLon.toStringAsFixed(2)}',
+                                style: TextStyle(
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.w700,
+                                    color: Colors.green.shade800),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
+                    ],
+                  ),
+                ),
+              ],
+              const SizedBox(height: 20),
+
+              // ── Poids de naissance ────────────────────────────────────────
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text('Poids de naissance',
+                      style: theme.textTheme.labelLarge
+                          ?.copyWith(fontWeight: FontWeight.w600)),
+                  Text(
+                    '${_birthWeight.toStringAsFixed(1)} kg',
+                    style: theme.textTheme.bodyMedium
+                        ?.copyWith(fontWeight: FontWeight.w700),
+                  ),
+                ],
+              ),
+              Slider(
+                value: _birthWeight,
+                min: 0.5,
+                max: 6.0,
+                divisions: 55,
+                label: '${_birthWeight.toStringAsFixed(1)} kg',
+                onChanged: (double v) => setState(() => _birthWeight = v),
+              ),
+              const SizedBox(height: 8),
+
+              // ── Aperçu KIN en temps réel (dès que la date est saisie) ─────
+              if (_birthDate != null) ...<Widget>[
+                const Divider(),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 10),
+                  child: Row(
+                    children: <Widget>[
+                      const Text('🌀', style: TextStyle(fontSize: 16)),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: Text(
+                          'Votre signature KIN',
+                          style: theme.textTheme.titleSmall
+                              ?.copyWith(fontWeight: FontWeight.w700),
+                        ),
+                      ),
+                      if (_birthPlaceName.isEmpty)
+                        Text(
+                          '(lieu requis pour finaliser)',
+                          style: theme.textTheme.labelSmall?.copyWith(
+                            color: theme.colorScheme.onSurface
+                                .withValues(alpha: 0.45),
+                            fontStyle: FontStyle.italic,
+                          ),
+                        ),
+                    ],
+                  ),
+                ),
+                _buildKinCard(
+                  kin: calculateMayaKin(_birthDate!),
+                  label: 'Naissance',
+                ),
+                const SizedBox(height: 8),
+                _buildKinCard(
+                  kin: calculateConceptionKin(_birthDate!, weight: _birthWeight),
+                  label: 'Conception',
+                  secondary: true,
+                ),
+                // Bouton partage MATCH dès que le lieu est connu
+                if (_birthPlaceName.isNotEmpty) ...<Widget>[
+                  const SizedBox(height: 10),
+                  _buildMatchShareSection(
+                    _buildAtomicMatchUrl(calculateMayaKin(_birthDate!)),
+                  ),
+                ],
+                const SizedBox(height: 8),
+              ],
+
+              // ── Hint si champs obligatoires manquants ─────────────────────
+              if (_birthDate == null || _birthPlaceName.isEmpty)
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 8),
+                  child: Text(
+                    '* ${_birthDate == null ? "Date de naissance requise." : ""}'
+                    '${_birthDate == null && _birthPlaceName.isEmpty ? " " : ""}'
+                    '${_birthPlaceName.isEmpty ? "Lieu de naissance requis." : ""}',
+                    textAlign: TextAlign.center,
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      color: theme.colorScheme.error.withValues(alpha: 0.7),
                     ),
                   ),
+                ),
+
+              // ── Erreur ────────────────────────────────────────────────────
+              if (_errorMessage != null) ...<Widget>[
+                const SizedBox(height: 4),
+                Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: theme.colorScheme.error.withValues(alpha: 0.1),
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(
+                        color: theme.colorScheme.error.withValues(alpha: 0.3)),
+                  ),
+                  child: Text(
+                    _errorMessage!,
+                    style: TextStyle(
+                        color: theme.colorScheme.error, fontSize: 13),
+                  ),
+                ),
+                const SizedBox(height: 8),
               ],
-            ),
+
+              // ── Bouton créer ──────────────────────────────────────────────
+              if (_pbkdf2Running)
+                const Center(child: _Pbkdf2Loader())
+              else if (_isLoading)
+                const Center(child: _MultipassCreationLoader())
+              else
+                ElevatedButton.icon(
+                  onPressed: (_birthDate != null && _birthPlaceName.isNotEmpty)
+                      ? _createMultipass
+                      : null,
+                  icon: const Text('✨', style: TextStyle(fontSize: 18)),
+                  label: const Text(
+                    'Initialiser mon MULTIPASS',
+                    style: TextStyle(fontWeight: FontWeight.w700, fontSize: 15),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: const Size(double.infinity, 52),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16)),
+                  ),
+                ),
+            ],
           ),
         ),
       ),
@@ -1756,8 +2284,10 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
   /// Construit l'URL de partage MATCH pour atomic_match.html.
   /// Paramètres attendus par la page JS :
   ///   d=YYYYMMDD · t=HHMM · lo=lonInt · k=kinNum · n=displayName
+  /// Construit l'URL MATCH — utilisable dès la saisie (avant création) et dans l'écran succès.
+  /// Priorité base URL : uplanetHome (post-création) > _selectedUspot (pré-création).
   String _buildAtomicMatchUrl(KinResult birthKin) {
-    if (_birthDate == null || _result == null) return '';
+    if (_birthDate == null) return '';
 
     final String d = '${_birthDate!.year.toString().padLeft(4, '0')}'
         '${_birthDate!.month.toString().padLeft(2, '0')}'
@@ -1772,9 +2302,11 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
     final int lo = lonRaw.round();
 
     final String email = _emailController.text.trim();
-    final String name = email.contains('@') ? email.split('@').first : email;
+    final String name = email.isNotEmpty
+        ? (email.contains('@') ? email.split('@').first : email)
+        : 'moi';
 
-    String base = _result!.uplanetHome.isNotEmpty
+    String base = (_result?.uplanetHome.isNotEmpty == true)
         ? _result!.uplanetHome
         : _selectedUspot;
     if (base.endsWith('/')) {
@@ -2058,8 +2590,6 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
     });
   }
 
-  // ── Page 2 : Profil ondulatoire ATOMIC (optionnel) ────────────────────────
-
   // ── Nominatim geocoding ────────────────────────────────────────────────────
 
   Future<Iterable<_NominatimResult>> _searchNominatim(String query) async {
@@ -2092,598 +2622,6 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
     }
   }
 
-  // ── Page 2 : Profil ondulatoire ATOMIC (optionnel) ────────────────────────
-
-  Widget _buildAtomicPage() {
-    final ThemeData theme = Theme.of(context);
-    return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: _goBackToFormPage,
-        ),
-        title: const Text('🔑 Récupération & portabilité'),
-        elevation: 0,
-      ),
-      body: SafeArea(
-        child: ListView(
-          padding: const EdgeInsets.fromLTRB(20, 16, 20, 120),
-          children: <Widget>[
-            Text(
-              'Vos données de naissance permettent de récupérer votre MULTIPASS '
-              'sur n\'importe quel appareil, de calculer votre KIN Maya (Tzolkin 1-260) '
-              'et découvrir le lien de résonance avec vos amis... et leurs amis.',
-              style: theme.textTheme.bodySmall?.copyWith(
-                color: theme.colorScheme.onSurface.withValues(alpha: 0.65),
-                height: 1.4,
-              ),
-            ),
-            const SizedBox(height: 20),
-
-            // ── Email (reprise depuis page 1 si vide) ─────────────────────
-            TextFormField(
-              controller: _emailController,
-              keyboardType: TextInputType.emailAddress,
-              autocorrect: false,
-              decoration: InputDecoration(
-                labelText: tr('email'),
-                hintText: 'exemple@email.com',
-                prefixIcon: const Icon(Icons.email_outlined),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(14),
-                ),
-              ),
-              validator: (String? v) {
-                if (v == null || v.trim().isEmpty) {
-                  return tr('email_required');
-                }
-                if (!RegExp(r'^[^@]+@[^@]+\.[^@]+$').hasMatch(v.trim())) {
-                  return tr('email_invalid');
-                }
-                return null;
-              },
-            ),
-            const SizedBox(height: 20),
-
-            // ── Polarité ──────────────────────────────────────────────────
-            Text('Polarité biologique',
-                style: theme.textTheme.labelLarge
-                    ?.copyWith(fontWeight: FontWeight.w600)),
-            const SizedBox(height: 8),
-            SegmentedButton<int>(
-              segments: const <ButtonSegment<int>>[
-                ButtonSegment<int>(
-                    value: 0,
-                    label: Text('Homme'),
-                    icon: Icon(Icons.male)),
-                ButtonSegment<int>(
-                    value: 1,
-                    label: Text('Femme'),
-                    icon: Icon(Icons.female)),
-              ],
-              selected: <int>{_polarity},
-              onSelectionChanged: (Set<int> s) =>
-                  setState(() => _polarity = s.first),
-              style: SegmentedButton.styleFrom(
-                minimumSize: const Size(0, 44),
-              ),
-            ),
-            const SizedBox(height: 20),
-
-            // ── Date de naissance ─────────────────────────────────────────
-            Text('Date de naissance *',
-                style: theme.textTheme.labelLarge
-                    ?.copyWith(fontWeight: FontWeight.w600)),
-            const SizedBox(height: 8),
-            GestureDetector(
-              onTap: () async {
-                final List<DateTime?>? result =
-                    await showCalendarDatePicker2Dialog(
-                  context: context,
-                  config: CalendarDatePicker2WithActionButtonsConfig(
-                    calendarType: CalendarDatePicker2Type.single,
-                    firstDate: DateTime(1900),
-                    lastDate: DateTime.now(),
-                    selectedDayHighlightColor:
-                        theme.colorScheme.primary,
-                    centerAlignModePicker: true,
-                    animateToDisplayedMonthDate: true,
-                  ),
-                  dialogSize: const Size(340, 420),
-                  value: <DateTime?>[_birthDate],
-                  borderRadius: const BorderRadius.all(Radius.circular(16)),
-                );
-                if (result != null &&
-                    result.isNotEmpty &&
-                    result.first != null) {
-                  setState(() => _birthDate = result.first);
-                }
-              },
-              child: Container(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 16, vertical: 14),
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    color: _birthDate != null
-                        ? theme.colorScheme.primary.withValues(alpha: 0.6)
-                        : theme.colorScheme.outline,
-                  ),
-                  borderRadius: BorderRadius.circular(12),
-                  color: _birthDate != null
-                      ? theme.colorScheme.primary.withValues(alpha: 0.04)
-                      : null,
-                ),
-                child: Row(
-                  children: <Widget>[
-                    Icon(
-                      Icons.calendar_month,
-                      size: 20,
-                      color: _birthDate != null
-                          ? theme.colorScheme.primary
-                          : theme.colorScheme.onSurface.withValues(alpha: 0.5),
-                    ),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: _birthDate != null
-                          ? Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Text(
-                                  '${_birthDate!.day.toString().padLeft(2, '0')} '
-                                  '${_monthName(_birthDate!.month)} '
-                                  '${_birthDate!.year}',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w600,
-                                    color: theme.colorScheme.primary,
-                                  ),
-                                ),
-                              ],
-                            )
-                          : Text(
-                              'Choisir une date',
-                              style: TextStyle(
-                                fontSize: 14,
-                                color: theme.colorScheme.onSurface
-                                    .withValues(alpha: 0.5),
-                              ),
-                            ),
-                    ),
-                    Icon(
-                      Icons.edit_calendar_outlined,
-                      size: 18,
-                      color: theme.colorScheme.onSurface.withValues(alpha: 0.4),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            const SizedBox(height: 16),
-
-            // ── Heure de naissance — sélecteur Cupertino 24h ──────────────
-            Text('Heure de naissance (optionnelle)',
-                style: theme.textTheme.labelLarge
-                    ?.copyWith(fontWeight: FontWeight.w600)),
-            const SizedBox(height: 8),
-            GestureDetector(
-              onTap: () async {
-                DateTime tempTime = DateTime(
-                  2000,
-                  1,
-                  1,
-                  _birthTime?.hour ?? 12,
-                  _birthTime?.minute ?? 0,
-                );
-                await showModalBottomSheet<void>(
-                  context: context,
-                  shape: const RoundedRectangleBorder(
-                    borderRadius:
-                        BorderRadius.vertical(top: Radius.circular(16)),
-                  ),
-                  builder: (BuildContext ctx) => SizedBox(
-                    height: 280,
-                    child: Column(
-                      children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 16, vertical: 8),
-                          child: Row(
-                            children: <Widget>[
-                              TextButton(
-                                onPressed: () => Navigator.pop(ctx),
-                                child: Text(tr('cancel')),
-                              ),
-                              const Expanded(
-                                child: Center(
-                                  child: Text(
-                                    'Heure de naissance',
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.w600,
-                                        fontSize: 15),
-                                  ),
-                                ),
-                              ),
-                              TextButton(
-                                onPressed: () {
-                                  if (mounted) {
-                                    setState(() => _birthTime = TimeOfDay(
-                                          hour: tempTime.hour,
-                                          minute: tempTime.minute,
-                                        ));
-                                  }
-                                  Navigator.pop(ctx);
-                                },
-                                child: const Text('OK',
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.w700)),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Expanded(
-                          child: CupertinoDatePicker(
-                            mode: CupertinoDatePickerMode.time,
-                            use24hFormat: true,
-                            initialDateTime: tempTime,
-                            onDateTimeChanged: (DateTime dt) =>
-                                tempTime = dt,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                );
-              },
-              child: Container(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 16, vertical: 14),
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    color: _birthTime != null
-                        ? theme.colorScheme.secondary.withValues(alpha: 0.6)
-                        : theme.colorScheme.outline,
-                  ),
-                  borderRadius: BorderRadius.circular(12),
-                  color: _birthTime != null
-                      ? theme.colorScheme.secondary.withValues(alpha: 0.04)
-                      : null,
-                ),
-                child: Row(
-                  children: <Widget>[
-                    Icon(
-                      Icons.schedule,
-                      size: 20,
-                      color: _birthTime != null
-                          ? theme.colorScheme.secondary
-                          : theme.colorScheme.onSurface.withValues(alpha: 0.5),
-                    ),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: _birthTime != null
-                          ? Text(
-                              '${_birthTime!.hour.toString().padLeft(2, '0')}h'
-                              '${_birthTime!.minute.toString().padLeft(2, '0')}',
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
-                                color: theme.colorScheme.secondary,
-                              ),
-                            )
-                          : Text(
-                              'Heure inconnue (midi par défaut)',
-                              style: TextStyle(
-                                fontSize: 14,
-                                color: theme.colorScheme.onSurface
-                                    .withValues(alpha: 0.5),
-                              ),
-                            ),
-                    ),
-                    Icon(
-                      Icons.edit_outlined,
-                      size: 18,
-                      color:
-                          theme.colorScheme.onSurface.withValues(alpha: 0.4),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            const SizedBox(height: 20),
-
-            // ── Lieu de naissance ─────────────────────────────────────────
-            Text('Lieu de naissance',
-                style: theme.textTheme.labelLarge
-                    ?.copyWith(fontWeight: FontWeight.w600)),
-            const SizedBox(height: 8),
-            Row(
-              children: <Widget>[
-                Expanded(
-                  child: Autocomplete<_NominatimResult>(
-                    optionsBuilder: (TextEditingValue tv) =>
-                        _searchNominatim(tv.text),
-                    displayStringForOption: (_NominatimResult r) => r.name,
-                    onSelected: (_NominatimResult r) {
-                      setState(() {
-                        _birthPlaceName = r.name;
-                        _birthLat =
-                            double.parse(r.lat.toStringAsFixed(2));
-                        _birthLon =
-                            double.parse(r.lon.toStringAsFixed(2));
-                      });
-                    },
-                    fieldViewBuilder: (
-                      BuildContext ctx,
-                      TextEditingController fieldCtrl,
-                      FocusNode focusNode,
-                      VoidCallback onSubmitted,
-                    ) {
-                      if (_birthPlaceName.isNotEmpty &&
-                          fieldCtrl.text.isEmpty) {
-                        fieldCtrl.text = _birthPlaceName;
-                      }
-                      return TextField(
-                        controller: fieldCtrl,
-                        focusNode: focusNode,
-                        keyboardType: TextInputType.text,
-                        textCapitalization: TextCapitalization.sentences,
-                        decoration: InputDecoration(
-                          hintText: 'Ville de naissance…',
-                          prefixIcon: const Icon(Icons.search, size: 20),
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12)),
-                          contentPadding:
-                              const EdgeInsets.symmetric(vertical: 14),
-                        ),
-                      );
-                    },
-                    optionsViewBuilder: (
-                      BuildContext ctx,
-                      AutocompleteOnSelected<_NominatimResult> onSelected,
-                      Iterable<_NominatimResult> options,
-                    ) {
-                      return Align(
-                        alignment: Alignment.topLeft,
-                        child: Material(
-                          elevation: 6,
-                          borderRadius: BorderRadius.circular(10),
-                          child: ConstrainedBox(
-                            constraints: const BoxConstraints(maxWidth: 400),
-                            child: ListView(
-                              padding: EdgeInsets.zero,
-                              shrinkWrap: true,
-                              children:
-                                  options.map((_NominatimResult r) {
-                                return ListTile(
-                                  dense: true,
-                                  leading: const Icon(Icons.place, size: 16),
-                                  title: Text(r.name,
-                                      style:
-                                          const TextStyle(fontSize: 13)),
-                                  subtitle: Text(
-                                    '${r.lat.toStringAsFixed(2)}°, '
-                                    '${r.lon.toStringAsFixed(2)}°',
-                                    style: const TextStyle(fontSize: 11),
-                                  ),
-                                  onTap: () => onSelected(r),
-                                );
-                              }).toList(),
-                            ),
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                ),
-                const SizedBox(width: 8),
-                // Bouton carte
-                OutlinedButton(
-                  onPressed: () async {
-                    final LocationPickerResult? result =
-                        await showLocationPicker(
-                      context: context,
-                      initialLat: _birthLat,
-                      initialLon: _birthLon,
-                      title: 'Lieu de naissance',
-                    );
-                    if (result != null && mounted) {
-                      setState(() {
-                        _birthPlaceName = result.name;
-                        _birthLat = result.lat;
-                        _birthLon = result.lon;
-                      });
-                    }
-                  },
-                  style: OutlinedButton.styleFrom(
-                    minimumSize: const Size(48, 48),
-                    padding: EdgeInsets.zero,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12)),
-                  ),
-                  child: const Icon(Icons.map_outlined, size: 22),
-                ),
-              ],
-            ),
-            // ── Aperçu carte + A4L ─────────────────────────────────────────
-            if (_birthPlaceName.isNotEmpty) ...<Widget>[
-              const SizedBox(height: 8),
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                  border:
-                      Border.all(color: Colors.green.withValues(alpha: 0.4)),
-                ),
-                clipBehavior: Clip.hardEdge,
-                child: Column(
-                  children: <Widget>[
-                    SizedBox(
-                      height: 150,
-                      child: FlutterMap(
-                        options: MapOptions(
-                          initialCenter: LatLng(_birthLat, _birthLon),
-                          initialZoom: 10.0,
-                          interactionOptions: const InteractionOptions(
-                            flags: InteractiveFlag.none,
-                          ),
-                        ),
-                        children: <Widget>[
-                          TileLayer(
-                            urlTemplate:
-                                'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-                            userAgentPackageName: 'com.zelkova.app',
-                          ),
-                          PolygonLayer(
-                            polygons: <Polygon>[
-                              Polygon(
-                                points: <LatLng>[
-                                  LatLng(_birthLat, _birthLon),
-                                  LatLng(_birthLat + 0.01, _birthLon),
-                                  LatLng(_birthLat + 0.01,
-                                      _birthLon + 0.01),
-                                  LatLng(_birthLat, _birthLon + 0.01),
-                                ],
-                                color: Colors.green.withValues(alpha: 0.2),
-                                borderStrokeWidth: 2,
-                                borderColor: Colors.green.shade700,
-                              ),
-                            ],
-                          ),
-                          MarkerLayer(
-                            markers: <Marker>[
-                              Marker(
-                                point: LatLng(_birthLat, _birthLon),
-                                width: 32,
-                                height: 32,
-                                child: const Icon(
-                                  Icons.location_pin,
-                                  color: Colors.red,
-                                  size: 30,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      color:
-                          Colors.green.shade700.withValues(alpha: 0.08),
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 12, vertical: 6),
-                      child: Row(
-                        children: <Widget>[
-                          const Icon(Icons.place,
-                              color: Colors.green, size: 14),
-                          const SizedBox(width: 6),
-                          Expanded(
-                            child: Text(
-                              _birthPlaceName,
-                              style: const TextStyle(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w500),
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 6, vertical: 2),
-                            decoration: BoxDecoration(
-                              color: Colors.green.shade700
-                                  .withValues(alpha: 0.15),
-                              borderRadius: BorderRadius.circular(6),
-                            ),
-                            child: Text(
-                              '⬡ ${_birthLat.toStringAsFixed(2)}_${_birthLon.toStringAsFixed(2)}',
-                              style: TextStyle(
-                                  fontSize: 10,
-                                  fontWeight: FontWeight.w700,
-                                  color: Colors.green.shade800),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-            const SizedBox(height: 20),
-
-            // ── Poids de naissance ────────────────────────────────────────
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Text('Poids de naissance',
-                    style: theme.textTheme.labelLarge
-                        ?.copyWith(fontWeight: FontWeight.w600)),
-                Text(
-                  '${_birthWeight.toStringAsFixed(1)} kg',
-                  style: theme.textTheme.bodyMedium
-                      ?.copyWith(fontWeight: FontWeight.w700),
-                ),
-              ],
-            ),
-            Slider(
-              value: _birthWeight,
-              min: 0.5,
-              max: 6.0,
-              divisions: 55,
-              label: '${_birthWeight.toStringAsFixed(1)} kg',
-              onChanged: (double v) => setState(() => _birthWeight = v),
-            ),
-            const SizedBox(height: 32),
-
-            // ── Bouton Créer ──────────────────────────────────────────────
-            if (_pbkdf2Running)
-              const Center(child: _Pbkdf2Loader())
-            else if (_isLoading)
-              const Center(child: _MultipassCreationLoader())
-            else
-              ElevatedButton.icon(
-                onPressed: _birthDate != null ? _createMultipass : null,
-                icon: const Text('✨', style: TextStyle(fontSize: 18)),
-                label: const Text(
-                  'Créer mon MULTIPASS avec profil KIN',
-                  style: TextStyle(fontWeight: FontWeight.w700, fontSize: 15),
-                ),
-                style: ElevatedButton.styleFrom(
-                  minimumSize: const Size(double.infinity, 52),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16)),
-                ),
-              ),
-            if (_birthDate == null)
-              Padding(
-                padding: const EdgeInsets.only(top: 8),
-                child: Text(
-                  '* Date de naissance requise pour activer.',
-                  textAlign: TextAlign.center,
-                  style: theme.textTheme.bodySmall?.copyWith(
-                      color:
-                          theme.colorScheme.onSurface.withValues(alpha: 0.5)),
-                ),
-              ),
-            if (_errorMessage != null) ...<Widget>[
-              const SizedBox(height: 12),
-              Container(
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: theme.colorScheme.error.withValues(alpha: 0.1),
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(
-                      color: theme.colorScheme.error.withValues(alpha: 0.3)),
-                ),
-                child: Text(
-                  _errorMessage!,
-                  style: TextStyle(
-                      color: theme.colorScheme.error, fontSize: 13),
-                ),
-              ),
-            ],
-          ],
-        ),
-      ),
-    );
-  }
 
   Widget _buildOcTile({
     required IconData icon,

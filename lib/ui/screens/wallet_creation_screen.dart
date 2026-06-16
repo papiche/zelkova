@@ -629,22 +629,6 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
     );
   }
 
-  void _goToAtomicPage() {
-    _pageController.animateToPage(
-      2,
-      duration: const Duration(milliseconds: 400),
-      curve: Curves.easeInOut,
-    );
-  }
-
-  void _goBackToFormPage() {
-    _pageController.animateToPage(
-      1,
-      duration: const Duration(milliseconds: 400),
-      curve: Curves.easeInOut,
-    );
-  }
-
   Future<void> _openUrl(String url) async {
     if (url.isEmpty) return;
     final Uri uri = Uri.parse(url);
@@ -676,7 +660,6 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
       children: <Widget>[
         _buildContributionPage(),
         _buildFormPage(),
-        _buildAtomicPage(),
       ],
     );
   }

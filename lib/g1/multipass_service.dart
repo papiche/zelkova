@@ -6,6 +6,31 @@ import 'package:http/http.dart' as http;
 import '../env.dart';
 import '../ui/logger.dart';
 
+// ── Typed exceptions ──────────────────────────────────────────────────────────
+
+/// L'email est déjà enregistré — l'API demande le code PASS (HTTP 409).
+class MultipassExistsException implements Exception {
+  const MultipassExistsException();
+  @override
+  String toString() => 'MULTIPASS_EXISTS';
+}
+
+/// Le code PASS fourni est incorrect (HTTP 401).
+class MultipassInvalidPassException implements Exception {
+  const MultipassInvalidPassException();
+  @override
+  String toString() => 'INVALID_PASS';
+}
+
+/// Le fichier .pass est absent sur ce nœud (HTTP 503).
+class MultipassPassUnavailableException implements Exception {
+  const MultipassPassUnavailableException();
+  @override
+  String toString() => 'PASS_UNAVAILABLE';
+}
+
+// ── OcUrls ────────────────────────────────────────────────────────────────────
+
 /// OC contribution URLs returned by the server
 class OcUrls {
   OcUrls({
@@ -30,6 +55,8 @@ class OcUrls {
   final String cloud;
   final String membre;
 }
+
+// ── MultipassResponse ─────────────────────────────────────────────────────────
 
 /// Response from the UPassport /g1nostr MULTIPASS creation endpoint
 class MultipassResponse {
@@ -63,8 +90,6 @@ class MultipassResponse {
       nostrns: json['nostrns'] as String? ?? '',
       lat: json['lat'] as String? ?? '',
       lon: json['lon'] as String? ?? '',
-      // API /g1nostr (g1.sh) returns "ssss" but the storage key is ssss_player.
-      // Accept both field names for forward and backward compatibility.
       ssssPlayer: (json['ssss'] ?? json['ssss_player']) as String? ?? '',
       isOrigin: json['is_origin'] as bool? ?? false,
       ocUrls: OcUrls.fromJson(json['oc_urls'] as Map<String, dynamic>?),
@@ -90,45 +115,85 @@ class MultipassResponse {
   final String uplanetnameG1;
 }
 
-/// Service to create a MULTIPASS identity via UPassport API
+// ── MultipassService ──────────────────────────────────────────────────────────
+
+/// Service to create or recover a MULTIPASS identity via UPassport API
 class MultipassService {
   static const Duration _timeout = Duration(seconds: 60);
 
-  /// Create a MULTIPASS by calling the UPassport /g1nostr endpoint
+  /// Create a new MULTIPASS or recover an existing one via UPassport /g1nostr.
   ///
-  /// Returns [MultipassResponse] with salt, pepper, nsec, g1pub, etc.
-  /// The salt and pepper can be used with [CesiumWallet] to derive
-  /// the same G1 keypair locally.
+  /// **New MULTIPASS** (email unknown to server): creates all keys and returns JSON.
+  ///
+  /// **Existing MULTIPASS** (email known to server):
+  /// - Without [passCode] → throws [MultipassExistsException] (HTTP 409)
+  /// - With correct [passCode] → returns existing MULTIPASS JSON (HTTP 200)
+  /// - With wrong [passCode]   → throws [MultipassInvalidPassException] (HTTP 401)
+  ///
+  /// **ATOMIC birth profile** (optional): if [birthDatetime] is provided,
+  /// the server stores it for Dreamspell/ondulatory profiling.
+  /// Format: `"YYYY-MM-DDTHH:MM"` (ISO 8601, local time of birth place).
   static Future<MultipassResponse> createMultipass({
     required String email,
     required String lang,
     required String lat,
     required String lon,
+    String? passCode,
     String? serverUrl,
+    // ATOMIC birth/conception profile (optional)
+    String? birthDatetime,
+    String? conceptionDatetime,
+    String? birthPlace,
+    String? conceptionPlace,
+    String? birthWeight,
   }) async {
     final String baseUrl = serverUrl ?? Env.upassportUrl;
     final Uri uri = Uri.parse('$baseUrl/g1nostr');
 
-    final http.Response response = await http.post(
-      uri,
-      body: <String, String>{
-        'email': email,
-        'lang': lang,
-        'lat': lat,
-        'lon': lon,
-        'format': 'json',
-      },
-    ).timeout(_timeout);
+    final Map<String, String> body = <String, String>{
+      'email': email,
+      'lang': lang,
+      'lat': lat,
+      'lon': lon,
+      'format': 'json',
+      if (passCode != null && passCode.isNotEmpty) 'pass_code': passCode,
+      if (birthDatetime != null && birthDatetime.isNotEmpty)
+        'birth_datetime': birthDatetime,
+      if (conceptionDatetime != null && conceptionDatetime.isNotEmpty)
+        'conception_datetime': conceptionDatetime,
+      if (birthPlace != null && birthPlace.isNotEmpty)
+        'birth_place': birthPlace,
+      if (conceptionPlace != null && conceptionPlace.isNotEmpty)
+        'conception_place': conceptionPlace,
+      if (birthWeight != null && birthWeight.isNotEmpty)
+        'birth_weight': birthWeight,
+    };
 
-    if (response.statusCode != 200) {
-      final Map<String, dynamic> error =
-          jsonDecode(response.body) as Map<String, dynamic>;
-      throw Exception(error['error'] ?? 'MULTIPASS creation failed');
+    final http.Response response = await http
+        .post(uri, body: body)
+        .timeout(_timeout);
+
+    switch (response.statusCode) {
+      case 200:
+        final Map<String, dynamic> data =
+            jsonDecode(response.body) as Map<String, dynamic>;
+        return MultipassResponse.fromJson(data);
+      case 401:
+        throw const MultipassInvalidPassException();
+      case 409:
+        throw const MultipassExistsException();
+      case 503:
+        throw const MultipassPassUnavailableException();
+      default:
+        Map<String, dynamic>? errMap;
+        try {
+          errMap = jsonDecode(response.body) as Map<String, dynamic>?;
+        } catch (_) {}
+        final String msg = errMap?['error'] as String?
+            ?? errMap?['detail'] as String?
+            ?? 'MULTIPASS creation failed (${response.statusCode})';
+        throw Exception(msg);
     }
-
-    final Map<String, dynamic> data =
-        jsonDecode(response.body) as Map<String, dynamic>;
-    return MultipassResponse.fromJson(data);
   }
 
   /// Upload a profile image (avatar/banner) to the UPassport API.
@@ -163,7 +228,6 @@ class MultipassService {
       if (response.statusCode == 201) {
         final Map<String, dynamic> data =
             jsonDecode(response.body) as Map<String, dynamic>;
-        // Prefer IPFS URL, fallback to local URL
         final String? ipfsUrl = data['ipfs_url'] as String?;
         final String? localUrl = data['local_url'] as String?;
         if (ipfsUrl != null && ipfsUrl.isNotEmpty) return ipfsUrl;

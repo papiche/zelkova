@@ -136,6 +136,7 @@ class _SwarmStation {
 /// Onboarding screen for first launch:
 /// Page 0 — Présentation des 4 options de contribution OC (carousel)
 /// Page 1 — Formulaire email + géolocalisation → création MULTIPASS
+/// Page 2 — Profil ondulatoire ATOMIC (optionnel) : naissance, conception, KIN
 /// Vue succès — Liens Open Collective personnalisés + bouton "C'est parti"
 class WalletCreationScreen extends StatefulWidget {
   const WalletCreationScreen({super.key});
@@ -161,6 +162,12 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
   bool _swarmLoading = false;
   String _selectedUspot = Env.upassportUrl; // URL used for MULTIPASS creation
 
+  // ── ATOMIC birth profile (optional) ──────────────────────────────────────
+  final TextEditingController _birthPlaceController = TextEditingController();
+  DateTime? _birthDate;
+  TimeOfDay? _birthTime;
+  double _birthWeight = 3.5;
+
   @override
   void initState() {
     super.initState();
@@ -171,6 +178,7 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
   void dispose() {
     _pageController.dispose();
     _emailController.dispose();
+    _birthPlaceController.dispose();
     super.dispose();
   }
 
@@ -299,12 +307,37 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
   // ── Création du MULTIPASS ──────────────────────────────────────────────────
 
   Future<void> _createMultipass() async {
-    if (!_formKey.currentState!.validate()) return;
-
+    // Form may be on a different page (ATOMIC flow) — fall back to direct check
+    final FormState? form = _formKey.currentState;
+    if (form != null && !form.validate()) return;
+    if (_emailController.text.trim().isEmpty) {
+      setState(() => _errorMessage = 'Email requis.');
+      return;
+    }
     setState(() {
       _isLoading = true;
       _errorMessage = null;
     });
+    await _doCreate();
+  }
+
+  /// Build the ISO-8601 birth datetime from state, or null if not set.
+  String? _buildBirthDatetime() {
+    if (_birthDate == null) return null;
+    final TimeOfDay t = _birthTime ?? const TimeOfDay(hour: 12, minute: 0);
+    return '${_birthDate!.year.toString().padLeft(4, '0')}'
+        '-${_birthDate!.month.toString().padLeft(2, '0')}'
+        '-${_birthDate!.day.toString().padLeft(2, '0')}'
+        'T${t.hour.toString().padLeft(2, '0')}'
+        ':${t.minute.toString().padLeft(2, '0')}';
+  }
+
+  Future<void> _doCreate({String? passCode}) async {
+    final String? birthPlace = _birthPlaceController.text.trim().isNotEmpty
+        ? _birthPlaceController.text.trim()
+        : null;
+    final String? birthWeight =
+        _birthWeight != 3.5 ? _birthWeight.toStringAsFixed(1) : null;
 
     try {
       final MultipassResponse response = await MultipassService.createMultipass(
@@ -312,36 +345,29 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
         lang: context.locale.languageCode,
         lat: _lat,
         lon: _lon,
-        serverUrl: _selectedUspot, // use swarm-selected station
+        serverUrl: _selectedUspot,
+        passCode: passCode,
+        birthDatetime: _buildBirthDatetime(),
+        birthPlace: birthPlace,
+        birthWeight: birthWeight,
       );
-
-      await SharedPreferencesHelperV2().createMultipassAccount(
-        salt: response.salt,
-        pepper: response.pepper,
-        nsec: response.nsec,
-        npub: response.npub,
-        nostrns: response.nostrns,
-        ssssPlayer: response.ssssPlayer,
-        email: response.email,
-        isOrigin: response.isOrigin,
-        uplanetHome: response.uplanetHome,
-        ocUrls: <String, dynamic>{
-          'satellite': response.ocUrls.satellite,
-          'constellation': response.ocUrls.constellation,
-          'cloud': response.ocUrls.cloud,
-          'membre': response.ocUrls.membre,
-        },
-        uplanetnameG1: response.uplanetnameG1,
-      );
-
-      if (response.uplanetnameG1.isNotEmpty) {
-        ZenTagService().setUplanetnameG1(response.uplanetnameG1);
-      }
-
+      await _saveAndShowResult(response);
+    } on MultipassExistsException {
+      if (!mounted) return;
+      setState(() => _isLoading = false);
+      final String? code = await _showPassDialog();
+      if (code == null || !mounted) return;
+      setState(() {
+        _isLoading = true;
+        _errorMessage = null;
+      });
+      await _doCreate(passCode: code);
+    } on MultipassInvalidPassException {
       if (!mounted) return;
       setState(() {
-        _result = response;
         _isLoading = false;
+        _errorMessage =
+            "Code PASS incorrect. Vérifiez l'email reçu lors de la création de votre MULTIPASS.";
       });
     } catch (e) {
       logger('WalletCreationScreen: createMultipass error: $e');
@@ -353,6 +379,87 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
     }
   }
 
+  Future<void> _saveAndShowResult(MultipassResponse response) async {
+    await SharedPreferencesHelperV2().createMultipassAccount(
+      salt: response.salt,
+      pepper: response.pepper,
+      nsec: response.nsec,
+      npub: response.npub,
+      nostrns: response.nostrns,
+      ssssPlayer: response.ssssPlayer,
+      email: response.email,
+      isOrigin: response.isOrigin,
+      uplanetHome: response.uplanetHome,
+      ocUrls: <String, dynamic>{
+        'satellite': response.ocUrls.satellite,
+        'constellation': response.ocUrls.constellation,
+        'cloud': response.ocUrls.cloud,
+        'membre': response.ocUrls.membre,
+      },
+      uplanetnameG1: response.uplanetnameG1,
+    );
+    if (response.uplanetnameG1.isNotEmpty) {
+      ZenTagService().setUplanetnameG1(response.uplanetnameG1);
+    }
+    if (!mounted) return;
+    setState(() {
+      _result = response;
+      _isLoading = false;
+    });
+  }
+
+  /// Show a dialog asking for the 4-digit PASS code.
+  /// Returns the code string, or null if cancelled.
+  Future<String?> _showPassDialog() async {
+    final TextEditingController passCtrl = TextEditingController();
+    return showDialog<String>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext ctx) {
+        return AlertDialog(
+          title: const Text('🔑 Code PASS'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              const Text(
+                'Ce MULTIPASS existe déjà.\n'
+                'Saisissez le code à 4 chiffres reçu par email lors de sa création.',
+                style: TextStyle(fontSize: 13),
+              ),
+              const SizedBox(height: 16),
+              TextField(
+                controller: passCtrl,
+                keyboardType: TextInputType.number,
+                maxLength: 4,
+                autofocus: true,
+                textAlign: TextAlign.center,
+                style: const TextStyle(fontSize: 24, letterSpacing: 8),
+                decoration: InputDecoration(
+                  hintText: '••••',
+                  counterText: '',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => Navigator.of(ctx).pop(null),
+              child: const Text('Annuler'),
+            ),
+            FilledButton(
+              onPressed: () => Navigator.of(ctx).pop(passCtrl.text.trim()),
+              child: const Text('Valider'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   void _goToFormPage() {
     _pageController.nextPage(
       duration: const Duration(milliseconds: 400),
@@ -362,6 +469,22 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
 
   void _goBackToContributions() {
     _pageController.previousPage(
+      duration: const Duration(milliseconds: 400),
+      curve: Curves.easeInOut,
+    );
+  }
+
+  void _goToAtomicPage() {
+    _pageController.animateToPage(
+      2,
+      duration: const Duration(milliseconds: 400),
+      curve: Curves.easeInOut,
+    );
+  }
+
+  void _goBackToFormPage() {
+    _pageController.animateToPage(
+      1,
       duration: const Duration(milliseconds: 400),
       curve: Curves.easeInOut,
     );
@@ -398,6 +521,7 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
       children: <Widget>[
         _buildContributionPage(),
         _buildFormPage(),
+        _buildAtomicPage(),
       ],
     );
   }
@@ -787,6 +911,27 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
                     ),
                   ),
                 ],
+                const SizedBox(height: 12),
+                // ── Profil ondulatoire (optionnel) ─────────────────────────
+                OutlinedButton.icon(
+                  onPressed: _goToAtomicPage,
+                  icon: Icon(
+                    _birthDate != null ? Icons.auto_awesome : Icons.waves,
+                    size: 18,
+                  ),
+                  label: Text(
+                    _birthDate != null
+                        ? '✨ Profil KIN configuré — modifier'
+                        : '🌊 Ajouter mon profil ondulatoire (optionnel)',
+                    style: const TextStyle(fontSize: 13),
+                  ),
+                  style: OutlinedButton.styleFrom(
+                    minimumSize: const Size(double.infinity, 44),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                ),
                 const Spacer(),
                 if (_isLoading)
                   const Center(child: _MultipassCreationLoader())
@@ -1412,6 +1557,35 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
                         url: ocUrls.membre,
                       ),
                   ],
+                  if (_birthDate != null) ...<Widget>[
+                    const SizedBox(height: 16),
+                    const Divider(),
+                    Card(
+                      margin: const EdgeInsets.only(bottom: 8),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12)),
+                      color: Colors.indigo.shade50,
+                      elevation: 0,
+                      child: ListTile(
+                        leading:
+                            const Text('🌊', style: TextStyle(fontSize: 22)),
+                        title: const Text(
+                          'Profil KIN enregistré',
+                          style: TextStyle(fontWeight: FontWeight.w600),
+                        ),
+                        subtitle: Text(
+                          'Naissance : ${_birthDate!.day.toString().padLeft(2, '0')}/'
+                          '${_birthDate!.month.toString().padLeft(2, '0')}/'
+                          '${_birthDate!.year}',
+                          style: const TextStyle(fontSize: 12),
+                        ),
+                        trailing: const Icon(Icons.open_in_new, size: 16),
+                        onTap: () => _openUrl(
+                          '${_result!.uplanetHome.isNotEmpty ? _result!.uplanetHome : _selectedUspot}/atomic',
+                        ),
+                      ),
+                    ),
+                  ],
                   if (_result!.uplanetHome.isNotEmpty) ...<Widget>[
                     const SizedBox(height: 16),
                     const Divider(),
@@ -1436,6 +1610,190 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
         backgroundColor: Colors.green,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+    );
+  }
+
+  // ── Page 2 : Profil ondulatoire ATOMIC (optionnel) ────────────────────────
+
+  Widget _buildAtomicPage() {
+    final ThemeData theme = Theme.of(context);
+    return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: _goBackToFormPage,
+        ),
+        title: const Text('🌊 Profil ondulatoire'),
+        elevation: 0,
+      ),
+      body: SafeArea(
+        child: ListView(
+          padding: const EdgeInsets.fromLTRB(20, 16, 20, 120),
+          children: <Widget>[
+            Text(
+              'Vos données de naissance permettent de calculer votre Kin Maya (Tzolkin '
+              '1-260) et votre signature ondulatoire φ. Ces informations sont stockées '
+              'chiffrées sur votre station UPlanet.',
+              style: theme.textTheme.bodySmall?.copyWith(
+                color: theme.colorScheme.onSurface.withValues(alpha: 0.65),
+                height: 1.4,
+              ),
+            ),
+            const SizedBox(height: 24),
+
+            // ── Date de naissance ─────────────────────────────────────────
+            Text('Date de naissance',
+                style: theme.textTheme.labelLarge
+                    ?.copyWith(fontWeight: FontWeight.w600)),
+            const SizedBox(height: 8),
+            OutlinedButton.icon(
+              onPressed: () async {
+                final DateTime? picked = await showDatePicker(
+                  context: context,
+                  initialDate: _birthDate ?? DateTime(1990, 6, 1),
+                  firstDate: DateTime(1900),
+                  lastDate: DateTime.now(),
+                  helpText: 'Date de naissance',
+                );
+                if (picked != null) setState(() => _birthDate = picked);
+              },
+              icon: const Icon(Icons.calendar_today, size: 18),
+              label: Text(
+                _birthDate != null
+                    ? '${_birthDate!.day.toString().padLeft(2, '0')}/'
+                        '${_birthDate!.month.toString().padLeft(2, '0')}/'
+                        '${_birthDate!.year}'
+                    : 'Choisir une date',
+              ),
+              style: OutlinedButton.styleFrom(
+                minimumSize: const Size(double.infinity, 48),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12)),
+              ),
+            ),
+            const SizedBox(height: 16),
+
+            // ── Heure de naissance (optionnelle) ─────────────────────────
+            Text('Heure de naissance (optionnelle)',
+                style: theme.textTheme.labelLarge
+                    ?.copyWith(fontWeight: FontWeight.w600)),
+            const SizedBox(height: 8),
+            OutlinedButton.icon(
+              onPressed: () async {
+                final TimeOfDay? picked = await showTimePicker(
+                  context: context,
+                  initialTime:
+                      _birthTime ?? const TimeOfDay(hour: 12, minute: 0),
+                  helpText: 'Heure de naissance',
+                );
+                if (picked != null) setState(() => _birthTime = picked);
+              },
+              icon: const Icon(Icons.access_time, size: 18),
+              label: Text(
+                _birthTime != null
+                    ? '${_birthTime!.hour.toString().padLeft(2, '0')}:'
+                        '${_birthTime!.minute.toString().padLeft(2, '0')}'
+                    : 'Heure inconnue (midi par défaut)',
+              ),
+              style: OutlinedButton.styleFrom(
+                minimumSize: const Size(double.infinity, 48),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12)),
+              ),
+            ),
+            const SizedBox(height: 16),
+
+            // ── Lieu de naissance ─────────────────────────────────────────
+            Text('Lieu de naissance',
+                style: theme.textTheme.labelLarge
+                    ?.copyWith(fontWeight: FontWeight.w600)),
+            const SizedBox(height: 8),
+            TextField(
+              controller: _birthPlaceController,
+              keyboardType: TextInputType.text,
+              textCapitalization: TextCapitalization.sentences,
+              decoration: InputDecoration(
+                hintText: 'Ville, Pays',
+                prefixIcon: const Icon(Icons.place_outlined),
+                border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12)),
+              ),
+            ),
+            const SizedBox(height: 24),
+
+            // ── Poids de naissance ────────────────────────────────────────
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Text('Poids de naissance',
+                    style: theme.textTheme.labelLarge
+                        ?.copyWith(fontWeight: FontWeight.w600)),
+                Text(
+                  '${_birthWeight.toStringAsFixed(1)} kg',
+                  style: theme.textTheme.bodyMedium
+                      ?.copyWith(fontWeight: FontWeight.w700),
+                ),
+              ],
+            ),
+            Slider(
+              value: _birthWeight,
+              min: 0.5,
+              max: 6.0,
+              divisions: 55,
+              label: '${_birthWeight.toStringAsFixed(1)} kg',
+              onChanged: (double v) => setState(() => _birthWeight = v),
+            ),
+            const SizedBox(height: 32),
+
+            // ── Bouton Créer ──────────────────────────────────────────────
+            if (_isLoading)
+              const Center(child: _MultipassCreationLoader())
+            else
+              ElevatedButton.icon(
+                onPressed: _birthDate != null ? _createMultipass : null,
+                icon: const Text('✨', style: TextStyle(fontSize: 18)),
+                label: const Text(
+                  'Créer mon MULTIPASS avec profil KIN',
+                  style:
+                      TextStyle(fontWeight: FontWeight.w700, fontSize: 15),
+                ),
+                style: ElevatedButton.styleFrom(
+                  minimumSize: const Size(double.infinity, 52),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16)),
+                ),
+              ),
+            if (_birthDate == null)
+              Padding(
+                padding: const EdgeInsets.only(top: 8),
+                child: Text(
+                  'Sélectionnez une date de naissance pour activer.',
+                  textAlign: TextAlign.center,
+                  style: theme.textTheme.bodySmall?.copyWith(
+                      color: theme.colorScheme.onSurface
+                          .withValues(alpha: 0.5)),
+                ),
+              ),
+            if (_errorMessage != null) ...<Widget>[
+              const SizedBox(height: 12),
+              Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: theme.colorScheme.error.withValues(alpha: 0.1),
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(
+                      color: theme.colorScheme.error.withValues(alpha: 0.3)),
+                ),
+                child: Text(
+                  _errorMessage!,
+                  style: TextStyle(
+                      color: theme.colorScheme.error, fontSize: 13),
+                ),
+              ),
+            ],
+          ],
+        ),
+      ),
     );
   }
 

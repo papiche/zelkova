@@ -76,6 +76,7 @@ import 'ui/screens/skeleton_screen.dart';
 import 'ui/screens/wallet_creation_screen.dart';
 import 'ui/ui_helpers.dart';
 import 'ui/widgets/connectivity_widget_wrapper_wrapper.dart';
+import 'ui/widgets/goldberg_sphere.dart';
 import 'ui/widgets/lazy_upgrade_alert.dart';
 import 'ui/widgets/pages/biometric_lock_screen.dart';
 
@@ -1339,7 +1340,7 @@ class _AppStartState extends State<AppStart> {
   Widget build(BuildContext context) {
     final bool introViewed = GetIt.instance.get<AppCubit>().isIntroViewed;
     if (_initializing) {
-      return const SizedBox.shrink();
+      return const GoldbergSplash();
     }
 
     if (SharedPreferencesHelper().isEmpty) {

@@ -164,6 +164,11 @@ if [ "$PATCH_IPFS" = true ]; then
         sed -i "s|'/icons/'|'icons/'|g" "$WEB_DIR/flutter_service_worker.js"
     fi
 
+    # Strip sourceMappingURL from flutter.js to suppress DevTools 404 warnings
+    if [ -f "$WEB_DIR/flutter.js" ]; then
+        sed -i 's|//# sourceMappingURL=.*||' "$WEB_DIR/flutter.js"
+    fi
+
     echo "IPFS patching done."
     echo ""
 fi

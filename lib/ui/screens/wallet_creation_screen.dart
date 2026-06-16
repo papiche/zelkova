@@ -1671,7 +1671,7 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
   Widget _buildKinSection() {
     final DateTime birth        = _birthDate!;
     final KinResult birthKin    = calculateMayaKin(birth);
-    final KinResult concepKin   = calculateConceptionKin(birth);
+    final KinResult concepKin   = calculateConceptionKin(birth, weight: _birthWeight);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -1852,7 +1852,7 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
     setState(() => _soundPlaying = true);
     try {
       await _audioPlayer?.dispose();
-      _audioPlayer = await playKinSound(birthKin.toneNumber, _polarity);
+      _audioPlayer = await playKinSound(birthKin.toneNumber, _polarity, _birthWeight);
       _audioPlayer?.onPlayerComplete.listen((_) {
         if (mounted) setState(() => _soundPlaying = false);
       });
@@ -1876,9 +1876,25 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
     final KinResult? concepKin =
         _birthDate != null ? calculateConceptionKin(_birthDate!) : null;
 
+    // Timestamp Unix UTC de naissance (pour calcul phase φ)
+    int? birthUnix;
+    if (_birthDate != null) {
+      final TimeOfDay t = _birthTime ?? const TimeOfDay(hour: 12, minute: 0);
+      final DateTime bDt = DateTime.utc(
+          _birthDate!.year, _birthDate!.month, _birthDate!.day, t.hour, t.minute);
+      birthUnix = bDt.millisecondsSinceEpoch ~/ 1000;
+    }
+    final double bLat = _birthLat != 0.0 ? _birthLat : (double.tryParse(_lat) ?? 0.0);
+    final double bLon = _birthLon != 0.0 ? _birthLon : (double.tryParse(_lon) ?? 0.0);
+
     publishAtomicDid(
       nsec: response.nsec,
       relayUrl: relayUrl,
+      birthUnix: birthUnix,
+      birthLat: bLat,
+      birthLon: bLon,
+      weightKg: _birthWeight,
+      polarity: _polarity,
       birthKin: birthKin,
       conceptionKin: concepKin,
       email: response.email,

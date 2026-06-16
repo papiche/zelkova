@@ -3,50 +3,66 @@ import 'dart:typed_data';
 
 import 'package:audioplayers/audioplayers.dart';
 
-import 'kin_calculator.dart';
+import 'phi2x.dart';
 
-// ── Constantes ────────────────────────────────────────────────────────────────
+// ── Constantes audio ──────────────────────────────────────────────────────────
 
-const double _phi  = 1.6180339887;
 const int _sampleRate = 22050;
 const int _durationSec = 7;
+const int _numSamples = _sampleRate * _durationSec;
 
 // ── Génération WAV ────────────────────────────────────────────────────────────
 
-/// Génère un fichier WAV PCM mono 16-bit 22050 Hz.
-/// Signature sonore personnelle basée sur le KIN tone et la polarité.
-/// Port de `AudioOrchestra.playProfile()` de audio_orchestra.js.
-Uint8List generateKinWav(int kinTone, int polarity) {
-  final double omegaBio  = computeOmegaBio(kinTone, polarity);
-  final double lfoHz     = kinTone / 13.0;
-  const int numSamples   = _sampleRate * _durationSec;
+/// Génère un WAV PCM mono 16-bit 22050 Hz — signature sonore personnelle.
+///
+/// Port de AudioOrchestra.playProfile() de audio_orchestra.js :
+///   - [weightKg]  : poids de naissance (défaut 3.5 kg)
+///   - [polarity]  : 0 = PHI-wave (masculin), 1 = Octave-wave (féminin)
+///   - [toneNumber]: numéro de tonalité KIN (1–13), détermine le LFO
+///
+/// Fréquence fondamentale : phi2xToAudible(phi2xComputeOmegaBio(weight, polarity))
+/// LFO : toneNumber × 0.15 Hz (conforme phi2x.js lfoHz = (ti+1)*0.15)
+Uint8List generateKinWav(int toneNumber, int polarity, double weightKg) {
+  final double omegaBio = phi2xComputeOmegaBio(weightKg, polarity);
+  final double freqF    = phi2xToAudible(omegaBio); // root=110.0 Hz (A2)
+  final double lfoHz = toneNumber * 0.15;              // phi2x canonique
 
-  final List<int> pcm = List<int>.filled(numSamples, 0);
-  for (int i = 0; i < numSamples; i++) {
+  final List<int> pcm = List<int>.filled(_numSamples, 0);
+  for (int i = 0; i < _numSamples; i++) {
     final double t   = i / _sampleRate;
     final double lfo = 1.0 + 0.28 * sin(2 * pi * lfoHz * t);
 
-    double s = sin(2 * pi * omegaBio * t) * lfo;
+    double s = sin(2 * pi * freqF * t) * lfo;
 
     if (polarity == 0) {
-      // Onde Phi (masculin) : fondamentale + PHI + quinte
-      s += 0.45 * sin(2 * pi * omegaBio * _phi * t) * lfo;
-      s += 0.25 * sin(2 * pi * omegaBio * 1.5 * t);
+      // PHI-wave (masculin) : fondamentale + PHI + quinte
+      s += 0.45 * sin(2 * pi * freqF * phi2xPhi * t) * lfo;
+      s += 0.25 * sin(2 * pi * freqF * 1.5 * t);
     } else {
-      // Onde octave (féminin) : fondamentale + octave + double octave
-      s += 0.35 * sin(2 * pi * omegaBio * 2.0 * t) * lfo;
-      s += 0.15 * sin(2 * pi * omegaBio * 4.0 * t);
+      // Octave-wave (féminin) : fondamentale + octave + double octave
+      s += 0.35 * sin(2 * pi * freqF * 2.0 * t) * lfo;
+      s += 0.15 * sin(2 * pi * freqF * 4.0 * t);
     }
 
     // Enveloppe : fade-in 1.5 s, fade-out 1.5 s
-    final double env = _clamp((t < 1.5) ? t / 1.5 : (t > 5.5) ? (7.0 - t) / 1.5 : 1.0);
+    double env = 1.0;
+    if (t < 1.5) {
+      env = t / 1.5;
+    } else if (t > 5.5) {
+      env = (7.0 - t) / 1.5;
+    }
+    if (env < 0.0) {
+      env = 0.0;
+    }
+    if (env > 1.0) {
+      env = 1.0;
+    }
+
     pcm[i] = (s * env * 0.28 * 32767).round().clamp(-32768, 32767);
   }
 
   return _buildWav(pcm);
 }
-
-double _clamp(double v) => v < 0.0 ? 0.0 : (v > 1.0 ? 1.0 : v);
 
 Uint8List _buildWav(List<int> samples) {
   final int dataSize = samples.length * 2;
@@ -82,8 +98,9 @@ Uint8List _buildWav(List<int> samples) {
 
 /// Joue la signature sonore personnelle du KIN.
 /// Retourne l'[AudioPlayer] actif (à disposer après usage).
-Future<AudioPlayer> playKinSound(int kinTone, int polarity) async {
-  final Uint8List wav = generateKinWav(kinTone, polarity);
+Future<AudioPlayer> playKinSound(
+    int toneNumber, int polarity, double weightKg) async {
+  final Uint8List wav = generateKinWav(toneNumber, polarity, weightKg);
   final AudioPlayer player = AudioPlayer();
   await player.play(BytesSource(wav, mimeType: 'audio/wav'));
   return player;

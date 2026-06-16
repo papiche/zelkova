@@ -2,12 +2,16 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:math' as math;
 
+import 'package:calendar_date_picker2/calendar_date_picker2.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_map/flutter_map.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
+import 'package:latlong2/latlong.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../data/models/app_cubit.dart';
@@ -17,6 +21,7 @@ import '../../g1/multipass_service.dart';
 import '../../g1/zen_tag_service.dart';
 import '../../shared_prefs_helper_v2.dart';
 import '../logger.dart';
+import '../widgets/location_picker_sheet.dart';
 
 /// A station in the UPlanet SWARM that can host a MULTIPASS.
 class _SwarmStation {
@@ -185,6 +190,7 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
   double _birthLon = 0.0;       // from Nominatim (0.01° precision)
   int _polarity = 0;            // 0 = homme, 1 = femme
   bool _pbkdf2Running = false;  // true pendant le calcul PBKDF2 (~10s)
+  String _locationName = '';    // nom lisible de Ma Position (reverse geocode)
 
   @override
   void initState() {
@@ -285,6 +291,8 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
       });
       // Re-sort SWARM by distance now that we have a real position
       _sortStationsByDistance(position.latitude, position.longitude);
+      // Reverse geocode en arrière-plan pour le nom lisible
+      _reverseGeocodePosition(position.latitude, position.longitude);
     } catch (e) {
       // Erreur GPS → fallback 0.00,0.00
       setState(() {
@@ -293,6 +301,27 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
         _geolocated = true;
       });
     }
+  }
+
+  Future<void> _reverseGeocodePosition(double lat, double lon) async {
+    try {
+      final Uri uri = Uri.parse(
+        'https://nominatim.openstreetmap.org/reverse'
+        '?lat=$lat&lon=$lon&format=json&accept-language=fr',
+      );
+      final http.Response r = await http.get(uri, headers: <String, String>{
+        'User-Agent': 'Zelkova/1.0 UPlanet support@qo-op.com',
+      }).timeout(const Duration(seconds: 5));
+      if (r.statusCode == 200 && mounted) {
+        final Map<String, dynamic> data =
+            jsonDecode(r.body) as Map<String, dynamic>;
+        final String raw = data['display_name'] as String? ?? '';
+        final List<String> parts = raw.split(', ');
+        if (mounted) {
+          setState(() => _locationName = parts.take(3).join(', '));
+        }
+      }
+    } catch (_) {}
   }
 
   /// Sort _swarmStations by Haversine distance from user's position.
@@ -386,6 +415,14 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
         buildPepperRaw(conDtUtc: conDtUtc, conLat: lat, conLon: lon, weight: _birthWeight),
       ),
     );
+  }
+
+  static String _monthName(int month) {
+    const List<String> names = <String>[
+      '', 'jan.', 'fév.', 'mars', 'avr.', 'mai', 'juin',
+      'juil.', 'août', 'sep.', 'oct.', 'nov.', 'déc.',
+    ];
+    return names[month];
   }
 
   /// Build the ISO-8601 birth datetime from state, or null if not set.
@@ -716,7 +753,28 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
                             .withOpacity(0.65),
                       ),
                 ),
-                const SizedBox(height: 24),
+                const SizedBox(height: 16),
+                // ── Profil ondulatoire (optionnel) — en haut ───────────────
+                OutlinedButton.icon(
+                  onPressed: _goToAtomicPage,
+                  icon: Icon(
+                    _birthDate != null ? Icons.auto_awesome : Icons.waves,
+                    size: 18,
+                  ),
+                  label: Text(
+                    _birthDate != null
+                        ? '✨ Profil KIN configuré — modifier'
+                        : '🌊 Ajouter mon profil ondulatoire (optionnel)',
+                    style: const TextStyle(fontSize: 13),
+                  ),
+                  style: OutlinedButton.styleFrom(
+                    minimumSize: const Size(double.infinity, 44),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 16),
                 TextFormField(
                   controller: _emailController,
                   keyboardType: TextInputType.emailAddress,
@@ -744,31 +802,18 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
                 if (_swarmLoading)
                   const Padding(
                     padding: EdgeInsets.symmetric(vertical: 8),
-                    child: Center(child: SizedBox(
-                      width: 20, height: 20,
-                      child: CircularProgressIndicator(strokeWidth: 2),
-                    )),
+                    child: Center(
+                      child: SizedBox(
+                        width: 20,
+                        height: 20,
+                        child: CircularProgressIndicator(strokeWidth: 2),
+                      ),
+                    ),
                   )
                 else if (_swarmStations.isNotEmpty)
                   _buildStationSelector(),
                 const SizedBox(height: 16),
-                AnimatedSwitcher(
-                  duration: const Duration(milliseconds: 300),
-                  child: _geolocated
-                      ? _buildGeoChip()
-                      : OutlinedButton.icon(
-                          key: const ValueKey<String>('geo-btn'),
-                          onPressed: _requestGeolocation,
-                          icon: const Icon(Icons.my_location),
-                          label: Text(tr('get_location')),
-                          style: OutlinedButton.styleFrom(
-                            minimumSize: const Size(double.infinity, 48),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(14),
-                            ),
-                          ),
-                        ),
-                ),
+                _buildLocationSection(),
                 if (_errorMessage != null) ...<Widget>[
                   const SizedBox(height: 12),
                   Container(
@@ -777,13 +822,13 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
                       color: Theme.of(context)
                           .colorScheme
                           .error
-                          .withOpacity(0.1),
+                          .withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(12),
                       border: Border.all(
                         color: Theme.of(context)
                             .colorScheme
                             .error
-                            .withOpacity(0.3),
+                            .withValues(alpha: 0.3),
                       ),
                     ),
                     child: Text(
@@ -795,27 +840,6 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
                     ),
                   ),
                 ],
-                const SizedBox(height: 12),
-                // ── Profil ondulatoire (optionnel) ─────────────────────────
-                OutlinedButton.icon(
-                  onPressed: _goToAtomicPage,
-                  icon: Icon(
-                    _birthDate != null ? Icons.auto_awesome : Icons.waves,
-                    size: 18,
-                  ),
-                  label: Text(
-                    _birthDate != null
-                        ? '✨ Profil KIN configuré — modifier'
-                        : '🌊 Ajouter mon profil ondulatoire (optionnel)',
-                    style: const TextStyle(fontSize: 13),
-                  ),
-                  style: OutlinedButton.styleFrom(
-                    minimumSize: const Size(double.infinity, 44),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                  ),
-                ),
                 const Spacer(),
                 if (_pbkdf2Running)
                   const Center(child: _Pbkdf2Loader())
@@ -1148,49 +1172,205 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
     );
   }
 
-  Widget _buildGeoChip() {
+  /// Section Ma Position — boutons Détecter / Carte + chip résultat + mini-map A4L
+  Widget _buildLocationSection() {
     final bool isDefault = _lat == '0.00' && _lon == '0.00';
-    return Container(
-      key: const ValueKey<String>('geo-chip'),
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 13),
-      decoration: BoxDecoration(
-        color: isDefault
-            ? Colors.orange.withOpacity(0.1)
-            : Colors.green.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(14),
-        border: Border.all(
-          color: isDefault
-              ? Colors.orange.withOpacity(0.4)
-              : Colors.green.withOpacity(0.4),
-        ),
-      ),
-      child: Row(
-        children: <Widget>[
-          Icon(
-            isDefault ? Icons.location_off : Icons.location_on,
-            color: isDefault ? Colors.orange : Colors.green,
-            size: 18,
-          ),
-          const SizedBox(width: 10),
-          Expanded(
-            child: Text(
-              isDefault
-                  ? 'Position par défaut (0.00, 0.00) — modifiable via un kind 1 plus tard'
-                  : '$_lat°, $_lon°',
-              style: TextStyle(
-                color: isDefault ? Colors.orange.shade700 : Colors.green,
-                fontWeight: FontWeight.w600,
-                fontSize: 13,
+    final double lat = double.tryParse(_lat) ?? 0.0;
+    final double lon = double.tryParse(_lon) ?? 0.0;
+    final double lat2d = ((lat * 100).round()) / 100.0;
+    final double lon2d = ((lon * 100).round()) / 100.0;
+    final String a4lCode =
+        '${lat2d.toStringAsFixed(2)}_${lon2d.toStringAsFixed(2)}';
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        // ── Boutons ────────────────────────────────────────────────────────
+        Row(
+          children: <Widget>[
+            Expanded(
+              child: OutlinedButton.icon(
+                onPressed: _requestGeolocation,
+                icon: const Icon(Icons.my_location, size: 17),
+                label: Text(tr('get_location'),
+                    style: const TextStyle(fontSize: 13)),
+                style: OutlinedButton.styleFrom(
+                  minimumSize: const Size(0, 46),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12)),
+                ),
               ),
             ),
-          ),
-          if (!isDefault)
-            GestureDetector(
-              onTap: _requestGeolocation,
-              child: const Icon(Icons.refresh, size: 16),
+            const SizedBox(width: 8),
+            Expanded(
+              child: OutlinedButton.icon(
+                onPressed: () async {
+                  final LocationPickerResult? result =
+                      await showLocationPicker(
+                    context: context,
+                    initialLat: lat,
+                    initialLon: lon,
+                    title: 'Ma Position',
+                  );
+                  if (result != null && mounted) {
+                    setState(() {
+                      _lat = result.lat.toStringAsFixed(2);
+                      _lon = result.lon.toStringAsFixed(2);
+                      _locationName = result.name;
+                      _geolocated = true;
+                    });
+                    _sortStationsByDistance(result.lat, result.lon);
+                  }
+                },
+                icon: const Icon(Icons.map_outlined, size: 17),
+                label: const Text('🗺️ Carte',
+                    style: TextStyle(fontSize: 13)),
+                style: OutlinedButton.styleFrom(
+                  minimumSize: const Size(0, 46),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12)),
+                ),
+              ),
             ),
+          ],
+        ),
+
+        // ── Résultat ───────────────────────────────────────────────────────
+        if (_geolocated) ...<Widget>[
+          const SizedBox(height: 8),
+          Container(
+            padding:
+                const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+            decoration: BoxDecoration(
+              color: isDefault
+                  ? Colors.orange.withValues(alpha: 0.08)
+                  : Colors.green.withValues(alpha: 0.08),
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(
+                color: isDefault
+                    ? Colors.orange.withValues(alpha: 0.35)
+                    : Colors.green.withValues(alpha: 0.35),
+              ),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Row(
+                  children: <Widget>[
+                    Icon(
+                      isDefault ? Icons.location_off : Icons.location_on,
+                      color: isDefault ? Colors.orange : Colors.green,
+                      size: 16,
+                    ),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: Text(
+                        _locationName.isNotEmpty
+                            ? _locationName
+                            : isDefault
+                                ? '0.00°, 0.00° (par défaut)'
+                                : '$_lat°, $_lon°',
+                        style: TextStyle(
+                          color:
+                              isDefault ? Colors.orange.shade700 : Colors.green,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 13,
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ],
+                ),
+                if (!isDefault) ...<Widget>[
+                  const SizedBox(height: 4),
+                  Row(
+                    children: <Widget>[
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 7, vertical: 2),
+                        decoration: BoxDecoration(
+                          color: Colors.green.shade700.withValues(alpha: 0.15),
+                          borderRadius: BorderRadius.circular(6),
+                          border: Border.all(
+                              color:
+                                  Colors.green.shade700.withValues(alpha: 0.4)),
+                        ),
+                        child: Text(
+                          '⬡ $a4lCode',
+                          style: TextStyle(
+                              fontSize: 10,
+                              fontWeight: FontWeight.w700,
+                              color: Colors.green.shade800),
+                        ),
+                      ),
+                      const Spacer(),
+                      Text(
+                        '$_lat°, $_lon°',
+                        style: TextStyle(
+                            fontSize: 10,
+                            color: Colors.green.withValues(alpha: 0.7)),
+                      ),
+                    ],
+                  ),
+                  // ── Mini-map A4L ─────────────────────────────────────────
+                  const SizedBox(height: 8),
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child: SizedBox(
+                      height: 130,
+                      child: FlutterMap(
+                        options: MapOptions(
+                          initialCenter: LatLng(lat2d, lon2d),
+                          initialZoom: 13.0,
+                          interactionOptions: const InteractionOptions(
+                            flags: InteractiveFlag.none,
+                          ),
+                        ),
+                        children: <Widget>[
+                          TileLayer(
+                            urlTemplate:
+                                'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                            userAgentPackageName: 'com.zelkova.app',
+                          ),
+                          PolygonLayer(
+                            polygons: <Polygon>[
+                              Polygon(
+                                points: <LatLng>[
+                                  LatLng(lat2d, lon2d),
+                                  LatLng(lat2d + 0.01, lon2d),
+                                  LatLng(lat2d + 0.01, lon2d + 0.01),
+                                  LatLng(lat2d, lon2d + 0.01),
+                                ],
+                                color: Colors.green.withValues(alpha: 0.2),
+                                borderStrokeWidth: 2.5,
+                                borderColor: Colors.green.shade700,
+                              ),
+                            ],
+                          ),
+                          MarkerLayer(
+                            markers: <Marker>[
+                              Marker(
+                                point: LatLng(lat2d, lon2d),
+                                width: 30,
+                                height: 30,
+                                child: const Icon(
+                                  Icons.location_pin,
+                                  color: Colors.red,
+                                  size: 28,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ],
+            ),
+          ),
         ],
-      ),
+      ],
     );
   }
 
@@ -1591,173 +1771,437 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
                 style: theme.textTheme.labelLarge
                     ?.copyWith(fontWeight: FontWeight.w600)),
             const SizedBox(height: 8),
-            OutlinedButton.icon(
-              onPressed: () async {
-                final DateTime? picked = await showDatePicker(
+            GestureDetector(
+              onTap: () async {
+                final List<DateTime?>? result =
+                    await showCalendarDatePicker2Dialog(
                   context: context,
-                  initialDate: _birthDate ?? DateTime(1985, 6, 1),
-                  firstDate: DateTime(1900),
-                  lastDate: DateTime.now(),
-                  helpText: 'Date de naissance',
-                );
-                if (picked != null) setState(() => _birthDate = picked);
-              },
-              icon: const Icon(Icons.calendar_today, size: 18),
-              label: Text(
-                _birthDate != null
-                    ? '${_birthDate!.day.toString().padLeft(2, '0')}/'
-                        '${_birthDate!.month.toString().padLeft(2, '0')}/'
-                        '${_birthDate!.year}'
-                    : 'Choisir une date',
-              ),
-              style: OutlinedButton.styleFrom(
-                minimumSize: const Size(double.infinity, 48),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12)),
-              ),
-            ),
-            const SizedBox(height: 16),
-
-            // ── Heure de naissance — format 24h forcé ─────────────────────
-            Text('Heure de naissance (optionnelle)',
-                style: theme.textTheme.labelLarge
-                    ?.copyWith(fontWeight: FontWeight.w600)),
-            const SizedBox(height: 8),
-            OutlinedButton.icon(
-              onPressed: () async {
-                final TimeOfDay? picked = await showTimePicker(
-                  context: context,
-                  initialTime:
-                      _birthTime ?? const TimeOfDay(hour: 12, minute: 0),
-                  helpText: 'Heure de naissance (format 24h)',
-                  // Force le format 24h indépendamment de la locale système
-                  builder: (BuildContext ctx, Widget? child) => MediaQuery(
-                    data: MediaQuery.of(ctx)
-                        .copyWith(alwaysUse24HourFormat: true),
-                    child: child!,
+                  config: CalendarDatePicker2WithActionButtonsConfig(
+                    calendarType: CalendarDatePicker2Type.single,
+                    firstDate: DateTime(1900),
+                    lastDate: DateTime.now(),
+                    selectedDayHighlightColor:
+                        theme.colorScheme.primary,
+                    centerAlignModePicker: true,
+                    animateToDisplayedMonthDate: true,
                   ),
+                  dialogSize: const Size(340, 420),
+                  value: <DateTime?>[_birthDate],
+                  borderRadius: const BorderRadius.all(Radius.circular(16)),
                 );
-                if (picked != null) setState(() => _birthTime = picked);
+                if (result != null &&
+                    result.isNotEmpty &&
+                    result.first != null) {
+                  setState(() => _birthDate = result.first);
+                }
               },
-              icon: const Icon(Icons.access_time, size: 18),
-              label: Text(
-                _birthTime != null
-                    ? '${_birthTime!.hour.toString().padLeft(2, '0')}:'
-                        '${_birthTime!.minute.toString().padLeft(2, '0')}'
-                    : 'Heure inconnue (midi par défaut)',
-              ),
-              style: OutlinedButton.styleFrom(
-                minimumSize: const Size(double.infinity, 48),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12)),
-              ),
-            ),
-            const SizedBox(height: 20),
-
-            // ── Lieu de naissance (Nominatim) ─────────────────────────────
-            Text('Lieu de naissance',
-                style: theme.textTheme.labelLarge
-                    ?.copyWith(fontWeight: FontWeight.w600)),
-            const SizedBox(height: 8),
-            if (_birthPlaceName.isNotEmpty)
-              Container(
-                margin: const EdgeInsets.only(bottom: 8),
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              child: Container(
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 16, vertical: 14),
                 decoration: BoxDecoration(
-                  color: Colors.green.withValues(alpha: 0.08),
-                  borderRadius: BorderRadius.circular(10),
-                  border:
-                      Border.all(color: Colors.green.withValues(alpha: 0.3)),
+                  border: Border.all(
+                    color: _birthDate != null
+                        ? theme.colorScheme.primary.withValues(alpha: 0.6)
+                        : theme.colorScheme.outline,
+                  ),
+                  borderRadius: BorderRadius.circular(12),
+                  color: _birthDate != null
+                      ? theme.colorScheme.primary.withValues(alpha: 0.04)
+                      : null,
                 ),
                 child: Row(
                   children: <Widget>[
-                    const Icon(Icons.check_circle,
-                        color: Colors.green, size: 16),
-                    const SizedBox(width: 8),
-                    Expanded(
-                      child: Text(
-                        _birthPlaceName,
-                        style: const TextStyle(
-                            fontSize: 13, fontWeight: FontWeight.w500),
-                      ),
+                    Icon(
+                      Icons.calendar_month,
+                      size: 20,
+                      color: _birthDate != null
+                          ? theme.colorScheme.primary
+                          : theme.colorScheme.onSurface.withValues(alpha: 0.5),
                     ),
-                    Text(
-                      '${_birthLat.toStringAsFixed(2)}°, '
-                      '${_birthLon.toStringAsFixed(2)}°',
-                      style: theme.textTheme.bodySmall?.copyWith(
-                          color: theme.colorScheme.onSurface
-                              .withValues(alpha: 0.5)),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: _birthDate != null
+                          ? Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text(
+                                  '${_birthDate!.day.toString().padLeft(2, '0')} '
+                                  '${_monthName(_birthDate!.month)} '
+                                  '${_birthDate!.year}',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600,
+                                    color: theme.colorScheme.primary,
+                                  ),
+                                ),
+                              ],
+                            )
+                          : Text(
+                              'Choisir une date',
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: theme.colorScheme.onSurface
+                                    .withValues(alpha: 0.5),
+                              ),
+                            ),
+                    ),
+                    Icon(
+                      Icons.edit_calendar_outlined,
+                      size: 18,
+                      color: theme.colorScheme.onSurface.withValues(alpha: 0.4),
                     ),
                   ],
                 ),
               ),
-            Autocomplete<_NominatimResult>(
-              optionsBuilder: (TextEditingValue tv) =>
-                  _searchNominatim(tv.text),
-              displayStringForOption: (_NominatimResult r) => r.name,
-              onSelected: (_NominatimResult r) {
-                setState(() {
-                  _birthPlaceName = r.name;
-                  _birthLat = double.parse(r.lat.toStringAsFixed(2));
-                  _birthLon = double.parse(r.lon.toStringAsFixed(2));
-                });
-              },
-              fieldViewBuilder: (
-                BuildContext ctx,
-                TextEditingController fieldCtrl,
-                FocusNode focusNode,
-                VoidCallback onSubmitted,
-              ) {
-                return TextField(
-                  controller: fieldCtrl,
-                  focusNode: focusNode,
-                  keyboardType: TextInputType.text,
-                  textCapitalization: TextCapitalization.sentences,
-                  decoration: InputDecoration(
-                    hintText: 'Tapez une ville…',
-                    prefixIcon: const Icon(Icons.search),
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12)),
-                    helperText: 'Résultats OpenStreetMap · 3 caractères min.',
-                  ),
+            ),
+            const SizedBox(height: 16),
+
+            // ── Heure de naissance — sélecteur Cupertino 24h ──────────────
+            Text('Heure de naissance (optionnelle)',
+                style: theme.textTheme.labelLarge
+                    ?.copyWith(fontWeight: FontWeight.w600)),
+            const SizedBox(height: 8),
+            GestureDetector(
+              onTap: () async {
+                DateTime tempTime = DateTime(
+                  2000,
+                  1,
+                  1,
+                  _birthTime?.hour ?? 12,
+                  _birthTime?.minute ?? 0,
                 );
-              },
-              optionsViewBuilder: (
-                BuildContext ctx,
-                AutocompleteOnSelected<_NominatimResult> onSelected,
-                Iterable<_NominatimResult> options,
-              ) {
-                return Align(
-                  alignment: Alignment.topLeft,
-                  child: Material(
-                    elevation: 6,
-                    borderRadius: BorderRadius.circular(10),
-                    child: ConstrainedBox(
-                      constraints: const BoxConstraints(maxWidth: 400),
-                      child: ListView(
-                        padding: EdgeInsets.zero,
-                        shrinkWrap: true,
-                        children: options.map((_NominatimResult r) {
-                          return ListTile(
-                            dense: true,
-                            leading: const Icon(Icons.place, size: 16),
-                            title: Text(r.name,
-                                style: const TextStyle(fontSize: 13)),
-                            subtitle: Text(
-                              '${r.lat.toStringAsFixed(2)}°, '
-                              '${r.lon.toStringAsFixed(2)}°',
-                              style: const TextStyle(fontSize: 11),
-                            ),
-                            onTap: () => onSelected(r),
-                          );
-                        }).toList(),
-                      ),
+                await showModalBottomSheet<void>(
+                  context: context,
+                  shape: const RoundedRectangleBorder(
+                    borderRadius:
+                        BorderRadius.vertical(top: Radius.circular(16)),
+                  ),
+                  builder: (BuildContext ctx) => SizedBox(
+                    height: 280,
+                    child: Column(
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 16, vertical: 8),
+                          child: Row(
+                            children: <Widget>[
+                              TextButton(
+                                onPressed: () => Navigator.pop(ctx),
+                                child: Text(tr('cancel')),
+                              ),
+                              const Expanded(
+                                child: Center(
+                                  child: Text(
+                                    'Heure de naissance',
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 15),
+                                  ),
+                                ),
+                              ),
+                              TextButton(
+                                onPressed: () {
+                                  if (mounted) {
+                                    setState(() => _birthTime = TimeOfDay(
+                                          hour: tempTime.hour,
+                                          minute: tempTime.minute,
+                                        ));
+                                  }
+                                  Navigator.pop(ctx);
+                                },
+                                child: const Text('OK',
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w700)),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Expanded(
+                          child: CupertinoDatePicker(
+                            mode: CupertinoDatePickerMode.time,
+                            use24hFormat: true,
+                            initialDateTime: tempTime,
+                            onDateTimeChanged: (DateTime dt) =>
+                                tempTime = dt,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 );
               },
+              child: Container(
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 16, vertical: 14),
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    color: _birthTime != null
+                        ? theme.colorScheme.secondary.withValues(alpha: 0.6)
+                        : theme.colorScheme.outline,
+                  ),
+                  borderRadius: BorderRadius.circular(12),
+                  color: _birthTime != null
+                      ? theme.colorScheme.secondary.withValues(alpha: 0.04)
+                      : null,
+                ),
+                child: Row(
+                  children: <Widget>[
+                    Icon(
+                      Icons.schedule,
+                      size: 20,
+                      color: _birthTime != null
+                          ? theme.colorScheme.secondary
+                          : theme.colorScheme.onSurface.withValues(alpha: 0.5),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: _birthTime != null
+                          ? Text(
+                              '${_birthTime!.hour.toString().padLeft(2, '0')}h'
+                              '${_birthTime!.minute.toString().padLeft(2, '0')}',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                                color: theme.colorScheme.secondary,
+                              ),
+                            )
+                          : Text(
+                              'Heure inconnue (midi par défaut)',
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: theme.colorScheme.onSurface
+                                    .withValues(alpha: 0.5),
+                              ),
+                            ),
+                    ),
+                    Icon(
+                      Icons.edit_outlined,
+                      size: 18,
+                      color:
+                          theme.colorScheme.onSurface.withValues(alpha: 0.4),
+                    ),
+                  ],
+                ),
+              ),
             ),
+            const SizedBox(height: 20),
+
+            // ── Lieu de naissance ─────────────────────────────────────────
+            Text('Lieu de naissance',
+                style: theme.textTheme.labelLarge
+                    ?.copyWith(fontWeight: FontWeight.w600)),
+            const SizedBox(height: 8),
+            Row(
+              children: <Widget>[
+                Expanded(
+                  child: Autocomplete<_NominatimResult>(
+                    optionsBuilder: (TextEditingValue tv) =>
+                        _searchNominatim(tv.text),
+                    displayStringForOption: (_NominatimResult r) => r.name,
+                    onSelected: (_NominatimResult r) {
+                      setState(() {
+                        _birthPlaceName = r.name;
+                        _birthLat =
+                            double.parse(r.lat.toStringAsFixed(2));
+                        _birthLon =
+                            double.parse(r.lon.toStringAsFixed(2));
+                      });
+                    },
+                    fieldViewBuilder: (
+                      BuildContext ctx,
+                      TextEditingController fieldCtrl,
+                      FocusNode focusNode,
+                      VoidCallback onSubmitted,
+                    ) {
+                      if (_birthPlaceName.isNotEmpty &&
+                          fieldCtrl.text.isEmpty) {
+                        fieldCtrl.text = _birthPlaceName;
+                      }
+                      return TextField(
+                        controller: fieldCtrl,
+                        focusNode: focusNode,
+                        keyboardType: TextInputType.text,
+                        textCapitalization: TextCapitalization.sentences,
+                        decoration: InputDecoration(
+                          hintText: 'Ville de naissance…',
+                          prefixIcon: const Icon(Icons.search, size: 20),
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12)),
+                          contentPadding:
+                              const EdgeInsets.symmetric(vertical: 14),
+                        ),
+                      );
+                    },
+                    optionsViewBuilder: (
+                      BuildContext ctx,
+                      AutocompleteOnSelected<_NominatimResult> onSelected,
+                      Iterable<_NominatimResult> options,
+                    ) {
+                      return Align(
+                        alignment: Alignment.topLeft,
+                        child: Material(
+                          elevation: 6,
+                          borderRadius: BorderRadius.circular(10),
+                          child: ConstrainedBox(
+                            constraints: const BoxConstraints(maxWidth: 400),
+                            child: ListView(
+                              padding: EdgeInsets.zero,
+                              shrinkWrap: true,
+                              children:
+                                  options.map((_NominatimResult r) {
+                                return ListTile(
+                                  dense: true,
+                                  leading: const Icon(Icons.place, size: 16),
+                                  title: Text(r.name,
+                                      style:
+                                          const TextStyle(fontSize: 13)),
+                                  subtitle: Text(
+                                    '${r.lat.toStringAsFixed(2)}°, '
+                                    '${r.lon.toStringAsFixed(2)}°',
+                                    style: const TextStyle(fontSize: 11),
+                                  ),
+                                  onTap: () => onSelected(r),
+                                );
+                              }).toList(),
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+                const SizedBox(width: 8),
+                // Bouton carte
+                OutlinedButton(
+                  onPressed: () async {
+                    final LocationPickerResult? result =
+                        await showLocationPicker(
+                      context: context,
+                      initialLat: _birthLat,
+                      initialLon: _birthLon,
+                      title: 'Lieu de naissance',
+                    );
+                    if (result != null && mounted) {
+                      setState(() {
+                        _birthPlaceName = result.name;
+                        _birthLat = result.lat;
+                        _birthLon = result.lon;
+                      });
+                    }
+                  },
+                  style: OutlinedButton.styleFrom(
+                    minimumSize: const Size(48, 48),
+                    padding: EdgeInsets.zero,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12)),
+                  ),
+                  child: const Icon(Icons.map_outlined, size: 22),
+                ),
+              ],
+            ),
+            // ── Aperçu carte + A4L ─────────────────────────────────────────
+            if (_birthPlaceName.isNotEmpty) ...<Widget>[
+              const SizedBox(height: 8),
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  border:
+                      Border.all(color: Colors.green.withValues(alpha: 0.4)),
+                ),
+                clipBehavior: Clip.hardEdge,
+                child: Column(
+                  children: <Widget>[
+                    SizedBox(
+                      height: 150,
+                      child: FlutterMap(
+                        options: MapOptions(
+                          initialCenter: LatLng(_birthLat, _birthLon),
+                          initialZoom: 10.0,
+                          interactionOptions: const InteractionOptions(
+                            flags: InteractiveFlag.none,
+                          ),
+                        ),
+                        children: <Widget>[
+                          TileLayer(
+                            urlTemplate:
+                                'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                            userAgentPackageName: 'com.zelkova.app',
+                          ),
+                          PolygonLayer(
+                            polygons: <Polygon>[
+                              Polygon(
+                                points: <LatLng>[
+                                  LatLng(_birthLat, _birthLon),
+                                  LatLng(_birthLat + 0.01, _birthLon),
+                                  LatLng(_birthLat + 0.01,
+                                      _birthLon + 0.01),
+                                  LatLng(_birthLat, _birthLon + 0.01),
+                                ],
+                                color: Colors.green.withValues(alpha: 0.2),
+                                borderStrokeWidth: 2,
+                                borderColor: Colors.green.shade700,
+                              ),
+                            ],
+                          ),
+                          MarkerLayer(
+                            markers: <Marker>[
+                              Marker(
+                                point: LatLng(_birthLat, _birthLon),
+                                width: 32,
+                                height: 32,
+                                child: const Icon(
+                                  Icons.location_pin,
+                                  color: Colors.red,
+                                  size: 30,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      color:
+                          Colors.green.shade700.withValues(alpha: 0.08),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 12, vertical: 6),
+                      child: Row(
+                        children: <Widget>[
+                          const Icon(Icons.place,
+                              color: Colors.green, size: 14),
+                          const SizedBox(width: 6),
+                          Expanded(
+                            child: Text(
+                              _birthPlaceName,
+                              style: const TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w500),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 6, vertical: 2),
+                            decoration: BoxDecoration(
+                              color: Colors.green.shade700
+                                  .withValues(alpha: 0.15),
+                              borderRadius: BorderRadius.circular(6),
+                            ),
+                            child: Text(
+                              '⬡ ${_birthLat.toStringAsFixed(2)}_${_birthLon.toStringAsFixed(2)}',
+                              style: TextStyle(
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.w700,
+                                  color: Colors.green.shade800),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
             const SizedBox(height: 20),
 
             // ── Poids de naissance ────────────────────────────────────────

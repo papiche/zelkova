@@ -35,7 +35,11 @@ import 'dart:convert';
 
 import 'package:bip32_ed25519/api.dart';
 import 'package:fast_base58/fast_base58.dart';
+import 'package:flutter/foundation.dart';
 import 'package:pointycastle/pointycastle.dart' as pc;
+
+// Top-level car compute() exige une fonction non-closure.
+CesiumWallet _scryptIsolate(List<String> args) => CesiumWallet(args[0], args[1]);
 
 /// Represents a Cesium wallet with Ed25519 keys derived from salt and password
 ///
@@ -81,6 +85,12 @@ class CesiumWallet {
   /// Root private constructor used by CesiumWallet factories.
   CesiumWallet._(
       {required this.seed, required this.rootKey, required this.pubkey});
+
+  /// Dérive le wallet dans un isolate séparé — ne bloque pas le thread UI.
+  ///
+  /// À utiliser depuis l'UI à la place du constructeur synchrone.
+  static Future<CesiumWallet> derive(String salt, String password) =>
+      compute(_scryptIsolate, <String>[salt, password]);
 
   /// Generate wallet from an existing seed (32 bytes)
   ///

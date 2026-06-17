@@ -123,21 +123,29 @@ class _CesiumAuthDialogState extends State<CesiumAuthDialog> {
                   return const SizedBox.shrink();
                 }
                 return Padding(
-                  padding: const EdgeInsets.only(top: 16.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                  padding: const EdgeInsets.only(top: 24.0),
+                  child: Column(
                     children: <Widget>[
-                      const SizedBox(
-                        height: 16,
-                        width: 16,
-                        child: CircularProgressIndicator(strokeWidth: 2),
-                      ),
-                      const SizedBox(width: 12),
+                      const _HourglassIndicator(),
+                      const SizedBox(height: 12),
                       Text(
                         status,
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                               color: Theme.of(context).colorScheme.primary,
+                              fontWeight: FontWeight.w600,
                             ),
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        'Dérivation Scrypt — quelques secondes…',
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .onSurface
+                                  .withAlpha(120),
+                            ),
+                        textAlign: TextAlign.center,
                       ),
                     ],
                   ),
@@ -184,17 +192,12 @@ class _CesiumAuthDialogState extends State<CesiumAuthDialog> {
 
     _statusNotifier.value = tr('validating_credentials');
 
-    // Allow UI to update with loading indicator before heavy operation
-    await Future<void>.delayed(Duration.zero);
-
     final String secret = secretPhraseController.text;
     final String password = passwordController.text;
 
-    // Measure time for wallet creation
-    final Stopwatch stopwatch = Stopwatch()..start();
-    final CesiumWallet wallet = CesiumWallet(secret, password);
-    stopwatch.stop();
-    logger('CesiumWallet creation took: ${stopwatch.elapsedMilliseconds}ms');
+    // Scrypt dans un isolate séparé → UI reste fluide
+    final CesiumWallet wallet =
+        await CesiumWallet.derive(secret, password);
 
     if (!mounted) {
       return;
@@ -364,6 +367,52 @@ class _CesiumAuthDialogState extends State<CesiumAuthDialog> {
       logger('Error scanning QR: $e');
       _feedbackNotifier.value = tr('auth_file_error');
     }
+  }
+}
+
+/// Sablier animé affiché pendant la dérivation Scrypt.
+class _HourglassIndicator extends StatefulWidget {
+  const _HourglassIndicator();
+
+  @override
+  State<_HourglassIndicator> createState() => _HourglassIndicatorState();
+}
+
+class _HourglassIndicatorState extends State<_HourglassIndicator>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _ctrl;
+
+  @override
+  void initState() {
+    super.initState();
+    _ctrl = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 900),
+    )..repeat();
+  }
+
+  @override
+  void dispose() {
+    _ctrl.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: _ctrl,
+      builder: (_, __) {
+        // Alterne entre hourglass_top et hourglass_bottom
+        final IconData icon = _ctrl.value < 0.5
+            ? Icons.hourglass_top_rounded
+            : Icons.hourglass_bottom_rounded;
+        return Icon(
+          icon,
+          size: 48,
+          color: Theme.of(context).colorScheme.primary,
+        );
+      },
+    );
   }
 }
 

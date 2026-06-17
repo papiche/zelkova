@@ -492,7 +492,7 @@ class SharedPreferencesHelperV2
     String? uplanetnameG1,
     String? matchUrl,
   }) async {
-    final CesiumWallet wallet = CesiumWallet(salt, pepper);
+    final CesiumWallet wallet = await CesiumWallet.derive(salt, pepper);
     final String pubKey = wallet.pubkey;
 
     if (_accountExists(pubKey)) {

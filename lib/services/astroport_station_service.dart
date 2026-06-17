@@ -26,6 +26,11 @@ class AstroportStationService {
       AstroportStationService._internal();
 
   String? _cachedUplanetHex;
+  String? _cachedNodeHex;
+
+  Map<String, dynamic>? _cachedStationData;
+  DateTime? _stationDataFetchedAt;
+  static const Duration _stationDataTtl = Duration(minutes: 5);
 
   /// Derive the IPFS gateway hostname from UPASSPORT_URL.
   /// Returns null when the URL cannot be parsed.
@@ -45,10 +50,14 @@ class AstroportStationService {
     }
   }
 
-  /// Fetch the station's 12345.json.
+  /// Fetch the station's 12345.json (cached 5 min).
   ///
   /// Returns the parsed JSON map, or null on network / parse error.
   Future<Map<String, dynamic>?> fetchStationData() async {
+    if (_cachedStationData != null && _stationDataFetchedAt != null &&
+        DateTime.now().difference(_stationDataFetchedAt!) < _stationDataTtl) {
+      return _cachedStationData;
+    }
     final String? host = _ipfsHost();
     if (host == null) return null;
     try {
@@ -56,10 +65,32 @@ class AstroportStationService {
           .get(Uri.https(host, '/12345/'))
           .timeout(const Duration(seconds: 10));
       if (response.statusCode == 200) {
-        return jsonDecode(response.body) as Map<String, dynamic>;
+        _cachedStationData =
+            jsonDecode(response.body) as Map<String, dynamic>;
+        _stationDataFetchedAt = DateTime.now();
+        return _cachedStationData;
       }
     } catch (e) {
       loggerDev('AstroportStationService: 12345.json error: $e');
+    }
+    return null;
+  }
+
+  /// Fetch the secp256k1 hex pubkey of the NODE's NOSTR identity (NODEHEX).
+  ///
+  /// This is the BRO daemon's identity (from ~/.zen/game/secret.nostr).
+  /// Published in 12345.json as the "NODEHEX" field.
+  /// Zelkova uses this pubkey to send NIP-44 DMs to the BRO AI assistant.
+  Future<String?> fetchNodeHex() async {
+    if (_cachedNodeHex != null) return _cachedNodeHex;
+    final Map<String, dynamic>? data = await fetchStationData();
+    if (data != null) {
+      final String? hex = data['NODEHEX'] as String?;
+      if (hex != null && hex.length == 64) {
+        _cachedNodeHex = hex;
+        loggerDev('AstroportStationService: NODEHEX → ${hex.substring(0, 8)}…');
+        return hex;
+      }
     }
     return null;
   }
@@ -124,9 +155,12 @@ class AstroportStationService {
     return null;
   }
 
-  /// Clear cached hex values (e.g. after a station change).
+  /// Clear cached values (e.g. after a station change).
   void clearCache() {
     _cachedUplanetHex = null;
     _cachedUplanetG1Hex = null;
+    _cachedNodeHex = null;
+    _cachedStationData = null;
+    _stationDataFetchedAt = null;
   }
 }

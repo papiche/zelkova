@@ -29,6 +29,13 @@ class MultipassPassUnavailableException implements Exception {
   String toString() => 'PASS_UNAVAILABLE';
 }
 
+/// Les données biométriques appartiennent à une autre identité (HTTP 409 IDENTITY_CONFLICT).
+class MultipassIdentityConflictException implements Exception {
+  const MultipassIdentityConflictException();
+  @override
+  String toString() => 'IDENTITY_CONFLICT';
+}
+
 // ── OcUrls ────────────────────────────────────────────────────────────────────
 
 /// OC contribution URLs returned by the server
@@ -119,7 +126,7 @@ class MultipassResponse {
 
 /// Service to create or recover a MULTIPASS identity via UPassport API
 class MultipassService {
-  static const Duration _timeout = Duration(seconds: 60);
+  static const Duration _timeout = Duration(seconds: 180);
 
   /// Create a new MULTIPASS or recover an existing one via UPassport /g1nostr.
   ///
@@ -186,6 +193,11 @@ class MultipassService {
       case 401:
         throw const MultipassInvalidPassException();
       case 409:
+        Map<String, dynamic>? body409;
+        try { body409 = jsonDecode(response.body) as Map<String, dynamic>?; } catch (_) {}
+        if ((body409?['error'] as String?) == 'IDENTITY_CONFLICT') {
+          throw const MultipassIdentityConflictException();
+        }
         throw const MultipassExistsException();
       case 503:
         throw const MultipassPassUnavailableException();

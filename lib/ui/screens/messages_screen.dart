@@ -9,7 +9,9 @@ import '../../g1/nostr/nostr_keys.dart';
 import '../../g1/nostr/nostr_profile.dart';
 import '../../g1/nostr/nostr_relay_service.dart';
 import '../../shared_prefs_helper_v2.dart';
+import 'bro_screen.dart';
 import 'chat_screen.dart';
+import 'love_screen.dart';
 
 /// Telegram-style conversation list — one tile per DM peer.
 class MessagesScreen extends StatefulWidget {
@@ -265,6 +267,36 @@ class _MessagesScreenState extends State<MessagesScreen> {
           IconButton(
             icon: const Icon(Icons.refresh),
             onPressed: _load,
+          ),
+        ],
+      ),
+      floatingActionButton: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: <Widget>[
+          FloatingActionButton.extended(
+            heroTag: 'love_open_fab',
+            backgroundColor: const Color(0xFFE91E8C),
+            foregroundColor: Colors.white,
+            icon: const Icon(Icons.favorite),
+            label: const Text('LOVE',
+                style: TextStyle(fontWeight: FontWeight.bold)),
+            onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute<void>(builder: (_) => const LoveScreen()),
+            ),
+            tooltip: 'Mode LOVE — Assistance aux rencontres',
+          ),
+          const SizedBox(height: 10),
+          FloatingActionButton.extended(
+            heroTag: 'bro_open_fab',
+            icon: const Icon(Icons.smart_toy_outlined),
+            label: const Text('BRO'),
+            onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute<void>(builder: (_) => const BroScreen()),
+            ),
+            tooltip: 'Ouvrir le chat BRO (IA station)',
           ),
         ],
       ),

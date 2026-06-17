@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:bip340/bip340.dart' as bip340;
@@ -127,8 +128,9 @@ Future<bool> publishAtomicDid({
 }
 
 String _signEvent(String eventIdHex, String hexPrivateKey) {
+  final Random rng = Random.secure();
   final Uint8List aux = Uint8List.fromList(
-    List<int>.generate(32, (int i) => (DateTime.now().microsecond + i) % 256),
+    List<int>.generate(32, (int _) => rng.nextInt(256)),
   );
   return bip340.sign(hexPrivateKey, eventIdHex, HEX.encode(aux));
 }

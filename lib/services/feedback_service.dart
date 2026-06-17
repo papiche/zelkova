@@ -103,40 +103,43 @@ class FeedbackService {
       );
       final Map<String, String> ids = await _getUserIdentifiers();
 
+      final Map<String, String> formFields = <String, String>{
+        'title': title,
+        'description': fullDescription,
+        'category': type,
+        'source': 'zelkova',
+        'app_version': appVersion,
+        'platform': platform,
+        if ((ids['g1pub'] ?? '').isNotEmpty && ids['g1pub'] != 'non défini')
+          'pubkey': ids['g1pub']!,
+      };
+
       final http.Response response = await http
           .post(
             Uri.parse(_feedbackUrl),
-            headers: <String, String>{'Content-Type': 'application/json'},
-            body: jsonEncode(<String, dynamic>{
-              'type': type,
-              'title': title,
-              'description': fullDescription,
-              'email': 'anonymous',
-              'app_version': appVersion,
-              'platform': platform,
-              'user_g1pub': ids['g1pub'],
-              'user_npub': ids['npub_hex'],
-              'user_npub_bech32': ids['npub_bech32'],
-              'user_display_name': 'Ẑelkova User',
-            }),
+            body: formFields,
           )
           .timeout(const Duration(seconds: 15));
 
       if (response.statusCode == 200 || response.statusCode == 201) {
-        final Map<String, dynamic> data =
-            jsonDecode(response.body) as Map<String, dynamic>;
+        Map<String, dynamic>? data;
+        try {
+          data = _parseJson(response.body);
+        } catch (_) {}
         return FeedbackResult(
           success: true,
-          issueNumber: data['issue_number'] as int?,
-          issueUrl: data['issue_url'] as String?,
-          message: data['message'] as String?,
+          issueNumber: data?['issue_number'] as int?,
+          issueUrl: data?['issue_url'] as String?,
+          message: data?['message'] as String?,
         );
       } else {
-        final Map<String, dynamic> error =
-            jsonDecode(response.body) as Map<String, dynamic>;
+        Map<String, dynamic>? error;
+        try {
+          error = _parseJson(response.body);
+        } catch (_) {}
         return FeedbackResult(
           success: false,
-          error: error['error'] as String? ?? 'Erreur inconnue (${response.statusCode})',
+          error: error?['detail'] as String? ?? error?['error'] as String? ?? 'Erreur inconnue (${response.statusCode})',
         );
       }
     } catch (e) {
@@ -165,6 +168,9 @@ class FeedbackService {
         technicalInfo: technicalInfo,
       );
 }
+
+Map<String, dynamic> _parseJson(String body) =>
+    jsonDecode(body) as Map<String, dynamic>;
 
 /// Résultat d'envoi de feedback.
 class FeedbackResult {

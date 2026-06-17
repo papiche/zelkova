@@ -26,12 +26,20 @@ class NodeManager {
 
   static final NodeManager _singleton = NodeManager._internal();
 
-  final List<Node> cesiumPlusNodes = <Node>[];
   final List<Node> endpointNodes = <Node>[];
   final List<Node> duniterIndexerNodes = <Node>[];
   final List<Node> duniterDataNodes = <Node>[];
   final List<Node> ipfsGateways = <Node>[];
   String? currentIfpsNode;
+
+  // Timestamp of last successful node list update (endpoint or duniterIndexer)
+  DateTime? _lastNodeListUpdate;
+
+  /// Returns true if the node list has never been updated or is older than [ttl].
+  bool isNodeListStale(Duration ttl) {
+    if (_lastNodeListUpdate == null) return true;
+    return DateTime.now().difference(_lastNodeListUpdate!) > ttl;
+  }
 
   // Pinned nodes by type (URL as key)
   final Map<NodeType, String?> pinnedNodes = <NodeType, String?>{};
@@ -123,6 +131,13 @@ class NodeManager {
 
     nodes.addAll(uniqueNodes);
 
+    // Track last update time for endpoint/indexer TTL
+    if (type == NodeType.endpoint || type == NodeType.duniterIndexer) {
+      if (newNodes.isNotEmpty) {
+        _lastNodeListUpdate = DateTime.now();
+      }
+    }
+
     if (notify) {
       notifyObserver();
     }
@@ -130,17 +145,15 @@ class NodeManager {
 
   List<Node> nodeList(NodeType type) => _getList(type);
 
-  List<Node> _getList(NodeType type) => type == NodeType.cesiumPlus
-      ? cesiumPlusNodes
-      : type == NodeType.endpoint
-          ? endpointNodes
-          : type == NodeType.duniterIndexer
-              ? duniterIndexerNodes
-              : type == NodeType.datapodEndpoint
-                  ? duniterDataNodes
-                  : type == NodeType.ipfsGateway
-                      ? ipfsGateways
-                      : endpointNodes;
+  List<Node> _getList(NodeType type) => type == NodeType.endpoint
+      ? endpointNodes
+      : type == NodeType.duniterIndexer
+          ? duniterIndexerNodes
+          : type == NodeType.datapodEndpoint
+              ? duniterDataNodes
+              : type == NodeType.ipfsGateway
+                  ? ipfsGateways
+                  : endpointNodes;
 
   void addNode(NodeType type, Node node, {bool notify = true}) {
     final List<Node> nodes = _getList(type);
@@ -364,28 +377,6 @@ class NodeManager {
   List<Node> getBestNodes(NodeType type) {
     final List<Node> allNodes = NodeManager().nodeList(type);
 
-    // For cesiumPlus, always prefer https://g1.data.e-is.pro if accessible
-    if (type == NodeType.cesiumPlus) {
-      Node? preferredNode;
-      try {
-        preferredNode = allNodes.firstWhere(
-          (Node node) =>
-              node.url == 'https://g1.data.e-is.pro' &&
-              node.isOk &&
-              node.errors < NodeManager.absoluteMaxErrors &&
-              !isNodeTemporarilyDisabled(node),
-        );
-      } catch (_) {
-        preferredNode = null;
-      }
-      if (preferredNode != null) {
-        return <Node>[
-          preferredNode,
-          ...allNodes.where((Node n) => n.url != 'https://g1.data.e-is.pro')
-        ];
-      }
-    }
-
     // Filter out nodes with huge latency (offline nodes), excessive errors, AND temporary disabling
     final List<Node> onlineNodes = allNodes
         .where((Node node) =>
@@ -586,7 +577,6 @@ class NodeManagerObserver {
   }
 
   void update(NodeManager nodeManager) {
-    cubit.setCesiumPlusNodes(nodeManager.cesiumPlusNodes);
     cubit.setEndpointNodes(nodeManager.endpointNodes);
     cubit.setDuniterIndexerNodes(nodeManager.duniterIndexerNodes);
     cubit.setDuniterDataNodes(nodeManager.duniterDataNodes);

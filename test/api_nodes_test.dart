@@ -28,7 +28,7 @@ void main() {
     // Clean NodeManager before each test
     final NodeManager nm = NodeManager();
     nm.endpointNodes.clear();
-    nm.cesiumPlusNodes.clear();
+    nm.duniterIndexerNodes.clear();
     nm.endpointNodes.clear();
     nm.duniterIndexerNodes.clear();
     nm.duniterDataNodes.clear();
@@ -286,7 +286,7 @@ void main() {
 
       // Existing node with errors
       nm.updateNodes(
-        NodeType.cesiumPlus,
+        NodeType.duniterIndexer,
         <Node>[
           const Node(url: 'https://node1.com', latency: 100, errors: 3),
         ],
@@ -295,12 +295,12 @@ void main() {
 
       // Simulate node update (new ping with different latency)
       nm.updateNode(
-        NodeType.cesiumPlus,
+        NodeType.duniterIndexer,
         const Node(url: 'https://node1.com', latency: 150, errors: 3),
         notify: false,
       );
 
-      final Node updatedNode = nm.cesiumPlusNodes.first;
+      final Node updatedNode = nm.duniterIndexerNodes.first;
       expect(updatedNode.errors, 3); // Errors must be preserved
       expect(updatedNode.latency, 150); // Latency must be updated
     });
@@ -501,7 +501,7 @@ void main() {
       final NodeManager nm = NodeManager();
 
       nm.updateNodes(
-        NodeType.cesiumPlus,
+        NodeType.duniterIndexer,
         <Node>[const Node(url: 'https://cesiumplus-node.com')],
         notify: false,
       );
@@ -511,10 +511,10 @@ void main() {
         notify: false,
       );
 
-      expect(nm.cesiumPlusNodes.length, 1);
+      expect(nm.duniterIndexerNodes.length, 1);
       expect(nm.endpointNodes.length, 1);
 
-      expect(nm.cesiumPlusNodes.first.url, 'https://cesiumplus-node.com');
+      expect(nm.duniterIndexerNodes.first.url, 'https://cesiumplus-node.com');
       expect(nm.endpointNodes.first.url, 'https://endpoint-node.com');
     });
   });
@@ -555,7 +555,7 @@ void main() {
         notify: false,
       );
       nm.updateNodes(
-        NodeType.cesiumPlus,
+        NodeType.duniterIndexer,
         <Node>[const Node(url: 'https://cesiumplus1.com', errors: 3)],
         notify: false,
       );
@@ -569,7 +569,7 @@ void main() {
 
       // All errors should be at 0
       expect(nm.endpointNodes.first.errors, 0);
-      expect(nm.cesiumPlusNodes.first.errors, 0);
+      expect(nm.duniterIndexerNodes.first.errors, 0);
       expect(nm.endpointNodes.first.errors, 0);
     });
   });
@@ -579,7 +579,7 @@ void main() {
       final NodeManager nm = NodeManager();
 
       nm.updateNodes(
-        NodeType.cesiumPlus,
+        NodeType.duniterIndexer,
         <Node>[
           const Node(
               url: 'https://bad-node.com',
@@ -597,7 +597,7 @@ void main() {
         notify: false,
       );
 
-      final List<Node> best = nm.getBestNodes(NodeType.cesiumPlus);
+      final List<Node> best = nm.getBestNodes(NodeType.duniterIndexer);
 
       // Node with maxNodeErrors or more should not be in best list
       expect(
@@ -657,7 +657,7 @@ void main() {
       final NodeManager nm = NodeManager();
 
       nm.updateNodes(
-        NodeType.cesiumPlus,
+        NodeType.duniterIndexer,
         <Node>[
           const Node(url: 'https://node1.com'),
           const Node(url: 'https://node2.com', errors: 2),
@@ -667,8 +667,8 @@ void main() {
         notify: false,
       );
 
-      final int workingCount = nm.nodesWorking(NodeType.cesiumPlus);
-      final List<Node> workingList = nm.nodesWorkingList(NodeType.cesiumPlus);
+      final int workingCount = nm.nodesWorking(NodeType.duniterIndexer);
+      final List<Node> workingList = nm.nodesWorkingList(NodeType.duniterIndexer);
 
       expect(workingCount, 3); // Only 3 nodes with errors < maxNodeErrors
       expect(workingList.length, 3);

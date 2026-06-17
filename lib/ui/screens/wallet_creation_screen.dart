@@ -3,12 +3,12 @@ import 'dart:convert';
 import 'dart:math' as math;
 
 import 'package:audioplayers/audioplayers.dart';
-import 'package:flutter/services.dart';
 import 'package:calendar_date_picker2/calendar_date_picker2.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:geolocator/geolocator.dart';
@@ -80,7 +80,9 @@ class _SwarmStation {
 
   static _SwarmStation? fromJson(Map<String, dynamic> m) {
     final String? uspot = m['uSPOT'] as String?;
-    if (uspot == null || uspot.isEmpty) return null;
+    if (uspot == null || uspot.isEmpty) {
+      return null;
+    }
     final String host = m['hostname'] as String? ?? '';
     final String city = m['IPCity'] as String? ?? '';
 
@@ -238,7 +240,9 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
           'upassport': <String, dynamic>{'active': true},
         };
         final _SwarmStation? primary = _SwarmStation.fromJson(primaryMap);
-        if (primary != null) stations.add(primary);
+        if (primary != null) {
+          stations.add(primary);
+        }
 
         // SWARM stations — skip duplicates (same uSPOT already added as primary)
         final List<dynamic> swarm =
@@ -262,7 +266,9 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
         // Tri initial : actives en premier avec shuffle aléatoire
         final math.Random initRng = math.Random();
         stations.sort((_SwarmStation a, _SwarmStation b) {
-          if (a.active != b.active) return a.active ? -1 : 1;
+          if (a.active != b.active) {
+            return a.active ? -1 : 1;
+          }
           return initRng.nextBool() ? -1 : 1;
         });
 
@@ -280,7 +286,9 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
     } catch (e) {
       loggerDev('SWARM load error: $e');
     } finally {
-      if (mounted) setState(() => _swarmLoading = false);
+      if (mounted) {
+        setState(() => _swarmLoading = false);
+      }
     }
   }
 
@@ -350,7 +358,9 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
   /// Trie les stations : actives en premier, puis par distance haversine + jitter aléatoire.
   /// Les stations sans GPS sont poussées en fin de liste.
   void _sortStationsByDistance(double userLat, double userLon) {
-    if (_swarmStations.isEmpty) return;
+    if (_swarmStations.isEmpty) {
+      return;
+    }
     // Jitter aléatoire stable pour ce tri (évite les comparateurs non-déterministes)
     final math.Random rng = math.Random();
     final Map<String, double> jitter = <String, double>{
@@ -360,14 +370,20 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
     final List<_SwarmStation> sorted = List<_SwarmStation>.from(_swarmStations);
     sorted.sort((_SwarmStation a, _SwarmStation b) {
       // Stations actives (uptime) d'abord
-      if (a.active != b.active) return a.active ? -1 : 1;
+      if (a.active != b.active) {
+        return a.active ? -1 : 1;
+      }
       final bool aNoGps = a.lat == 0 && a.lon == 0;
       final bool bNoGps = b.lat == 0 && b.lon == 0;
       if (aNoGps && bNoGps) {
         return ((jitter[a.uspot] ?? 0) - (jitter[b.uspot] ?? 0)).sign.toInt();
       }
-      if (aNoGps) return 1;
-      if (bNoGps) return -1;
+      if (aNoGps) {
+        return 1;
+      }
+      if (bNoGps) {
+        return -1;
+      }
       final double da = a.distanceFrom(userLat, userLon) + (jitter[a.uspot] ?? 0);
       final double db = b.distanceFrom(userLat, userLon) + (jitter[b.uspot] ?? 0);
       return da.compareTo(db);
@@ -386,7 +402,9 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
   Future<void> _createMultipass() async {
     // Form may be on a different page (ATOMIC flow) — fall back to direct check
     final FormState? form = _formKey.currentState;
-    if (form != null && !form.validate()) return;
+    if (form != null && !form.validate()) {
+      return;
+    }
     if (_emailController.text.trim().isEmpty) {
       setState(() => _errorMessage = 'Email requis.');
       return;
@@ -404,7 +422,9 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
       try {
         (computedSalt, computedPepper) = await _computeAtomicKeys();
       } catch (e) {
-        if (!mounted) return;
+        if (!mounted) {
+          return;
+        }
         setState(() {
           _isLoading = false;
           _pbkdf2Running = false;
@@ -412,7 +432,9 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
         });
         return;
       }
-      if (!mounted) return;
+      if (!mounted) {
+        return;
+      }
       setState(() => _pbkdf2Running = false);
     } else {
       setState(() {
@@ -434,7 +456,7 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
     final String birthDtUtc = localToUtcStr(localBirth, utcOffset);
     final DateTime localCon = localBirth.subtract(const Duration(days: 280));
     final String conDtUtc = localToUtcStr(
-      DateTime(localCon.year, localCon.month, localCon.day, 12, 0),
+      DateTime(localCon.year, localCon.month, localCon.day, 12),
       utcOffset,
     );
     final double lat = _birthLat != 0.0 ? _birthLat : (double.tryParse(_lat) ?? 0.0);
@@ -458,7 +480,9 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
 
   /// Build the ISO-8601 birth datetime from state, or null if not set.
   String? _buildBirthDatetime() {
-    if (_birthDate == null) return null;
+    if (_birthDate == null) {
+      return null;
+    }
     final TimeOfDay t = _birthTime ?? const TimeOfDay(hour: 12, minute: 0);
     return '${_birthDate!.year.toString().padLeft(4, '0')}'
         '-${_birthDate!.month.toString().padLeft(2, '0')}'
@@ -508,25 +532,43 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
       await _saveAndShowResult(response);
       _publishNostrDidAsync(response);
     } on MultipassExistsException {
-      if (!mounted) return;
+      if (!mounted) {
+        return;
+      }
       setState(() => _isLoading = false);
       final String? code = await _showPassDialog();
-      if (code == null || !mounted) return;
+      if (code == null || !mounted) {
+        return;
+      }
       setState(() {
         _isLoading = true;
         _errorMessage = null;
       });
       await _doCreate(passCode: code, salt: salt, pepper: pepper);
     } on MultipassInvalidPassException {
-      if (!mounted) return;
+      if (!mounted) {
+        return;
+      }
       setState(() {
         _isLoading = false;
         _errorMessage =
             "Code PASS incorrect. Vérifiez l'email reçu lors de la création de votre MULTIPASS.";
       });
+    } on TimeoutException {
+      logger('WalletCreationScreen: createMultipass timeout');
+      if (!mounted) {
+        return;
+      }
+      setState(() {
+        _isLoading = false;
+        _errorMessage =
+            'Le serveur ne répond pas. Vérifiez votre connexion ou choisissez une autre station.';
+      });
     } catch (e) {
       logger('WalletCreationScreen: createMultipass error: $e');
-      if (!mounted) return;
+      if (!mounted) {
+        return;
+      }
       setState(() {
         _isLoading = false;
         _errorMessage = e.toString();
@@ -535,6 +577,16 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
   }
 
   Future<void> _saveAndShowResult(MultipassResponse response) async {
+    // Build matchUrl now (state still has birth data) so it can be persisted
+    String? matchUrl;
+    if (_birthDate != null) {
+      final KinResult birthKin = calculateMayaKin(_birthDate!);
+      final String url = _buildAtomicMatchUrl(birthKin);
+      if (url.isNotEmpty) {
+        matchUrl = url;
+      }
+    }
+
     await SharedPreferencesHelperV2().createMultipassAccount(
       salt: response.salt,
       pepper: response.pepper,
@@ -552,11 +604,14 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
         'membre': response.ocUrls.membre,
       },
       uplanetnameG1: response.uplanetnameG1,
+      matchUrl: matchUrl,
     );
     if (response.uplanetnameG1.isNotEmpty) {
       ZenTagService().setUplanetnameG1(response.uplanetnameG1);
     }
-    if (!mounted) return;
+    if (!mounted) {
+      return;
+    }
     setState(() {
       _result = response;
       _isLoading = false;
@@ -602,7 +657,7 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
           ),
           actions: <Widget>[
             TextButton(
-              onPressed: () => Navigator.of(ctx).pop(null),
+              onPressed: () => Navigator.of(ctx).pop(),
               child: const Text('Annuler'),
             ),
             FilledButton(
@@ -630,7 +685,9 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
   }
 
   Future<void> _openUrl(String url) async {
-    if (url.isEmpty) return;
+    if (url.isEmpty) {
+      return;
+    }
     final Uri uri = Uri.parse(url);
     if (await canLaunchUrl(uri)) {
       await launchUrl(uri, mode: LaunchMode.externalApplication);
@@ -1204,9 +1261,9 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
                                   'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
                               userAgentPackageName: 'com.zelkova.app',
                             ),
-                            PolygonLayer(
-                              polygons: <Polygon>[
-                                Polygon(
+                            PolygonLayer<Object>(
+                              polygons: <Polygon<Object>>[
+                                Polygon<Object>(
                                   points: <LatLng>[
                                     LatLng(_birthLat, _birthLon),
                                     LatLng(_birthLat + 0.01, _birthLon),
@@ -1392,9 +1449,7 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
                 const Center(child: _MultipassCreationLoader())
               else
                 ElevatedButton.icon(
-                  onPressed: (_birthDate != null && _birthPlaceName.isNotEmpty)
-                      ? _createMultipass
-                      : null,
+                  onPressed: (_isLoading || _pbkdf2Running) ? null : _createMultipass,
                   icon: const Text('✨', style: TextStyle(fontSize: 18)),
                   label: const Text(
                     'Initialiser mon MULTIPASS',
@@ -1453,7 +1508,9 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
                         ))
                     .toList(),
                 onChanged: (String? v) {
-                  if (v != null) setState(() => _selectedUspot = v);
+                  if (v != null) {
+                    setState(() => _selectedUspot = v);
+                  }
                 },
               ),
             ),
@@ -1864,7 +1921,6 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
                       child: FlutterMap(
                         options: MapOptions(
                           initialCenter: LatLng(lat2d, lon2d),
-                          initialZoom: 13.0,
                           interactionOptions: const InteractionOptions(
                             flags: InteractiveFlag.none,
                           ),
@@ -1875,9 +1931,9 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
                                 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
                             userAgentPackageName: 'com.zelkova.app',
                           ),
-                          PolygonLayer(
-                            polygons: <Polygon>[
-                              Polygon(
+                          PolygonLayer<Object>(
+                            polygons: <Polygon<Object>>[
+                              Polygon<Object>(
                                 points: <LatLng>[
                                   LatLng(lat2d, lon2d),
                                   LatLng(lat2d + 0.01, lon2d),
@@ -1894,8 +1950,6 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
                             markers: <Marker>[
                               Marker(
                                 point: LatLng(lat2d, lon2d),
-                                width: 30,
-                                height: 30,
                                 child: const Icon(
                                   Icons.location_pin,
                                   color: Colors.red,
@@ -1940,10 +1994,10 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
                       width: 80,
                       height: 80,
                       decoration: BoxDecoration(
-                        color: Colors.green.withOpacity(0.1),
+                        color: Colors.green.withValues(alpha: 0.1),
                         shape: BoxShape.circle,
                         border: Border.all(
-                          color: Colors.green.withOpacity(0.4),
+                          color: Colors.green.withValues(alpha: 0.4),
                           width: 2,
                         ),
                       ),
@@ -1971,7 +2025,7 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
                           color: Theme.of(context)
                               .colorScheme
                               .onSurface
-                              .withOpacity(0.6),
+                              .withValues(alpha: 0.6),
                         ),
                   ),
                   // ── Rappel EMAIL + boutons OC prioritaires ──────────────────
@@ -2112,7 +2166,7 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
                             color: Theme.of(context)
                                 .colorScheme
                                 .onSurface
-                                .withOpacity(0.6),
+                                .withValues(alpha: 0.6),
                           ),
                     ),
                     const SizedBox(height: 8),
@@ -2147,7 +2201,7 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
                             color: Theme.of(context)
                                 .colorScheme
                                 .onSurface
-                                .withOpacity(0.6),
+                                .withValues(alpha: 0.6),
                           ),
                     ),
                     const SizedBox(height: 8),
@@ -2287,7 +2341,9 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
   /// Construit l'URL MATCH — utilisable dès la saisie (avant création) et dans l'écran succès.
   /// Priorité base URL : uplanetHome (post-création) > _selectedUspot (pré-création).
   String _buildAtomicMatchUrl(KinResult birthKin) {
-    if (_birthDate == null) return '';
+    if (_birthDate == null) {
+      return '';
+    }
 
     final String d = '${_birthDate!.year.toString().padLeft(4, '0')}'
         '${_birthDate!.month.toString().padLeft(2, '0')}'
@@ -2306,20 +2362,35 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
         ? (email.contains('@') ? email.split('@').first : email)
         : 'moi';
 
-    String base = (_result?.uplanetHome.isNotEmpty == true)
+    String base = (_result?.uplanetHome.isNotEmpty ?? false)
         ? _result!.uplanetHome
         : _selectedUspot;
     if (base.endsWith('/')) {
       base = base.substring(0, base.length - 1);
     }
 
-    return '$base/atomic_match.html'
+    return '$base/earth/atomic_match.html'
         '?d=$d&t=$time&lo=$lo&k=${birthKin.kin}&n=${Uri.encodeComponent(name)}';
   }
 
   /// Widget de partage du lien MATCH.
   Widget _buildMatchShareSection(String url) {
     final ColorScheme cs = Theme.of(context).colorScheme;
+
+    final String name = _emailController.text.trim().split('@').first;
+    final String viralMsg =
+        '💫 Calcule notre résonance cosmique !\n\n'
+        'Saisis ta date de naissance sur ce lien — le calcul phi2x est fait '
+        "localement sur ton appareil, aucune donnée n'est transmise.\n\n"
+        '👇 Clique ici pour révéler notre cohérence :\n$url';
+    final String waUrl =
+        'https://wa.me/?text=${Uri.encodeComponent(viralMsg)}';
+    final String tgText =
+        "💫 $name t'invite à révéler votre résonance cosmique phi2x — 100% local & confidentiel";
+    final String tgUrl =
+        'https://t.me/share/url?url=${Uri.encodeComponent(url)}'
+        '&text=${Uri.encodeComponent(tgText)}';
+
     return Container(
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
@@ -2349,8 +2420,8 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
           ),
           const SizedBox(height: 4),
           Text(
-            'Partage ce lien à un·e ami·e. Il·elle saisit sa date de naissance '
-            'et votre résonance cosmique est calculée localement — sans serveur.',
+            'Tes ami·es saisissent leur date de naissance — la résonance phi2x '
+            'est calculée localement, sans serveur, sans données transmises.',
             style: TextStyle(
               fontSize: 11,
               height: 1.4,
@@ -2359,70 +2430,116 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
           ),
           const SizedBox(height: 10),
 
-          // ── URL prévisualisée ──────────────────────────────────────────
-          Container(
-            width: double.infinity,
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-            decoration: BoxDecoration(
-              color: Colors.black.withValues(alpha: 0.25),
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: Text(
-              url,
-              style: TextStyle(
-                fontSize: 9,
-                fontFamily: 'monospace',
-                color: cs.onSurface.withValues(alpha: 0.55),
+          // ── URL prévisualisée (tap = copier) ──────────────────────────
+          GestureDetector(
+            onTap: () {
+              Clipboard.setData(ClipboardData(text: url));
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('Lien copié'),
+                  duration: Duration(seconds: 2),
+                  behavior: SnackBarBehavior.floating,
+                ),
+              );
+            },
+            child: Container(
+              width: double.infinity,
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+              decoration: BoxDecoration(
+                color: Colors.black.withValues(alpha: 0.25),
+                borderRadius: BorderRadius.circular(8),
               ),
-              maxLines: 3,
-              overflow: TextOverflow.ellipsis,
+              child: Text(
+                url,
+                style: TextStyle(
+                  fontSize: 9,
+                  fontFamily: 'monospace',
+                  color: cs.onSurface.withValues(alpha: 0.55),
+                ),
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+              ),
             ),
           ),
           const SizedBox(height: 10),
 
-          // ── Boutons Copier / Tester ────────────────────────────────────
-          Row(
+          // ── Boutons partage ────────────────────────────────────────────
+          Wrap(
+            spacing: 6,
+            runSpacing: 6,
             children: <Widget>[
-              Expanded(
-                child: OutlinedButton.icon(
-                  onPressed: () {
-                    Clipboard.setData(ClipboardData(text: url));
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Lien copié dans le presse-papiers'),
-                        duration: Duration(seconds: 2),
-                        behavior: SnackBarBehavior.floating,
-                      ),
-                    );
-                  },
-                  icon: const Icon(Icons.copy, size: 15),
-                  label: const Text('Copier',
-                      style: TextStyle(fontSize: 12)),
-                  style: OutlinedButton.styleFrom(
-                    minimumSize: const Size(0, 38),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8)),
-                  ),
+              // WhatsApp
+              _shareButton(
+                color: const Color(0xFF25D366),
+                icon: Icons.chat,
+                label: 'WhatsApp',
+                onTap: () => _openUrl(waUrl),
+              ),
+              // Telegram
+              _shareButton(
+                color: const Color(0xFF2AABEE),
+                icon: Icons.send,
+                label: 'Telegram',
+                onTap: () => _openUrl(tgUrl),
+              ),
+              // Copier URL brute
+              OutlinedButton.icon(
+                onPressed: () {
+                  Clipboard.setData(ClipboardData(text: url));
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Lien copié'),
+                      duration: Duration(seconds: 2),
+                      behavior: SnackBarBehavior.floating,
+                    ),
+                  );
+                },
+                icon: const Icon(Icons.copy, size: 14),
+                label: const Text('Copier', style: TextStyle(fontSize: 11)),
+                style: OutlinedButton.styleFrom(
+                  minimumSize: const Size(0, 34),
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8)),
                 ),
               ),
-              const SizedBox(width: 8),
-              Expanded(
-                child: OutlinedButton.icon(
-                  onPressed: () => _openUrl(url),
-                  icon: const Icon(Icons.open_in_new, size: 15),
-                  label: const Text('Tester',
-                      style: TextStyle(fontSize: 12)),
-                  style: OutlinedButton.styleFrom(
-                    minimumSize: const Size(0, 38),
-                    foregroundColor: Colors.deepPurple.shade300,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8)),
-                  ),
+              // Tester dans navigateur
+              OutlinedButton.icon(
+                onPressed: () => _openUrl(url),
+                icon: const Icon(Icons.open_in_new, size: 14),
+                label: const Text('Tester', style: TextStyle(fontSize: 11)),
+                style: OutlinedButton.styleFrom(
+                  minimumSize: const Size(0, 34),
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  foregroundColor: Colors.deepPurple.shade300,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8)),
                 ),
               ),
             ],
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _shareButton({
+    required Color color,
+    required IconData icon,
+    required String label,
+    required VoidCallback onTap,
+  }) {
+    return ElevatedButton.icon(
+      onPressed: onTap,
+      icon: Icon(icon, size: 14),
+      label: Text(label, style: const TextStyle(fontSize: 11)),
+      style: ElevatedButton.styleFrom(
+        backgroundColor: color,
+        foregroundColor: Colors.white,
+        minimumSize: const Size(0, 34),
+        padding: const EdgeInsets.symmetric(horizontal: 10),
+        elevation: 0,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
       ),
     );
   }
@@ -2535,28 +2652,38 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
   }
 
   Future<void> _playKinSound(KinResult birthKin) async {
-    if (_soundPlaying) return;
+    if (_soundPlaying) {
+      return;
+    }
     setState(() => _soundPlaying = true);
     try {
       await _audioPlayer?.dispose();
       _audioPlayer = await playKinSound(birthKin.toneNumber, _polarity, _birthWeight);
       _audioPlayer?.onPlayerComplete.listen((_) {
-        if (mounted) setState(() => _soundPlaying = false);
+        if (mounted) {
+          setState(() => _soundPlaying = false);
+        }
       });
     } catch (e) {
       loggerDev('KIN sound error: $e');
-      if (mounted) setState(() => _soundPlaying = false);
+      if (mounted) {
+        setState(() => _soundPlaying = false);
+      }
     }
   }
 
   void _publishNostrDidAsync(MultipassResponse response) {
-    if (response.nsec.isEmpty) return;
+    if (response.nsec.isEmpty) {
+      return;
+    }
     final String relayUrl = _swarmStations
             .where((_SwarmStation s) => s.relay.isNotEmpty)
             .map((_SwarmStation s) => s.relay)
             .firstOrNull ??
         '';
-    if (relayUrl.isEmpty) return;
+    if (relayUrl.isEmpty) {
+      return;
+    }
 
     final KinResult? birthKin =
         _birthDate != null ? calculateMayaKin(_birthDate!) : null;
@@ -2586,14 +2713,18 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
       conceptionKin: concepKin,
       email: response.email,
     ).then((bool ok) {
-      if (ok && mounted) setState(() => _nostrDidPublished = true);
+      if (ok && mounted) {
+        setState(() => _nostrDidPublished = true);
+      }
     });
   }
 
   // ── Nominatim geocoding ────────────────────────────────────────────────────
 
   Future<Iterable<_NominatimResult>> _searchNominatim(String query) async {
-    if (query.trim().length < 3) return const <_NominatimResult>[];
+    if (query.trim().length < 3) {
+      return const <_NominatimResult>[];
+    }
     try {
       final Uri uri = Uri.parse(
         'https://nominatim.openstreetmap.org/search'
@@ -2604,7 +2735,9 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
         'User-Agent': 'Zelkova/1.0 UPlanet support@qo-op.com',
         'Accept-Language': 'fr',
       }).timeout(const Duration(seconds: 6));
-      if (r.statusCode != 200) return const <_NominatimResult>[];
+      if (r.statusCode != 200) {
+        return const <_NominatimResult>[];
+      }
       final List<dynamic> data = jsonDecode(r.body) as List<dynamic>;
       return data.map((dynamic e) {
         final Map<String, dynamic> m = e as Map<String, dynamic>;

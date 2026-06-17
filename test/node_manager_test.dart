@@ -43,7 +43,7 @@ void main() {
     test('should remove duplicates based on url', () {
       final NodeManager nm = NodeManager();
       nm.updateNodes(
-          NodeType.cesiumPlus,
+          NodeType.duniterIndexer,
           <Node>[
             const Node(url: 'node1', latency: 100),
             const Node(url: 'node1', latency: 200),
@@ -51,9 +51,9 @@ void main() {
           ],
           notify: false);
 
-      expect(nm.cesiumPlusNodes.length, 2);
-      expect(nm.cesiumPlusNodes.any((Node n) => n.url == 'node1'), isTrue);
-      expect(nm.cesiumPlusNodes.any((Node n) => n.url == 'node2'), isTrue);
+      expect(nm.duniterIndexerNodes.length, 2);
+      expect(nm.duniterIndexerNodes.any((Node n) => n.url == 'node1'), isTrue);
+      expect(nm.duniterIndexerNodes.any((Node n) => n.url == 'node2'), isTrue);
     });
   });
 
@@ -64,7 +64,7 @@ void main() {
       nm = NodeManager();
       // Clean lists before each test
       nm.endpointNodes.clear();
-      nm.cesiumPlusNodes.clear();
+      nm.duniterIndexerNodes.clear();
       nm.endpointNodes.clear();
       nm.duniterIndexerNodes.clear();
       nm.duniterDataNodes.clear();
@@ -154,13 +154,13 @@ void main() {
     });
 
     test('nodesWorkingList should return only nodes with few errors', () {
-      nm.addNode(NodeType.cesiumPlus, const Node(url: 'node1'), notify: false);
-      nm.addNode(NodeType.cesiumPlus, const Node(url: 'node2', errors: 3),
+      nm.addNode(NodeType.duniterIndexer, const Node(url: 'node1'), notify: false);
+      nm.addNode(NodeType.duniterIndexer, const Node(url: 'node2', errors: 3),
           notify: false);
-      nm.addNode(NodeType.cesiumPlus, const Node(url: 'node3', errors: 10),
+      nm.addNode(NodeType.duniterIndexer, const Node(url: 'node3', errors: 10),
           notify: false);
 
-      final List<Node> workingNodes = nm.nodesWorkingList(NodeType.cesiumPlus);
+      final List<Node> workingNodes = nm.nodesWorkingList(NodeType.duniterIndexer);
 
       expect(workingNodes.length, 2);
       expect(
@@ -438,7 +438,7 @@ void main() {
     setUp(() {
       nm = NodeManager();
       nm.endpointNodes.clear();
-      nm.cesiumPlusNodes.clear();
+      nm.duniterIndexerNodes.clear();
       nm.endpointNodes.clear();
       nm.duniterIndexerNodes.clear();
       nm.duniterDataNodes.clear();
@@ -446,24 +446,24 @@ void main() {
     });
 
     test('should handle different node types independently', () {
-      nm.addNode(NodeType.cesiumPlus, const Node(url: 'cesium1'),
+      nm.addNode(NodeType.duniterIndexer, const Node(url: 'cesium1'),
           notify: false);
       nm.addNode(NodeType.endpoint, const Node(url: 'endpoint1'),
           notify: false);
 
-      expect(nm.cesiumPlusNodes.length, 1);
+      expect(nm.duniterIndexerNodes.length, 1);
       expect(nm.endpointNodes.length, 1);
     });
 
     test('should not mix nodes between different types', () {
       const Node node = Node(url: 'shared-url');
       nm.addNode(NodeType.endpoint, node, notify: false);
-      nm.addNode(NodeType.cesiumPlus, node, notify: false);
+      nm.addNode(NodeType.duniterIndexer, node, notify: false);
 
       expect(nm.endpointNodes.first.url, 'shared-url');
-      expect(nm.cesiumPlusNodes.first.url, 'shared-url');
+      expect(nm.duniterIndexerNodes.first.url, 'shared-url');
       expect(nm.endpointNodes.length, 1);
-      expect(nm.cesiumPlusNodes.length, 1);
+      expect(nm.duniterIndexerNodes.length, 1);
     });
   });
 
@@ -517,7 +517,7 @@ void main() {
     setUp(() {
       nm = NodeManager();
       nm.endpointNodes.clear();
-      nm.cesiumPlusNodes.clear();
+      nm.duniterIndexerNodes.clear();
       nm.endpointNodes.clear();
       nm.duniterIndexerNodes.clear();
       nm.duniterDataNodes.clear();
@@ -595,7 +595,7 @@ void main() {
 
       for (int i = 0; i < 20; i++) {
         futures.add(Future<void>(() {
-          nm.addNode(NodeType.cesiumPlus, Node(url: 'node$i', latency: 100),
+          nm.addNode(NodeType.duniterIndexer, Node(url: 'node$i', latency: 100),
               notify: false);
         }));
       }
@@ -603,22 +603,22 @@ void main() {
       await Future.wait(futures);
 
       // Should have all unique nodes
-      expect(nm.cesiumPlusNodes.length, 20);
+      expect(nm.duniterIndexerNodes.length, 20);
       final Set<String> urls =
-          nm.cesiumPlusNodes.map((Node n) => n.url).toSet();
+          nm.duniterIndexerNodes.map((Node n) => n.url).toSet();
       expect(urls.length, 20);
     });
 
     test('should handle concurrent increaseNodeErrors', () async {
-      nm.addNode(NodeType.cesiumPlus, const Node(url: 'test-node'),
+      nm.addNode(NodeType.duniterIndexer, const Node(url: 'test-node'),
           notify: false);
 
       final List<Future<void>> futures = <Future<void>>[];
 
       for (int i = 0; i < 10; i++) {
         futures.add(Future<void>(() {
-          final Node node = nm.cesiumPlusNodes.first;
-          nm.increaseNodeErrors(NodeType.cesiumPlus, node,
+          final Node node = nm.duniterIndexerNodes.first;
+          nm.increaseNodeErrors(NodeType.duniterIndexer, node,
               notify: false, cause: 'Test error');
         }));
       }
@@ -626,8 +626,8 @@ void main() {
       await Future.wait(futures);
 
       // After 10 errors, the node should be marked as offline but still exist
-      expect(nm.cesiumPlusNodes.isNotEmpty, isTrue);
-      final Node node = nm.cesiumPlusNodes.first;
+      expect(nm.duniterIndexerNodes.isNotEmpty, isTrue);
+      final Node node = nm.duniterIndexerNodes.first;
       expect(node.errors, greaterThanOrEqualTo(NodeManager.absoluteMaxErrors));
       expect(node.isNotOk, isTrue); // Should be marked offline
     });
@@ -827,7 +827,7 @@ void main() {
       // Clean all lists first
       nm1.endpointNodes.clear();
       nm1.endpointNodes.clear();
-      nm1.cesiumPlusNodes.clear();
+      nm1.duniterIndexerNodes.clear();
       nm1.duniterIndexerNodes.clear();
       nm1.duniterDataNodes.clear();
       nm1.ipfsGateways.clear();
@@ -844,12 +844,12 @@ void main() {
 
       nm.addNode(NodeType.endpoint, const Node(url: 'node2', errors: 3),
           notify: false);
-      nm.addNode(NodeType.cesiumPlus, const Node(url: 'node3', errors: 4),
+      nm.addNode(NodeType.duniterIndexer, const Node(url: 'node3', errors: 4),
           notify: false);
       nm.cleanErrorStats(notify: false);
 
       expect(nm.endpointNodes.first.errors, 0);
-      expect(nm.cesiumPlusNodes.first.errors, 0);
+      expect(nm.duniterIndexerNodes.first.errors, 0);
     });
   });
 

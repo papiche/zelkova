@@ -13,20 +13,17 @@ part 'node_list_state.g.dart';
 @CopyWith()
 class NodeListState extends Equatable {
   NodeListState({
-    List<Node>? cesiumPlusNodes,
     List<Node>? endpointNodes,
     List<Node>? duniterIndexerNodes,
     List<Node>? duniterDataNodes,
     List<Node>? ipfsGateways,
     this.currentGvaNode,
-    this.cesiumPlusNodesLastUpdate,
     this.endpointNodesLastUpdate,
     this.duniterIndexerNodesLastUpdate,
     this.duniterDataNodesLastUpdate,
     this.ipfsGatewaysLastUpdate,
     bool? isLoading,
-  })  : cesiumPlusNodes = cesiumPlusNodes ?? defaultCesiumPlusNodes,
-        endpointNodes = endpointNodes ?? defaultEndPointNodes,
+  })  : endpointNodes = endpointNodes ?? defaultEndPointNodes,
         duniterIndexerNodes = duniterIndexerNodes ?? defaultDuniterIndexerNodes,
         duniterDataNodes = duniterDataNodes ?? defaultDatapodEndpointNodes,
         ipfsGateways = ipfsGateways ?? defaultIpfsGateways,
@@ -36,8 +33,6 @@ class NodeListState extends Equatable {
       _$NodeListStateFromJson(json);
 
   @JsonKey(fromJson: _nodesFromJson, toJson: _nodesToJson)
-  final List<Node> cesiumPlusNodes;
-  @JsonKey(fromJson: _nodesFromJson, toJson: _nodesToJson)
   final List<Node> endpointNodes;
   @JsonKey(fromJson: _nodesFromJson, toJson: _nodesToJson)
   final List<Node> duniterIndexerNodes;
@@ -46,7 +41,6 @@ class NodeListState extends Equatable {
   @JsonKey(fromJson: _nodesFromJson, toJson: _nodesToJson)
   final List<Node> ipfsGateways;
 
-  final DateTime? cesiumPlusNodesLastUpdate;
   final DateTime? endpointNodesLastUpdate;
   final DateTime? duniterIndexerNodesLastUpdate;
   final DateTime? duniterDataNodesLastUpdate;
@@ -58,13 +52,11 @@ class NodeListState extends Equatable {
 
   @override
   List<Object?> get props => <Object?>[
-        cesiumPlusNodes,
         endpointNodes,
         duniterIndexerNodes,
         duniterDataNodes,
         ipfsGateways,
         currentGvaNode,
-        cesiumPlusNodesLastUpdate,
         endpointNodesLastUpdate,
         duniterIndexerNodesLastUpdate,
         duniterDataNodesLastUpdate,

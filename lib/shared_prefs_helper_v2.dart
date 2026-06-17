@@ -490,6 +490,7 @@ class SharedPreferencesHelperV2
     String? uplanetHome,
     Map<String, dynamic>? ocUrls,
     String? uplanetnameG1,
+    String? matchUrl,
   }) async {
     final CesiumWallet wallet = CesiumWallet(salt, pepper);
     final String pubKey = wallet.pubkey;
@@ -526,6 +527,8 @@ class SharedPreferencesHelperV2
         if (ocUrls != null) 'oc_urls': ocUrls,
         if (uplanetnameG1 != null && uplanetnameG1.isNotEmpty)
           'uplanetname_g1': uplanetnameG1,
+        if (matchUrl != null && matchUrl.isNotEmpty)
+          'match_url': matchUrl,
       }),
     );
 
@@ -544,11 +547,21 @@ class SharedPreferencesHelperV2
   Future<Map<String, dynamic>?> getMultipassData([String? pubKey]) async {
     // Guard: getPubKey() accesses accounts[0] and throws RangeError if empty
     final String? key = pubKey ?? (isEmpty ? null : getPubKey());
-    if (key == null) return null;
+    if (key == null) {
+      return null;
+    }
     final String? data = await _storage.read(
         key: '${StorageKeys.multipassDataPrefix}${extractPublicKey(key)}');
-    if (data == null) return null;
+    if (data == null) {
+      return null;
+    }
     return jsonDecode(data) as Map<String, dynamic>;
+  }
+
+  /// Retrieve the atomic match (resonance) URL for a given wallet pubKey
+  Future<String?> getMatchUrl([String? pubKey]) async {
+    final Map<String, dynamic>? data = await getMultipassData(pubKey);
+    return data?['match_url'] as String?;
   }
 
   /// Update the oc_urls field in stored MULTIPASS data.
@@ -557,11 +570,15 @@ class SharedPreferencesHelperV2
   Future<void> updateMultipassOcUrls(
       Map<String, dynamic> ocUrls, [String? pubKey]) async {
     final String? key = pubKey ?? (isEmpty ? null : getPubKey());
-    if (key == null) return;
+    if (key == null) {
+      return;
+    }
     final String storageKey =
         '${StorageKeys.multipassDataPrefix}${extractPublicKey(key)}';
     final String? raw = await _storage.read(key: storageKey);
-    if (raw == null) return;
+    if (raw == null) {
+      return;
+    }
     final Map<String, dynamic> stored =
         jsonDecode(raw) as Map<String, dynamic>;
     stored['oc_urls'] = ocUrls;

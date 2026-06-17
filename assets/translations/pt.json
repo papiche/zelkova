@@ -572,5 +572,20 @@
   "txRefreshKey_title": "Atualizar",
   "wallet_already_imported": "Carteira já importada",
   "wallet_copied": "Carteira copiada",
-  "your_name_here": "Seu nome aqui"
+  "your_name_here": "Seu nome aqui",
+  "bottom_nav_messages": "Mensagens",
+  "messages_title": "Mensagens",
+  "messages_empty": "Sem mensagens ainda",
+  "messages_empty_chat": "Inicia a conversa",
+  "message_hint": "Escreve uma mensagem…",
+  "message_send_failed": "Falha no envio",
+  "message_copied": "Mensagem copiada",
+  "date_today": "Hoje",
+  "date_yesterday": "Ontem",
+  "contacts_no_identity": "Sem identidade NOSTR. Cria o teu MULTIPASS.",
+  "contacts_relay_offline": "Relay offline",
+  "contacts_filter_12p": "A seguir",
+  "contacts_filter_p21": "Seguidores",
+  "contacts_filter_p2p": "Mútuos",
+  "contacts_filter_n2": "Amigos de amigos"
 }

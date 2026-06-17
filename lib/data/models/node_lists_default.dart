@@ -11,11 +11,6 @@ List<Node> _splitList(String list) =>
 
 List<Node> _readDotNodeConfig(String entry) => _splitList(entry);
 
-List<Node> defaultCesiumPlusNodes = <Node>{
-  ..._readDotNodeConfig(Env.cesiumPlusNodes),
-  ..._splitList('https://g1.data.e-is.pro')
-}.toList();
-
 List<Node> defaultEndPointNodes = <Node>{
   // For doing tests of faulty nodes
   // if (kDebugMode) const Node(url: 'wss://just-testing-a-wrong-node.com/ws'),
@@ -60,8 +55,6 @@ List<Node> getHardcodedDuniterIndexerNodes() {
 
 List<Node> defaultNodes(NodeType type) {
   switch (type) {
-    case NodeType.cesiumPlus:
-      return defaultCesiumPlusNodes;
     case NodeType.endpoint:
       return defaultEndPointNodes;
     case NodeType.duniterIndexer:

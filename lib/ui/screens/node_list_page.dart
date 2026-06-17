@@ -39,9 +39,6 @@ class NodeListPage extends StatelessWidget {
           filterAndSortNodesByType(state.endpointNodes, NodeType.endpoint);
       final List<Node> duniterIndexerNodes = filterAndSortNodesByType(
           state.duniterIndexerNodes, NodeType.duniterIndexer);
-      final List<Node> cesiumPlusNodes =
-          filterAndSortNodesByType(state.cesiumPlusNodes, NodeType.cesiumPlus);
-
       // Use isV1 and isV2 from NodeType, and sort by enum index for consistent order
       final List<NodeType> v2Types = NodeType.values
           .where((NodeType type) => type.isV2)
@@ -53,7 +50,6 @@ class NodeListPage extends StatelessWidget {
         NodeType.duniterIndexer: duniterIndexerNodes,
 /*        NodeType.datapodEndpoint: duniterDataNodes,
          NodeType.ipfsGateway: ipfsGateways,*/
-        NodeType.cesiumPlus: cesiumPlusNodes,
       };
       final Map<NodeType, DateTime?> nodeTypeToLastUpdated =
           <NodeType, DateTime?>{
@@ -61,7 +57,6 @@ class NodeListPage extends StatelessWidget {
         NodeType.duniterIndexer: state.duniterIndexerNodesLastUpdate,
 /*        NodeType.datapodEndpoint: state.duniterDataNodesLastUpdate,
          NodeType.ipfsGateway: state.ipfsGatewaysLastUpdate,*/
-        NodeType.cesiumPlus: state.cesiumPlusNodesLastUpdate,
       };
       return Scaffold(
           appBar: AppBar(

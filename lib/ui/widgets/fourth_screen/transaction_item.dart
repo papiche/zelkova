@@ -215,7 +215,6 @@ class _TransactionListItemState extends State<TransactionListItem> {
     }
     final String myPubKey = SharedPreferencesHelper().getPubKey();
 
-    final ContactsCubit contactsCubit = context.read<ContactsCubit>();
     final Contact to = transaction.recipientsWithoutCashBack.isNotEmpty
         ? transaction.recipientsWithoutCashBack[0]
         : Contact.empty();
@@ -551,15 +550,6 @@ class _TransactionListItemState extends State<TransactionListItem> {
               icon: Icons.replay,
               label: tr('retry_payment'),
             ),
-          SlidableAction(
-            onPressed: (BuildContext c) {
-              _addContact(transaction, contactsCubit, context);
-            },
-            backgroundColor: Theme.of(context).primaryColor,
-            foregroundColor: Colors.white,
-            icon: Icons.contacts,
-            label: tr('add_contact'),
-          ),
         ],
       ),
       child: gestureDetectorWidget,
@@ -578,14 +568,6 @@ class _TransactionListItemState extends State<TransactionListItem> {
       alignment: PlaceholderAlignment.top,
       child: SizedBox(width: 2.0),
     );
-  }
-
-  void _addContact(Transaction transaction, ContactsCubit contactsCubit,
-      BuildContext context) {
-    final Contact newContact = transaction.isIncoming
-        ? transaction.from
-        : transaction.recipientsWithoutCashBack[0];
-    addContact(context, newContact);
   }
 
   void _selectUserToPay(BuildContext context, Transaction transaction) {
@@ -639,19 +621,6 @@ class _TransactionListItemState extends State<TransactionListItem> {
           color: TransactionListItem.grey,
         ),
       ),
-      if (!isG1)
-        WidgetSpan(
-            child: Transform.translate(
-                offset: const Offset(1, 4),
-                child: const Text(
-                  'Ğ1',
-                  style: TextStyle(
-                    fontSize: 12,
-                    // fontWeight: FontWeight.w500,
-                    // fontFeatures: <FontFeature>[FontFeature.subscripts()],
-                    color: TransactionListItem.grey,
-                  ),
-                )))
     ]);
   }
 
@@ -725,19 +694,6 @@ class _TransactionListItemState extends State<TransactionListItem> {
           title: Text(tr('retry_payment')),
           onTap: () {
             _payAgain(context, transaction, true);
-            Navigator.pop(context);
-          },
-        ),
-      ));
-    }
-
-    if (transaction.type != TransactionType.dividendReceived) {
-      menuItems.add(PopupMenuItem<dynamic>(
-        child: ListTile(
-          leading: const Icon(Icons.contacts),
-          title: Text(tr('add_contact')),
-          onTap: () {
-            _addContact(transaction, context.read<ContactsCubit>(), context);
             Navigator.pop(context);
           },
         ),

@@ -81,5 +81,20 @@
   "technical_info_title": "Teknisk information",
   "nodes_list_title": "{type} Knudepunkter ({count})",
   "nodes_list_last_updated": "Sidste opdatering: {time}",
-  "use_biometric": "Brug biometri"
+  "use_biometric": "Brug biometri",
+  "bottom_nav_messages": "Beskeder",
+  "messages_title": "Beskeder",
+  "messages_empty": "Ingen beskeder endnu",
+  "messages_empty_chat": "Start en samtale",
+  "message_hint": "Skriv en besked…",
+  "message_send_failed": "Afsendelse mislykkedes",
+  "message_copied": "Besked kopieret",
+  "date_today": "I dag",
+  "date_yesterday": "I går",
+  "contacts_no_identity": "Ingen NOSTR-identitet. Opret dit MULTIPASS.",
+  "contacts_relay_offline": "Relay offline",
+  "contacts_filter_12p": "Følger",
+  "contacts_filter_p21": "Følgere",
+  "contacts_filter_p2p": "Gensidige",
+  "contacts_filter_n2": "Venners venner"
 }

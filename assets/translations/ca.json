@@ -572,5 +572,20 @@
   "ud_history": "Historial de Dividend Universal",
   "wallet_to_delete": "Moneder a esborrar: {name}",
   "wallets_exported": "{number} moneder/s exportat/s",
-  "your_account_info": "La informació del teu compte"
+  "your_account_info": "La informació del teu compte",
+  "bottom_nav_messages": "Missatges",
+  "messages_title": "Missatges",
+  "messages_empty": "Sense missatges de moment",
+  "messages_empty_chat": "Comença la conversa",
+  "message_hint": "Escriu un missatge…",
+  "message_send_failed": "Error en enviar",
+  "message_copied": "Missatge copiat",
+  "date_today": "Avui",
+  "date_yesterday": "Ahir",
+  "contacts_no_identity": "Sense identitat NOSTR. Crea el teu MULTIPASS.",
+  "contacts_relay_offline": "Relay fora de línia",
+  "contacts_filter_12p": "Segueixo",
+  "contacts_filter_p21": "Seguidors",
+  "contacts_filter_p2p": "Mutus",
+  "contacts_filter_n2": "Amics dels amics"
 }

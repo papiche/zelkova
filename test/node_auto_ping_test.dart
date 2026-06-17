@@ -8,7 +8,7 @@ void main() {
     setUp(() {
       // Clean NodeManager before each test
       final NodeManager nm = NodeManager();
-      nm.cesiumPlusNodes.clear();
+      nm.duniterIndexerNodes.clear();
       nm.endpointNodes.clear();
       nm.duniterIndexerNodes.clear();
       nm.duniterDataNodes.clear();

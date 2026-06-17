@@ -1,22 +1,19 @@
 import 'dart:async';
-import 'dart:typed_data';
+import 'dart:convert';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_speed_dial/flutter_speed_dial.dart';
-import 'package:material_symbols_icons/symbols.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:material_symbols_icons/symbols.dart';
 import 'package:qr_flutter/qr_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sn_progress_dialog/options/completed.dart';
 import 'package:sn_progress_dialog/progress_dialog.dart';
 import 'package:text_scroll/text_scroll.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../data/models/app_cubit.dart';
-import '../../env.dart';
-import '../../g1/cesium_message_service.dart';
-import '../../g1/crypto/cesium_wallet.dart';
 import '../../data/models/contact.dart';
 import '../../data/models/contact_cubit.dart';
 import '../../data/models/contact_wot_info.dart';
@@ -24,16 +21,18 @@ import '../../data/models/identity_status.dart';
 import '../../data/models/multi_wallet_transaction_cubit.dart';
 import '../../data/models/stored_account.dart';
 import '../../data/wot_info_fetcher.dart';
+import '../../env.dart';
 import '../../g1/nostr/nostr_keys.dart';
 import '../../g1/nostr/nostr_profile.dart';
 import '../../g1/nostr/nostr_relay_service.dart';
-import '../../shared_prefs_helper_v2.dart';
 import '../../g1/sign_and_send.dart';
 import '../../main.dart';
 import '../../shared_prefs_helper.dart';
+import '../../shared_prefs_helper_v2.dart';
 import '../clipboard_helper.dart';
 import '../dialogs/profile_editor_dialog.dart';
 import '../in_dev_helper.dart';
+import '../screens/chat_screen.dart';
 import '../secure_unlock_widget.dart';
 import '../ui_helpers.dart';
 import 'balance_widget.dart';
@@ -62,11 +61,22 @@ class _ContactPageState extends State<ContactPage> with RouteAware {
   String? _bannerUrl;
   NostrProfile? _nostrProfile;
   bool _isNostrFollowed = false;
+  bool _isMuted = false;
 
   // Expert-mode secrets (own MULTIPASS only)
   String? _expertNsec;
   String? _expertSsss;  // ssss_player — used as QR for /scan terminal
   Map<String, dynamic>? _ocUrls; // OC urls depuis MULTIPASS si me=true
+  String? _matchUrl; // Lien de résonance atomique (KIN Tzolkin)
+
+  // KIN Dreamspell + phi2x (depuis Kind 30078 d=atom4love)
+  int? _kinNum;
+  String? _kinGlyph;
+  String? _kinColor;
+  String? _kinTone;
+  String? _kinAction;
+  double? _personalPhase; // φ (phi2x personal phase)
+  double? _omegaBio;      // ω biologique (Hz)
   late ScrollController _scrollController;
   bool _isRefreshing = false;
 
@@ -92,17 +102,190 @@ class _ContactPageState extends State<ContactPage> with RouteAware {
       if (data != null && mounted) {
         final dynamic raw = data['oc_urls'];
         if (raw is Map) {
+          final String? matchUrl = data['match_url'] as String?;
           setState(() {
             _ocUrls = Map<String, dynamic>.from(raw);
+            if (matchUrl != null && matchUrl.isNotEmpty) {
+              _matchUrl = matchUrl;
+            }
           });
         }
       }
     } catch (_) {}
   }
 
+  /// Convertit la couleur KIN en emoji.
+  String _kinColorEmoji(String? color) {
+    switch (color?.toLowerCase()) {
+      case 'rouge':
+      case 'red':
+        return '🔴';
+      case 'blanc':
+      case 'white':
+        return '⚪';
+      case 'bleu':
+      case 'blue':
+        return '🔵';
+      case 'jaune':
+      case 'yellow':
+        return '🟡';
+      default:
+        return '🌀';
+    }
+  }
+
+  /// Récupère les données KIN Dreamspell depuis Kind 30078 d=atom4love du contact.
+  Future<void> _fetchKinData(NostrRelayService relay, String nostrHex) async {
+    try {
+      final List<Map<String, dynamic>> events = await relay.queryEvents(
+        kinds: <int>[30078],
+        authors: <String>[nostrHex],
+        tags: <List<String>>[<String>['d', 'atom4love']],
+        limit: 1,
+      );
+      if (events.isEmpty || !mounted) {
+        return;
+      }
+      final Map<String, dynamic> event = events.first;
+      final List<dynamic> tags = (event['tags'] as List<dynamic>?) ?? <dynamic>[];
+      int? kin;
+      String? glyph;
+      String? color;
+      String? tone;
+      String? action;
+      for (final dynamic t in tags) {
+        if (t is! List || t.length < 2) {
+          continue;
+        }
+        final String tagName = t[0] as String;
+        final String tagVal = t[1] as String;
+        switch (tagName) {
+          case 'kin':
+            kin = int.tryParse(tagVal);
+          case 'glyph':
+            glyph = tagVal;
+          case 'color':
+            color = tagVal;
+          case 'tone':
+            tone = tagVal;
+          case 'action':
+            action = tagVal;
+        }
+      }
+      // Parse content JSON for phi2x fields
+      double? personalPhase;
+      double? omegaBio;
+      try {
+        final String? contentStr = event['content'] as String?;
+        if (contentStr != null && contentStr.isNotEmpty) {
+          final Map<String, dynamic> content =
+              jsonDecode(contentStr) as Map<String, dynamic>;
+          personalPhase = (content['personal_phase'] as num?)?.toDouble();
+          omegaBio = (content['omega_bio'] as num?)?.toDouble();
+        }
+      } catch (_) {}
+
+      if (kin != null && mounted) {
+        setState(() {
+          _kinNum = kin;
+          _kinGlyph = glyph;
+          _kinColor = color;
+          _kinTone = tone;
+          _kinAction = action;
+          _personalPhase = personalPhase;
+          _omegaBio = omegaBio;
+        });
+      }
+    } catch (_) {}
+  }
+
+  /// Charge l'état muet depuis SharedPreferences.
+  Future<void> _loadMuteState(String nostrHex) async {
+    try {
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      final List<String> muted =
+          prefs.getStringList('nostr_muted_list') ?? <String>[];
+      if (mounted) {
+        setState(() => _isMuted = muted.contains(nostrHex));
+      }
+    } catch (_) {}
+  }
+
+  /// Bascule l'état muet et le persiste localement.
+  Future<void> _toggleMute(String nostrHex) async {
+    try {
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      final List<String> muted =
+          prefs.getStringList('nostr_muted_list') ?? <String>[];
+      final bool nowMuted = !_isMuted;
+      if (nowMuted) {
+        if (!muted.contains(nostrHex)) {
+          muted.add(nostrHex);
+        }
+      } else {
+        muted.remove(nostrHex);
+      }
+      await prefs.setStringList('nostr_muted_list', muted);
+      if (mounted) {
+        setState(() => _isMuted = nowMuted);
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(nowMuted
+              ? 'Notifications désactivées pour ce contact'
+              : 'Notifications réactivées'),
+          duration: const Duration(seconds: 2),
+          behavior: SnackBarBehavior.floating,
+        ));
+      }
+    } catch (_) {}
+  }
+
+  /// Exécute une action WoT avec dialogue de progression.
+  Future<void> _handleWotAction(WotMenuAction action) async {
+    final SignAndSendResult result = await action.action();
+    if (!mounted || result.cancelled) {
+      return;
+    }
+    final ProgressDialog pd = ProgressDialog(context: context);
+    pd.show(
+      progressType: defProgressType,
+      msg: '',
+      hideValue: defProgressHideValue,
+      progressBgColor: defProgressBgColor,
+      barrierDismissible: defProgressBarrierDismissible,
+      msgMaxLines: defProgressMsgMaxLines,
+      completed: Completed(),
+    );
+    result.progressStream.listen(
+      (String progressMessage) {
+        pd.update(msg: progressMessage);
+      },
+      onDone: () async {
+        if (!mounted) {
+          return;
+        }
+        await Future<dynamic>.delayed(const Duration(milliseconds: 1000));
+        pd.close();
+        if (!mounted) {
+          return;
+        }
+        setState(() {});
+        await _refresh();
+      },
+      onError: (dynamic error) {
+        if (!mounted) {
+          return;
+        }
+        pd.close();
+        showAlertDialog(context, tr('error'), tr(error.toString()));
+      },
+    );
+  }
+
   /// Ouvre une URL dans le navigateur externe
   Future<void> _openExternalUrl(String url) async {
-    if (url.isEmpty) return;
+    if (url.isEmpty) {
+      return;
+    }
     final Uri uri = Uri.parse(url);
     if (await canLaunchUrl(uri)) {
       await launchUrl(uri, mode: LaunchMode.externalApplication);
@@ -166,7 +349,9 @@ class _ContactPageState extends State<ContactPage> with RouteAware {
   /// NOSTR hex pubkey — different from the Duniter base58 pubkey.
   Future<void> _fetchBanner() async {
     final NostrRelayService relay = NostrRelayService();
-    if (!relay.isConnected) return;
+    if (!relay.isConnected) {
+      return;
+    }
     try {
       // Step 1a: Si c'est notre propre compte, dériver nostrHex depuis nsec
       // (évite une requête réseau et fonctionne même si le relay n'a pas encore
@@ -192,7 +377,9 @@ class _ContactPageState extends State<ContactPage> with RouteAware {
         nostrHex = await relay.findNostrHexByG1Pub(widget.contact.address);
       }
 
-      if (nostrHex == null || !mounted) return;
+      if (nostrHex == null || !mounted) {
+        return;
+      }
 
       // Step 2: Persist nostrHex in the Contact (in-memory, not serialized)
       if (widget.contact.nostrHex != nostrHex) {
@@ -214,6 +401,12 @@ class _ContactPageState extends State<ContactPage> with RouteAware {
         });
       }
 
+      // Step 4b: Fetch Kind 30078 d=atom4love for KIN Dreamspell data
+      _fetchKinData(relay, nostrHex);
+
+      // Step 4c: Load local mute state for this contact
+      _loadMuteState(nostrHex);
+
       // Step 5: Check follow status (are we following this nostrHex?)
       try {
         final String? nsec = await SharedPreferencesHelperV2().getNostrNsec();
@@ -221,7 +414,9 @@ class _ContactPageState extends State<ContactPage> with RouteAware {
           final String myHex =
               NostrRelayService.derivePublicKey(NostrKeys.nsecToHex(nsec));
           final List<String> follows = await relay.fetchContacts(myHex);
-          if (mounted) setState(() => _isNostrFollowed = follows.contains(nostrHex));
+          if (mounted) {
+            setState(() => _isNostrFollowed = follows.contains(nostrHex));
+          }
         }
       } catch (_) {}
 
@@ -250,9 +445,13 @@ class _ContactPageState extends State<ContactPage> with RouteAware {
   Future<void> _toggleNostrFollow(String contactNostrHex) async {
     try {
       final String? nsec = await SharedPreferencesHelperV2().getNostrNsec();
-      if (nsec == null || nsec.isEmpty) return;
+      if (nsec == null || nsec.isEmpty) {
+        return;
+      }
       final NostrRelayService relay = NostrRelayService();
-      if (!relay.isConnected) return;
+      if (!relay.isConnected) {
+        return;
+      }
       final String hexPriv = NostrKeys.nsecToHex(nsec);
       final String myHex = NostrRelayService.derivePublicKey(hexPriv);
       final List<String> current = await relay.fetchContacts(myHex);
@@ -265,7 +464,9 @@ class _ContactPageState extends State<ContactPage> with RouteAware {
       }
       await relay.publishContacts(
           hexPrivateKey: hexPriv, hexPubkeys: updated);
-      if (mounted) setState(() => _isNostrFollowed = !_isNostrFollowed);
+      if (mounted) {
+        setState(() => _isNostrFollowed = !_isNostrFollowed);
+      }
     } catch (_) {}
   }
 
@@ -282,73 +483,80 @@ class _ContactPageState extends State<ContactPage> with RouteAware {
   /// References for Cesium+ message format:
   ///   jaklis/lib/cesium.py  — sendMsg()
   ///   jaklis/lib/cesiumCommon.py — signing helpers
+  Future<void> _openChat(String peerHexPubkey) async {
+    final String? nsec = await SharedPreferencesHelperV2().getNostrNsec();
+    if (nsec == null || nsec.isEmpty) {
+      return;
+    }
+    final String myPrivHex = NostrKeys.nsecToHex(nsec);
+    final String myPubHex =
+        NostrRelayService.derivePublicKey(myPrivHex);
+    if (!mounted) {
+      return;
+    }
+    unawaited(Navigator.push(
+      context,
+      MaterialPageRoute<void>(
+        builder: (_) => ChatScreen(
+          myHexPubkey: myPubHex,
+          myHexPrivkey: myPrivHex,
+          peerHexPubkey: peerHexPubkey,
+          peerProfile: _nostrProfile,
+        ),
+      ),
+    ));
+  }
+
   Future<void> _sendZenInvitation([String? contactNostrHex]) async {
     // Build invitation text (shared by both channels)
-    final String appUrl =
+    const String appUrl =
         '${Env.upassportUrl}/ipns/coracle.copylaradio.com';
-    final String demoUrl = '${Env.upassportUrl}/nostr';
+    const String demoUrl = '${Env.upassportUrl}/nostr';
     final String content = tr('zen_invitation_message',
         namedArgs: <String, String>{
           'app_url': appUrl,
           'demo_url': demoUrl,
         });
-    final String title = tr('zen_invite');
+    bool nostrNoteSent = false;
+    bool nip44Sent = false;
 
-    bool nostrSent = false;
-    bool cesiumSent = false;
+    final String? nsec = await SharedPreferencesHelperV2().getNostrNsec();
+    if (nsec != null && nsec.isNotEmpty) {
+      final String myPrivHex = NostrKeys.nsecToHex(nsec);
+      final NostrRelayService relay = NostrRelayService();
 
-    // ── Channel 1: NOSTR kind-1 ──────────────────────────────────────────
-    if (contactNostrHex != null && contactNostrHex.isNotEmpty) {
-      try {
-        final String? nsec = await SharedPreferencesHelperV2().getNostrNsec();
-        if (nsec != null && nsec.isNotEmpty) {
-          final NostrRelayService relay = NostrRelayService();
-          if (relay.isConnected) {
-            nostrSent = await relay.publishNote(
-              hexPrivateKey: NostrKeys.nsecToHex(nsec),
-              content: content,
-              mentionHex: contactNostrHex,
-            );
-          }
-        }
-      } catch (_) {}
-    }
+      if (relay.isConnected && contactNostrHex != null && contactNostrHex.isNotEmpty) {
+        // ── Canal 1: note publique NOSTR kind-1 mentionnant le contact ───
+        try {
+          nostrNoteSent = await relay.publishNote(
+            hexPrivateKey: myPrivHex,
+            content: content,
+            mentionHex: contactNostrHex,
+          );
+        } catch (_) {}
 
-    // ── Channel 2: Cesium+ Elastic Search ───────────────────────────────
-    // Only if the sender has a MULTIPASS (salt + pepper) and the recipient
-    // has a V1 G1 pubkey (Base58 on the web of trust).
-    final String recipientPubKey = widget.contact.pubKey;
-    if (recipientPubKey.isNotEmpty) {
-      try {
-        final Map<String, dynamic>? mpData =
-            await SharedPreferencesHelperV2().getMultipassData();
-        if (mpData != null) {
-          final String salt = mpData['salt'] as String? ?? '';
-          final String pepper = mpData['pepper'] as String? ?? '';
-          if (salt.isNotEmpty && pepper.isNotEmpty) {
-            final CesiumWallet senderWallet = CesiumWallet(salt, pepper);
-            cesiumSent = await CesiumMessageService.sendMessage(
-              senderWallet: senderWallet,
-              recipientPubKey: recipientPubKey,
-              title: title,
-              content: content,
-            );
-          }
-        }
-      } catch (_) {}
+        // ── Canal 2: DM NIP-44 chiffré (remplace Cesium+ message) ───────
+        try {
+          nip44Sent = await relay.sendNip44Message(
+            hexPrivateKey: myPrivHex,
+            recipientHexPubkey: contactNostrHex,
+            plaintext: content,
+          );
+        } catch (_) {}
+      }
     }
 
     if (mounted) {
-      final bool anySent = nostrSent || cesiumSent;
+      final bool anySent = nostrNoteSent || nip44Sent;
       final String channels = <String>[
-        if (nostrSent) 'NOSTR',
-        if (cesiumSent) 'Cesium+',
+        if (nostrNoteSent) 'NOSTR',
+        if (nip44Sent) 'NIP-44',
       ].join(' & ');
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text(anySent
-            ? tr('zen_invitation_sent') + (channels.isNotEmpty ? ' ($channels)' : '')
+            ? tr('zen_invitation_sent') +
+                (channels.isNotEmpty ? ' ($channels)' : '')
             : tr('zen_invitation_failed')),
-        duration: const Duration(seconds: 4),
       ));
     }
   }
@@ -360,7 +568,9 @@ class _ContactPageState extends State<ContactPage> with RouteAware {
     try {
       final String? nsec =
           await SharedPreferencesHelperV2().getNostrNsec();
-      if (nsec == null || nsec.isEmpty) return;
+      if (nsec == null || nsec.isEmpty) {
+        return;
+      }
 
       final String hexPrivateKey = NostrKeys.nsecToHex(nsec);
       final String myHexPubkey =
@@ -468,6 +678,17 @@ class _ContactPageState extends State<ContactPage> with RouteAware {
     );
   }
 
+  /// Construit un item de menu contextuel avec icône et libellé.
+  Widget _menuItem(IconData icon, String label, {Color? color}) {
+    return Row(
+      children: <Widget>[
+        Icon(icon, size: 20, color: color),
+        const SizedBox(width: 12),
+        Text(label),
+      ],
+    );
+  }
+
   DefaultTabController _buildContactWidget(
       ContactWotInfo contactWotInfo, BuildContext context) {
     final Contact contact = contactWotInfo.you;
@@ -479,149 +700,94 @@ class _ContactPageState extends State<ContactPage> with RouteAware {
     final bool isPassProtected =
         currentAccount.type != AccountType.v1PasswordLess &&
             currentAccount.type != AccountType.v2PasswordLess;
-    final List<SpeedDialChild> actions = <SpeedDialChild>[
-      // Edit profile action for own account
+    // ── Menu contextuel (overflow ···) — actions secondaires ──────────────
+    final List<PopupMenuEntry<VoidCallback>> menuItems =
+        <PopupMenuEntry<VoidCallback>>[
       if (me && isV2)
-        SpeedDialChild(
-          child: const Icon(Icons.edit),
-          label: tr('profile.edit_title'),
-          onTap: () {
-            _openProfileEditor(contact);
-          },
+        PopupMenuItem<VoidCallback>(
+          value: () => _openProfileEditor(contact),
+          child: _menuItem(Icons.edit, tr('profile.edit_title')),
         ),
       if (isContact)
-        SpeedDialChild(
-          child: const Icon(Symbols.person_edit),
-          label: tr('form_contact_title'),
-          onTap: () {
-            onEditContact(context, contact);
-          },
+        PopupMenuItem<VoidCallback>(
+          value: () => onEditContact(context, contact),
+          child: _menuItem(Symbols.person_edit, tr('form_contact_title')),
         ),
-      // Follow / Unfollow on NOSTR kind 3 — shown when viewing another MULTIPASS profile
-      if (!me && _nostrProfile != null && widget.contact.nostrHex != null)
-        SpeedDialChild(
-          child: Icon(
-              _isNostrFollowed ? Icons.person_remove : Icons.person_add_alt_1),
-          label: _isNostrFollowed
-              ? tr('nostr_unfollow')
-              : tr('nostr_follow'),
-          onTap: () {
-            if (widget.contact.nostrHex != null) {
-              _toggleNostrFollow(widget.contact.nostrHex!);
-            }
-          },
-        ),
-      // Invite to ẐEN — shown for any non-me contact with a G1 pubkey.
-      // Sends via NOSTR (if NOSTR hex available) AND/OR Cesium+ (if sender
-      // has a MULTIPASS with salt/pepper and recipient has a V1 G1 pubkey).
       if (!me && widget.contact.pubKey.isNotEmpty)
-        SpeedDialChild(
-          child: const Icon(Icons.mail_outline),
-          label: tr('zen_invite'),
-          onTap: () {
-            // Pass nostrHex if available — null causes NOSTR channel to be skipped
-            _sendZenInvitation(widget.contact.nostrHex);
-          },
-        ),
-      if (!isContact && !me)
-        SpeedDialChild(
-          child: const Icon(Icons.person_add),
-          label: tr('add_contact'),
-          onTap: () {
-            addContact(context, contact);
-          },
+        PopupMenuItem<VoidCallback>(
+          value: () => _sendZenInvitation(widget.contact.nostrHex),
+          child: _menuItem(Icons.mail_outline, tr('zen_invite')),
         ),
       if (!me)
-        // Paiement ẐEN uniquement entre MULTIPASS.
-        // Pour un portefeuille Ğ1 non-MULTIPASS → message Cesium+ uniquement.
-        SpeedDialChild(
-          child: Icon(contact.isMultipass ? Icons.send : Icons.mail_outline),
-          label: contact.isMultipass ? tr('send_g1') : tr('send_g1_message_only'),
-          onTap: () {
+        PopupMenuItem<VoidCallback>(
+          value: () {
             if (contact.isMultipass) {
               Navigator.pop(context);
               onSentContact(context, contact);
             } else {
-              // Wallet Ğ1 non-MULTIPASS : envoyer message Cesium+ uniquement
-              // (null = skip canal NOSTR, seulement Cesium+ Elastic Search)
-              _sendZenInvitation(null);
+              _sendZenInvitation();
             }
           },
-        ),
-    ];
-    if (isV2 && !isPassProtected && me) {
-      // v2PasswordLess: must upgrade before using identity features
-      actions.add(
-        SpeedDialChild(
-          child: const Icon(Icons.lock_outline),
-          label: tr('account_upgrade_required_title'),
-          onTap: () => _upgradeAccountToProtected(currentAccount),
-        ),
-      );
-    } else if (isV2 && isPassProtected) {
-      getWotMenuActions(context, me, contactWotInfo)
-          .forEach((WotMenuAction action) {
-        actions.add(
-          SpeedDialChild(
-            child: Icon(action.icon, color: action.color),
-            label: action.name,
-            onTap: () async {
-              final SignAndSendResult result = await action.action();
-              if (!context.mounted) {
-                return;
-              }
-              if (result.cancelled) {
-                return;
-              }
-              final ProgressDialog pd = ProgressDialog(context: context);
-              pd.show(
-                progressType: defProgressType,
-                msg: '',
-                hideValue: defProgressHideValue,
-                progressBgColor: defProgressBgColor,
-                barrierDismissible: defProgressBarrierDismissible,
-                msgMaxLines: defProgressMsgMaxLines,
-                completed: Completed(),
-              );
-              result.progressStream.listen(
-                (String progressMessage) {
-                  pd.update(msg: progressMessage);
-                },
-                onDone: () async {
-                  if (!context.mounted) {
-                    return;
-                  }
-                  await Future<dynamic>.delayed(
-                      const Duration(milliseconds: 1000));
-                  pd.close();
-                  if (!context.mounted) {
-                    return;
-                  }
-                  setState(() {});
-                  await _refresh();
-                },
-                onError: (dynamic error) {
-                  if (!context.mounted) {
-                    return;
-                  }
-                  pd.close();
-                  showAlertDialog(
-                    context,
-                    tr('error'),
-                    tr(error.toString()),
-                  );
-                },
-              );
-            },
+          child: _menuItem(
+            contact.isMultipass ? Icons.send : Icons.mail_outline,
+            contact.isMultipass ? tr('send_g1') : tr('send_g1_message_only'),
           ),
-        );
-      });
-    }
+        ),
+      if (isV2 && !isPassProtected && me)
+        PopupMenuItem<VoidCallback>(
+          value: () => _upgradeAccountToProtected(currentAccount),
+          child: _menuItem(
+              Icons.lock_outline, tr('account_upgrade_required_title'),
+              color: Colors.orange),
+        ),
+      if (isV2 && isPassProtected)
+        ...getWotMenuActions(context, me, contactWotInfo)
+            .map((WotMenuAction action) => PopupMenuItem<VoidCallback>(
+                  value: () => _handleWotAction(action),
+                  child: _menuItem(action.icon, action.name, color: action.color),
+                )),
+    ];
+
     return DefaultTabController(
       length: 2,
       child: Scaffold(
         appBar: AppBar(
           title: Text(me ? tr('your_account_info') : tr('account_info')),
+          actions: <Widget>[
+            // ── Chat ─────────────────────────────────────────────────────
+            if (!me && widget.contact.nostrHex != null)
+              IconButton(
+                icon: const Icon(Icons.chat_bubble_outline),
+                tooltip: tr('send_message'),
+                onPressed: () => _openChat(widget.contact.nostrHex!),
+              ),
+            // ── Follow / Unfollow ─────────────────────────────────────────
+            if (!me && _nostrProfile != null && widget.contact.nostrHex != null)
+              IconButton(
+                icon: Icon(_isNostrFollowed
+                    ? Icons.person_remove
+                    : Icons.person_add_alt_1),
+                tooltip: _isNostrFollowed
+                    ? tr('nostr_unfollow')
+                    : tr('nostr_follow'),
+                onPressed: () => _toggleNostrFollow(widget.contact.nostrHex!),
+              ),
+            // ── Mute / Unmute ─────────────────────────────────────────────
+            if (!me && widget.contact.nostrHex != null)
+              IconButton(
+                icon: Icon(_isMuted
+                    ? Icons.notifications_off_outlined
+                    : Icons.notifications_none),
+                tooltip: _isMuted ? 'Réactiver les notifications' : 'Silencieux',
+                onPressed: () => _toggleMute(widget.contact.nostrHex!),
+              ),
+            // ── Overflow ··· ──────────────────────────────────────────────
+            if (menuItems.isNotEmpty)
+              PopupMenuButton<VoidCallback>(
+                onSelected: (VoidCallback fn) => fn(),
+                itemBuilder: (BuildContext ctx) => menuItems,
+              ),
+          ],
         ),
         body: Column(
           children: <Widget>[
@@ -642,18 +808,6 @@ class _ContactPageState extends State<ContactPage> with RouteAware {
             ),
           ],
         ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
-        floatingActionButton: actions.isEmpty
-            ? null
-            : SpeedDial(
-                icon: Icons.add,
-                activeIcon: Icons.close,
-                direction: SpeedDialDirection.down,
-                backgroundColor: Theme.of(context).colorScheme.primary,
-                foregroundColor: Colors.white,
-                renderOverlay: false,
-                children: actions,
-              ),
       ),
     );
   }
@@ -746,6 +900,65 @@ class _ContactPageState extends State<ContactPage> with RouteAware {
             ),
           ],
 
+          // ── Section KIN Dreamspell + phi2x ─────────────────────────────────
+          if (_kinNum != null) ...<Widget>[
+            const Divider(),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 8, 16, 4),
+              child: Text(
+                'KIN Dreamspell',
+                style: TextStyle(
+                    fontWeight: FontWeight.w800,
+                    color: Theme.of(context).colorScheme.primary,
+                    fontSize: 13),
+              ),
+            ),
+            ListTile(
+              leading: Text(
+                _kinColorEmoji(_kinColor),
+                style: const TextStyle(fontSize: 24),
+              ),
+              title: Text(
+                'KIN $_kinNum${_kinGlyph != null ? ' — ${_kinGlyph!}' : ''}',
+                style: const TextStyle(fontWeight: FontWeight.w700),
+              ),
+              subtitle: Text(<String>[
+                if (_kinColor != null) _kinColor!,
+                if (_kinTone != null) 'Tone $_kinTone',
+                if (_kinAction != null) _kinAction!,
+              ].join(' · ')),
+            ),
+            if (_personalPhase != null || _omegaBio != null)
+              Padding(
+                padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
+                child: Wrap(
+                  spacing: 8,
+                  children: <Widget>[
+                    if (_personalPhase != null)
+                      Tooltip(
+                        message: 'Phase phi2x (cohérence biologique)',
+                        child: Chip(
+                          avatar: const Text('φ',
+                              style: TextStyle(fontStyle: FontStyle.italic)),
+                          label: Text(_personalPhase!.toStringAsFixed(4)),
+                          visualDensity: VisualDensity.compact,
+                        ),
+                      ),
+                    if (_omegaBio != null)
+                      Tooltip(
+                        message: 'Fréquence biologique omega',
+                        child: Chip(
+                          avatar: const Text('ω',
+                              style: TextStyle(fontStyle: FontStyle.italic)),
+                          label: Text('${_omegaBio!.toStringAsFixed(2)} Hz'),
+                          visualDensity: VisualDensity.compact,
+                        ),
+                      ),
+                  ],
+                ),
+              ),
+          ],
+
           // ── Section Expert : nsec + QR SSSS (own account, expert mode only) ─
           if (wotInfo.isme &&
               context.read<AppCubit>().state.expertMode &&
@@ -773,9 +986,9 @@ class _ContactPageState extends State<ContactPage> with RouteAware {
               ListTile(
                 dense: true,
                 leading: const Icon(Icons.vpn_key, color: Colors.orange),
-                title: Text(
+                title: const Text(
                   'nsec (🔑 privée)',
-                  style: const TextStyle(
+                  style: TextStyle(
                       fontWeight: FontWeight.w700, fontSize: 12),
                 ),
                 subtitle: SelectableText(
@@ -818,7 +1031,6 @@ class _ContactPageState extends State<ContactPage> with RouteAware {
                     height: 220,
                     child: QrImageView(
                       data: _expertSsss!,
-                      version: QrVersions.auto,
                     ),
                   ),
                 ),
@@ -833,6 +1045,51 @@ class _ContactPageState extends State<ContactPage> with RouteAware {
                 ),
               ),
             ],
+          ],
+
+          // ── Lien de résonance atomique — affiché sur le propre profil ────
+          if (wotInfo.isme && _matchUrl != null) ...<Widget>[
+            const Divider(),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 8, 16, 4),
+              child: Text(
+                'Mon lien de résonance',
+                style: TextStyle(
+                    fontWeight: FontWeight.w800,
+                    color: Theme.of(context).colorScheme.primary,
+                    fontSize: 13),
+              ),
+            ),
+            ListTile(
+              leading: const Text('🌀', style: TextStyle(fontSize: 22)),
+              title: const Text('Résonance atomique KIN'),
+              subtitle: Text(
+                _matchUrl!,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(fontSize: 11),
+              ),
+              trailing: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  IconButton(
+                    icon: const Icon(Icons.copy, size: 18),
+                    tooltip: 'Copier',
+                    onPressed: () {
+                      Clipboard.setData(ClipboardData(text: _matchUrl!));
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Lien copié')),
+                      );
+                    },
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.open_in_new, size: 18),
+                    tooltip: 'Ouvrir',
+                    onPressed: () => _openExternalUrl(_matchUrl!),
+                  ),
+                ],
+              ),
+            ),
           ],
 
           // ── Section recharge ẐEN — affiché sur le propre profil ──────────
@@ -1124,7 +1381,7 @@ class _ContactPageState extends State<ContactPage> with RouteAware {
                         alignment: Alignment.bottomRight,
                         children: <Widget>[
                           // Priority: NOSTR picture URL → Cesium+ binary
-                          if (_nostrProfile?.picture?.isNotEmpty == true) Container(
+                          if (_nostrProfile?.picture?.isNotEmpty ?? false) Container(
                                   width: double.infinity,
                                   height: double.infinity,
                                   decoration: BoxDecoration(

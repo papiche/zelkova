@@ -48,17 +48,10 @@ class NodeListCubit extends HydratedCubit<NodeListState> {
         ipfsGateways: nodes, ipfsGatewaysLastUpdate: DateTime.now()));
   }
 
-  void setCesiumPlusNodes(List<Node> nodes) {
-    emit(state.copyWith(
-        cesiumPlusNodes: nodes, cesiumPlusNodesLastUpdate: DateTime.now()));
-  }
-
   void setEndpointNodes(List<Node> nodes) {
     emit(state.copyWith(
         endpointNodes: nodes, endpointNodesLastUpdate: DateTime.now()));
   }
-
-  List<Node> get cesiumPlusNodes => state.cesiumPlusNodes;
 
   List<Node> get endpointNodes => state.endpointNodes;
 
@@ -79,7 +72,6 @@ class NodeListCubit extends HydratedCubit<NodeListState> {
 
   void resetCurrentGvaNode() {
     emit(NodeListState(
-        cesiumPlusNodes: state.cesiumPlusNodes,
         endpointNodes: state.endpointNodes,
         duniterIndexerNodes: state.duniterIndexerNodes,
         isLoading: state.isLoading));

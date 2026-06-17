@@ -68,13 +68,11 @@ class NodeListWidget extends StatelessWidget {
   String _buildSubtitle(Node node, NodeType type) {
     final StringBuffer subtitle = StringBuffer();
 
-    // Block/profile/docs count
+    // Block/profile count
     if (type == NodeType.datapodEndpoint) {
       subtitle.write('Current profiles: ${node.currentBlock}, ');
-    } else if (type != NodeType.cesiumPlus) {
-      subtitle.write('Current block: ${node.currentBlock}, ');
     } else {
-      subtitle.write('Current docs: ${node.currentBlock}, ');
+      subtitle.write('Current block: ${node.currentBlock}, ');
     }
 
     // Version (only for indexer nodes)

@@ -13,7 +13,6 @@ import '../../../data/models/contact_cubit.dart';
 import '../../../data/models/contact_state.dart';
 import '../../../data/models/payment_cubit.dart';
 import '../../../data/models/payment_state.dart';
-import '../../../g1/api.dart';
 import '../../../g1/g1_helper.dart';
 import '../../../g1/g1_v2_helper.dart';
 import '../../../g1/nostr/nostr_keys.dart';
@@ -152,50 +151,50 @@ class _ContactSearchPageState extends State<ContactSearchPage> {
       return;
     }
 
-    // ⚡ Perform network searches in PARALLEL using Future.wait()
+    // ⚡ Network search via NOSTR relay (NIP-50)
     setState(() {
       _isLoadingNetwork = true;
     });
 
     try {
-      final List<List<Contact>> results =
-          await Future.wait<List<Contact>>(<Future<List<Contact>>>[
-        searchProfiles(_searchTerm, quickMode: true),
-        searchWot(_searchTerm),
-      ]);
-
-      final List<Contact> profileResults = results[0];
-      final List<Contact> wotResults = results[1];
-
-      // Build network results with deduplication
       final List<Contact> networkResults = <Contact>[];
-
-      // Add CesiumPlus results
-      // ignore: prefer_foreach
-      for (final Contact c in profileResults) {
-        if (inDevelopment) {
-          logger(
-              'Adding CesiumPlus result: ${c.pubKey} - ${c.name ?? c.nick ?? "no name"}');
-        }
-        networkResults.add(c);
-      }
-
-      if (inDevelopment) {
-        logger('Found: ${networkResults.length} after CesiumPlus search');
-      }
-
-      // Add WoT results with deduplication
-      // ignore: prefer_foreach
-      for (final Contact wotC in wotResults) {
-        // Skip if already in network results
-        if (!networkResults.any((Contact r) => r.pubKey == wotC.pubKey)) {
-          if (inDevelopment) {
-            logger(
-                'Adding WoT result: ${wotC.pubKey} - ${wotC.name ?? wotC.nick ?? "no name"}');
+      final NostrRelayService relay = NostrRelayService();
+      if (relay.isConnected) {
+        final List<NostrProfile> nostrResults =
+            await relay.searchProfiles(_searchTerm);
+        for (final NostrProfile p in nostrResults) {
+          final String g1pub = p.g1pub ?? '';
+          if (g1pub.isEmpty && (p.g1v2?.isEmpty ?? true)) {
+            continue;
           }
-          networkResults.add(wotC);
-        } else if (inDevelopment) {
-          logger('Skipping duplicate WoT result: ${wotC.pubKey}');
+          String? nostrHex;
+          if (p.npub.isNotEmpty) {
+            try {
+              nostrHex = NostrKeys.npubToHex(p.npub);
+            } catch (_) {}
+          }
+          final String? g1v2 = p.g1v2;
+          Contact contact;
+          if (g1v2 != null && g1v2.isNotEmpty) {
+            contact = Contact.withAddress(
+              address: g1v2,
+              createdOn: DateTime.now().millisecondsSinceEpoch,
+            );
+          } else if (isValidV2Address(g1pub)) {
+            contact = Contact.withAddress(
+              address: g1pub,
+              createdOn: DateTime.now().millisecondsSinceEpoch,
+            );
+          } else {
+            contact = Contact(
+              pubKey: g1pub,
+              createdOn: DateTime.now().millisecondsSinceEpoch,
+            );
+          }
+          if (nostrHex != null) {
+            contact = contact.copyWith(nostrHex: nostrHex);
+          }
+          networkResults.add(contact);
         }
       }
 
@@ -676,12 +675,16 @@ class _ContactSearchPageState extends State<ContactSearchPage> {
   }
 
   Future<void> _loadMultipassProfiles() async {
-    if (_multipassLoading) return;
+    if (_multipassLoading) {
+      return;
+    }
     setState(() => _multipassLoading = true);
     try {
       final NostrRelayService relay = NostrRelayService();
       if (!relay.isConnected) {
-        if (mounted) setState(() => _multipassLoading = false);
+        if (mounted) {
+          setState(() => _multipassLoading = false);
+        }
         return;
       }
       final List<NostrProfile> profiles =
@@ -695,12 +698,16 @@ class _ContactSearchPageState extends State<ContactSearchPage> {
         });
       }
     } catch (_) {
-      if (mounted) setState(() => _multipassLoading = false);
+      if (mounted) {
+        setState(() => _multipassLoading = false);
+      }
     }
   }
 
   List<NostrProfile> _filterMultipassByQuery(String q) {
-    if (q.isEmpty) return List<NostrProfile>.from(_allMultipass);
+    if (q.isEmpty) {
+      return List<NostrProfile>.from(_allMultipass);
+    }
     final String lower = q.toLowerCase();
     return _allMultipass.where((NostrProfile p) {
       return p.name.toLowerCase().contains(lower) ||

@@ -528,5 +528,20 @@
   "export_failed": "Exportieren fehlgeschlagen. Bitte eine andere Exportmethode versuchen.",
   "copy_to_clipboard": "In den Zwischenspeicher kopieren",
   "profile_migration_failed": "Fehler beim Übetragen des Profils an ein neues Konto",
-  "op_batch_successful": "Der Vorgang wurde erfolgreich abgeschlossen!"
+  "op_batch_successful": "Der Vorgang wurde erfolgreich abgeschlossen!",
+  "bottom_nav_messages": "Nachrichten",
+  "messages_title": "Nachrichten",
+  "messages_empty": "Noch keine Nachrichten",
+  "messages_empty_chat": "Gespräch beginnen",
+  "message_hint": "Nachricht schreiben…",
+  "message_send_failed": "Senden fehlgeschlagen",
+  "message_copied": "Nachricht kopiert",
+  "date_today": "Heute",
+  "date_yesterday": "Gestern",
+  "contacts_no_identity": "Keine NOSTR-Identität. Erstelle deinen MULTIPASS.",
+  "contacts_relay_offline": "Relay offline",
+  "contacts_filter_12p": "Folge ich",
+  "contacts_filter_p21": "Folgen mir",
+  "contacts_filter_p2p": "Gegenseitig",
+  "contacts_filter_n2": "Freunde von Freunden"
 }

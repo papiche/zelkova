@@ -7,8 +7,6 @@ part of 'node_list_state.dart';
 // **************************************************************************
 
 abstract class _$NodeListStateCWProxy {
-  NodeListState cesiumPlusNodes(List<Node>? cesiumPlusNodes);
-
   NodeListState endpointNodes(List<Node>? endpointNodes);
 
   NodeListState duniterIndexerNodes(List<Node>? duniterIndexerNodes);
@@ -18,8 +16,6 @@ abstract class _$NodeListStateCWProxy {
   NodeListState ipfsGateways(List<Node>? ipfsGateways);
 
   NodeListState currentGvaNode(Node? currentGvaNode);
-
-  NodeListState cesiumPlusNodesLastUpdate(DateTime? cesiumPlusNodesLastUpdate);
 
   NodeListState endpointNodesLastUpdate(DateTime? endpointNodesLastUpdate);
 
@@ -43,13 +39,11 @@ abstract class _$NodeListStateCWProxy {
   /// NodeListState(...).copyWith(id: 12, name: "My name")
   /// ```
   NodeListState call({
-    List<Node>? cesiumPlusNodes,
     List<Node>? endpointNodes,
     List<Node>? duniterIndexerNodes,
     List<Node>? duniterDataNodes,
     List<Node>? ipfsGateways,
     Node? currentGvaNode,
-    DateTime? cesiumPlusNodesLastUpdate,
     DateTime? endpointNodesLastUpdate,
     DateTime? duniterIndexerNodesLastUpdate,
     DateTime? duniterDataNodesLastUpdate,
@@ -64,10 +58,6 @@ class _$NodeListStateCWProxyImpl implements _$NodeListStateCWProxy {
   const _$NodeListStateCWProxyImpl(this._value);
 
   final NodeListState _value;
-
-  @override
-  NodeListState cesiumPlusNodes(List<Node>? cesiumPlusNodes) =>
-      call(cesiumPlusNodes: cesiumPlusNodes);
 
   @override
   NodeListState endpointNodes(List<Node>? endpointNodes) =>
@@ -88,11 +78,6 @@ class _$NodeListStateCWProxyImpl implements _$NodeListStateCWProxy {
   @override
   NodeListState currentGvaNode(Node? currentGvaNode) =>
       call(currentGvaNode: currentGvaNode);
-
-  @override
-  NodeListState cesiumPlusNodesLastUpdate(
-    DateTime? cesiumPlusNodesLastUpdate,
-  ) => call(cesiumPlusNodesLastUpdate: cesiumPlusNodesLastUpdate);
 
   @override
   NodeListState endpointNodesLastUpdate(DateTime? endpointNodesLastUpdate) =>
@@ -124,13 +109,11 @@ class _$NodeListStateCWProxyImpl implements _$NodeListStateCWProxy {
   /// NodeListState(...).copyWith(id: 12, name: "My name")
   /// ```
   NodeListState call({
-    Object? cesiumPlusNodes = const $CopyWithPlaceholder(),
     Object? endpointNodes = const $CopyWithPlaceholder(),
     Object? duniterIndexerNodes = const $CopyWithPlaceholder(),
     Object? duniterDataNodes = const $CopyWithPlaceholder(),
     Object? ipfsGateways = const $CopyWithPlaceholder(),
     Object? currentGvaNode = const $CopyWithPlaceholder(),
-    Object? cesiumPlusNodesLastUpdate = const $CopyWithPlaceholder(),
     Object? endpointNodesLastUpdate = const $CopyWithPlaceholder(),
     Object? duniterIndexerNodesLastUpdate = const $CopyWithPlaceholder(),
     Object? duniterDataNodesLastUpdate = const $CopyWithPlaceholder(),
@@ -138,10 +121,6 @@ class _$NodeListStateCWProxyImpl implements _$NodeListStateCWProxy {
     Object? isLoading = const $CopyWithPlaceholder(),
   }) {
     return NodeListState(
-      cesiumPlusNodes: cesiumPlusNodes == const $CopyWithPlaceholder()
-          ? _value.cesiumPlusNodes
-          // ignore: cast_nullable_to_non_nullable
-          : cesiumPlusNodes as List<Node>?,
       endpointNodes: endpointNodes == const $CopyWithPlaceholder()
           ? _value.endpointNodes
           // ignore: cast_nullable_to_non_nullable
@@ -162,11 +141,6 @@ class _$NodeListStateCWProxyImpl implements _$NodeListStateCWProxy {
           ? _value.currentGvaNode
           // ignore: cast_nullable_to_non_nullable
           : currentGvaNode as Node?,
-      cesiumPlusNodesLastUpdate:
-          cesiumPlusNodesLastUpdate == const $CopyWithPlaceholder()
-          ? _value.cesiumPlusNodesLastUpdate
-          // ignore: cast_nullable_to_non_nullable
-          : cesiumPlusNodesLastUpdate as DateTime?,
       endpointNodesLastUpdate:
           endpointNodesLastUpdate == const $CopyWithPlaceholder()
           ? _value.endpointNodesLastUpdate
@@ -209,9 +183,6 @@ extension $NodeListStateCopyWith on NodeListState {
 NodeListState _$NodeListStateFromJson(
   Map<String, dynamic> json,
 ) => NodeListState(
-  cesiumPlusNodes: NodeListState._nodesFromJson(
-    json['cesiumPlusNodes'] as List,
-  ),
   endpointNodes: NodeListState._nodesFromJson(json['endpointNodes'] as List),
   duniterIndexerNodes: NodeListState._nodesFromJson(
     json['duniterIndexerNodes'] as List,
@@ -223,9 +194,6 @@ NodeListState _$NodeListStateFromJson(
   currentGvaNode: NodeListState._nodeFromJson(
     json['currentGvaNode'] as Map<String, dynamic>?,
   ),
-  cesiumPlusNodesLastUpdate: json['cesiumPlusNodesLastUpdate'] == null
-      ? null
-      : DateTime.parse(json['cesiumPlusNodesLastUpdate'] as String),
   endpointNodesLastUpdate: json['endpointNodesLastUpdate'] == null
       ? null
       : DateTime.parse(json['endpointNodesLastUpdate'] as String),
@@ -244,15 +212,12 @@ NodeListState _$NodeListStateFromJson(
 Map<String, dynamic> _$NodeListStateToJson(
   NodeListState instance,
 ) => <String, dynamic>{
-  'cesiumPlusNodes': NodeListState._nodesToJson(instance.cesiumPlusNodes),
   'endpointNodes': NodeListState._nodesToJson(instance.endpointNodes),
   'duniterIndexerNodes': NodeListState._nodesToJson(
     instance.duniterIndexerNodes,
   ),
   'duniterDataNodes': NodeListState._nodesToJson(instance.duniterDataNodes),
   'ipfsGateways': NodeListState._nodesToJson(instance.ipfsGateways),
-  'cesiumPlusNodesLastUpdate': instance.cesiumPlusNodesLastUpdate
-      ?.toIso8601String(),
   'endpointNodesLastUpdate': instance.endpointNodesLastUpdate
       ?.toIso8601String(),
   'duniterIndexerNodesLastUpdate': instance.duniterIndexerNodesLastUpdate

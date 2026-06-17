@@ -564,5 +564,20 @@
   "yes_sent": "SÍ, UNVÍALU",
   "your_account_info": "L'información de la to cuenta",
   "your_name_here": "El to nome equí",
-  "your_wallet": "la to billetera"
+  "your_wallet": "la to billetera",
+  "bottom_nav_messages": "Mensaxes",
+  "messages_title": "Mensaxes",
+  "messages_empty": "Ensin mensaxes por agora",
+  "messages_empty_chat": "Aniciar la conversación",
+  "message_hint": "Escribir un mensaxe…",
+  "message_send_failed": "Error al zarrar",
+  "message_copied": "Mensaxe copiao",
+  "date_today": "Güei",
+  "date_yesterday": "Ayeri",
+  "contacts_no_identity": "Ensin identidá NOSTR. Crea el to MULTIPASS.",
+  "contacts_relay_offline": "Relay ensin conexón",
+  "contacts_filter_12p": "Sigo",
+  "contacts_filter_p21": "Seguidores",
+  "contacts_filter_p2p": "Mutuos",
+  "contacts_filter_n2": "Amigos d'amigos"
 }

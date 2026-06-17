@@ -110,9 +110,6 @@ List<WotMenuAction> getWotMenuActions(
             }));
       }
   }
-  if (isMe) {
-    _transferAllAction(context, wotInfo, actions);
-  }
 
   logger.info(
       'getWotMenuActions: isMe: $isMe wotInfo: $wotInfo,  actions(${actions.length}): $actions');
@@ -482,16 +479,6 @@ void _revokeAction(
           context, () => _confirmAndRevoke(context, wotInfo))));
 }
 
-void _transferAllAction(
-    BuildContext context, ContactWotInfo wotInfo, List<WotMenuAction> actions) {
-  actions.add(WotMenuAction(
-      name: tr('transfer_all'),
-      icon: Symbols.money_range,
-      color: Colors.red,
-      action: () async => _executeIfAuthenticated(
-          context, () => _confirmAndTransferAll(context, wotInfo))));
-}
-
 void _changeOwnerKeyAction(
     BuildContext context, ContactWotInfo wotInfo, List<WotMenuAction> actions) {
   actions.add(WotMenuAction(
@@ -709,89 +696,6 @@ Future<SignAndSendResult> _confirmAndRevoke(
   }
 }
 
-Future<SignAndSendResult> _confirmAndTransferAll(
-    BuildContext context, ContactWotInfo wotInfo) async {
-  final bool? confirmed = await showDialog<bool>(
-    context: context,
-    builder: (BuildContext dialogContext) {
-      return AlertDialog(
-        title: Text(tr('transfer_all')),
-        content: Text(tr('confirm_transfer_all')),
-        actions: <Widget>[
-          TextButton(
-            onPressed: () {
-              Navigator.of(dialogContext).pop(false);
-            },
-            child: Text(tr('cancel')),
-          ),
-          TextButton(
-            onPressed: () {
-              Navigator.of(dialogContext).pop(true);
-            },
-            child: Text(tr('yes')),
-          ),
-        ],
-      );
-    },
-  );
-
-  if (!(confirmed ?? false)) {
-    return _returnCancelled();
-  }
-
-  try {
-    final TextEditingController recipientController = TextEditingController();
-
-    if (!context.mounted) {
-      return _returnCancelled();
-    }
-    final String? recipientAddress = await showDialog<String>(
-      context: context,
-      builder: (BuildContext dialogContext) {
-        return AlertDialog(
-          title: Text(tr('recipient_address')),
-          content: TextField(
-            controller: recipientController,
-            decoration: InputDecoration(
-              hintText: tr('enter_recipient_address'),
-            ),
-          ),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.of(dialogContext).pop();
-              },
-              child: Text(tr('cancel')),
-            ),
-            TextButton(
-              onPressed: () {
-                Navigator.of(dialogContext).pop(recipientController.text);
-              },
-              child: Text(tr('ok')),
-            ),
-          ],
-        );
-      },
-    );
-
-    if (recipientAddress == null || recipientAddress.isEmpty) {
-      return _returnCancelled();
-    }
-
-    return await transferAllWOT(recipientAddress);
-  } catch (e, st) {
-    loggerDev('Error in _confirmAndTransferAll', error: e, stackTrace: st);
-    if (!context.mounted) {
-      return _returnAuthFailed();
-    }
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(tr('error_occurred'))),
-    );
-    log.e('Error transferring all: $e', stackTrace: st);
-    return _returnAuthFailed();
-  }
-}
-
 Future<SignAndSendResult> _confirmAndChangeOwnerKey(
     BuildContext context, ContactWotInfo wotInfo) async {
   // Check if the identity has had a recent owner key change
@@ -912,25 +816,6 @@ Future<SignAndSendResult> _confirmAndChangeOwnerKey(
         progressController.close();
         if (!hasError) {
           try {
-            // Migrate C+ profile from old to new address
-            try {
-              final bool migrated = await migrateProfileCPlus(
-                oldKeyPair: oldKeyPair,
-                newKeyPair: newKeyPair,
-              );
-              if (!migrated && context.mounted) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text(tr('profile_migration_failed'))),
-                );
-              }
-            } catch (e) {
-              loggerDev('Error migrating C+ profile: $e');
-              if (context.mounted) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text(tr('profile_migration_failed'))),
-                );
-              }
-            }
             await SharedPreferencesHelper().refreshWalletsInfo();
             await ContactsCache().clear();
           } catch (e) {

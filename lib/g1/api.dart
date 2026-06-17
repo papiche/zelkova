@@ -32,8 +32,6 @@ import '../shared_prefs_helper.dart';
 import '../shared_prefs_helper_v2.dart';
 import '../ui/contacts_cache.dart';
 import '../ui/logger.dart';
-import '../ui/ui_helpers.dart';
-import 'crypto/cesium_wallet.dart';
 import 'duniter_endpoint_helper.dart';
 import 'g1_helper.dart';
 import 'g1_v2_helper.dart';
@@ -109,10 +107,6 @@ int _compareVersions(String? v1, String? v2) {
   return 0;
 }
 
-// Deduplication map for Cesium+ requests - tracks in-flight requests
-// Maps request path to list of Completers waiting for the result
-final Map<String, List<Completer<Tuple2<Node, http.Response>>>> _cPlusInFlight =
-    <String, List<Completer<Tuple2<Node, http.Response>>>>{};
 
 Future<List<dynamic>> getPeers(NodeType type, {bool debug = true}) async {
   // const Duration timeout = Duration(seconds: 10);
@@ -321,28 +315,26 @@ Future<Tuple2<Set<Node>, Set<Node>>> getV2Peers({
   );
 }
 
+// TTL for node list freshness — mirrors duniter_getnode.sh (CACHE_TTL=3600)
+const Duration _nodeListTtl = Duration(hours: 1);
+
 Future<void> fetchNodesIfNotReady(
     {required bool v2Only, bool isProduction = false}) async {
   final List<Future<void>> fetchFutures = <Future<void>>[];
 
-  final List<NodeType> nodesToFetch = v2Only
-      ? <NodeType>[
-          // V2 only needs these
-          NodeType.endpoint,
-          NodeType.duniterIndexer,
-          NodeType.cesiumPlus,
-        ]
-      : <NodeType>[
-          // V1 needs these (now uses endpoints and indexer instead of duniter nodes)
-          NodeType.endpoint,
-          NodeType.duniterIndexer,
-          NodeType.cesiumPlus,
-        ];
+  // Trigger fetch if < 3 working nodes OR if the list is stale (> 1h)
+  final bool isStale = NodeManager().isNodeListStale(_nodeListTtl);
 
-  for (final NodeType type in nodesToFetch) {
-    if (NodeManager().nodesWorking(type) < 3) {
+  for (final NodeType type in <NodeType>[
+    NodeType.endpoint,
+    NodeType.duniterIndexer,
+  ]) {
+    if (isStale || NodeManager().nodesWorking(type) < 3) {
       fetchFutures.add(fetchNodes(type, true, isProduction: isProduction));
     }
+  }
+
+  if (fetchFutures.isNotEmpty) {
     await Future.wait(fetchFutures);
   }
 }
@@ -353,9 +345,6 @@ Future<void> fetchNodes(NodeType type, bool force,
     final List<Future<void>> fetchFutures = <Future<void>>[];
 
     switch (type) {
-      case NodeType.cesiumPlus:
-        fetchFutures.add(_fetchCesiumPlusNodes(force: force));
-        break;
       case NodeType.endpoint:
       case NodeType.duniterIndexer:
         fetchFutures.add(_fetchEndPointAndSquidNodes(
@@ -381,23 +370,6 @@ Future<void> fetchNodes(NodeType type, bool force,
     await Sentry.captureException(e, stackTrace: stacktrace);
     NodeManager().loading = false;
   }
-}
-
-// https://github.com/duniter/cesium/blob/467ec68114be650cd1b306754c3142fc4020164c/www/js/config.js#L96
-// https://g1.data.le-sou.org/g1/peer/_search?pretty
-Future<void> _fetchCesiumPlusNodes({bool force = false}) async {
-  NodeManager().loading = true;
-  const NodeType type = NodeType.cesiumPlus;
-  final bool forceOrFewNodes = force || NodeManager().nodesWorking(type) <= 2;
-  if (forceOrFewNodes) {
-    NodeManager().updateNodes(type, defaultCesiumPlusNodes);
-    logger('Fetching cesium nodes forced');
-  }
-  logger(
-      'Fetching cesium plus nodes, we have ${NodeManager().nodesWorking(type)}');
-  final List<Node> nodes = await _fetchNodes(NodeType.cesiumPlus);
-  NodeManager().updateNodes(type, nodes);
-  NodeManager().loading = false;
 }
 
 Future<void> _fetchEndPointAndSquidNodes(
@@ -585,6 +557,14 @@ Future<List<Node>> _fetchNodes(NodeType type, {bool debug = false}) async {
           logger(
               'Evaluating node: $endpoint, latency ${latency.inMicroseconds} version: ${nodeCheck.version}');
         }
+
+        // Ping failed (CORS, timeout, refused) — penalize and skip
+        if (latency == wrongNodeDuration) {
+          NodeManager().increaseNodeErrors(type, node,
+              cause: 'Ping failed (CORS/timeout/refused)', notify: false);
+          return null;
+        }
+
         final Node resultNode = Node(
             url: endpoint,
             latency: latency.inMicroseconds,
@@ -634,7 +614,6 @@ Future<NodeCheckResult> _pingNode(String node, NodeType type,
           Future<NodeCheckResult> Function(String node, Duration timeout)>
       testFunctions = <NodeType,
           Future<NodeCheckResult> Function(String node, Duration timeout)>{
-    NodeType.cesiumPlus: testCPlusV1Node,
     NodeType.endpoint: testEndPointV2,
     NodeType.duniterIndexer: testDuniterIndexerV2,
     NodeType.datapodEndpoint: testDuniterDatapodV2,
@@ -670,60 +649,6 @@ Future<Tuple2<Node, http.Response>> requestWithRetry(NodeType type, String path,
   return _requestWithRetry(type, path, dontRecord, retryWith404);
 }
 
-Future<Tuple2<Node, http.Response>> requestCPlusWithRetry(String path,
-    {bool retryWith404 = true, bool quickMode = false}) async {
-  // Check if this request is already in-flight
-  if (_cPlusInFlight.containsKey(path)) {
-    // Deduplicate: create a completer and wait for the in-flight request
-    final Completer<Tuple2<Node, http.Response>> completer =
-        Completer<Tuple2<Node, http.Response>>();
-    _cPlusInFlight[path]!.add(completer);
-    logger('Deduplicating CesiumPlus request for: $path');
-    return completer.future;
-  }
-
-  // Mark this request as in-flight
-  final Completer<Tuple2<Node, http.Response>> mainCompleter =
-      Completer<Tuple2<Node, http.Response>>();
-  _cPlusInFlight[path] = <Completer<Tuple2<Node, http.Response>>>[
-    mainCompleter
-  ];
-
-  try {
-    // For profile reads (/user/profile/...), 404 is a valid response (user has no profile)
-    // For other operations, 404 is an error
-    final bool treat404AsValid = path.contains('/user/profile/') &&
-        !path.contains('_update') &&
-        !path.contains('_delete') &&
-        !path.contains('_search');
-
-    final Tuple2<Node, http.Response> result = await _requestWithRetry(
-        NodeType.cesiumPlus, path, true, retryWith404,
-        quickMode: quickMode, treat404AsValid: treat404AsValid);
-
-    // Notify all waiting completers
-    final List<Completer<Tuple2<Node, http.Response>>>? waiters =
-        _cPlusInFlight.remove(path);
-    if (waiters != null) {
-      for (final Completer<Tuple2<Node, http.Response>> waiter in waiters) {
-        waiter.complete(result);
-      }
-    }
-
-    return result;
-  } catch (e) {
-    // Notify all waiting completers about the error
-    final List<Completer<Tuple2<Node, http.Response>>>? waiters =
-        _cPlusInFlight.remove(path);
-    if (waiters != null) {
-      for (final Completer<Tuple2<Node, http.Response>> waiter in waiters) {
-        waiter.completeError(e);
-      }
-    }
-    rethrow;
-  }
-}
-
 enum HttpType { get, post, delete }
 
 Future<Tuple2<Node, http.Response>> _requestWithRetry(
@@ -739,9 +664,7 @@ Future<Tuple2<Node, http.Response>> _requestWithRetry(
   // Track consecutive 404s to detect "resource doesn't exist" scenario
   int consecutive404s = 0;
 
-  // In quick mode, use shorter timeouts (3s instead of 30s for CesiumPlus)
-  final int baseTimeout =
-      quickMode ? 3 : (type == NodeType.cesiumPlus ? 30 : 10);
+  final int baseTimeout = quickMode ? 3 : 10;
 
   for (final int timeout in <int>[baseTimeout, baseTimeout * 2]) {
     // only one timeout for now
@@ -854,361 +777,6 @@ Future<Tuple2<Node, http.Response>> _requestWithRetry(
       'Cannot make the request to any of the ${nodes.length} nodes');
 }
 
-Map<String, String> _defCPlusHeaders() {
-  return <String, String>{
-    'Accept': 'application/json, text/plain, */*',
-    'Content-Type': 'application/json;charset=UTF-8',
-  };
-}
-
-/// Sign data with V1 CesiumWallet for Cesium Plus profiles
-void hashAndSignV1Profile(Map<String, dynamic> data, CesiumWallet wallet) {
-  final String dataJson = jsonEncode(data);
-  final String hash = calculateHash(dataJson);
-  final String signature = wallet.sign(hash);
-  data['hash'] = hash;
-  data['signature'] = signature;
-}
-
-/// Sign data with V1 CesiumWallet for BMA transactions
-void hashAndSignV1Transaction(Map<String, Object> data, CesiumWallet wallet) {
-  final String dataJson = jsonEncode(data);
-  final String hash = calculateHash(dataJson);
-  final String signature = wallet.sign(hash);
-  data['hash'] = hash;
-  data['signature'] = signature;
-}
-
-void hashAndSignV2(Map<String, dynamic> data, KeyPair wallet) {
-  // For V2 with Cesium Plus: Use the same hash/sign method as V1
-  // Cesium Plus API expects V1-style signatures
-  final String dataJson = jsonEncode(data);
-  final String hash = calculateHash(dataJson);
-
-  // Sign the hash (UTF-8 encoded) using KeyPair
-  // This matches what CesiumWallet does internally
-  final Uint8List hashBytes = Uint8List.fromList(utf8.encode(hash));
-  final Uint8List signatureBytes = wallet.sign(hashBytes);
-  final String signature = base64.encode(signatureBytes);
-
-  // Add hash and signature to the data
-  data['hash'] = hash;
-  data['signature'] = signature;
-}
-
-// http://doc.e-is.pro/cesium-plus-pod/REST_API.html#userprofile
-// https://git.p2p.legal/axiom-team/jaklis/src/branch/master/lib/cesiumCommon.py
-// Get an profile, by public key: user/profile/<pubkey>
-// Add a new profile: user/profile (POST)
-// Update an existing profile: user/profile/_update (POST)
-// Delete an existing profile: user/profile/_delete (DELETE?)
-Future<bool> createOrUpdateProfileV2cPlus(String name) async {
-  final KeyPair wallet = await SharedPreferencesHelper().getKeyPair();
-  // Cesium Plus expects V1 pubkey format, so convert from V2 address
-  final String pubKey = v1pubkeyFromAddress(wallet.address);
-
-  // Check if the user exists
-  final String? userName = await getProfileUserName(pubKey);
-
-  // Prepare the user profile data
-  final Map<String, dynamic> userProfile = <String, dynamic>{
-    'version': 2,
-    'issuer': pubKey,
-    'title': name,
-    'geoPoint': null,
-    'time': DateTime.now().millisecondsSinceEpoch ~/
-        1000, // current time in seconds
-    'tags': <String>[],
-  };
-
-  hashAndSignV2(userProfile, wallet);
-
-  // Convert the user profile data into a JSON string again, now including hash and signature
-  final String userProfileJsonWithHashAndSignature = jsonEncode(userProfile);
-
-  if (userName != null) {
-    logger('User exists, update the user profile');
-    final http.Response updateResponse = (await _requestWithRetry(
-            NodeType.cesiumPlus,
-            '/user/profile/$pubKey/_update?pubkey=$pubKey',
-            false,
-            true,
-            httpType: HttpType.post,
-            headers: _defCPlusHeaders(),
-            body: userProfileJsonWithHashAndSignature))
-        .item2;
-    if (updateResponse.statusCode == 200) {
-      logger('User profile updated successfully.');
-      return true;
-    } else {
-      logger(
-          'Failed to update user profile. Status code: ${updateResponse.statusCode}');
-      logger('Response body: ${updateResponse.body}');
-      return false;
-    }
-  } else if (userName == null) {
-    logger('User does not exist, create a new user profile');
-    final http.Response createResponse = (await _requestWithRetry(
-            NodeType.cesiumPlus, '/user/profile', false, false,
-            httpType: HttpType.post,
-            headers: _defCPlusHeaders(),
-            body: userProfileJsonWithHashAndSignature))
-        .item2;
-
-    if (createResponse.statusCode == 200) {
-      logger('User profile created successfully.');
-      return true;
-    } else {
-      logger(
-          'Failed to create user profile. Status code: ${createResponse.statusCode}');
-      return false;
-    }
-  }
-  return false;
-}
-
-/// Extended profile update for V2cPlus with full profile fields
-/// Supports: title, description, city, socials, avatar (base64)
-Future<bool> createOrUpdateProfileV2cPlusExtended({
-  required String title,
-  String? description,
-  String? city,
-  String? avatarBase64,
-  List<Map<String, String>>? socials,
-}) async {
-  final KeyPair wallet = await SharedPreferencesHelper().getKeyPair();
-  // Cesium Plus expects V1 pubkey format, so convert from V2 address
-  final String pubKey = v1pubkeyFromAddress(wallet.address);
-
-  // Check if the user exists
-  final String? userName = await getProfileUserName(pubKey);
-
-  // Prepare the user profile data
-  final Map<String, dynamic> userProfile = <String, dynamic>{
-    'version': 2,
-    'issuer': pubKey,
-    'title': title,
-    'time': DateTime.now().millisecondsSinceEpoch ~/
-        1000, // current time in seconds
-  };
-
-  // Add optional fields if provided
-  if (description != null && description.isNotEmpty) {
-    userProfile['description'] = description;
-  }
-
-  if (city != null && city.isNotEmpty) {
-    userProfile['city'] = city;
-  }
-
-  if (socials != null && socials.isNotEmpty) {
-    userProfile['socials'] = socials;
-  }
-
-  // Add avatar if provided (as base64 with mime type)
-  if (avatarBase64 != null && avatarBase64.isNotEmpty) {
-    userProfile['avatar'] = <String, String>{
-      '_content_type': 'image/png', // Adjust based on actual type if needed
-      '_content': avatarBase64,
-    };
-  }
-
-  hashAndSignV2(userProfile, wallet);
-
-  // Convert the user profile data into a JSON string again, now including hash and signature
-  final String userProfileJsonWithHashAndSignature = jsonEncode(userProfile);
-
-  if (userName != null) {
-    logger('User exists, update the user profile with extended fields');
-    final http.Response updateResponse = (await _requestWithRetry(
-            NodeType.cesiumPlus,
-            '/user/profile/$pubKey/_update?pubkey=$pubKey',
-            false,
-            true,
-            httpType: HttpType.post,
-            headers: _defCPlusHeaders(),
-            body: userProfileJsonWithHashAndSignature))
-        .item2;
-    if (updateResponse.statusCode == 200) {
-      logger('User profile updated successfully.');
-      return true;
-    } else {
-      logger(
-          'Failed to update user profile. Status code: ${updateResponse.statusCode}');
-      logger('Response body: ${updateResponse.body}');
-      return false;
-    }
-  } else if (userName == null) {
-    logger(
-        'User does not exist, create a new user profile with extended fields');
-    final http.Response createResponse = (await _requestWithRetry(
-            NodeType.cesiumPlus, '/user/profile', false, false,
-            httpType: HttpType.post,
-            headers: _defCPlusHeaders(),
-            body: userProfileJsonWithHashAndSignature))
-        .item2;
-
-    if (createResponse.statusCode == 200) {
-      logger('User profile created successfully.');
-      return true;
-    } else {
-      logger(
-          'Failed to create user profile. Status code: ${createResponse.statusCode}');
-      return false;
-    }
-  }
-  return false;
-}
-
-Future<bool> deleteProfileV2cPlus() async {
-  final KeyPair wallet = await SharedPreferencesHelper().getKeyPair();
-  // Cesium Plus expects V1 pubkey format, so convert from V2 address
-  final String pubKey = v1pubkeyFromAddress(wallet.address);
-  final Map<String, dynamic> userProfile = <String, dynamic>{
-    'version': 2,
-    'id': pubKey,
-    'issuer': pubKey,
-    'index': 'user',
-    'type': 'profile',
-    'time': DateTime.now().millisecondsSinceEpoch ~/
-        1000, // current time in seconds
-  };
-  hashAndSignV2(userProfile, wallet);
-
-  final http.Response delResponse = (await _requestWithRetry(
-          NodeType.cesiumPlus, '/history/delete', false, false,
-          httpType: HttpType.post,
-          headers: _defCPlusHeaders(),
-          body: jsonEncode(userProfile)))
-      .item2;
-  return delResponse.statusCode == 200;
-}
-
-/// Migrate a Cesium+ profile from one account to another.
-/// This reads the profile from the old pubkey, creates it under the new
-/// pubkey (signed by the new keypair), and deletes the old profile
-/// (signed by the old keypair).
-/// Returns true if migration succeeded, false otherwise.
-/// Throws on unexpected errors (caller should handle).
-Future<bool> migrateProfileCPlus({
-  required KeyPair oldKeyPair,
-  required KeyPair newKeyPair,
-}) async {
-  final String oldPubKey = v1pubkeyFromAddress(oldKeyPair.address);
-  final String newPubKey = v1pubkeyFromAddress(newKeyPair.address);
-
-  // Step 1: Read the old profile from Cesium+
-  final Response oldProfileResponse =
-      (await requestCPlusWithRetry('/user/profile/$oldPubKey')).item2;
-
-  if (oldProfileResponse.statusCode != 200) {
-    logger('Cannot read old C+ profile for $oldPubKey: '
-        'status ${oldProfileResponse.statusCode}');
-    return false;
-  }
-
-  final Map<String, dynamic> oldResult = const JsonDecoder()
-      .convert(oldProfileResponse.body) as Map<String, dynamic>;
-
-  if (oldResult['found'] == false) {
-    logger('No C+ profile found for old pubkey $oldPubKey, nothing to migrate');
-    return true; // No profile to migrate is not an error
-  }
-
-  final Map<String, dynamic> source =
-      oldResult['_source'] as Map<String, dynamic>;
-
-  // Step 2: Create the profile under the new pubkey
-  final Map<String, dynamic> newProfile = <String, dynamic>{
-    'version': 2,
-    'issuer': newPubKey,
-    'title': source['title'] as String? ?? '',
-    'time': DateTime.now().millisecondsSinceEpoch ~/ 1000,
-  };
-
-  // Copy optional fields from old profile
-  if (source['description'] != null) {
-    newProfile['description'] = source['description'];
-  }
-  if (source['city'] != null) {
-    newProfile['city'] = source['city'];
-  }
-  if (source['geoPoint'] != null) {
-    newProfile['geoPoint'] = source['geoPoint'];
-  }
-  if (source['socials'] != null) {
-    newProfile['socials'] = source['socials'];
-  }
-  if (source['avatar'] != null) {
-    newProfile['avatar'] = source['avatar'];
-  }
-  if (source['tags'] != null) {
-    newProfile['tags'] = source['tags'];
-  }
-
-  hashAndSignV2(newProfile, newKeyPair);
-  final String newProfileJson = jsonEncode(newProfile);
-
-  // Check if new pubkey already has a profile
-  final String? existingName = await getProfileUserName(newPubKey);
-
-  http.Response createResponse;
-  if (existingName != null) {
-    // Update existing profile at new pubkey
-    createResponse = (await _requestWithRetry(NodeType.cesiumPlus,
-            '/user/profile/$newPubKey/_update?pubkey=$newPubKey', false, true,
-            httpType: HttpType.post,
-            headers: _defCPlusHeaders(),
-            body: newProfileJson))
-        .item2;
-  } else {
-    // Create new profile at new pubkey
-    createResponse = (await _requestWithRetry(
-            NodeType.cesiumPlus, '/user/profile', false, false,
-            httpType: HttpType.post,
-            headers: _defCPlusHeaders(),
-            body: newProfileJson))
-        .item2;
-  }
-
-  if (createResponse.statusCode != 200) {
-    logger('Failed to create C+ profile for new pubkey $newPubKey: '
-        'status ${createResponse.statusCode}');
-    return false;
-  }
-
-  logger('C+ profile created/updated for new pubkey $newPubKey');
-
-  // Step 3: Delete the old profile
-  final Map<String, dynamic> deleteData = <String, dynamic>{
-    'version': 2,
-    'id': oldPubKey,
-    'issuer': oldPubKey,
-    'index': 'user',
-    'type': 'profile',
-    'time': DateTime.now().millisecondsSinceEpoch ~/ 1000,
-  };
-  hashAndSignV2(deleteData, oldKeyPair);
-
-  final http.Response delResponse = (await _requestWithRetry(
-          NodeType.cesiumPlus, '/history/delete', false, false,
-          httpType: HttpType.post,
-          headers: _defCPlusHeaders(),
-          body: jsonEncode(deleteData)))
-      .item2;
-
-  if (delResponse.statusCode != 200) {
-    logger('C+ profile created for new pubkey but failed to delete old: '
-        'status ${delResponse.statusCode}');
-    // Profile was copied but old not deleted - partial success
-    // Still return true since the new profile exists
-    return true;
-  }
-
-  logger('C+ profile migrated successfully from $oldPubKey to $newPubKey');
-  return true;
-}
-
 String calculateHash(String input) {
   final List<int> bytes = utf8.encode(input); // data being hashed
   final Digest digest = sha256.convert(bytes);
@@ -1299,32 +867,6 @@ Future<NodeCheckResult> testIpfsGateway(String node, Duration timeout) async {
   return result;
 }
 
-Future<NodeCheckResult> testCPlusV1Node(String node, Duration timeout) async {
-  int currentBlock = 0;
-  Duration latency;
-  final Stopwatch stopwatch = Stopwatch()..start();
-  // see: http://g1.data.e-is.pro/network/peering
-  final Response response = await getWithTimeout(Uri.parse('$node/node/stats'));
-  stopwatch.stop();
-  latency = stopwatch.elapsed;
-  if (response.statusCode == 200) {
-    try {
-      final Map<String, dynamic> json =
-          jsonDecode(response.body.replaceAll('"cluster"{', '"cluster": {'))
-              as Map<String, dynamic>;
-      currentBlock = ((((json['stats'] as Map<String, dynamic>)['cluster']
-                  as Map<String, dynamic>)['indices']
-              as Map<String, dynamic>)['docs'] as Map<String, dynamic>)['count']
-          as int;
-    } catch (e) {
-      loggerDev(
-          'Cannot parse node/stats ${_getShortErrorMessage(e.toString())}');
-    }
-  } else {
-    latency = wrongNodeDuration;
-  }
-  return NodeCheckResult(latency: latency, currentBlock: currentBlock);
-}
 
 Future<NodeCheckResult> testDuniterV1Node(String node, Duration timeout) async {
   int currentBlock = 0;
@@ -1466,40 +1008,6 @@ Future<List<Contact>> searchProfilesV1(
     bool quickMode = false}) async {
   // Only use NOSTR relay search
   return _searchNostrRelay(searchTermLower);
-}
-
-Future<List<Contact>> _searchCesiumPlus({
-  required String searchTermLower,
-  required String searchTerm,
-  required String searchTermCapitalized,
-  bool quickMode = false,
-}) async {
-  try {
-    final String query =
-        '/user/profile/_search?q=title:$searchTermLower OR issuer:$searchTerm OR title:$searchTermCapitalized OR title:$searchTerm';
-
-    final Response response = (await requestCPlusWithRetry(query,
-            retryWith404: false, quickMode: quickMode))
-        .item2;
-    final List<Contact> searchResult = <Contact>[];
-    if (response.statusCode != 404) {
-      final List<dynamic> hits = ((const JsonDecoder().convert(response.body)
-              as Map<String, dynamic>)['hits'] as Map<String, dynamic>)['hits']
-          as List<dynamic>;
-      for (final dynamic hit in hits) {
-        final Contact c = await contactFromResultSearch(
-          hit as Map<String, dynamic>,
-        );
-        logger('Contact retrieved in c+ search $c');
-        ContactsCache().addContact(c);
-        searchResult.add(c);
-      }
-    }
-    return searchResult;
-  } catch (e) {
-    loggerDev('Error in Cesium+ search: $e');
-    return <Contact>[];
-  }
 }
 
 Future<List<Contact>> _searchNostrRelay(String searchTerm) async {

@@ -21,9 +21,16 @@ class BottomNavCubit extends HydratedCubit<int> {
 
   void getFifthScreen() => emit(4);
 
+  void getMessagesScreen() => emit(5);
+
   @override
   int? fromJson(Map<String, dynamic> json) {
-    return json['pageIndex'] as int?;
+    final int? idx = json['pageIndex'] as int?;
+    // Guard against stale persisted index exceeding new tab count
+    if (idx != null && idx > 5) {
+      return 0;
+    }
+    return idx;
   }
 
   @override

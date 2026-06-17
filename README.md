@@ -15,11 +15,10 @@
 | Fonctionnalité | Description |
 |---------------|-------------|
 | 💳 **MULTIPASS** | Identité NOSTR sur le relay UPlanet — compte ẐEN |
-| ⚡ **Transferts ẐEN** | Uniquement entre MULTIPASS (pas vers wallets Ğ1) |
-| 📩 **Message Cesium+** | Vers les portefeuilles Ğ1 non-MULTIPASS |
+| ⚡ **Transferts ẐEN** | Uniquement entre MULTIPASS |
 | 🔗 **Follow NOSTR** | Suivre d'autres MULTIPASS (kind 3) |
 | 📱 **Partage APK P2P** | Distribuer l'app sans Play Store (Wi-Fi local) |
-| 🐛 **Feedback intégré** | Issues GitHub via `/api/feedback` (sans lien externe) |
+| 🐛 **Feedback intégré** | Issues GitHub via `/api/feedback` (UPassport) |
 | 🌐 **PWA** | Fonctionne dans tout navigateur moderne |
 
 ### Format des adresses ẐEN
@@ -28,7 +27,6 @@
 |------|-----------------------|
 | MULTIPASS v2 (SS58) | `g1Address:ZEN:CONSTELLATION_TAG` |
 | MULTIPASS v1 (base58) | `pubkey:ZEN:CONSTELLATION_TAG` |
-| Wallet Ğ1 pur | `pubkey:XXX` (checksum v1, sans `:ZEN`) |
 
 ---
 
@@ -62,7 +60,7 @@ UPASSPORT_URL=https://u.copylaradio.com   # serveur dev UPlanet ORIGIN
 NOSTR_RELAY=wss://relay.copylaradio.com
 CURRENCY=ẐEN
 
-# Hash genesis du réseau Ğ1 production (Duniter V2)
+# Hash genesis du réseau ẐEN (Duniter V2)
 GENESIS_HASH=0xfeb770bbb0344dabc8366b0d1f889a8e4e6ca09b914006655fe795920deb6d56
 
 # Nœuds RPC (WebSocket) — plusieurs = fallback automatique
@@ -71,11 +69,7 @@ ENDPOINTS=wss://rpc.duniter.org wss://g1.axiom-team.fr/ws/ wss://g1.p2p.legal/ws
 # Indexers Squid (GraphQL) — plusieurs = fallback automatique
 DUNITER_INDEXER_NODES=https://indexer.duniter.org/v1/graphql https://g1-squid.axiom-team.fr/v1/graphql https://squid.g1.gyroi.de/v1/graphql
 
-CESIUM_PLUS_NODES=https://g1.data.e-is.pro https://g1.data.le-sou.org
 IPFS_GATEWAYS=https://ipfs.copylaradio.com
-
-GITHUB_REPO=papiche/zelkova               # pour le feedback
-# GITHUB_TOKEN=ghp_xxx                    # token pour créer les issues
 ```
 
 ### 2 — Lancer en développement
@@ -110,77 +104,13 @@ flutter build web --release
 # Résultat : build/web/
 ```
 
-Déployer `build/web/` sur nginx ou via le [landing server](#landing-server).
+Déployer `build/web/` sur nginx ou via une station [Astroport.ONE](https://github.com/papiche/Astroport.ONE).
 
 ### Linux Desktop
 
 ```bash
 flutter build linux --release
 # Résultat : build/linux/x64/release/bundle/zelkova
-```
-
----
-
-## 🌐 Landing Server (déploiement léger)
-
-`zelkova/landing/` contient un serveur Python FastAPI minimaliste qui sert :
-
-| Route | Description |
-|-------|-------------|
-| `GET /` | Page de présentation (`landing/index.html`) |
-| `GET /app` | Redirige vers la PWA Flutter |
-| `POST /api/feedback` | Crée une issue GitHub / relai UPassport |
-| `GET /health` | Statut du serveur |
-
-### Déployer le landing
-
-```bash
-# Installer les dépendances Python
-cd zelkova/landing
-pip install -r requirements.txt
-
-# Configurer .env (à la racine zelkova/)
-# Ajouter GITHUB_TOKEN et PORT
-
-# Lancer
-python server.py          # port 8080 par défaut
-# ou :
-uvicorn server:app --host 0.0.0.0 --port 8080
-```
-
-### Obtenir un GitHub Token (pour /api/feedback)
-
-1. Aller sur https://github.com/settings/tokens
-2. **Fine-grained token** → Scopes : **Issues (Read & Write)**
-3. Ajouter dans `.env` :
-   ```env
-   GITHUB_TOKEN=ghp_xxxxxxxxxxxxxxxxxxxx
-   GITHUB_REPO=papiche/zelkova
-   ```
-
-> Sans `GITHUB_TOKEN`, le feedback est relayé vers `{UPASSPORT_URL}/api/feedback`.
-
-### Service systemd (production)
-
-```bash
-# /etc/systemd/system/zelkova-landing.service
-[Unit]
-Description=Ẑelkova Landing Server
-After=network.target
-
-[Service]
-User=ubuntu
-WorkingDirectory=/opt/zelkova/landing
-ExecStart=/usr/bin/python3 server.py
-Restart=always
-EnvironmentFile=/opt/zelkova/.env
-
-[Install]
-WantedBy=multi-user.target
-```
-
-```bash
-sudo systemctl enable --now zelkova-landing
 ```
 
 ---
@@ -198,9 +128,6 @@ DUNITER_INDEXER_NODES=https://indexer.duniter.fr
 DATAPOD_ENDPOINTS=
 IPFS_GATEWAYS=https://ipfs.copylaradio.com
 
-# Nœuds Cesium+ (Ğ1 V1 — messages Cesium+)
-CESIUM_PLUS_NODES=https://g1.data.le-sou.org
-
 # ─── UPassport / NOSTR ───────────────────────────────────────
 # Dev (UPlanet ORIGIN) :
 UPASSPORT_URL=https://u.copylaradio.com
@@ -209,12 +136,9 @@ UPASSPORT_URL=https://u.copylaradio.com
 
 # Relay NOSTR (dérivé de UPASSPORT_URL si vide)
 NOSTR_RELAY=wss://relay.copylaradio.com
-
-# ─── Feedback (landing server) ───────────────────────────────
-GITHUB_TOKEN=ghp_xxx        # token GitHub (Issues Read+Write)
-GITHUB_REPO=papiche/zelkova
-PORT=8080
 ```
+
+> Le feedback est envoyé via `POST {UPASSPORT_URL}/api/feedback` — aucune configuration supplémentaire requise.
 
 ---
 
@@ -224,16 +148,12 @@ PORT=8080
 zelkova/
 ├── lib/                      ← Code Dart / Flutter
 │   ├── services/
-│   │   ├── feedback_service.dart    ← POST /api/feedback
-│   │   └── apk_share_service.dart   ← Partage P2P (TrocZen)
+│   │   ├── feedback_service.dart    ← POST /api/feedback (UPassport)
+│   │   └── apk_share_service.dart   ← Partage P2P
 │   ├── ui/screens/
-│   │   ├── feedback_screen.dart     ← Formulaire de bug report
+│   │   ├── feedback_screen.dart     ← Formulaire de rapport de bug
 │   │   └── apk_share_screen.dart    ← QR Code distribution
 │   └── ...
-├── landing/                  ← Serveur landing (Python)
-│   ├── index.html            ← Page de présentation
-│   ├── server.py             ← FastAPI léger (/api/feedback)
-│   └── requirements.txt
 ├── assets/
 │   ├── img/                  ← Icônes et images (SVG + PNG)
 │   └── translations/         ← Traductions (fr, en, de, es…)
@@ -263,7 +183,7 @@ Tous les SVG sources sont dans `assets/img/`. Les PNG ont été générés par I
 
 **Charte graphique** :
 - 🟣 Violet `#7B5EA7` — identité MULTIPASS
-- 🟢 Vert `#2E8B57` — nature, Ğ1
+- 🟢 Vert `#2E8B57` — nature, équilibre
 - 🥇 Or `#DAA520` — nervures, valeur ẐEN
 - Fond `#F8F4FF` (légèrement violacé)
 - Police **Nunito** (incluse dans `assets/fonts/`)
@@ -290,8 +210,6 @@ Tous les SVG sources sont dans `assets/img/`. Les PNG ont été générés par I
 
 ## 🗺️ Feuille de route
 
-- [ ] Test et Debug : Profil / connexion SSSS / export "nsec" / 
-- [ ] Journal d'audit SQLite (bilan ẐEN / conformité RGPD)
 - [ ] Visualisation toile de confiance N1/N2 (NOSTR)
 
 ---

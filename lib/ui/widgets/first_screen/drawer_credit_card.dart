@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:typed_data';
 
 import 'package:bip340/bip340.dart' as bip340;
@@ -10,17 +11,16 @@ import '../../../data/models/bottom_nav_cubit.dart';
 import '../../../data/models/contact.dart';
 import '../../../data/models/multi_wallet_transaction_cubit.dart';
 import '../../../data/models/stored_account.dart';
-import '../../../data/models/wallet_themes.dart';
 import '../../../g1/g1_helper.dart';
 import '../../../g1/nostr/nostr_keys.dart';
 import '../../../g1/nostr/nostr_profile.dart';
 import '../../../g1/nostr/nostr_relay_service.dart';
 import '../../../shared_prefs_helper.dart';
 import '../../../shared_prefs_helper_v2.dart';
+import '../../dialogs/profile_editor_dialog.dart';
 import '../../logger.dart';
 import '../../secure_unlock_widget.dart';
 import '../../ui_helpers.dart';
-import '../account_card_theme_selector.dart';
 import '../avatar_badge.dart';
 import '../avatar_dialog.dart';
 import 'simple_card_name_text.dart';
@@ -48,11 +48,25 @@ class _DrawerWalletCardState extends State<DrawerWalletCard> {
   // ── Profil NOSTR (kind 0) — image de fond + avatar ────────────────────────
   String? _nostrBannerUrl;
   String? _nostrPictureUrl;
+  NostrProfile? _nostrProfile;
+  StreamSubscription<bool>? _relayConnectionSub;
 
   @override
   void initState() {
     super.initState();
     _fetchNostrProfile();
+    _relayConnectionSub =
+        NostrRelayService().onConnectionChange.listen((bool connected) {
+      if (connected && mounted && _nostrProfile == null) {
+        _fetchNostrProfile();
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _relayConnectionSub?.cancel();
+    super.dispose();
   }
 
   Future<void> _fetchNostrProfile() async {
@@ -87,6 +101,7 @@ class _DrawerWalletCardState extends State<DrawerWalletCard> {
       final NostrProfile? nostrProfile = await relay.fetchProfile(nostrHex);
       if (nostrProfile != null && mounted) {
         setState(() {
+          _nostrProfile = nostrProfile;
           _nostrBannerUrl = nostrProfile.banner?.isNotEmpty ?? false
               ? nostrProfile.banner
               : null;
@@ -103,15 +118,16 @@ class _DrawerWalletCardState extends State<DrawerWalletCard> {
   }
 
   void _showAccountOptions(BuildContext context) {
-    // Check if account is v2PasswordLess and can be upgraded
     final bool canUpgrade = widget.card.type == AccountType.v2PasswordLess;
-    // Check if account can be used as parent for linked account
     final bool canCreateLinked =
         widget.card.type.isV2 && widget.card.derivationParentId == null;
+    if (!canUpgrade && !canCreateLinked) {
+      return;
+    }
 
     showDialog(
       context: context,
-      builder: (BuildContext context) {
+      builder: (BuildContext ctx) {
         return AlertDialog(
           title: Text(tr('card_options')),
           content: SizedBox(
@@ -119,20 +135,12 @@ class _DrawerWalletCardState extends State<DrawerWalletCard> {
             child: ListView(
               shrinkWrap: true,
               children: <Widget>[
-                ListTile(
-                  leading: const Icon(Icons.palette),
-                  title: Text(tr('change_theme_option')),
-                  onTap: () {
-                    Navigator.pop(context);
-                    _showThemeSelector(context);
-                  },
-                ),
                 if (canUpgrade)
                   ListTile(
                     leading: const Icon(Icons.security),
                     title: Text(tr('secure_account_option')),
                     onTap: () {
-                      Navigator.pop(context);
+                      Navigator.pop(ctx);
                       _upgradeAccountToProtected(context);
                     },
                   ),
@@ -141,7 +149,7 @@ class _DrawerWalletCardState extends State<DrawerWalletCard> {
                     leading: const Icon(Icons.add_link),
                     title: Text(tr('create_linked_account_option')),
                     onTap: () {
-                      Navigator.pop(context);
+                      Navigator.pop(ctx);
                       _deriveAccount(context);
                     },
                   ),
@@ -150,7 +158,7 @@ class _DrawerWalletCardState extends State<DrawerWalletCard> {
           ),
           actions: <Widget>[
             TextButton(
-              onPressed: () => Navigator.pop(context),
+              onPressed: () => Navigator.pop(ctx),
               child: Text(tr('cancel')),
             ),
           ],
@@ -159,20 +167,24 @@ class _DrawerWalletCardState extends State<DrawerWalletCard> {
     );
   }
 
-  void _showThemeSelector(BuildContext context) {
-    showDialog(
+  Future<void> _openProfileEditor() async {
+    final String? nsec = await SharedPreferencesHelperV2().getNostrNsec();
+    if (!mounted) {
+      return;
+    }
+    if (nsec == null || nsec.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(tr('nostr_profile_unavailable'))),
+      );
+      return;
+    }
+    await showDialog<void>(
       context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(tr('card_theme_select')),
-          content: SizedBox(
-              width: double.maxFinite,
-              child: AccountCardThemeSelector(
-                  account: widget.card,
-                  onTap: (WalletTheme theme) =>
-                      SharedPreferencesHelper().setTheme(theme: theme))),
-        );
-      },
+      builder: (_) => ProfileEditorDialog(
+        currentContact: widget.card.contact,
+        nostrProfile: _nostrProfile,
+        onSaved: _fetchNostrProfile,
+      ),
     );
   }
 
@@ -280,7 +292,7 @@ class _DrawerWalletCardState extends State<DrawerWalletCard> {
                     )
                   ],
                   // Image NOSTR banner en fond si disponible,
-                  // sinon gradient de couleur choisie par l'utilisateur
+                  // sinon gradient neutre fixe (pas de thème local)
                   image: _nostrBannerUrl != null
                       ? DecorationImage(
                           image: NetworkImage(_nostrBannerUrl!),
@@ -291,12 +303,12 @@ class _DrawerWalletCardState extends State<DrawerWalletCard> {
                         )
                       : null,
                   gradient: _nostrBannerUrl == null
-                      ? LinearGradient(
+                      ? const LinearGradient(
                           begin: Alignment.bottomLeft,
                           end: Alignment.topRight,
                           colors: <Color>[
-                            widget.card.theme.primaryColor,
-                            widget.card.theme.secondaryColor
+                            Color(0xFF1a237e),
+                            Color(0xFF4a148c),
                           ],
                         )
                       : null,
@@ -512,13 +524,17 @@ class _DrawerWalletCardState extends State<DrawerWalletCard> {
                                           color: Colors.white),
                                 ),
                               ),
-                            FloatingActionButton(
-                              mini: true,
-                              backgroundColor: Colors.white10,
-                              elevation: 1,
-                              onPressed: () => _showAccountOptions(context),
-                              child: const Icon(Icons.settings,
-                                  color: Colors.white),
+                            GestureDetector(
+                              onLongPress: () =>
+                                  _showAccountOptions(context),
+                              child: FloatingActionButton(
+                                mini: true,
+                                backgroundColor: Colors.white10,
+                                elevation: 1,
+                                onPressed: _openProfileEditor,
+                                child: const Icon(Icons.edit_outlined,
+                                    color: Colors.white),
+                              ),
                             ),
                           ],
                         ),

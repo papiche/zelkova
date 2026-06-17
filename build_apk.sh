@@ -60,11 +60,13 @@ FLAVOR_CAP="$(echo "${FLAVOR:0:1}" | tr '[:lower:]' '[:upper:]')${FLAVOR:1}"
 
 if [ "$BUILD_TYPE" = "release" ]; then
     echo "=== Building RELEASE APK (flavor: $FLAVOR) ==="
-    flutter build apk --flavor "$FLAVOR" --release \
+    flutter build apk --release \
+        --dart-define=FLUTTER_FLAVOR="$FLAVOR" \
         -t lib/main.dart
 else
     echo "=== Building DEBUG APK (flavor: $FLAVOR) ==="
-    flutter build apk --flavor "$FLAVOR" --debug \
+    flutter build apk --debug \
+        --dart-define=FLUTTER_FLAVOR="$FLAVOR" \
         -t lib/main.dart
 fi
 

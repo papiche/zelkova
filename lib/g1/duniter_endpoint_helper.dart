@@ -81,13 +81,10 @@ Future<T> executeOnPolkadotNodes<T>(
     // If true (default), the provider is disconnected in the finally block.
     bool disconnectAfter = true}) async {
   final List<Node> nodes = NodeManager().getBestNodes(NodeType.endpoint);
-  loggerDev('executeOnPolkadotNodes: Trying ${nodes.length} nodes');
   Exception? lastError;
 
   for (int i = 0; i < nodes.length; i++) {
     final Node node = nodes[i];
-    final int nodesLeft = nodes.length - i;
-    loggerDev('executeOnPolkadotNode: ${node.url} ($nodesLeft remaining)');
     final Uri uri = parseNodeUrl(node.url);
     final Provider provider;
     if (uri.scheme == 'ws' || uri.scheme == 'wss') {
@@ -106,17 +103,13 @@ Future<T> executeOnPolkadotNodes<T>(
 
       final T result =
           await operation(node, provider, polkadot).timeout(timeout);
-      loggerDev('executeOnPolkadotNode: Success on ${node.url}');
       return result; // If the operation is successful, return the result
     } catch (e) {
       lastError = Exception(e.toString());
       NodeManager().increaseNodeErrors(NodeType.endpoint, node,
           cause: 'Endpoint operation failed: $e');
-      loggerDev(
-          'executeOnPolkadotNode: Failed - ${node.url}. Trying next node...',
-          error: e);
+      loggerDev('[Duniter] ${node.url} failed: $e');
       if (!retry) {
-        loggerDev('executeOnPolkadotNode: Retry disabled, rethrowing error');
         rethrow;
       }
     } finally {

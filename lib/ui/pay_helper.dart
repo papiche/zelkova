@@ -142,7 +142,7 @@ Future<bool> payWithRetry(
             txCubit.addPendingTransaction(
                 pending.copyWith(type: TransactionType.waitingNetwork));
           }
-          context.read<BottomNavCubit>().updateIndex(3);
+          context.read<BottomNavCubit>().updateIndex(4);
           return true;
         } else {
           // PAY!
@@ -210,7 +210,7 @@ Future<bool> payWithRetry(
               }
               // Refresh transactions to ensure pending transactions are shown
               txCubit.fetchTransactions(pubKey: fromContact.pubKey);
-              context.read<BottomNavCubit>().updateIndex(3);
+              context.read<BottomNavCubit>().updateIndex(4);
               return true;
             } else {
               pd.close();
@@ -239,7 +239,7 @@ Future<bool> payWithRetry(
                       tr('payment_via_nostr_title'),
                       tr('payment_via_nostr_desc'),
                     );
-                    context.read<BottomNavCubit>().updateIndex(3);
+                    context.read<BottomNavCubit>().updateIndex(4);
                     return true;
                   }
                 }
@@ -301,7 +301,7 @@ void _onPaymentWIthProgressDone(
     txCubit.fetchTransactions(pubKey: fromPubKey);
   }
 
-  context.read<BottomNavCubit>().updateIndex(3);
+  context.read<BottomNavCubit>().updateIndex(4);
 }
 
 void _onPaymentWithProgressError(
@@ -335,7 +335,7 @@ void _addPending(bool isRetry, MultiWalletTransactionCubit txCubit,
       txCubit.insertPendingTransaction(
           pending.copyWith(type: TransactionType.failed));
     }
-    context.read<BottomNavCubit>().updateIndex(3);
+    context.read<BottomNavCubit>().updateIndex(4);
   } else {
     // Update the previously failed txs with type pending
     for (final Transaction pending in pendingTransactions) {

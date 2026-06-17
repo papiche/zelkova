@@ -33,7 +33,6 @@ import 'package:timeago/timeago.dart' as timeago;
 import 'package:workmanager/workmanager.dart';
 
 import 'app_bloc_observer.dart';
-import 'custom_banner.dart';
 import 'data/eo_timeago_support.dart';
 import 'data/eu_timeago_support.dart';
 import 'data/gl_timeago_support.dart';
@@ -563,7 +562,6 @@ class _ZelkovaAppState extends State<ZelkovaApp> {
   // Timer? _v2DetectionTimer; // DEPRECATED: Commented out with forced V2 mode
 
   Future<void> _loadNodes() async {
-    _printNodeStatus();
     // In the future only load nodes by type
     final bool useV2 = context.read<AppCubit>().isV2;
 
@@ -580,18 +578,6 @@ class _ZelkovaAppState extends State<ZelkovaApp> {
       // eagerError: false, // Continue even if some node types fail
     );
 
-    _printNodeStatus(prefix: 'Continuing');
-  }
-
-  void _printNodeStatus({String prefix = 'Starting'}) {
-    final int nCesiumPlusNodes =
-        NodeManager().nodeList(NodeType.cesiumPlus).length;
-    logger(
-      '$nCesiumPlusNodes c+ nodes',
-    );
-    if (!kReleaseMode) {
-      logger('${NodeManager().nodeList(NodeType.cesiumPlus)}');
-    }
   }
 
   /// Monitors G1 (Duniter V2 production) readiness and auto-activates when available.
@@ -820,7 +806,7 @@ class _ZelkovaAppState extends State<ZelkovaApp> {
         }
       },
       fallback: () {
-        _printNodeStatus(prefix: 'After once hourly fallback');
+        logger('After once hourly fallback');
       },
     );
 
@@ -1047,13 +1033,7 @@ class _ZelkovaAppState extends State<ZelkovaApp> {
                             const SizedBox(height: 110),
                           ],
                         ),
-                        child: c.watch<AppCubit>().isV2
-                            ? CustomBanner(
-                                message: 'V2',
-                                color: Colors.green,
-                                child: _buildMaterialAppChild(c, widget),
-                              )
-                            : _buildMaterialAppChild(c, widget),
+                        child: _buildMaterialAppChild(c, widget),
                       );
                     },
                   ),

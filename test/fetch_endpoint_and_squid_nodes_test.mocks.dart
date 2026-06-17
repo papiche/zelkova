@@ -7,13 +7,13 @@ import 'dart:async' as _i4;
 import 'dart:convert' as _i5;
 import 'dart:typed_data' as _i7;
 
-import 'package:zelkova/data/models/node.dart' as _i9;
-import 'package:zelkova/data/models/node_list_cubit.dart' as _i8;
-import 'package:zelkova/data/models/node_list_state.dart' as _i3;
 import 'package:http/http.dart' as _i2;
 import 'package:hydrated_bloc/hydrated_bloc.dart' as _i10;
 import 'package:mockito/mockito.dart' as _i1;
 import 'package:mockito/src/dummies.dart' as _i6;
+import 'package:zelkova/data/models/node.dart' as _i9;
+import 'package:zelkova/data/models/node_list_cubit.dart' as _i8;
+import 'package:zelkova/data/models/node_list_state.dart' as _i3;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -253,14 +253,6 @@ class MockNodeListCubit extends _i1.Mock implements _i8.NodeListCubit {
           as bool);
 
   @override
-  List<_i9.Node> get cesiumPlusNodes =>
-      (super.noSuchMethod(
-            Invocation.getter(#cesiumPlusNodes),
-            returnValue: <_i9.Node>[],
-          )
-          as List<_i9.Node>);
-
-  @override
   List<_i9.Node> get endpointNodes =>
       (super.noSuchMethod(
             Invocation.getter(#endpointNodes),
@@ -377,12 +369,6 @@ class MockNodeListCubit extends _i1.Mock implements _i8.NodeListCubit {
   @override
   void setIpfsGateways(List<_i9.Node>? nodes) => super.noSuchMethod(
     Invocation.method(#setIpfsGateways, [nodes]),
-    returnValueForMissingStub: null,
-  );
-
-  @override
-  void setCesiumPlusNodes(List<_i9.Node>? nodes) => super.noSuchMethod(
-    Invocation.method(#setCesiumPlusNodes, [nodes]),
     returnValueForMissingStub: null,
   );
 

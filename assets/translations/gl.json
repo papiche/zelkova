@@ -576,5 +576,20 @@
   "too_many_attempts": "Demasiados intentos",
   "transaction_summary": "Resumo de Transaccións",
   "viewIssue": "Ver a incidencia",
-  "wallets_imported": "{number} billeteira/s importada/s"
+  "wallets_imported": "{number} billeteira/s importada/s",
+  "bottom_nav_messages": "Mensaxes",
+  "messages_title": "Mensaxes",
+  "messages_empty": "Sen mensaxes polo de agora",
+  "messages_empty_chat": "Comeza a conversa",
+  "message_hint": "Escribir un mensaxe…",
+  "message_send_failed": "Erro ao enviar",
+  "message_copied": "Mensaxe copiada",
+  "date_today": "Hoxe",
+  "date_yesterday": "Onte",
+  "contacts_no_identity": "Sen identidade NOSTR. Crea o teu MULTIPASS.",
+  "contacts_relay_offline": "Relay sen conexión",
+  "contacts_filter_12p": "Sigo",
+  "contacts_filter_p21": "Seguidores",
+  "contacts_filter_p2p": "Mutuos",
+  "contacts_filter_n2": "Amigos dos amigos"
 }

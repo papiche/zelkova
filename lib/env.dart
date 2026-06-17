@@ -19,11 +19,6 @@ abstract class Env {
   static final String? gitLabToken = _Env.gitLabToken;
 
   // Nodes
-  // v1
-  @EnviedField(varName: 'CESIUM_PLUS_NODES')
-  static const String cesiumPlusNodes = _Env.cesiumPlusNodes;
-
-  // v2
   @EnviedField(varName: 'ENDPOINTS')
   static const String endPoints = _Env.endPoints;
   @EnviedField(varName: 'DUNITER_INDEXER_NODES')

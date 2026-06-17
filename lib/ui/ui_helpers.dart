@@ -541,19 +541,6 @@ InlineSpan currencyBalanceWidget(BuildContext context, bool isG1,
         color: currencyColor,
       ),
     ),
-    if (!isG1)
-      WidgetSpan(
-          child: Transform.translate(
-              offset: Offset(2, small ? 8 : 16),
-              child: Text(
-                'Ğ1',
-                style: TextStyle(
-                  fontSize: balanceFontSize - (small ? 5 : 10),
-                  fontWeight: FontWeight.w500,
-                  // fontFeatures: <FontFeature>[FontFeature.subscripts()],
-                  color: currencyColor,
-                ),
-              )))
   ]);
 }
 

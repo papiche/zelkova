@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:bip340/bip340.dart' as bip340;
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -38,11 +40,24 @@ class CreditCard extends StatefulWidget {
 class _CreditCardState extends State<CreditCard> {
   String? _nostrBannerUrl;
   String? _nostrPictureUrl;
+  StreamSubscription<bool>? _relayConnectionSub;
 
   @override
   void initState() {
     super.initState();
     _fetchNostrProfile();
+    _relayConnectionSub =
+        NostrRelayService().onConnectionChange.listen((bool connected) {
+      if (connected && mounted && _nostrBannerUrl == null && _nostrPictureUrl == null) {
+        _fetchNostrProfile();
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _relayConnectionSub?.cancel();
+    super.dispose();
   }
 
   Future<void> _fetchNostrProfile() async {
@@ -99,8 +114,6 @@ class _CreditCardState extends State<CreditCard> {
     final bool hasIdentity = (widget.account.contact.nick != null &&
             widget.account.contact.nick!.isNotEmpty) ||
         (widget.account.contact.isMember ?? true);
-    final WalletTheme cardTheme = widget.theme ?? widget.account.theme;
-
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
         // Calculate dimensions to maintain 1.58 aspect ratio
@@ -115,13 +128,6 @@ class _CreditCardState extends State<CreditCard> {
         final double titleSize = cardWidth * 0.07;
         final double iconSize = bigDevice ? 28.0 : 20.0;
         final double chipWidth = cardWidth < smallScreenWidth ? 25.0 : 40.0;
-
-        final double actualRatio = cardWidth / cardHeight;
-        final String ratioStatus =
-            (actualRatio - cardAspectRatio).abs() < 0.01 ? '✓' : '✗ WRONG!';
-
-        loggerDev(
-            '$ratioStatus Card: ${cardWidth.toStringAsFixed(1)}x${cardHeight.toStringAsFixed(1)}, Ratio: ${actualRatio.toStringAsFixed(2)} (expected: $cardAspectRatio), Chip: ${chipWidth.toStringAsFixed(1)}');
 
         return SizedBox(
           width: cardWidth,
@@ -143,7 +149,8 @@ class _CreditCardState extends State<CreditCard> {
                       spreadRadius: 1.0,
                     )
                   ],
-                  // Banner NOSTR comme fond si disponible
+                  // Banner NOSTR comme fond si disponible,
+                  // sinon gradient neutre fixe
                   image: _nostrBannerUrl != null
                       ? DecorationImage(
                           image: NetworkImage(_nostrBannerUrl!),
@@ -154,12 +161,12 @@ class _CreditCardState extends State<CreditCard> {
                         )
                       : null,
                   gradient: _nostrBannerUrl == null
-                      ? LinearGradient(
+                      ? const LinearGradient(
                           begin: Alignment.bottomLeft,
                           end: Alignment.topRight,
                           colors: <Color>[
-                            cardTheme.primaryColor,
-                            cardTheme.secondaryColor
+                            Color(0xFF1a237e),
+                            Color(0xFF4a148c),
                           ],
                         )
                       : null,

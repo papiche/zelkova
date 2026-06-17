@@ -136,5 +136,20 @@
   "form_contact_notes": "Opmerkingen",
   "nodes_list_title": "{type} Knooppunten ({count})",
   "nodes_list_last_updated": "Laatst bijgewerkt: {time}",
-  "use_biometric": "Gebruik biometrie"
+  "use_biometric": "Gebruik biometrie",
+  "bottom_nav_messages": "Berichten",
+  "messages_title": "Berichten",
+  "messages_empty": "Nog geen berichten",
+  "messages_empty_chat": "Begin een gesprek",
+  "message_hint": "Schrijf een bericht…",
+  "message_send_failed": "Verzenden mislukt",
+  "message_copied": "Bericht gekopieerd",
+  "date_today": "Vandaag",
+  "date_yesterday": "Gisteren",
+  "contacts_no_identity": "Geen NOSTR-identiteit. Maak je MULTIPASS aan.",
+  "contacts_relay_offline": "Relay offline",
+  "contacts_filter_12p": "Volg ik",
+  "contacts_filter_p21": "Volgers",
+  "contacts_filter_p2p": "Wederzijds",
+  "contacts_filter_n2": "Vrienden van vrienden"
 }

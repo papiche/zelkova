@@ -6,7 +6,9 @@ import 'package:bip340/bip340.dart' as bip340;
 import 'package:hex/hex.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
+import '../../data/models/nostr_message.dart';
 import '../../ui/logger.dart';
+import 'nip44.dart';
 import 'nostr_profile.dart';
 import 'nostr_utils.dart';
 import 'station_economy_event.dart';
@@ -47,7 +49,9 @@ class NostrRelayService {
 
   /// Connect to a NOSTR relay via WebSocket
   Future<bool> connect(String relayUrl) async {
-    if (_isConnected && _currentRelayUrl == relayUrl) return true;
+    if (_isConnected && _currentRelayUrl == relayUrl) {
+      return true;
+    }
 
     await forceDisconnect();
 
@@ -108,7 +112,9 @@ class NostrRelayService {
   }
 
   void _scheduleReconnect() {
-    if (_reconnectAttempts >= _maxReconnectAttempts) return;
+    if (_reconnectAttempts >= _maxReconnectAttempts) {
+      return;
+    }
     _reconnectTimer?.cancel();
 
     final int delaySec = 2 * (1 << _reconnectAttempts); // 2, 4, 8, 16, 32
@@ -127,7 +133,9 @@ class NostrRelayService {
     try {
       final List<dynamic> parsed =
           jsonDecode(message as String) as List<dynamic>;
-      if (parsed.isEmpty) return;
+      if (parsed.isEmpty) {
+        return;
+      }
 
       final String type = parsed[0] as String;
 
@@ -148,8 +156,10 @@ class NostrRelayService {
           if (parsed.length >= 3) {
             final String eventId = parsed[1] as String;
             final bool success = parsed[2] as bool;
-            if (!success && parsed.length >= 4) {
-              loggerDev('[NostrRelay] OK false: ${parsed[3]}');
+            if (success) {
+              loggerDev('[NOSTR] ✓ OK id=${eventId.substring(0, 8)}');
+            } else {
+              loggerDev('[NOSTR] ✗ OK false id=${eventId.substring(0, 8)}: ${parsed.length >= 4 ? parsed[3] : ''}');
             }
             _publishCompleters[eventId]?.complete(success);
             _publishCompleters.remove(eventId);
@@ -167,7 +177,9 @@ class NostrRelayService {
   }
 
   void _sendRaw(String message) {
-    if (!_isConnected || _channel == null) return;
+    if (!_isConnected || _channel == null) {
+      return;
+    }
     _channel!.sink.add(message);
   }
 
@@ -175,7 +187,9 @@ class NostrRelayService {
 
   /// Fetch a profile (kind 0) by hex pubkey
   Future<NostrProfile?> fetchProfile(String hexPubkey) async {
-    if (!_isConnected) return null;
+    if (!_isConnected) {
+      return null;
+    }
 
     final String subId = NostrUtils.generateSubscriptionId('profile');
     final Completer<NostrProfile?> completer = Completer<NostrProfile?>();
@@ -195,12 +209,16 @@ class NostrRelayService {
             hexPubkey,
             tags,
           );
-          if (!completer.isCompleted) completer.complete(profile);
+          if (!completer.isCompleted) {
+            completer.complete(profile);
+          }
         } catch (e) {
           loggerDev('[NostrRelay] Profile parse error: $e');
         }
       } else if (type == 'EOSE') {
-        if (!completer.isCompleted) completer.complete(null);
+        if (!completer.isCompleted) {
+          completer.complete(null);
+        }
         _handlers.remove(subId);
         _sendRaw(jsonEncode(<dynamic>['CLOSE', subId]));
       }
@@ -227,7 +245,9 @@ class NostrRelayService {
   /// Publish a profile (kind 0) signed with nsec hex private key
   Future<bool> publishProfile(
       NostrProfile profile, String hexPrivateKey) async {
-    if (!_isConnected) return false;
+    if (!_isConnected) {
+      return false;
+    }
 
     final String hexPubkey = bip340.getPublicKey(hexPrivateKey);
     final int createdAt = DateTime.now().millisecondsSinceEpoch ~/ 1000;
@@ -255,7 +275,9 @@ class NostrRelayService {
   /// Returns the hex NOSTR pubkey if found, or null.
   /// This is the correct way to link a Duniter G1 pubkey to its NOSTR identity.
   Future<String?> findNostrHexByG1Pub(String duniterBase58PubKey) async {
-    if (!_isConnected) return null;
+    if (!_isConnected) {
+      return null;
+    }
 
     // Strip any :ZEN:XXXX tag appended by ZenTagService before using as lookup key
     final String cleanKey = duniterBase58PubKey.split(':').first;
@@ -266,13 +288,17 @@ class NostrRelayService {
       limit: 1,
     );
 
-    if (events.isEmpty) return null;
+    if (events.isEmpty) {
+      return null;
+    }
     return events.first['pubkey'] as String?;
   }
 
   /// Search profiles (kind 0) by name using NIP-50 text search
   Future<List<NostrProfile>> searchProfiles(String searchTerm) async {
-    if (!_isConnected) return <NostrProfile>[];
+    if (!_isConnected) {
+      return <NostrProfile>[];
+    }
 
     final String subId = NostrUtils.generateSubscriptionId('search');
     final Completer<List<NostrProfile>> completer =
@@ -301,7 +327,9 @@ class NostrRelayService {
           loggerDev('[NostrRelay] Search profile parse error: $e');
         }
       } else if (type == 'EOSE') {
-        if (!completer.isCompleted) completer.complete(results);
+        if (!completer.isCompleted) {
+          completer.complete(results);
+        }
         _handlers.remove(subId);
         _sendRaw(jsonEncode(<dynamic>['CLOSE', subId]));
       }
@@ -340,7 +368,9 @@ class NostrRelayService {
   ///   • The two systems cannot be mixed in a single search flow.
   Future<List<NostrProfile>> fetchAllMultipassProfiles(
       {int limit = 200}) async {
-    if (!_isConnected) return <NostrProfile>[];
+    if (!_isConnected) {
+      return <NostrProfile>[];
+    }
 
     final String subId =
         NostrUtils.generateSubscriptionId('multipass-all');
@@ -365,7 +395,9 @@ class NostrRelayService {
               t.length >= 2 &&
               t[0] == 'i' &&
               t[1].startsWith('g1pub:'));
-          if (!hasG1pub) return;
+          if (!hasG1pub) {
+            return;
+          }
           results.add(NostrProfile.fromEventContent(
             event['content'] as String,
             pubkey,
@@ -375,7 +407,9 @@ class NostrRelayService {
           loggerDev('[NostrRelay] fetchAllMultipassProfiles parse: $e');
         }
       } else if (type == 'EOSE') {
-        if (!completer.isCompleted) completer.complete(results);
+        if (!completer.isCompleted) {
+          completer.complete(results);
+        }
         _handlers.remove(subId);
         _sendRaw(jsonEncode(<dynamic>['CLOSE', subId]));
       }
@@ -405,7 +439,9 @@ class NostrRelayService {
   /// Fetch station economy events from the last 30 days.
   /// Returns a map of stationId → most recent StationEconomyData.
   Future<Map<String, StationEconomyData>> fetchStationEvents() async {
-    if (!_isConnected) return <String, StationEconomyData>{};
+    if (!_isConnected) {
+      return <String, StationEconomyData>{};
+    }
 
     final String subId = NostrUtils.generateSubscriptionId('stations');
     final Completer<Map<String, StationEconomyData>> completer =
@@ -430,7 +466,9 @@ class NostrRelayService {
           loggerDev('[NostrRelay] Station event parse error: $e');
         }
       } else if (type == 'EOSE') {
-        if (!completer.isCompleted) completer.complete(stations);
+        if (!completer.isCompleted) {
+          completer.complete(stations);
+        }
         _handlers.remove(subId);
         _sendRaw(jsonEncode(<dynamic>['CLOSE', subId]));
       }
@@ -474,7 +512,9 @@ class NostrRelayService {
     String reactedEventId = '',
     String content = '+',
   }) async {
-    if (!_isConnected) return false;
+    if (!_isConnected) {
+      return false;
+    }
 
     final String hexPubkey = bip340.getPublicKey(hexPrivateKey);
     final int createdAt = DateTime.now().millisecondsSinceEpoch ~/ 1000;
@@ -513,7 +553,9 @@ class NostrRelayService {
     required String hexPrivateKey,
     required List<String> hexPubkeys,
   }) async {
-    if (!_isConnected) return false;
+    if (!_isConnected) {
+      return false;
+    }
 
     final String hexPubkey = bip340.getPublicKey(hexPrivateKey);
     final int createdAt = DateTime.now().millisecondsSinceEpoch ~/ 1000;
@@ -540,7 +582,9 @@ class NostrRelayService {
 
   /// Fetch contacts (kind 3) for a hex pubkey
   Future<List<String>> fetchContacts(String hexPubkey) async {
-    if (!_isConnected) return <String>[];
+    if (!_isConnected) {
+      return <String>[];
+    }
 
     final String subId = NostrUtils.generateSubscriptionId('contacts');
     final Completer<List<String>> completer = Completer<List<String>>();
@@ -557,9 +601,13 @@ class NostrRelayService {
             contacts.add(t[1] as String);
           }
         }
-        if (!completer.isCompleted) completer.complete(contacts);
+        if (!completer.isCompleted) {
+          completer.complete(contacts);
+        }
       } else if (type == 'EOSE') {
-        if (!completer.isCompleted) completer.complete(<String>[]);
+        if (!completer.isCompleted) {
+          completer.complete(<String>[]);
+        }
         _handlers.remove(subId);
         _sendRaw(jsonEncode(<dynamic>['CLOSE', subId]));
       }
@@ -578,6 +626,52 @@ class NostrRelayService {
         _handlers.remove(subId);
         _sendRaw(jsonEncode(<dynamic>['CLOSE', subId]));
         return <String>[];
+      },
+    );
+  }
+
+  /// Fetch all pubkeys whose Kind 3 contact list includes [hexPubkey].
+  /// Returns the list of follower hex pubkeys (authors of those Kind 3 events).
+  Future<List<String>> fetchFollowers(String hexPubkey) async {
+    if (!_isConnected) {
+      return <String>[];
+    }
+
+    final String subId = NostrUtils.generateSubscriptionId('followers');
+    final Completer<List<String>> completer = Completer<List<String>>();
+    final List<String> followers = <String>[];
+
+    _handlers[subId] = (List<dynamic> msg) {
+      final String type = msg[0] as String;
+      if (type == 'EVENT' && msg.length >= 3) {
+        final Map<String, dynamic> event =
+            msg[2] as Map<String, dynamic>;
+        final String author = event['pubkey'] as String;
+        if (!followers.contains(author)) {
+          followers.add(author);
+        }
+      } else if (type == 'EOSE') {
+        if (!completer.isCompleted) {
+          completer.complete(followers);
+        }
+        _handlers.remove(subId);
+        _sendRaw(jsonEncode(<dynamic>['CLOSE', subId]));
+      }
+    };
+
+    final Map<String, dynamic> filter = <String, dynamic>{
+      'kinds': <int>[3],
+      '#p': <String>[hexPubkey],
+      'limit': 500,
+    };
+    _sendRaw(jsonEncode(<dynamic>['REQ', subId, filter]));
+
+    return completer.future.timeout(
+      const Duration(seconds: 10),
+      onTimeout: () {
+        _handlers.remove(subId);
+        _sendRaw(jsonEncode(<dynamic>['CLOSE', subId]));
+        return followers;
       },
     );
   }
@@ -602,6 +696,8 @@ class NostrRelayService {
 
   Future<bool> _publishEvent(Map<String, dynamic> event) async {
     final String eventId = event['id'] as String;
+    final int kind = event['kind'] as int? ?? -1;
+    loggerDev('[NOSTR] → publish kind=$kind id=${eventId.substring(0, 8)}');
     final Completer<bool> completer = Completer<bool>();
     _publishCompleters[eventId] = completer;
 
@@ -610,7 +706,7 @@ class NostrRelayService {
     return completer.future.timeout(
       const Duration(seconds: 10),
       onTimeout: () {
-        loggerDev('[NostrRelay] Publish timeout for event $eventId');
+        loggerDev('[NOSTR] Publish timeout kind=$kind id=${eventId.substring(0, 8)}');
         _publishCompleters.remove(eventId);
         return false;
       },
@@ -636,7 +732,9 @@ class NostrRelayService {
     required String content,
     String? mentionHex,
   }) async {
-    if (!_isConnected) return false;
+    if (!_isConnected) {
+      return false;
+    }
 
     final String hexPubkey = bip340.getPublicKey(hexPrivateKey);
     final int createdAt = DateTime.now().millisecondsSinceEpoch ~/ 1000;
@@ -672,7 +770,9 @@ class NostrRelayService {
     List<List<String>>? tags,
     String? search,
   }) async {
-    if (!_isConnected) return <Map<String, dynamic>>[];
+    if (!_isConnected) {
+      return <Map<String, dynamic>>[];
+    }
 
     final String subId = NostrUtils.generateSubscriptionId('query');
     final Completer<List<Map<String, dynamic>>> completer =
@@ -690,7 +790,9 @@ class NostrRelayService {
           loggerDev('[NostrRelay] Query event parse error: $e');
         }
       } else if (type == 'EOSE') {
-        if (!completer.isCompleted) completer.complete(events);
+        if (!completer.isCompleted) {
+          completer.complete(events);
+        }
         _handlers.remove(subId);
         _sendRaw(jsonEncode(<dynamic>['CLOSE', subId]));
       }
@@ -749,7 +851,9 @@ class NostrRelayService {
   /// [hexPrivateKey] — signer's hex private key.
   /// Returns true if the relay acknowledged the event.
   Future<bool> publishNip42Auth(String challenge, String hexPrivateKey) async {
-    if (!_isConnected) return false;
+    if (!_isConnected) {
+      return false;
+    }
 
     final String hexPubkey = bip340.getPublicKey(hexPrivateKey);
     final int createdAt = DateTime.now().millisecondsSinceEpoch ~/ 1000;
@@ -772,6 +876,262 @@ class NostrRelayService {
 
     loggerDev('[NostrRelay] Publishing NIP-42 AUTH (kind 22242) challenge=${challenge.substring(0, challenge.length > 8 ? 8 : challenge.length)}...');
     return _publishEvent(event);
+  }
+
+  // ─── NIP-44 Encrypted DMs (kind 4) ───────────────────────────────────────
+
+  /// Extra relay URLs to broadcast DMs to (constellation nodes from 12345.json).
+  final Set<String> _constellationRelays = <String>{};
+
+  void setConstellationRelays(Iterable<String> relayUrls) {
+    _constellationRelays
+      ..clear()
+      ..addAll(relayUrls);
+    loggerDev('[NostrRelay] Constellation relays set: ${_constellationRelays.length}');
+  }
+
+  /// Fire-and-forget: publish an already-signed event to a secondary relay.
+  Future<void> _publishToRelay(String relayUrl, Map<String, dynamic> event) async {
+    try {
+      final WebSocketChannel ws =
+          WebSocketChannel.connect(Uri.parse(relayUrl));
+      await ws.ready.timeout(const Duration(seconds: 5));
+      ws.sink.add(jsonEncode(<dynamic>['EVENT', event]));
+      await Future<void>.delayed(const Duration(seconds: 2));
+      await ws.sink.close();
+    } catch (e) {
+      loggerDev('[NostrRelay] Failed to publish to $relayUrl: $e');
+    }
+  }
+
+  /// Send a NIP-44 v2 encrypted DM (kind 4) to [recipientHexPubkey].
+  /// Also broadcasts to all constellation relay URLs.
+  Future<bool> sendNip44Message({
+    required String hexPrivateKey,
+    required String recipientHexPubkey,
+    required String plaintext,
+  }) async {
+    if (!_isConnected) {
+      return false;
+    }
+
+    final String senderHex = bip340.getPublicKey(hexPrivateKey);
+    final int createdAt = DateTime.now().millisecondsSinceEpoch ~/ 1000;
+
+    final String encryptedContent =
+        Nip44.encrypt(plaintext, hexPrivateKey, recipientHexPubkey);
+
+    final Map<String, dynamic> event = <String, dynamic>{
+      'kind': 4,
+      'pubkey': senderHex,
+      'created_at': createdAt,
+      'tags': <List<String>>[
+        <String>['p', recipientHexPubkey],
+      ],
+      'content': encryptedContent,
+    };
+
+    final String eventId = NostrUtils.calculateEventId(event);
+    event['id'] = eventId;
+    event['sig'] = _signEvent(eventId, hexPrivateKey);
+
+    loggerDev('[NostrRelay] Sending NIP-44 DM → ${recipientHexPubkey.substring(0, 8)}...');
+
+    // Publish to primary relay
+    final bool ok = await _publishEvent(event);
+
+    // Broadcast to constellation relays (fire-and-forget)
+    if (_constellationRelays.isNotEmpty) {
+      for (final String url in _constellationRelays) {
+        if (url != _currentRelayUrl) {
+          _publishToRelay(url, event);
+        }
+      }
+    }
+
+    return ok;
+  }
+
+  /// Fetch all NIP-44 DMs exchanged between [myHexPubkey] and [peerHexPubkey].
+  /// Decrypts each message using [myHexPrivkey].
+  Future<List<NostrMessage>> fetchNip44Messages({
+    required String myHexPubkey,
+    required String myHexPrivkey,
+    required String peerHexPubkey,
+    int limit = 200,
+  }) async {
+    if (!_isConnected) {
+      return <NostrMessage>[];
+    }
+
+    // Fetch: messages I sent to them + messages they sent to me (parallel)
+    final List<List<Map<String, dynamic>>> raw = await Future.wait(
+      <Future<List<Map<String, dynamic>>>>[
+        queryEvents(
+          kinds: <int>[4],
+          authors: <String>[myHexPubkey],
+          tags: <List<String>>[<String>['p', peerHexPubkey]],
+          limit: limit ~/ 2,
+        ),
+        queryEvents(
+          kinds: <int>[4],
+          authors: <String>[peerHexPubkey],
+          tags: <List<String>>[<String>['p', myHexPubkey]],
+          limit: limit ~/ 2,
+        ),
+      ],
+    );
+
+    final List<NostrMessage> messages = <NostrMessage>[];
+
+    for (final List<Map<String, dynamic>> batch in raw) {
+      for (final Map<String, dynamic> ev in batch) {
+        try {
+          final String sender = ev['pubkey'] as String;
+          final String recipient = (ev['tags'] as List<dynamic>)
+              .cast<List<dynamic>>()
+              .firstWhere(
+                (List<dynamic> t) => t.isNotEmpty && t[0] == 'p',
+                orElse: () => <String>['p', ''],
+              )[1]
+              .toString();
+
+          // Decrypt: ECDH(myPriv, otherPartyPub)
+          final String otherPartyHex =
+              sender == myHexPubkey ? recipient : sender;
+          if (otherPartyHex.isEmpty) {
+            continue;
+          }
+
+          final String plaintext = Nip44.decrypt(
+            ev['content'] as String,
+            myHexPrivkey,
+            otherPartyHex,
+          );
+
+          messages.add(NostrMessage(
+            id: ev['id'] as String,
+            senderHex: sender,
+            recipientHex: recipient,
+            content: plaintext,
+            createdAt: ev['created_at'] as int,
+          ));
+        } catch (e) {
+          loggerDev('[NostrRelay] Failed to decrypt DM: $e');
+        }
+      }
+    }
+
+    messages.sort((NostrMessage a, NostrMessage b) =>
+        a.createdAt.compareTo(b.createdAt));
+    return messages;
+  }
+
+  /// Subscribe to new incoming kind-4 DMs addressed to [myHexPubkey].
+  /// Calls [onMessage] for each new decrypted message.
+  /// Returns the subscription ID (use it to call [cancelDmSubscription]).
+  String subscribeToDms({
+    required String myHexPubkey,
+    required String myHexPrivkey,
+    required void Function(NostrMessage) onMessage,
+  }) {
+    final String subId = NostrUtils.generateSubscriptionId('dm');
+    final int since = DateTime.now().millisecondsSinceEpoch ~/ 1000;
+
+    _handlers[subId] = (List<dynamic> msg) {
+      final String type = msg[0] as String;
+      if (type != 'EVENT' || msg.length < 3) {
+        return;
+      }
+      try {
+        final Map<String, dynamic> ev = msg[2] as Map<String, dynamic>;
+        final int kind = ev['kind'] as int;
+        if (kind != 4) {
+          return;
+        }
+        final String sender = ev['pubkey'] as String;
+        if (sender == myHexPubkey) {
+          return; // ignore own echoes
+        }
+        final String plaintext = Nip44.decrypt(
+          ev['content'] as String,
+          myHexPrivkey,
+          sender,
+        );
+        onMessage(NostrMessage(
+          id: ev['id'] as String,
+          senderHex: sender,
+          recipientHex: myHexPubkey,
+          content: plaintext,
+          createdAt: ev['created_at'] as int,
+        ));
+      } catch (e) {
+        loggerDev('[NostrRelay] DM subscription decrypt error: $e');
+      }
+    };
+
+    final Map<String, dynamic> filter = <String, dynamic>{
+      'kinds': <int>[4],
+      '#p': <String>[myHexPubkey],
+      'since': since,
+    };
+    _sendRaw(jsonEncode(<dynamic>['REQ', subId, filter]));
+    loggerDev('[NostrRelay] Subscribed to DMs for ${myHexPubkey.substring(0, 8)}...');
+    return subId;
+  }
+
+  void cancelDmSubscription(String subId) {
+    _handlers.remove(subId);
+    _sendRaw(jsonEncode(<dynamic>['CLOSE', subId]));
+  }
+
+  /// Fetch all unique peers I've exchanged DMs with (for conversation list).
+  Future<List<String>> fetchDmPeers({
+    required String myHexPubkey,
+    int limit = 100,
+  }) async {
+    if (!_isConnected) {
+      return <String>[];
+    }
+
+    // Events I sent + events addressed to me
+    final List<List<Map<String, dynamic>>> raw = await Future.wait(
+      <Future<List<Map<String, dynamic>>>>[
+        queryEvents(
+          kinds: <int>[4],
+          authors: <String>[myHexPubkey],
+          limit: limit,
+        ),
+        queryEvents(
+          kinds: <int>[4],
+          tags: <List<String>>[<String>['p', myHexPubkey]],
+          limit: limit,
+        ),
+      ],
+    );
+
+    final Set<String> peers = <String>{};
+    for (final List<Map<String, dynamic>> batch in raw) {
+      for (final Map<String, dynamic> ev in batch) {
+        final String sender = ev['pubkey'] as String;
+        final List<dynamic> tags = ev['tags'] as List<dynamic>;
+        String recipient = '';
+        for (final dynamic t in tags) {
+          final List<dynamic> tag = t as List<dynamic>;
+          if (tag.isNotEmpty && tag[0] == 'p' && tag.length >= 2) {
+            recipient = tag[1].toString();
+            break;
+          }
+        }
+        if (sender == myHexPubkey && recipient.isNotEmpty) {
+          peers.add(recipient);
+        } else if (recipient == myHexPubkey && sender.isNotEmpty) {
+          peers.add(sender);
+        }
+      }
+    }
+    peers.remove(myHexPubkey);
+    return peers.toList();
   }
 
   /// Dispose resources

@@ -10,6 +10,7 @@ import '../widgets/multipass_onboarding_dialog.dart';
 import 'fifth_screen.dart';
 import 'first_screen.dart';
 import 'fourth_screen.dart';
+import 'messages_screen.dart';
 import 'second_screen.dart';
 import 'third_screen.dart';
 
@@ -35,7 +36,9 @@ class _SkeletonScreenState extends State<SkeletonScreen> {
   Future<void> _promptMultipassIfNeeded() async {
     final AppCubit cubit = context.read<AppCubit>();
     // Only prompt once (persisted via tutorials map)
-    if (cubit.wasTutorialShown('multipass_prompt')) return;
+    if (cubit.wasTutorialShown('multipass_prompt')) {
+      return;
+    }
 
     final String? nsec = await SharedPreferencesHelperV2().getNostrNsec();
     if (nsec != null) {
@@ -45,9 +48,13 @@ class _SkeletonScreenState extends State<SkeletonScreen> {
     }
 
     // Show MULTIPASS dialog after a short delay
-    if (!mounted) return;
+    if (!mounted) {
+      return;
+    }
     await Future<void>.delayed(const Duration(milliseconds: 600));
-    if (!mounted) return;
+    if (!mounted) {
+      return;
+    }
     cubit.multipassPrompted();
     showMultipassOnboardingDialog(context);
   }
@@ -58,6 +65,7 @@ class _SkeletonScreenState extends State<SkeletonScreen> {
       FirstScreen(),
       SecondScreen(),
       ThirdScreen(),
+      MessagesScreen(),
       FourthScreen(),
       FifthScreen(),
     ];

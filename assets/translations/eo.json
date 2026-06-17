@@ -594,5 +594,20 @@
   "brave_warning_title": "Grave: averto pri la navigilo Brave",
   "brave_warning_understand": "MI KOMPRENAS",
   "brave_warning_export_now": "ELPORTI NUN",
-  "create_linked_account_option": "Krei ligitan konton"
+  "create_linked_account_option": "Krei ligitan konton",
+  "bottom_nav_messages": "Mesaĝoj",
+  "messages_title": "Mesaĝoj",
+  "messages_empty": "Ankoraŭ neniu mesaĝo",
+  "messages_empty_chat": "Komenci konversacion",
+  "message_hint": "Skribi mesaĝon…",
+  "message_send_failed": "Sendi malsukcesis",
+  "message_copied": "Mesaĝo kopiita",
+  "date_today": "Hodiaŭ",
+  "date_yesterday": "Hieraŭ",
+  "contacts_no_identity": "Neniu NOSTR-identeco. Kreu vian MULTIPASS.",
+  "contacts_relay_offline": "Relajo eksterrete",
+  "contacts_filter_12p": "Sekvataj",
+  "contacts_filter_p21": "Sekvantaj",
+  "contacts_filter_p2p": "Reciprokaj",
+  "contacts_filter_n2": "Amikoj de amikoj"
 }

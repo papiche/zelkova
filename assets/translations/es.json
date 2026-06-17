@@ -587,5 +587,20 @@
   "brave_warning_title": "Importante: Aviso sobre el Navegador Brave",
   "brave_warning_desc": "Estás usando el navegador Brave. Debido a la protección de Brave Shields, tus monederos pueden ser borrados cuando cierres el navegador.\n\nPara evitar perder tus fondos:\n\n1. Exporta tu monedero regularmente (sección Info → Exportar monedero)\n2. Desactiva Brave Shields para este sitio (clic en el icono del león en la barra de direcciones)\n3. Considera usar Chrome o Firefox para mejor compatibilidad\n\nPor favor, exporta tu monedero ahora si aún no lo has hecho.",
   "brave_warning_understand": "ENTIENDO",
-  "brave_warning_export_now": "EXPORTAR AHORA"
+  "brave_warning_export_now": "EXPORTAR AHORA",
+  "bottom_nav_messages": "Mensajes",
+  "messages_title": "Mensajes",
+  "messages_empty": "Sin mensajes por ahora",
+  "messages_empty_chat": "Inicia la conversación",
+  "message_hint": "Escribir un mensaje…",
+  "message_send_failed": "Error al enviar",
+  "message_copied": "Mensaje copiado",
+  "date_today": "Hoy",
+  "date_yesterday": "Ayer",
+  "contacts_no_identity": "Sin identidad NOSTR. Crea tu MULTIPASS.",
+  "contacts_relay_offline": "Relay sin conexión",
+  "contacts_filter_12p": "Siguiendo",
+  "contacts_filter_p21": "Seguidores",
+  "contacts_filter_p2p": "Mutuos",
+  "contacts_filter_n2": "Amigos de amigos"
 }

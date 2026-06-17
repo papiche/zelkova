@@ -593,5 +593,20 @@
   "brave_warning_title": "Importante: avviso relativo al browser Brave",
   "brave_warning_understand": "HO CAPITO",
   "brave_warning_export_now": "ESPORTA ORA",
-  "profile_migration_failed": "Errore nel migrare il profilo Ẑinkgo al nuovo account"
+  "profile_migration_failed": "Errore nel migrare il profilo Ẑinkgo al nuovo account",
+  "bottom_nav_messages": "Messaggi",
+  "messages_title": "Messaggi",
+  "messages_empty": "Nessun messaggio ancora",
+  "messages_empty_chat": "Inizia la conversazione",
+  "message_hint": "Scrivi un messaggio…",
+  "message_send_failed": "Invio fallito",
+  "message_copied": "Messaggio copiato",
+  "date_today": "Oggi",
+  "date_yesterday": "Ieri",
+  "contacts_no_identity": "Nessuna identità NOSTR. Crea il tuo MULTIPASS.",
+  "contacts_relay_offline": "Relay offline",
+  "contacts_filter_12p": "Seguiti",
+  "contacts_filter_p21": "Seguaci",
+  "contacts_filter_p2p": "Reciproci",
+  "contacts_filter_n2": "Amici degli amici"
 }

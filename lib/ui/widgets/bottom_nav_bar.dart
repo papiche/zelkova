@@ -74,6 +74,10 @@ class _BottomNavBarState extends State<BottomNavBar> {
               label: tr('bottom_nav_trd'),
             ),
             BottomNavigationBarItem(
+              icon: const Icon(Icons.chat_bubble_outline),
+              label: tr('bottom_nav_messages'),
+            ),
+            BottomNavigationBarItem(
               icon: const Icon(Icons.savings),
               label: tr('bottom_nav_frd'),
             ),

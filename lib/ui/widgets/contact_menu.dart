@@ -63,12 +63,6 @@ class ContactMenu extends StatelessWidget {
               onPressed: () => onSent(),
               child: Text(tr('send_g1')),
             ),
-          if (!isContact && !me)
-            MenuItemButton(
-              leadingIcon: const Icon(Symbols.person_add),
-              onPressed: () => addContact(context, contact),
-              child: Text(tr('add_contact')),
-            ),
           if (isContact)
             MenuItemButton(
               leadingIcon: const Icon(Symbols.person_edit),

@@ -1,7 +1,6 @@
 enum NodeType {
   endpoint,
   duniterIndexer,
-  cesiumPlus,
   datapodEndpoint,
   ipfsGateway
 }
@@ -13,7 +12,6 @@ extension NodeTypeExtension on NodeType {
       case NodeType.datapodEndpoint:
       case NodeType.ipfsGateway:
         return false;
-      case NodeType.cesiumPlus:
       case NodeType.endpoint:
       case NodeType.duniterIndexer:
         return true;

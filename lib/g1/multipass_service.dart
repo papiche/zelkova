@@ -214,6 +214,7 @@ class MultipassService {
   }) async {
     final String baseUrl = serverUrl ?? Env.upassportUrl;
     final Uri uri = Uri.parse('$baseUrl/api/upload/image');
+    loggerDev('[API] POST $uri type=$imageType filename=$filename');
 
     final http.MultipartRequest request = http.MultipartRequest('POST', uri)
       ..fields['npub'] = npub
@@ -235,15 +236,19 @@ class MultipassService {
             jsonDecode(response.body) as Map<String, dynamic>;
         final String? ipfsUrl = data['ipfs_url'] as String?;
         final String? localUrl = data['local_url'] as String?;
-        if (ipfsUrl != null && ipfsUrl.isNotEmpty) return ipfsUrl;
+        if (ipfsUrl != null && ipfsUrl.isNotEmpty) {
+          loggerDev('[API] Upload OK → $ipfsUrl');
+          return ipfsUrl;
+        }
         if (localUrl != null && localUrl.isNotEmpty) {
+          loggerDev('[API] Upload OK (local) → $localUrl');
           return '$baseUrl$localUrl';
         }
         return data['url'] as String?;
       }
-      loggerDev('Image upload failed: ${response.statusCode} ${response.body}');
+      loggerDev('[API] Upload failed: ${response.statusCode} ${response.body}');
     } catch (e) {
-      loggerDev('Image upload error: $e');
+      loggerDev('[API] Upload error: $e');
     }
     return null;
   }

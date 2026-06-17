@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 import '../../../env.dart';
+import '../../../ui/logger.dart';
 import '../../ui_helpers.dart';
 
 /// Widget that lists UPlanet Astroport relay stations from the SWARM JSON.
@@ -35,6 +36,7 @@ class _AstroSwarmWidgetState extends State<AstroSwarmWidget> {
   }
 
   Future<void> _load() async {
+    logger('[AstroSwarm] Fetching swarm from ${Env.upassportUrl}...');
     try {
       final http.Response r = await http
           .get(Uri.parse(Env.upassportUrl))
@@ -51,13 +53,18 @@ class _AstroSwarmWidgetState extends State<AstroSwarmWidget> {
         }
 
         // SWARM stations
-        for (final dynamic raw
-            in root['SWARM'] as List<dynamic>? ?? <dynamic>[]) {
+        final List<dynamic> swarmRaw =
+            root['SWARM'] as List<dynamic>? ?? <dynamic>[];
+        for (final dynamic raw in swarmRaw) {
           if (raw is Map<String, dynamic>) {
             final _AstroStation? s = _AstroStation.fromJson(raw);
             if (s != null) stations.add(s);
           }
         }
+
+        logger('[AstroSwarm] ${stations.length} station(s) : '
+            'primary=${primary?.hostname ?? "?"}, '
+            'swarm=${swarmRaw.length}');
 
         if (mounted) {
           setState(() {
@@ -73,6 +80,7 @@ class _AstroSwarmWidgetState extends State<AstroSwarmWidget> {
         // Fire parallel connectivity probes
         _probeAll(stations);
       } else {
+        logger('[AstroSwarm] HTTP ${r.statusCode} from ${Env.upassportUrl}');
         if (mounted) {
           setState(() {
             _loading = false;
@@ -81,6 +89,7 @@ class _AstroSwarmWidgetState extends State<AstroSwarmWidget> {
         }
       }
     } catch (e) {
+      logger('[AstroSwarm] Error: $e');
       if (mounted) {
         setState(() {
           _loading = false;
@@ -99,17 +108,21 @@ class _AstroSwarmWidgetState extends State<AstroSwarmWidget> {
   }
 
   Future<void> _probe(_AstroStation s) async {
-    // Use /health if known; fall back to the root URL.
     final String url =
         '${s.uspot.replaceAll(RegExp(r'/+$'), '')}/health';
+    logger('[AstroSwarm] Probe ${s.hostname.isNotEmpty ? s.hostname : s.uspot} → $url');
     try {
       final http.Response r = await http
           .get(Uri.parse(url))
           .timeout(const Duration(seconds: 6));
+      final bool ok = r.statusCode < 500;
+      logger('[AstroSwarm] ${s.hostname.isNotEmpty ? s.hostname : s.uspot} '
+          '${ok ? "✓" : "✗"} HTTP ${r.statusCode}');
       if (mounted) {
-        setState(() => _reachability[s.uspot] = r.statusCode < 500);
+        setState(() => _reachability[s.uspot] = ok);
       }
-    } catch (_) {
+    } catch (e) {
+      logger('[AstroSwarm] ${s.hostname.isNotEmpty ? s.hostname : s.uspot} ✗ $e');
       if (mounted) setState(() => _reachability[s.uspot] = false);
     }
   }

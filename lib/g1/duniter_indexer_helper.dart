@@ -19,8 +19,6 @@ import '../data/models/node_manager.dart';
 import '../data/models/node_type.dart';
 import '../ui/contacts_cache.dart';
 import '../ui/logger.dart';
-import '../ui/ui_helpers.dart';
-import 'api.dart';
 import 'g1_helper.dart';
 import 'g1_v2_helper.dart';
 import 'nostr/nostr_profile.dart';
@@ -952,28 +950,7 @@ Future<Contact?> _fetchNostrProfile(String pubKey) async {
   return null;
 }
 
-/// Helper: Fetch Cesium+ profile data for an address
-Future<Contact?> _fetchCesiumPlusProfile(String pubKey,
-    {bool resize = true}) async {
-  try {
-    final Response cPlusResponse =
-        (await requestCPlusWithRetry('/user/profile/$pubKey')).item2;
-
-    if (cPlusResponse.statusCode == 200) {
-      final Map<String, dynamic> result = const JsonDecoder()
-          .convert(cPlusResponse.body) as Map<String, dynamic>;
-
-      if (result['found'] != false) {
-        return await contactFromResultSearch(result, resize: resize);
-      }
-    }
-  } catch (e) {
-    loggerDev('Error fetching Cesium+ profile for $pubKey: $e');
-  }
-  return null;
-}
-
-/// Fetch profile V2: combines Cesium+ profile with WOT V2 data from duniter_indexer
+/// Fetch profile V2: combines NOSTR profile with WOT V2 data from duniter_indexer
 /// Uses addressFromV1Pubkey to convert V1 pubkey to V2 address
 /// baseContact: optional Contact to use as base (preserves avatar and other existing data)
 Future<Contact> getProfileV2(String pubKeyRaw,

@@ -71,8 +71,8 @@ import 'ui/logger.dart';
 import 'ui/notification_controller.dart';
 import 'ui/notification_translations_helper.dart';
 import 'ui/pay_helper.dart';
+import 'ui/screens/onboarding_choice_screen.dart';
 import 'ui/screens/skeleton_screen.dart';
-import 'ui/screens/wallet_creation_screen.dart';
 import 'ui/ui_helpers.dart';
 import 'ui/widgets/connectivity_widget_wrapper_wrapper.dart';
 import 'ui/widgets/goldberg_sphere.dart';
@@ -1324,7 +1324,7 @@ class _AppStartState extends State<AppStart> {
     }
 
     if (SharedPreferencesHelper().isEmpty) {
-      return const WalletCreationScreen();
+      return const OnboardingChoiceScreen();
     }
 
     // Don't show tutorial in development

@@ -393,10 +393,9 @@ Future<void> _fetchEndPointAndSquidNodes(
         'Fetching endPoint and indexer nodes, we have ${NodeManager().nodesWorking(NodeType.endpoint)} and ${NodeManager().nodesWorking(NodeType.duniterIndexer)}');
   }
 
-  // Fetch nodes from appropriate JSON (g1.json for production, gtest.json for test)
-  final Tuple2<List<Node>, List<Node>> remoteNodes = isProduction
-      ? await _fetchNodesFromG1Json()
-      : await _fetchNodesFromGtestJson();
+  // Fetch nodes from Astroport constellation (IPFS/IPNS, decentralized)
+  final Tuple2<List<Node>, List<Node>> remoteNodes =
+      await _fetchNodesFromAstroportConstellation();
 
   final List<Node> initialEndPointNodes = await _fetchNodes(NodeType.endpoint);
   final List<Node> initialIndexerNodes =
@@ -431,80 +430,117 @@ Future<void> _fetchEndPointAndSquidNodes(
   NodeManager().loading = false;
 }
 
-/// Fetches nodes from a remote JSON file (generic for gtest.json and g1.json)
-/// Expects JSON with 'rpc' (endpoints) and 'squid' (indexers) arrays
-/// Returns a tuple with (rpcNodes, squidNodes)
-Future<Tuple2<List<Node>, List<Node>>> _fetchNodesFromNetworkJson(
-    String url, String networkName) async {
-  final List<Node> rpcNodes = <Node>[];
-  final List<Node> squidNodes = <Node>[];
+/// IPFS node IDs des stations Astroport de la constellation.
+/// Chaque station publie /ipns/<id>/duniter_nodes.json avec la liste des nœuds
+/// testés et triés par latence.
+const List<String> _astroportStationIds = <String>[
+  'k51qzi5uqu5dkczy65oudth3qcej8cgkw521gga4venxhf73eyvdn2dslg4lqe', // copylaradio.com
+];
 
-  try {
-    logger('Fetching nodes from $networkName');
+/// Fetche duniter_nodes.json depuis les stations Astroport de la constellation
+/// via IPFS/IPNS. Race toutes les combinaisons (gateway × station) en parallèle
+/// et retourne le premier résultat valide.
+Future<Tuple2<List<Node>, List<Node>>>
+    _fetchNodesFromAstroportConstellation() async {
+  final List<String> gateways = Env.ipfsGateways
+      .split(' ')
+      .where((String s) => s.isNotEmpty)
+      .toList();
 
-    final http.Response response =
-        await http.get(Uri.parse(url)).timeout(const Duration(seconds: 10));
-
-    if (response.statusCode == 200) {
-      final Map<String, dynamic> data =
-          json.decode(response.body) as Map<String, dynamic>;
-
-      // Extract RPC nodes
-      if (data.containsKey('rpc') && data['rpc'] is List) {
-        final List<dynamic> rpcs = data['rpc'] as List<dynamic>;
-        for (final dynamic rpc in rpcs) {
-          if (rpc is String && rpc.isNotEmpty) {
-            rpcNodes.add(Node(url: rpc));
-          }
-        }
-        logger('Loaded ${rpcNodes.length} rpc nodes from $networkName');
-      }
-
-      // Extract Squid nodes
-      if (data.containsKey('squid') && data['squid'] is List) {
-        final List<dynamic> squids = data['squid'] as List<dynamic>;
-        for (final dynamic squid in squids) {
-          if (squid is String && squid.isNotEmpty) {
-            squidNodes.add(Node(url: squid));
-          }
-        }
-        logger('Loaded ${squidNodes.length} squid nodes from $networkName');
-      }
-    } else {
-      logger('Failed to fetch $networkName: HTTP ${response.statusCode}');
-    }
-  } on TimeoutException catch (e) {
-    logger('Timeout fetching nodes from $networkName: $e');
-  } on SocketException catch (e) {
-    logger('Network error fetching nodes from $networkName: $e');
-  } on http.ClientException catch (e) {
-    logger('HTTP client error fetching nodes from $networkName: $e');
-  } on FormatException catch (e) {
-    logger('JSON parsing error from $networkName: $e');
-  } catch (e) {
-    logger('Unexpected error fetching nodes from $networkName: $e');
+  if (gateways.isEmpty || _astroportStationIds.isEmpty) {
+    logger('Astroport: aucune gateway ou station configurée');
+    return Tuple2<List<Node>, List<Node>>(<Node>[], <Node>[]);
   }
 
-  // Always return a valid tuple, even if empty, to allow the app to continue
-  return Tuple2<List<Node>, List<Node>>(rpcNodes, squidNodes);
+  final List<Future<Tuple2<List<Node>, List<Node>>?>> futures =
+      <Future<Tuple2<List<Node>, List<Node>>?>>[
+    for (final String gateway in gateways)
+      for (final String stationId in _astroportStationIds)
+        _tryFetchAstroportNodes(
+            '$gateway/ipns/$stationId/duniter_nodes.json', stationId),
+  ];
+
+  final Completer<Tuple2<List<Node>, List<Node>>> completer =
+      Completer<Tuple2<List<Node>, List<Node>>>();
+  int pending = futures.length;
+
+  void onDone() {
+    pending--;
+    if (pending == 0 && !completer.isCompleted) {
+      logger('Astroport: toutes les stations ont échoué, utilisation des defaults');
+      completer.complete(Tuple2<List<Node>, List<Node>>(<Node>[], <Node>[]));
+    }
+  }
+
+  for (final Future<Tuple2<List<Node>, List<Node>>?> future in futures) {
+    future
+        .then((Tuple2<List<Node>, List<Node>>? result) {
+          if (result != null && !completer.isCompleted) {
+            completer.complete(result);
+          }
+          onDone();
+        })
+        .catchError((Object _) => onDone());
+  }
+
+  return completer.future;
 }
 
-/// Fetches nodes from the gtest.json file (test network)
-/// Returns a tuple with (rpcNodes, squidNodes)
-/// If fetching fails, returns empty lists to allow the application to continue
-Future<Tuple2<List<Node>, List<Node>>> _fetchNodesFromGtestJson() async {
-  const String gtestUrl =
-      'https://git.duniter.org/nodes/networks/-/raw/master/gtest.json';
-  return _fetchNodesFromNetworkJson(gtestUrl, 'gtest.json');
-}
+/// Tente de récupérer duniter_nodes.json depuis une URL IPFS précise.
+/// Retourne null en cas d'échec pour permettre le fallback sur les autres stations.
+Future<Tuple2<List<Node>, List<Node>>?> _tryFetchAstroportNodes(
+    String url, String stationId) async {
+  try {
+    final http.Response response =
+        await http.get(Uri.parse(url)).timeout(const Duration(seconds: 15));
 
-/// Fetches nodes from the g1.json file (production network)
-/// Returns a tuple with (rpcNodes, squidNodes)
-/// If fetching fails, returns empty lists to allow the application to continue
-Future<Tuple2<List<Node>, List<Node>>> _fetchNodesFromG1Json() async {
-  const String g1Url =
-      'https://git.duniter.org/nodes/networks/-/raw/master/g1.json';
-  return _fetchNodesFromNetworkJson(g1Url, 'g1.json');
+    if (response.statusCode != 200) return null;
+
+    final Map<String, dynamic> data =
+        json.decode(response.body) as Map<String, dynamic>;
+
+    final List<Node> rpcNodes = <Node>[];
+    final List<Node> squidNodes = <Node>[];
+
+    if (data['rpc'] is List) {
+      for (final dynamic entry in data['rpc'] as List<dynamic>) {
+        if (entry is Map<String, dynamic>) {
+          final String? nodeUrl = entry['url'] as String?;
+          if (nodeUrl == null || nodeUrl.isEmpty) continue;
+          final int latencyUs =
+              ((entry['latency'] as num?)?.toInt() ?? 99999) * 1000;
+          final int block = (entry['block'] as num?)?.toInt() ?? 0;
+          rpcNodes.add(Node(url: nodeUrl, latency: latencyUs, currentBlock: block));
+        }
+      }
+    }
+
+    if (data['squid'] is List) {
+      for (final dynamic entry in data['squid'] as List<dynamic>) {
+        if (entry is Map<String, dynamic>) {
+          final String? nodeUrl = entry['url'] as String?;
+          if (nodeUrl == null || nodeUrl.isEmpty) continue;
+          final int latencyUs =
+              ((entry['latency'] as num?)?.toInt() ?? 99999) * 1000;
+          final int height = (entry['height'] as num?)?.toInt() ?? 0;
+          squidNodes.add(
+              Node(url: nodeUrl, latency: latencyUs, currentBlock: height));
+        }
+      }
+    }
+
+    if (rpcNodes.isEmpty && squidNodes.isEmpty) return null;
+
+    logger(
+        'Astroport station $stationId: ${rpcNodes.length} rpc + ${squidNodes.length} squid');
+    return Tuple2<List<Node>, List<Node>>(rpcNodes, squidNodes);
+  } on TimeoutException catch (_) {
+    loggerDev('Astroport: timeout sur $stationId');
+    return null;
+  } catch (e) {
+    loggerDev('Astroport: échec sur $stationId: $e');
+    return null;
+  }
 }
 
 Future<void> _fetchV2Nodes({required NodeType type, bool force = false}) async {

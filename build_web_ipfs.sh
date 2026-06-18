@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Build Flutter web for IPFS deployment with multiple modes and flavors
-## Usage: ./build_web_ipfs.sh [debug|release|profile] [development|production] [--no-patch] [--clean] [--help]
+## Usage: ./build_web_ipfs.sh [debug|release|profile] [development|production] [--no-patch] [--clean] [--deploy] [--help]
 set -e
 
 cd "$(dirname "$0")"
@@ -9,6 +9,10 @@ BUILD_MODE="${1:-release}"
 FLAVOR="${2:-production}"
 PATCH_IPFS=true
 CLEAN=false
+DEPLOY=false
+OVH_ZONE="${OVH_ZONE:-astroport.one}"
+DNSLINK_SUB="${DNSLINK_SUB:-z}"
+OVH_SH="$(dirname "$0")/../Astroport.ONE/admin/system/ovh.me.sh"
 
 # Parse additional flags
 for arg in "$@"; do
@@ -19,6 +23,10 @@ for arg in "$@"; do
             ;;
         --clean)
             CLEAN=true
+            shift
+            ;;
+        --deploy)
+            DEPLOY=true
             shift
             ;;
         --help|-h)
@@ -34,11 +42,14 @@ Arguments:
 Options:
   --no-patch          Skip IPFS relative‑path patching
   --clean             Run 'flutter clean' before building
+  --deploy            ipfs add + mise à jour DNSLink via ovh.me.sh
+                      (zone: OVH_ZONE=${OVH_ZONE}, sub: DNSLINK_SUB=${DNSLINK_SUB})
   --help, -h          Show this help
 
 Examples:
   $0 debug development          # Debug build, development flavor
   $0 release production         # Release build, production flavor (default)
+  $0 release production --deploy # Build + ipfs add + DNSLink z.astroport.one
   $0 profile production --clean # Clean & profile build with IPFS patch
   $0 --no-patch                 # Release build without IPFS patching
 
@@ -50,6 +61,11 @@ IPFS patching:
   - Changes base href from "/" to "./"
   - Converts absolute /icons/ paths to relative
   - Required for proper IPFS gateway hosting
+
+Deploy (--deploy):
+  - ipfs add -r build/web/  →  récupère le CID racine
+  - ovh.me.sh upsert \${DNSLINK_SUB} <CID> \${OVH_ZONE}
+  - Met à jour _dnslink.\${DNSLINK_SUB}.\${OVH_ZONE} → dnslink=/ipfs/<CID>
 
 EOF
             exit 0
@@ -173,21 +189,52 @@ if [ "$PATCH_IPFS" = true ]; then
     echo ""
 fi
 
+# Deploy: ipfs add + DNSLink OVH
+if [ "$DEPLOY" = true ]; then
+    echo "=== IPFS add ==="
+    if ! command -v ipfs &>/dev/null; then
+        echo "ERROR: ipfs non trouvé dans PATH"
+        exit 1
+    fi
+
+    CID=$(ipfs add -r -q --pin build/web/ | tail -1)
+    if [ -z "$CID" ]; then
+        echo "ERROR: ipfs add n'a retourné aucun CID"
+        exit 1
+    fi
+    echo "CID racine: $CID"
+    echo ""
+
+    echo "=== DNSLink: _dnslink.${DNSLINK_SUB}.${OVH_ZONE} → /ipfs/${CID} ==="
+    if [ ! -x "$OVH_SH" ]; then
+        echo "ERROR: ovh.me.sh introuvable ou non exécutable: $OVH_SH"
+        echo "Mise à jour manuelle: ovh.me.sh upsert ${DNSLINK_SUB} ${CID} ${OVH_ZONE}"
+        exit 1
+    fi
+    "$OVH_SH" upsert "$DNSLINK_SUB" "$CID" "$OVH_ZONE"
+    echo ""
+    echo "Accessible via:"
+    echo "  https://${CID}.ipfs.dweb.link"
+    echo "  /ipns/${DNSLINK_SUB}.${OVH_ZONE}"
+    echo ""
+fi
+
 # Summary
 echo "=== Build Summary ==="
 echo "Output directory: $(pwd)/build/web"
 echo "Build mode:       $BUILD_MODE"
 echo "Flavor:           $FLAVOR"
 echo "IPFS patch:       $PATCH_IPFS"
+echo "Deploy:           $DEPLOY"
 echo ""
-echo "To deploy on IPFS:"
-echo "  ipfs add -r build/web/"
-echo ""
-echo "To serve locally:"
+if [ "$DEPLOY" = false ]; then
+    echo "Pour déployer sur IPFS:"
+    echo "  $0 $BUILD_MODE $FLAVOR --deploy"
+    echo "  # ou manuellement:"
+    echo "  ipfs add -r build/web/ && ovh.me.sh upsert ${DNSLINK_SUB} <CID> ${OVH_ZONE}"
+    echo ""
+fi
+echo "Pour servir localement:"
 echo "  python3 -m http.server --directory build/web 8080"
-echo "  # then open http://localhost:8080"
-echo ""
-echo "To test with IPFS gateway (simulated):"
-echo "  ipfs daemon &"
-echo "  ipfs add -r -q build/web | tail -n1 | xargs -I{} echo http://localhost:8080/ipfs/{}"
+echo "  # puis ouvrir http://localhost:8080"
 echo ""

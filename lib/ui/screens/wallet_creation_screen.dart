@@ -165,7 +165,11 @@ class _NominatimResult {
 /// Page 2 — Profil ondulatoire ATOMIC (optionnel) : naissance, conception, KIN
 /// Vue succès — Liens Open Collective personnalisés + bouton "C'est parti"
 class WalletCreationScreen extends StatefulWidget {
-  const WalletCreationScreen({super.key});
+  const WalletCreationScreen({super.key, this.initialEmail});
+
+  /// Pré-remplit le champ email et passe directement à la page du formulaire.
+  /// Utilisé quand on redirige depuis l'écran de récupération (email inconnu).
+  final String? initialEmail;
 
   @override
   State<WalletCreationScreen> createState() => _WalletCreationScreenState();
@@ -208,6 +212,11 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
   void initState() {
     super.initState();
     _loadSwarmStations();
+    if (widget.initialEmail != null && widget.initialEmail!.isNotEmpty) {
+      _emailController.text = widget.initialEmail!;
+      // Passe directement au formulaire sans animation sur la page d'accueil
+      WidgetsBinding.instance.addPostFrameCallback((_) => _goToFormPage());
+    }
   }
 
   @override

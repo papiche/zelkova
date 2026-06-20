@@ -142,7 +142,7 @@ int phi2xComputeConceptionUnix(int birthUnix, {double weightKg = 3.5}) {
 
 /// SHA256(pubkeyHex + ":" + appSalt) — vérifié par NIP-101/filter/30078.sh
 String phi2xComputeA4lProof(String hexPubkey,
-    {String appSalt = 'ATOM4LOVE_v1'}) {
+    {String appSalt = 'ATOM4LOVE_ALPHA'}) {
   final Uint8List input = Uint8List.fromList(
       '$hexPubkey:$appSalt'.codeUnits,
   );

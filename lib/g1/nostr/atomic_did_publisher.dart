@@ -19,7 +19,7 @@ import 'nostr_utils.dart';
 ///
 /// Structure conforme à parse_kind30078() de phi2x.py (NIP-101/filter/30078.sh) :
 ///   Content JSON : { personal_phase, omega_bio, biological_sex, kin_num, version }
-///   Tags : ["d","atom4love"], ["a4l_proof", sha256(pubkey:ATOM4LOVE_v1)]
+///   Tags : ["d","atom4love"], ["a4l_proof", sha256(pubkey:ATOM4LOVE_ALPHA)]
 ///          + tags KIN naissance et conception
 Future<bool> publishAtomicDid({
   required String nsec,

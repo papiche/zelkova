@@ -24,31 +24,37 @@ String stretchKey(String raw) {
 
 // ── Construction des chaînes brutes ──────────────────────────────────────────
 
-/// saltRaw conforme à atomic.html : "${birthDtUtc}_${lat}_${lon}_${polarity}_${weight}"
+/// saltRaw conforme à atomic.html : "${birthDtUtc}_${lat}_${lon}_${polarity}_${weight}_${birthHeight}_${currentHeight}"
 String buildSaltRaw({
   required String birthDtUtc,
   required double birthLat,
   required double birthLon,
   required int polarity,
   required double weight,
+  int birthHeightCm = 50,    // taille à la naissance (cm)
+  int currentHeightCm = 170, // taille adulte actuelle (cm)
 }) =>
     '${birthDtUtc}_'
     '${birthLat.toStringAsFixed(2)}_'
     '${birthLon.toStringAsFixed(2)}_'
     '${polarity}_'
-    '${weight.toStringAsFixed(1)}';
+    '${weight.toStringAsFixed(1)}_'
+    '${birthHeightCm}_'
+    '$currentHeightCm';
 
-/// pepperRaw conforme à atomic.html : "${conDtUtc}_${conLat}_${conLon}_${weight}"
+/// pepperRaw conforme à atomic.html : "${conDtUtc}_${conLat}_${conLon}_${weight}_${birthHeight}"
 String buildPepperRaw({
   required String conDtUtc,
   required double conLat,
   required double conLon,
   required double weight,
+  int birthHeightCm = 50, // taille à la naissance (cm)
 }) =>
     '${conDtUtc}_'
     '${conLat.toStringAsFixed(2)}_'
     '${conLon.toStringAsFixed(2)}_'
-    '${weight.toStringAsFixed(1)}';
+    '${weight.toStringAsFixed(1)}_'
+    '$birthHeightCm';
 
 /// Convertit un datetime local en chaîne UTC "YYYYMMDDHHMM"
 /// conforme à atomic.html : utcOffset = round(lon / 15)

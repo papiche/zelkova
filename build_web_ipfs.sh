@@ -110,7 +110,8 @@ if ! command -v flutter &>/dev/null; then
     fi
 fi
 
-echo "Flutter: $(flutter --version | head -1)"
+FLUTTER_VER=$(flutter --version 2>/dev/null)
+echo "Flutter: ${FLUTTER_VER%%$'\n'*}"
 echo ""
 
 # Clean if requested
@@ -138,13 +139,13 @@ fi
 # Use appropriate Flutter command
 case $BUILD_MODE in
     debug)
-        flutter build web --debug --dart-define="$DART_DEFINES" -t lib/main.dart
+        flutter build web --debug --no-wasm-dry-run --dart-define="$DART_DEFINES" -t lib/main.dart
         ;;
     release)
-        flutter build web --release --dart-define="$DART_DEFINES" -t lib/main.dart
+        flutter build web --release --no-wasm-dry-run --dart-define="$DART_DEFINES" -t lib/main.dart
         ;;
     profile)
-        flutter build web --profile --dart-define="$DART_DEFINES" -t lib/main.dart
+        flutter build web --profile --no-wasm-dry-run --dart-define="$DART_DEFINES" -t lib/main.dart
         ;;
 esac
 
@@ -214,8 +215,7 @@ if [ "$DEPLOY" = true ]; then
     "$OVH_SH" upsert "$DNSLINK_SUB" "$CID" "$OVH_ZONE"
     echo ""
     echo "Accessible via:"
-    echo "  https://${CID}.ipfs.dweb.link"
-    echo "  /ipns/${DNSLINK_SUB}.${OVH_ZONE}"
+    echo "  https://${DNSLINK_SUB}.${OVH_ZONE}"
     echo ""
 fi
 

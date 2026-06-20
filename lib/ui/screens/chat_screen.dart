@@ -67,6 +67,11 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   Future<void> _loadHistory() async {
+    // Annuler la subscription active avant de recharger (évite les doublons)
+    if (_dmSubId != null) {
+      NostrRelayService().cancelDmSubscription(_dmSubId!);
+      _dmSubId = null;
+    }
     setState(() => _loading = true);
     try {
       final List<NostrMessage> msgs =
@@ -103,10 +108,11 @@ class _ChatScreenState extends State<ChatScreen> {
         if (msg.senderHex != widget.peerHexPubkey) {
           return;
         }
-        // Remove optimistic if any
+        // Évite les doublons si le message est déjà confirmé en local
+        if (_messages.any((NostrMessage m) => m.id == msg.id)) {
+          return;
+        }
         setState(() {
-          _messages.removeWhere(
-              (NostrMessage m) => m.pending && m.content == msg.content);
           _messages.add(msg);
         });
         _scrollToBottom();
@@ -179,6 +185,10 @@ class _ChatScreenState extends State<ChatScreen> {
         'enc_key': encKey,
         'enc_type': img['enc_type'] as String? ?? 'aes256gcm',
         'filename': img['filename'] as String? ?? 'image',
+        if ((img['title'] as String?)?.isNotEmpty ?? false)
+          'title': img['title'] as String,
+        if ((img['caption'] as String?)?.isNotEmpty ?? false)
+          'caption': img['caption'] as String,
       };
     } catch (_) {
       return null;

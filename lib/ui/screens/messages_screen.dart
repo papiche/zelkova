@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:bip340/bip340.dart' as bip340;
 import 'package:easy_localization/easy_localization.dart';
@@ -78,23 +79,26 @@ class _MessagesScreenState extends State<MessagesScreen> {
         myHexPubkey: hexPub,
       );
 
+      final List<_ConvData?> results = await Future.wait<_ConvData?>(
+        peers.map((String peer) async {
+          final List<NostrMessage> msgs = await relay.fetchNip44Messages(
+            myHexPubkey: hexPub,
+            myHexPrivkey: hexPriv,
+            peerHexPubkey: peer,
+            limit: 2,
+          );
+          if (msgs.isEmpty) return null;
+          final NostrProfile? profile = await relay.fetchProfile(peer);
+          return _ConvData(
+            peerHex: peer,
+            lastMessage: msgs.last,
+            profile: profile,
+          );
+        }),
+      );
       final Map<String, _ConvData> convs = <String, _ConvData>{};
-      for (final String peer in peers) {
-        final List<NostrMessage> msgs = await relay.fetchNip44Messages(
-          myHexPubkey: hexPub,
-          myHexPrivkey: hexPriv,
-          peerHexPubkey: peer,
-          limit: 1,
-        );
-        if (msgs.isEmpty) {
-          continue;
-        }
-        final NostrProfile? profile = await relay.fetchProfile(peer);
-        convs[peer] = _ConvData(
-          peerHex: peer,
-          lastMessage: msgs.last,
-          profile: profile,
-        );
+      for (final _ConvData? data in results) {
+        if (data != null) convs[data.peerHex] = data;
       }
 
       if (mounted) {
@@ -166,15 +170,27 @@ class _MessagesScreenState extends State<MessagesScreen> {
     );
   }
 
+  // ── Helpers ───────────────────────────────────────────────────────────────
+
+  static const String _imgTag = '_uenc_img';
+
+  String _previewContent(String content) {
+    try {
+      final dynamic decoded = jsonDecode(content);
+      if (decoded is Map && decoded.containsKey(_imgTag)) {
+        return '📷 Image';
+      }
+    } catch (_) {}
+    return content.length > 60 ? '${content.substring(0, 60)}…' : content;
+  }
+
   // ── Widgets ───────────────────────────────────────────────────────────────
 
   Widget _buildConvTile(_ConvData conv) {
     final NostrProfile? p = conv.profile;
     final String name = p?.name ?? conv.peerHex.substring(0, 12);
     final String? picture = p?.picture;
-    final String preview = conv.lastMessage.content.length > 60
-        ? '${conv.lastMessage.content.substring(0, 60)}…'
-        : conv.lastMessage.content;
+    final String preview = _previewContent(conv.lastMessage.content);
     final bool isMe = conv.lastMessage.isFromMe(_myHexPubkey ?? '');
 
     return ListTile(

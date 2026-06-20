@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:bip340/bip340.dart' as bip340;
@@ -53,7 +54,7 @@ class NostrRelayService {
       return true;
     }
 
-    await forceDisconnect();
+    await _disconnectInternal();
 
     try {
       final Uri uri = Uri.parse(relayUrl);
@@ -92,11 +93,10 @@ class NostrRelayService {
     }
   }
 
-  /// Force disconnect
-  Future<void> forceDisconnect() async {
+  /// Déconnexion interne sans reset du compteur de tentatives (préserve le backoff).
+  Future<void> _disconnectInternal() async {
     _reconnectTimer?.cancel();
     _reconnectTimer = null;
-    _reconnectAttempts = 0;
 
     await _subscription?.cancel();
     _subscription = null;
@@ -109,6 +109,12 @@ class NostrRelayService {
     _isConnected = false;
     _handlers.clear();
     _publishCompleters.clear();
+  }
+
+  /// Force disconnect (réinitialise aussi le compteur de reconnexion).
+  Future<void> forceDisconnect() async {
+    _reconnectAttempts = 0;
+    await _disconnectInternal();
   }
 
   void _scheduleReconnect() {
@@ -688,7 +694,7 @@ class NostrRelayService {
   String _signEvent(String eventIdHex, String hexPrivateKey) {
     // BIP-340 Schnorr signature
     final Uint8List auxRandBytes = Uint8List.fromList(
-      List<int>.generate(32, (_) => DateTime.now().microsecond % 256),
+      List<int>.generate(32, (_) => Random.secure().nextInt(256)),
     );
     final String auxRandHex = HEX.encode(auxRandBytes);
     return bip340.sign(hexPrivateKey, eventIdHex, auxRandHex);

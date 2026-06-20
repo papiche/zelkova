@@ -173,7 +173,7 @@ class EncryptedFileService {
     final ivHex = json['iv_hex'] as String? ?? '';
     if (cid.isEmpty) throw Exception('CID manquant dans la réponse du serveur');
 
-    loggerDev('encrypted-upload OK: cid=${cid.substring(0, 12)}… iv=${ivHex.substring(0, 8)}…');
+    loggerDev('encrypted-upload OK: cid=${cid.length > 12 ? cid.substring(0, 12) : cid}… iv=${ivHex.length > 8 ? ivHex.substring(0, 8) : ivHex}…');
     return EncryptedUploadResult(
       cid: cid,
       encKeyHex: keyHex,

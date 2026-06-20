@@ -74,6 +74,34 @@ Strict Bloc/Cubit pattern throughout. Key cubits:
 - `packages/duniter_indexer/` — Ferry GraphQL client for Squid indexer (history, WoT, profiles). Has its own `build.yaml` for Ferry codegen.
 - `packages/duniter_datapod/` — Ferry GraphQL client for DataPod (advanced certifications).
 
+### Messagerie NIP-44 (DM chiffrés)
+
+La messagerie privée n'utilise **pas** de Bloc/Cubit — les écrans appellent directement le singleton `NostrRelayService`.
+
+| Fichier | Rôle |
+|---------|------|
+| `lib/g1/nostr/nip44.dart` | Chiffrement NIP-44 v2 : ECDH secp256k1 → HKDF-SHA256 → ChaCha20 + HMAC-SHA256 + padding |
+| `lib/g1/nostr/nostr_relay_service.dart` | Singleton WebSocket — `subscribeToDms`, `fetchNip44Messages`, `sendNip44Message`, broadcast constellation |
+| `lib/data/models/nostr_message.dart` | `NostrMessage` (id, sender, recipient, content, createdAt, pending) + `NostrConversation` |
+| `lib/ui/screens/messages_screen.dart` | Liste des conversations, chargement parallèle via `Future.wait` |
+| `lib/ui/screens/chat_screen.dart` | Chat 1:1, optimistic UI (`pending: true`), images chiffrées, emoji picker |
+| `lib/ui/screens/bro_screen.dart` | Chat IA daemon station via NIP-44 (commandes `#mem`, `#rec`, `#reset`…) |
+| `lib/ui/screens/love_screen.dart` | Canal matchmaking via NIP-44 (payload JSON `{channel, action}`) |
+| `lib/ui/widgets/encrypted_image_bubble.dart` | Bulle image UENC — cache mémoire par CID, miniature async, plein écran |
+| `lib/services/encrypted_file_service.dart` | Format UENC v1 (AES-256-GCM) — upload via UPassport `/api/fileupload/encrypted`, download IPFS |
+
+**Flux NIP-44 :**
+1. `subscribeToDms` filtre `kind=4, #p=[myPub], since=now` — live uniquement
+2. `fetchNip44Messages` fait deux queries parallèles (envoyés + reçus), déchiffre, trie par `createdAt`
+3. Les images chiffrées sont encapsulées dans le contenu NIP-44 comme JSON `{"_uenc_img": {cid, enc_key, enc_type, iv, filename, title, caption}}`
+4. Le broadcast constellation (relays issus de kind-30850) est fire-and-forget après publication sur le relay principal
+
+**Points critiques :**
+- `NostrRelayService.sendNip44Message` signe avec `_signEvent` qui utilise `Random.secure()` pour l'auxRand BIP-340
+- `_disconnectInternal()` préserve `_reconnectAttempts` (backoff 2→4→8→16→32s) ; `forceDisconnect()` le remet à 0
+- Déduplication live dans `_subscribeLive` : vérifier `m.id == msg.id` (pas le content) pour les optimistes
+- `fetchNip44Messages(limit: N)` divise par 2 chaque query — toujours passer `limit ≥ 2`
+
 ### `landing/` — Python FastAPI server
 
 Serves the landing page and relays feedback to GitHub Issues via `GITHUB_TOKEN`. Separate from the main Flutter app.

@@ -176,7 +176,7 @@ class WalletCreationScreen extends StatefulWidget {
 }
 
 class _WalletCreationScreenState extends State<WalletCreationScreen> {
-  final PageController _pageController = PageController();
+  // PageController removed — contribution page skipped, form shown directly
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
 
@@ -214,14 +214,11 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
     _loadSwarmStations();
     if (widget.initialEmail != null && widget.initialEmail!.isNotEmpty) {
       _emailController.text = widget.initialEmail!;
-      // Passe directement au formulaire sans animation sur la page d'accueil
-      WidgetsBinding.instance.addPostFrameCallback((_) => _goToFormPage());
     }
   }
 
   @override
   void dispose() {
-    _pageController.dispose();
     _emailController.dispose();
     _audioPlayer?.dispose();
     super.dispose();
@@ -679,19 +676,6 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
     );
   }
 
-  void _goToFormPage() {
-    _pageController.nextPage(
-      duration: const Duration(milliseconds: 400),
-      curve: Curves.easeInOut,
-    );
-  }
-
-  void _goBackToContributions() {
-    _pageController.previousPage(
-      duration: const Duration(milliseconds: 400),
-      curve: Curves.easeInOut,
-    );
-  }
 
   Future<void> _openUrl(String url) async {
     if (url.isEmpty) {
@@ -720,14 +704,7 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
     if (_result != null) {
       return _buildSuccessScreen();
     }
-    return PageView(
-      controller: _pageController,
-      physics: const NeverScrollableScrollPhysics(),
-      children: <Widget>[
-        _buildContributionPage(),
-        _buildFormPage(),
-      ],
-    );
+    return _buildFormPage();
   }
 
   // ── URLs Open Collective (défaut — personnalisées dans la vue succès) ──────
@@ -741,80 +718,12 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
   static const String _ocConstellationUrl =
       'https://opencollective.com/monnaie-libre/projects/coeurbox/contribute/love-box-deluxe-gpu-49182';
 
-  // ── Page 0 : Accueil MULTIPASS ────────────────────────────────────────────
-
-  Widget _buildContributionPage() {
-    return Scaffold(
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(28, 0, 28, 120),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              const Text('🌌',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 72)),
-              const SizedBox(height: 20),
-              Text(
-                'Bienvenue sur UPlanet',
-                textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                      fontWeight: FontWeight.w800, letterSpacing: -0.5),
-              ),
-              const SizedBox(height: 12),
-              Text(
-                'Votre identité numérique souveraine,\n'
-                'reliée à votre réseau social\n'
-                "et à l'écosystème coopératif UPlanet.",
-                textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: Theme.of(context)
-                          .colorScheme
-                          .onSurface
-                          .withValues(alpha: 0.65),
-                      height: 1.6),
-              ),
-              const SizedBox(height: 36),
-              _buildPoint('🔓', '100% Logiciels Libres · AGPL'),
-              const SizedBox(height: 10),
-              _buildPoint('⚡', 'Identité NOSTR — vos clés, vos données'),
-              const SizedBox(height: 10),
-              _buildPoint('🤝', 'Réseau coopératif — sans GAFAM'),
-            ],
-          ),
-        ),
-      ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: _goToFormPage,
-        label: const Text('Commencer'),
-        icon: const Icon(Icons.arrow_forward),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-    );
-  }
-
-  Widget _buildPoint(String emoji, String text) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        Text(emoji, style: const TextStyle(fontSize: 20)),
-        const SizedBox(width: 10),
-        Text(text,
-            style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500)),
-      ],
-    );
-  }
-
-  // ── Page 1 : Formulaire email + géolocalisation ────────────────────────────
+  // ── Formulaire email + géolocalisation ────────────────────────────────────
 
   Widget _buildFormPage() {
     final ThemeData theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: _goBackToContributions,
-        ),
         title: const Text('Créer mon MULTIPASS'),
         elevation: 0,
       ),

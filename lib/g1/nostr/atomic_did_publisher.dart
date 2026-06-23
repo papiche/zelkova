@@ -30,6 +30,10 @@ Future<bool> publishAtomicDid({
   double birthLon = 0.0,
   double weightKg = 3.5,
   int polarity = 0,
+  // Position de résidence actuelle (GPS device, confirmée par l'utilisateur).
+  // Si null ou 0.0/0.0, d=atom4love-home n'est pas publié.
+  double? homeLat,
+  double? homeLon,
   // KIN pré-calculés
   KinResult? birthKin,
   KinResult? conceptionKin,
@@ -64,6 +68,14 @@ Future<bool> publishAtomicDid({
   // ── a4l_proof (NIP-101) ────────────────────────────────────────────────────
   final String a4lProof = phi2xComputeA4lProof(hexPubkey);
 
+  // ── Adresse géographique + a5l (requis par atomic_map.html) ───────────────
+  Phi2xGeoTag? geoTag;
+  double? a5lAmplitude;
+  if (birthUnix != null && (birthLat != 0.0 || birthLon != 0.0)) {
+    geoTag       = phi2xGeoTagA4L(birthLat, birthLon, birthUnix);
+    a5lAmplitude = phi2xComputeResonanceField(birthLat, birthLon, birthUnix);
+  }
+
   // ── Content JSON (conforme parse_kind30078 de phi2x.py) ───────────────────
   final Map<String, dynamic> content = <String, dynamic>{
     'personal_phase': personalPhase,
@@ -71,6 +83,7 @@ Future<bool> publishAtomicDid({
     'biological_sex': polarity,
     'kin_num':        birthKin?.kin ?? 0,
     'version':        1,
+    if (a5lAmplitude != null) 'a5l_amplitude': a5lAmplitude,
     if (email != null && email.isNotEmpty) 'email': email,
   };
 
@@ -80,6 +93,17 @@ Future<bool> publishAtomicDid({
     <String>['a4l_proof', a4lProof],
     if (email != null && email.isNotEmpty) <String>['email', email],
   ];
+
+  // Tags géographiques (adresse hexagonale + cymatique) — obligatoires pour
+  // que atomic_map.html puisse décoder la position et afficher le marqueur.
+  if (geoTag != null) {
+    tags
+      ..add(<String>['g', geoTag.penta])
+      ..add(<String>['g', geoTag.hex]);
+  }
+  if (a5lAmplitude != null) {
+    tags.add(<String>['a5l', phi2xEncodeA5lTag(a5lAmplitude)]);
+  }
 
   if (birthKin != null) {
     tags
@@ -119,11 +143,69 @@ Future<bool> publishAtomicDid({
       return false;
     }
     final bool ok = await relay.publishEvent(event);
-    loggerDev('[AtomicDID] Kind 30078 published: $ok — φ=${personalPhase.toStringAsFixed(4)} ω=${omegaBio.toStringAsFixed(2)}Hz');
+    loggerDev('[AtomicDID] d=atom4love published: $ok'
+        ' φ=${personalPhase.toStringAsFixed(4)}'
+        ' ω=${omegaBio.toStringAsFixed(2)}Hz'
+        '${a5lAmplitude != null ? " Ψ=${a5lAmplitude.toStringAsFixed(4)}" : ""}');
+
+    // ── d=atom4love-home (couche home de atomic_map.html) ─────────────────
+    // Publié uniquement si une position explicite est fournie (pas de fallback naissance).
+    final double hLat = homeLat ?? 0.0;
+    final double hLon = homeLon ?? 0.0;
+    if (hLat != 0.0 || hLon != 0.0) {
+      await _publishAtomicHome(
+        relay:       relay,
+        hexPubkey:   hexPubkey,
+        hexPrivKey:  hexPrivKey,
+        geoTag:      phi2xGeoTagA4L(hLat, hLon, createdAt),
+        birthLat:    hLat,
+        birthLon:    hLon,
+        a4lProof:    a4lProof,
+        createdAt:   createdAt,
+      );
+    }
+
     return ok;
   } catch (e) {
     loggerDev('[AtomicDID] Publish error: $e');
     return false;
+  }
+}
+
+Future<void> _publishAtomicHome({
+  required NostrRelayService relay,
+  required String hexPubkey,
+  required String hexPrivKey,
+  required Phi2xGeoTag geoTag,
+  required double birthLat,
+  required double birthLon,
+  required String a4lProof,
+  required int createdAt,
+}) async {
+  final List<List<String>> homeTags = <List<String>>[
+    <String>['d',         'atom4love-home'],
+    <String>['app',       'atom4love'],
+    <String>['a4l_proof', a4lProof],
+    <String>['g',         geoTag.penta],
+    <String>['lat',       birthLat.toStringAsFixed(2)],
+    <String>['lon',       birthLon.toStringAsFixed(2)],
+  ];
+  final Map<String, dynamic> homeEvent = <String, dynamic>{
+    'kind':       30078,
+    'pubkey':     hexPubkey,
+    'created_at': createdAt,
+    'tags':       homeTags,
+    'content':    '',
+  };
+  final String homeId = NostrUtils.calculateEventId(homeEvent);
+  homeEvent['id']  = homeId;
+  homeEvent['sig'] = _signEvent(homeId, hexPrivKey);
+  try {
+    final bool homeOk = await relay.publishEvent(homeEvent);
+    loggerDev('[AtomicDID] d=atom4love-home published: $homeOk'
+        ' (${birthLat.toStringAsFixed(2)},${birthLon.toStringAsFixed(2)})');
+  } catch (e) {
+    loggerDev('[AtomicDID] d=atom4love-home error: $e');
   }
 }
 

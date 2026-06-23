@@ -110,7 +110,7 @@ class OnboardingChoiceScreen extends StatelessWidget {
                     _Step(
                       n: '1',
                       text: 'Votre station Astroport locale crée votre identité '
-                          'NOSTR + portefeuille G1 en quelques secondes.',
+                          'NOSTR + portefeuille ZEN en quelques secondes.',
                     ),
                     _Step(
                       n: '2',

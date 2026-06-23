@@ -2616,8 +2616,12 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
           _birthDate!.year, _birthDate!.month, _birthDate!.day, t.hour, t.minute);
       birthUnix = bDt.millisecondsSinceEpoch ~/ 1000;
     }
+    // Lieu de naissance : saisi dans le formulaire ou position GPS si absent
     final double bLat = _birthLat != 0.0 ? _birthLat : (double.tryParse(_lat) ?? 0.0);
     final double bLon = _birthLon != 0.0 ? _birthLon : (double.tryParse(_lon) ?? 0.0);
+    // Résidence actuelle : GPS device (_lat/_lon), distinct du lieu de naissance
+    final double gpsLat = double.tryParse(_lat) ?? 0.0;
+    final double gpsLon = double.tryParse(_lon) ?? 0.0;
 
     publishAtomicDid(
       nsec: response.nsec,
@@ -2625,6 +2629,8 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
       birthUnix: birthUnix,
       birthLat: bLat,
       birthLon: bLon,
+      homeLat: gpsLat,
+      homeLon: gpsLon,
       weightKg: _birthWeight,
       polarity: _polarity,
       birthKin: birthKin,

@@ -458,15 +458,16 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
     final DateTime localBirth = DateTime(
       _birthDate!.year, _birthDate!.month, _birthDate!.day, t.hour, t.minute,
     );
-    final int utcOffset = _birthLon != 0.0 ? (_birthLon / 15).round() : 0;
-    final String birthDtUtc = localToUtcStr(localBirth, utcOffset);
-    final DateTime localCon = localBirth.subtract(const Duration(days: 280));
-    final String conDtUtc = localToUtcStr(
-      DateTime(localCon.year, localCon.month, localCon.day, 12),
-      utcOffset,
-    );
     final double lat = _birthLat != 0.0 ? _birthLat : (double.tryParse(_lat) ?? 0.0);
     final double lon = _birthLon != 0.0 ? _birthLon : (double.tryParse(_lon) ?? 0.0);
+    final String birthDtUtc = localSolarToUtcStr(
+      localBirth.year, localBirth.month, localBirth.day,
+      localBirth.hour, localBirth.minute, lon,
+    );
+    final DateTime localCon = localBirth.subtract(const Duration(days: 280));
+    final String conDtUtc = localSolarToUtcStr(
+      localCon.year, localCon.month, localCon.day, 12, 0, lon,
+    );
     return compute(
       computeAtomicKeyPair,
       (

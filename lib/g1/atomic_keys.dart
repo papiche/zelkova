@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:pointycastle/export.dart';
@@ -56,13 +57,36 @@ String buildPepperRaw({
     '${weight.toStringAsFixed(1)}_'
     '$birthHeightCm';
 
-/// Convertit un datetime local en chaîne UTC "YYYYMMDDHHMM"
-/// conforme à atomic.html : utcOffset = round(lon / 15)
-String localToUtcStr(DateTime local, int utcOffset) {
-  final DateTime utc = local.subtract(Duration(hours: utcOffset));
-  return '${utc.year.toString().padLeft(4, '0')}'
-      '${utc.month.toString().padLeft(2, '0')}'
-      '${utc.day.toString().padLeft(2, '0')}'
-      '${utc.hour.toString().padLeft(2, '0')}'
-      '${utc.minute.toString().padLeft(2, '0')}';
+// ── Conversion heure solaire locale → UTC "YYYYMMDDHHMM" ────────────────────
+// Conforme à atomic.html _dateToUtcUnix() + _unixToUtcStr().
+// offset total = longitude × 4 min/° + équation du temps (≤ ±16 min saisonnier).
+
+/// Correction saisonnière midi solaire vs midi civil (minutes).
+/// Formule identique à atomic.html _equationOfTime().
+double _equationOfTime(int year, int month, int day) {
+  final int doy = DateTime.utc(year, month, day)
+          .difference(DateTime.utc(year))
+          .inDays +
+      1;
+  final double b = (2 * pi / 365) * (doy - 81);
+  return 9.87 * sin(2 * b) - 7.53 * cos(b) - 1.5 * sin(b);
+}
+
+/// Convertit une heure solaire locale + longitude en chaîne UTC "YYYYMMDDHHMM".
+///
+/// Identique à `_dateToUtcUnix(date, time, lon)` suivi de `_unixToUtcStr()`
+/// dans atomic.html. Précision : minute. Aucune dépendance timezone système.
+String localSolarToUtcStr(
+    int year, int month, int day, int hour, int minute, double lonDeg) {
+  final double offsetMin =
+      lonDeg * 4.0 + _equationOfTime(year, month, day);
+  final int utcMin = (hour * 60 + minute - offsetMin).round();
+  // DateTime.utc normalise les débordements minuit (utcMin < 0 ou > 1439)
+  final DateTime utcDt =
+      DateTime.utc(year, month, day).add(Duration(minutes: utcMin));
+  return '${utcDt.year.toString().padLeft(4, '0')}'
+      '${utcDt.month.toString().padLeft(2, '0')}'
+      '${utcDt.day.toString().padLeft(2, '0')}'
+      '${utcDt.hour.toString().padLeft(2, '0')}'
+      '${utcDt.minute.toString().padLeft(2, '0')}';
 }

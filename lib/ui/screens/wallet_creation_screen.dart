@@ -23,6 +23,7 @@ import '../../g1/kin_calculator.dart';
 import '../../g1/kin_sound.dart';
 import '../../g1/multipass_service.dart';
 import '../../g1/nostr/atomic_did_publisher.dart';
+import '../../g1/nostr/nostr_relay_service.dart';
 import '../../g1/zen_tag_service.dart';
 import '../../shared_prefs_helper_v2.dart';
 import '../logger.dart';
@@ -159,6 +160,8 @@ class _NominatimResult {
   final double lon;
 }
 
+enum _NostrDetectStatus { idle, checking, found, notFound }
+
 /// Onboarding screen for first launch:
 /// Page 0 — Accueil UPlanet (identité souveraine, monnaie libre)
 /// Page 1 — Formulaire email + géolocalisation → création MULTIPASS
@@ -208,20 +211,117 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
   bool _soundPlaying = false;
   bool _nostrDidPublished = false;
 
+  // ── Détection MULTIPASS existant via NOSTR ────────────────────────────────
+  _NostrDetectStatus _nostrStatus = _NostrDetectStatus.idle;
+  String _nostrFoundName = '';
+  Timer? _emailDetectTimer;
+
+  // ── Sécurité PASS : max 3 tentatives ─────────────────────────────────────
+  int _passAttempts = 0;
+  static const int _maxPassAttempts = 3;
+  bool _passBlocked = false;
+
   @override
   void initState() {
     super.initState();
     _loadSwarmStations();
     if (widget.initialEmail != null && widget.initialEmail!.isNotEmpty) {
       _emailController.text = widget.initialEmail!;
+      _scheduleEmailDetect(widget.initialEmail!);
     }
+    _emailController.addListener(_onEmailChanged);
   }
 
   @override
   void dispose() {
+    _emailController.removeListener(_onEmailChanged);
     _emailController.dispose();
+    _emailDetectTimer?.cancel();
     _audioPlayer?.dispose();
     super.dispose();
+  }
+
+  void _onEmailChanged() {
+    final String val = _emailController.text.trim();
+    _emailDetectTimer?.cancel();
+    if (val.isEmpty) {
+      setState(() {
+        _nostrStatus = _NostrDetectStatus.idle;
+        _nostrFoundName = '';
+      });
+      return;
+    }
+    _scheduleEmailDetect(val);
+  }
+
+  void _scheduleEmailDetect(String email) {
+    _emailDetectTimer?.cancel();
+    _emailDetectTimer = Timer(const Duration(milliseconds: 800), () {
+      _detectEmailOnNostr(email);
+    });
+  }
+
+  Future<void> _detectEmailOnNostr(String email) async {
+    if (!RegExp(r'^[^@]+@[^@]+\.[^@]+$').hasMatch(email)) {
+      return;
+    }
+    if (!mounted) {
+      return;
+    }
+    setState(() => _nostrStatus = _NostrDetectStatus.checking);
+    try {
+      final List<Map<String, dynamic>> events =
+          await NostrRelayService().queryEvents(
+        kinds: <int>[0],
+        tags: <List<String>>[<String>['i', 'email:$email']],
+        limit: 1,
+      );
+      if (!mounted) {
+        return;
+      }
+      if (events.isNotEmpty) {
+        String name = '';
+        try {
+          final Map<String, dynamic> meta =
+              jsonDecode(events.first['content'] as String? ?? '{}')
+                  as Map<String, dynamic>;
+          final String? displayName = meta['display_name'] as String?;
+          name = (displayName != null && displayName.isNotEmpty)
+              ? displayName
+              : (meta['name'] as String?) ?? '';
+        } catch (_) {}
+        setState(() {
+          _nostrStatus = _NostrDetectStatus.found;
+          _nostrFoundName = name;
+        });
+      } else {
+        setState(() {
+          _nostrStatus = _NostrDetectStatus.notFound;
+          _nostrFoundName = '';
+        });
+      }
+    } catch (_) {
+      if (mounted) {
+        setState(() => _nostrStatus = _NostrDetectStatus.idle);
+      }
+    }
+  }
+
+  Future<void> _alertCaptain(String email, int attempts) async {
+    try {
+      final Uri uri = Uri.parse('$_selectedUspot/g1nostr/alert');
+      await http.post(
+        uri,
+        headers: <String, String>{'Content-Type': 'application/json'},
+        body: jsonEncode(<String, dynamic>{
+          'email': email,
+          'attempts': attempts,
+        }),
+      ).timeout(const Duration(seconds: 15));
+      logger('WalletCreationScreen: PASS alert envoyée pour $email');
+    } catch (e) {
+      logger('WalletCreationScreen: PASS alert failed: $e');
+    }
   }
 
   /// Load the SWARM station list from the main UPassport API endpoint.
@@ -556,11 +656,34 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
       if (!mounted) {
         return;
       }
+      _passAttempts++;
+      if (_passAttempts >= _maxPassAttempts) {
+        await _alertCaptain(_emailController.text.trim(), _passAttempts);
+        if (!mounted) {
+          return;
+        }
+        setState(() {
+          _isLoading = false;
+          _passBlocked = true;
+          _errorMessage =
+              'Accès bloqué après $_maxPassAttempts tentatives incorrectes. '
+              'Le capitaine de la station a été alerté. '
+              'Contactez votre station pour réinitialiser votre code PASS.';
+        });
+        return;
+      }
+      // Re-proposer le dialog immédiatement avec le compteur restant
+      setState(() => _isLoading = false);
+      final String? retryCode =
+          await _showPassDialog(errorMsg: 'Code PASS incorrect.');
+      if (retryCode == null || !mounted) {
+        return;
+      }
       setState(() {
-        _isLoading = false;
-        _errorMessage =
-            "Code PASS incorrect. Vérifiez l'email reçu lors de la création de votre MULTIPASS.";
+        _isLoading = true;
+        _errorMessage = null;
       });
+      await _doCreate(passCode: retryCode, salt: salt, pepper: pepper);
     } on TimeoutException {
       logger('WalletCreationScreen: createMultipass timeout');
       if (!mounted) {
@@ -626,9 +749,11 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
   }
 
   /// Show a dialog asking for the 4-digit PASS code.
+  /// [errorMsg] is shown in red when a previous attempt was wrong.
   /// Returns the code string, or null if cancelled.
-  Future<String?> _showPassDialog() async {
+  Future<String?> _showPassDialog({String? errorMsg}) async {
     final TextEditingController passCtrl = TextEditingController();
+    final int remaining = _maxPassAttempts - _passAttempts;
     return showDialog<String>(
       context: context,
       barrierDismissible: false,
@@ -644,6 +769,21 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
                 'Saisissez le code à 4 chiffres reçu par email lors de sa création.',
                 style: TextStyle(fontSize: 13),
               ),
+              if (errorMsg != null) ...<Widget>[
+                const SizedBox(height: 8),
+                Text(
+                  errorMsg,
+                  style: const TextStyle(
+                    fontSize: 12,
+                    color: Colors.redAccent,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                Text(
+                  'Tentative${remaining > 1 ? 's' : ''} restante${remaining > 1 ? 's' : ''} : $remaining',
+                  style: const TextStyle(fontSize: 12, color: Colors.orange),
+                ),
+              ],
               const SizedBox(height: 16),
               TextField(
                 controller: passCtrl,
@@ -696,6 +836,67 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
     // pushReplacementNamed('/') recreates AppStart which will now see isEmpty=false
     // and introViewed=true, so it goes directly to FeedbackAndSkeletonScreen
     Navigator.of(context).pushReplacementNamed('/');
+  }
+
+  Widget _buildNostrDetectBadge() {
+    switch (_nostrStatus) {
+      case _NostrDetectStatus.idle:
+        return const SizedBox.shrink();
+      case _NostrDetectStatus.checking:
+        return Padding(
+          padding: const EdgeInsets.only(top: 6),
+          child: Row(
+            children: <Widget>[
+              const SizedBox(
+                width: 12,
+                height: 12,
+                child: CircularProgressIndicator(strokeWidth: 1.5),
+              ),
+              const SizedBox(width: 8),
+              Text(
+                'Recherche dans la constellation…',
+                style: TextStyle(fontSize: 12, color: Colors.grey[500]),
+              ),
+            ],
+          ),
+        );
+      case _NostrDetectStatus.found:
+        return Padding(
+          padding: const EdgeInsets.only(top: 6),
+          child: Row(
+            children: <Widget>[
+              const Icon(Icons.check_circle, size: 14, color: Colors.orange),
+              const SizedBox(width: 6),
+              Expanded(
+                child: Text(
+                  _nostrFoundName.isNotEmpty
+                      ? 'MULTIPASS existant : $_nostrFoundName — saisissez votre code PASS'
+                      : 'MULTIPASS existant — saisissez votre code PASS',
+                  style: const TextStyle(
+                    fontSize: 12,
+                    color: Colors.orange,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      case _NostrDetectStatus.notFound:
+        return Padding(
+          padding: const EdgeInsets.only(top: 6),
+          child: Row(
+            children: <Widget>[
+              const Icon(Icons.fiber_new, size: 14, color: Colors.teal),
+              const SizedBox(width: 6),
+              Text(
+                'Nouvelle identité — bienvenue !',
+                style: TextStyle(fontSize: 12, color: Colors.teal[400]),
+              ),
+            ],
+          ),
+        );
+    }
   }
 
   // ── Build ──────────────────────────────────────────────────────────────────
@@ -766,6 +967,7 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
                   return null;
                 },
               ),
+              _buildNostrDetectBadge(),
               const SizedBox(height: 20),
 
               // ── Ma position (domicile) ────────────────────────────────────
@@ -1368,7 +1570,7 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
                 const Center(child: _MultipassCreationLoader())
               else
                 ElevatedButton.icon(
-                  onPressed: (_isLoading || _pbkdf2Running) ? null : _createMultipass,
+                  onPressed: (_isLoading || _pbkdf2Running || _passBlocked) ? null : _createMultipass,
                   icon: const Text('✨', style: TextStyle(fontSize: 18)),
                   label: const Text(
                     'Initialiser mon MULTIPASS',

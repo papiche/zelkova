@@ -1,6 +1,24 @@
-G1nkgo est compatible avec tout autre portefeuille du réseau Duniter.
+Ẑelkova est le portefeuille officiel du MULTIPASS ẐEN, l'identité numérique souveraine
+et le système de comptabilité coopérative de l'écosystème UPlanet / Astroport.
 
-Profitez d'un moyen rapide et sécurisé d'effectuer des transactions, de vérifier votre solde et
-de gérer vos fonds Ğ1, même sans mot de passe, n'importe quand et n'importe où.
+Fonctionnalités principales :
 
-G1nkgo est un logiciel libre.
+* Identité MULTIPASS : créez ou récupérez votre identité cryptographique NOSTR + Ğ1
+  à partir de votre email et de votre date de naissance (déterministe, sans phrase
+  de récupération à mémoriser)
+* Paiements ẐEN : envoyez et recevez des ẐEN (1 ẐEN ≈ 1 €), adossés à la Ğ1 (June)
+  sur la blockchain Duniter v2s
+* Messages chiffrés NIP-44 : chat 1:1 privé, daemon IA de station (BRO),
+  et matchmaking de résonance ATOM4LOVE (canal LOVE)
+* Contacts WoTx² : contacts Web-of-Trust avec certificats de compétence (Kind 30503)
+  et inventaire d'objets/ressources (Kind 30505)
+* KIN Maya : moteur de résonance Tzolkin maya — calculez votre signature vibratoire
+  personnelle et partagez des liens de résonance
+* Intégration NOSTR : publiez un profil Kind 0 avec preuve d'identité NIP-39 g1pub,
+  signez les événements localement (BIP-340 Schnorrkel), parcourez les relays constellation
+* Médias IPFS : envoyez des images chiffrées via la station UPlanet (UENC v1 AES-256-GCM)
+* Mode expert : voir le nsec, QR de récupération SSSS, informations techniques de nœud
+
+Confidentialité : aucun tracking, aucune publicité, aucun Google Play Services.
+Cryptographie : Ed25519/Schnorrkel, secp256k1 NIP-44 (HKDF + ChaCha20), PBKDF2.
+Source : https://github.com/papiche/zelkova (AGPL-3.0)

@@ -1,6 +1,23 @@
-G1nkgo is compatible with any other wallet in the Duniter network.
+Ẑelkova is the official wallet for ẐEN MULTIPASS, the sovereign digital identity
+and cooperative accounting system of the UPlanet / Astroport ecosystem.
 
-Enjoy a fast and secure way to carry out transactions, check your balance, and
-manage your Ğ1 funds, even without passwords, anytime and anywhere.
+Key features:
 
-G1nkgo is Free Software.
+* MULTIPASS identity: create or recover your NOSTR + Ğ1 cryptographic identity
+  from your email and birth data (deterministic, no seed phrase to memorize)
+* ẐEN payments: send and receive ẐEN (1 ẐEN ≈ 1 EUR), backed by Ğ1 (June)
+  on the Duniter v2s blockchain
+* NIP-44 encrypted messages: private 1:1 chat, AI station daemon (BRO),
+  and ATOM4LOVE resonance matchmaking (LOVE channel)
+* WoTx² contacts: Web-of-Trust contacts with skill certificates (Kind 30503)
+  and object/resource inventory (Kind 30505)
+* KIN Maya: Mayan Tzolkin calendar resonance engine — compute your personal
+  vibration signature and share resonance links
+* NOSTR integration: publish Kind 0 profile with NIP-39 g1pub identity proof,
+  sign events locally (BIP-340 Schnorrkel), browse constellation relays
+* IPFS media: send encrypted images via UPlanet station (UENC v1 AES-256-GCM)
+* Expert mode: view nsec, SSSS recovery QR, technical node info
+
+Privacy: no tracking, no ads, no Google Play Services.
+Cryptography: Ed25519/Schnorrkel, secp256k1 NIP-44 (HKDF + ChaCha20), PBKDF2.
+Source: https://github.com/papiche/zelkova (AGPL-3.0)

@@ -8,6 +8,42 @@ set -e
 
 cd "$(dirname "$0")"
 
+## Aide
+for arg in "$@"; do
+  if [[ "$arg" == "--help" || "$arg" == "-h" ]]; then
+    cat <<'EOF'
+Usage: ./build_apk.sh [BUILD_TYPE] [FLAVOR] [--push]
+
+  BUILD_TYPE   debug (défaut) | release
+  FLAVOR       production (défaut) | development
+  --push       Bumpe la version, crée le tag git et publie sur GitHub Releases
+               (uniquement avec BUILD_TYPE=release)
+
+Exemples:
+  ./build_apk.sh                              # debug rapide pour tester
+  ./build_apk.sh release production           # release signée, sans publier
+  ./build_apk.sh release production --push    # release + bump + tag + GitHub
+
+Comportement de --push:
+  1. Bumpe automatiquement le patch et le build code dans pubspec.yaml
+       ex: 2.0.4+25 → 2.0.5+26
+  2. Commit les fichiers modifiés (*.apk exclus)
+  3. Crée/déplace le tag git vX.Y.Z et pousse sur origin
+  4. Crée la GitHub Release ou met à jour l'APK si elle existe déjà
+  5. 20h12.process.sh détectera la nouvelle version le soir même
+
+Pour un bump mineur ou majeur (ex: 2.1.0), édite pubspec.yaml manuellement
+avant de lancer --push : le script incrémentera seulement le patch à partir de là.
+
+Keystore de production:
+  Détecté automatiquement si ~/.zen/keystores/zelkova-prod.jks existe.
+  Mot de passe dérivé de ~/.ipfs/swarm.key (sha256 | head -c 24).
+  Sans ce fichier, un keystore dev temporaire est généré (ne pas publier).
+EOF
+    exit 0
+  fi
+done
+
 BUILD_TYPE="${1:-debug}"
 FLAVOR="${2:-production}"
 PUSH=false
@@ -19,7 +55,16 @@ VERSION_NAME="${VERSION%%+*}"   # ex: 2.0.4
 VERSION_CODE="${VERSION##*+}"   # ex: 25
 
 echo "=== Ẑelkova APK Build ==="
-echo "Type: $BUILD_TYPE | Flavor: $FLAVOR | Version: $VERSION_NAME+$VERSION_CODE"
+echo "Type: $BUILD_TYPE | Flavor: $FLAVOR | Version actuelle: $VERSION_NAME+$VERSION_CODE"
+
+## Auto-bump patch + build number pour --push release
+if [ "$BUILD_TYPE" = "release" ] && $PUSH; then
+    IFS='.' read -r V_MAJOR V_MINOR V_PATCH <<< "$VERSION_NAME"
+    VERSION_NAME="$V_MAJOR.$V_MINOR.$((V_PATCH + 1))"
+    VERSION_CODE=$((VERSION_CODE + 1))
+    sed -i "s/^version: .*/version: ${VERSION_NAME}+${VERSION_CODE}/" pubspec.yaml
+    echo "📦 Version bumpée  : $VERSION_NAME+$VERSION_CODE"
+fi
 
 ## Vérifier flutter
 if ! command -v flutter &>/dev/null; then

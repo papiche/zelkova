@@ -1,90 +1,140 @@
 #!/bin/bash
-## Build Ẑelkova APK (debug or release)
-## Usage: ./build_apk.sh [debug|release] [development|production]
+## Build Ẑelkova APK et publication release
+## Usage:
+##   ./build_apk.sh                            → debug, production flavor
+##   ./build_apk.sh release production         → release build
+##   ./build_apk.sh release production --push  → release + git tag + GitHub release
 set -e
 
 cd "$(dirname "$0")"
 
 BUILD_TYPE="${1:-debug}"
 FLAVOR="${2:-production}"
+PUSH=false
+for arg in "$@"; do [[ "$arg" == "--push" ]] && PUSH=true; done
+
+## Lire version depuis pubspec.yaml
+VERSION=$(grep '^version:' pubspec.yaml | awk '{print $2}')
+VERSION_NAME="${VERSION%%+*}"   # ex: 2.0.4
+VERSION_CODE="${VERSION##*+}"   # ex: 25
 
 echo "=== Ẑelkova APK Build ==="
-echo "Type: $BUILD_TYPE | Flavor: $FLAVOR"
+echo "Type: $BUILD_TYPE | Flavor: $FLAVOR | Version: $VERSION_NAME+$VERSION_CODE"
 
-## Check flutter
+## Vérifier flutter
 if ! command -v flutter &>/dev/null; then
     if [ -x "$HOME/flutter/bin/flutter" ]; then
         export PATH="$HOME/flutter/bin:$PATH"
     else
-        echo "ERROR: flutter not found"; exit 1
+        echo "ERROR: flutter introuvable"; exit 1
     fi
 fi
+echo "Flutter: $(flutter --version 2>/dev/null | head -1)"
 
-echo "Flutter: $(flutter --version | head -1)"
-
-## For release builds, ensure signing is configured
+## Signing configuration pour release
 if [ "$BUILD_TYPE" = "release" ]; then
     KP="android/key.properties"
-    KS="android/upload-keystore.jks"
     if [ ! -f "$KP" ]; then
-        echo ""
-        echo "No key.properties found — generating dev signing key..."
-        if [ ! -f "$KS" ]; then
-            keytool -genkey -v \
-                -keystore "$KS" \
-                -storetype JKS \
-                -keyalg RSA -keysize 2048 -validity 10000 \
-                -alias upload \
-                -dname "CN=Ẑelkova Dev, OU=Dev, O=Comunes, L=Unknown, ST=Unknown, C=XX" \
-                -storepass zelkova123 -keypass zelkova123
-            echo "Generated dev keystore: $KS"
-        fi
-        cat > "$KP" <<EOF
+        PROD_JKS="$HOME/.zen/keystores/zelkova-prod.jks"
+        if [ -f "$HOME/.ipfs/swarm.key" ] && [ -f "$PROD_JKS" ]; then
+            echo "⚙️  Keystore production détecté — configuration automatique..."
+            KEYSTORE_PWD=$(cat ~/.ipfs/swarm.key | sha256sum | awk '{print $1}' | head -c 24)
+            cat > "$KP" <<EOF
+storePassword=$KEYSTORE_PWD
+keyPassword=$KEYSTORE_PWD
+keyAlias=upload
+storeFile=$PROD_JKS
+EOF
+            echo "✅ key.properties configuré (keystore production)"
+        else
+            echo "⚠️  Keystore production absent — génération clé dev..."
+            KS="android/upload-keystore.jks"
+            if [ ! -f "$KS" ]; then
+                keytool -genkey -v \
+                    -keystore "$KS" \
+                    -storetype JKS \
+                    -keyalg RSA -keysize 2048 -validity 10000 \
+                    -alias upload \
+                    -dname "CN=Zelkova Dev, OU=Dev, O=G1FabLab, L=Unknown, ST=Unknown, C=XX" \
+                    -storepass zelkova123 -keypass zelkova123
+                echo "Clé dev générée : $KS"
+            fi
+            cat > "$KP" <<EOF
 storePassword=zelkova123
 keyPassword=zelkova123
 keyAlias=upload
 storeFile=../upload-keystore.jks
 EOF
-        echo "Generated $KP (dev signing — NOT for store publication)"
-        echo "For production, replace with your own keystore."
-        echo ""
+            echo "ℹ️  key.properties dev créé (ne pas publier sur store)"
+        fi
     fi
 fi
 
-## Get dependencies
+## Dépendances
 echo "=== flutter pub get ==="
 flutter pub get
 
-## Build APK
-FLAVOR_CAP="$(echo "${FLAVOR:0:1}" | tr '[:lower:]' '[:upper:]')${FLAVOR:1}"
-
+## Build
 if [ "$BUILD_TYPE" = "release" ]; then
-    echo "=== Building RELEASE APK (flavor: $FLAVOR) ==="
+    echo "=== Build RELEASE APK (flavor: $FLAVOR) ==="
     flutter build apk --release \
         --dart-define=FLUTTER_FLAVOR="$FLAVOR" \
         -t lib/main.dart
 else
-    echo "=== Building DEBUG APK (flavor: $FLAVOR) ==="
+    echo "=== Build DEBUG APK (flavor: $FLAVOR) ==="
     flutter build apk --debug \
         --dart-define=FLUTTER_FLAVOR="$FLAVOR" \
         -t lib/main.dart
 fi
 
-## Find output APK
+## Résultat
 APK_DIR="build/app/outputs/flutter-apk"
 APK=$(find "$APK_DIR" -name "*.apk" -newer pubspec.yaml 2>/dev/null | head -1)
+OUTPUT_APK="zelkova-${FLAVOR}-${BUILD_TYPE}.apk"
 
-if [ -n "$APK" ]; then
-    SIZE=$(du -h "$APK" | cut -f1)
+if [ -z "$APK" ]; then
+    echo "APK introuvable dans $APK_DIR"
+    ls -la "$APK_DIR/"*.apk 2>/dev/null || true
+    exit 1
+fi
+
+SIZE=$(du -h "$APK" | cut -f1)
+cp "$APK" "$OUTPUT_APK"
+echo ""
+echo "=== BUILD SUCCESS ==="
+echo "APK : $OUTPUT_APK ($SIZE)"
+
+## Vérifier la signature
+if command -v apksigner &>/dev/null; then
+    apksigner verify --print-certs "$OUTPUT_APK" 2>/dev/null | grep "certificate DN" || true
+fi
+
+## Publication release (--push)
+if [ "$BUILD_TYPE" = "release" ] && $PUSH; then
+    TAG="v$VERSION_NAME"
     echo ""
-    echo "=== BUILD SUCCESS ==="
-    echo "APK: $APK ($SIZE)"
-    echo ""
-    ## Copy to a convenient location
-    cp "$APK" "zelkova-${FLAVOR}-${BUILD_TYPE}.apk"
-    echo "Copied to: zelkova-${FLAVOR}-${BUILD_TYPE}.apk"
-else
-    echo ""
-    echo "APK built. Check $APK_DIR/"
-    ls -la "$APK_DIR/"*.apk 2>/dev/null
+    echo "=== Publication $TAG ==="
+
+    ## Committer les changements hors APK si nécessaire
+    if ! git diff --quiet -- ':!*.apk' || ! git diff --cached --quiet -- ':!*.apk'; then
+        git add -A -- ':!*.apk'
+        git commit -m "chore: release $TAG (build $VERSION_CODE)"
+    fi
+
+    ## Tag (force pour écraser un éventuel tag local obsolète)
+    git tag -f "$TAG"
+    git push origin HEAD
+    git push origin "$TAG" --force
+
+    ## GitHub Release : créer ou mettre à jour l'APK
+    if gh release view "$TAG" &>/dev/null 2>&1; then
+        echo "Release $TAG existante — mise à jour de l'APK..."
+        gh release upload "$TAG" "$OUTPUT_APK" --clobber
+    else
+        gh release create "$TAG" "$OUTPUT_APK" \
+            --title "Ẑelkova $VERSION_NAME" \
+            --notes "Release $VERSION_NAME (build $VERSION_CODE) — wallet ẐEN MULTIPASS"
+    fi
+
+    echo "✅ Release $TAG → https://github.com/papiche/zelkova/releases/tag/$TAG"
 fi

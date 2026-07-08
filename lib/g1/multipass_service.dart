@@ -36,6 +36,22 @@ class MultipassIdentityConflictException implements Exception {
   String toString() => 'IDENTITY_CONFLICT';
 }
 
+/// Activation ATOM4LOVE demandée pour un email dont le compte principal
+/// n'existe pas encore (HTTP 404 PRIMARY_ACCOUNT_NOT_FOUND).
+class Atom4LovePrimaryAccountNotFoundException implements Exception {
+  const Atom4LovePrimaryAccountNotFoundException();
+  @override
+  String toString() => 'PRIMARY_ACCOUNT_NOT_FOUND';
+}
+
+/// Échec de l'activation ATOM4LOVE côté serveur (HTTP 500 ACTIVATION_FAILED).
+class Atom4LoveActivationFailedException implements Exception {
+  const Atom4LoveActivationFailedException([this.message = '']);
+  final String message;
+  @override
+  String toString() => 'ACTIVATION_FAILED: $message';
+}
+
 // ── OcUrls ────────────────────────────────────────────────────────────────────
 
 /// OC contribution URLs returned by the server
@@ -122,11 +138,62 @@ class MultipassResponse {
   final String uplanetnameG1;
 }
 
+// ── Atom4LoveActivationResponse ───────────────────────────────────────────────
+
+/// Response from the UPassport /g1nostr ATOM4LOVE activation (+a4l email
+/// convention). No new MULTIPASS is created — [loveNsec]/[loveNpub]/[loveHex]
+/// are a dedicated NOSTR keypair (deterministically derived from the birth
+/// data), scoped to the "love" DM channel and the kind 30078 d=atom4love
+/// resonance event, distinct from the account's main NOSTR identity.
+class Atom4LoveActivationResponse {
+  Atom4LoveActivationResponse({
+    required this.email,
+    required this.loveNsec,
+    required this.loveNpub,
+    required this.loveHex,
+    required this.kinNum,
+    required this.personalPhase,
+  });
+
+  factory Atom4LoveActivationResponse.fromJson(Map<String, dynamic> json) {
+    return Atom4LoveActivationResponse(
+      email: json['email'] as String? ?? '',
+      loveNsec: json['love_nsec'] as String? ?? '',
+      loveNpub: json['love_npub'] as String? ?? '',
+      loveHex: json['love_hex'] as String? ?? '',
+      kinNum: (json['kin_num'] as num?)?.toInt() ?? 0,
+      personalPhase: (json['personal_phase'] as num?)?.toDouble() ?? 0.0,
+    );
+  }
+
+  final String email;
+  final String loveNsec;
+  final String loveNpub;
+  final String loveHex;
+  final int kinNum;
+  final double personalPhase;
+}
+
 // ── MultipassService ──────────────────────────────────────────────────────────
 
 /// Service to create or recover a MULTIPASS identity via UPassport API
 class MultipassService {
   static const Duration _timeout = Duration(seconds: 180);
+
+  /// Derives the ATOM4LOVE second-wallet alias email from the primary
+  /// MULTIPASS email, by inserting `+a4l` before the `@`.
+  /// e.g. `jean@dom.tld` → `jean+a4l@dom.tld`.
+  ///
+  /// The server has no knowledge of this convention — it is a totally
+  /// independent email/MULTIPASS from its point of view. The link between
+  /// the two wallets is tracked client-side only (see [StoredAccount]).
+  static String deriveAtom4LoveEmail(String baseEmail) {
+    final int at = baseEmail.indexOf('@');
+    if (at < 0) {
+      return baseEmail;
+    }
+    return '${baseEmail.substring(0, at)}+a4l${baseEmail.substring(at)}';
+  }
 
   /// Create a new MULTIPASS or recover an existing one via UPassport /g1nostr.
   ///
@@ -210,6 +277,71 @@ class MultipassService {
             ?? errMap?['detail'] as String?
             ?? 'MULTIPASS creation failed (${response.statusCode})';
         throw Exception(msg);
+    }
+  }
+
+  /// Activate ATOM4LOVE for the existing MULTIPASS behind [email] (the base
+  /// email — [deriveAtom4LoveEmail] is applied internally).
+  ///
+  /// The server detects the `+a4l` convention, verifies the base account
+  /// already exists (otherwise throws [Atom4LovePrimaryAccountNotFoundException]),
+  /// derives a dedicated NOSTR keypair from the birth data (deterministic —
+  /// same inputs always yield the same key), stores the encrypted birth
+  /// profile, and publishes the kind 30078 (d=atom4love) resonance event.
+  /// No new MULTIPASS/wallet is created.
+  static Future<Atom4LoveActivationResponse> activateAtom4Love({
+    required String email,
+    required String birthDatetime,
+    required String birthLat,
+    required String birthLon,
+    required String birthWeight,
+    required String polarity,
+    String? birthPlace,
+    String? conceptionDatetime,
+    String? conceptionPlace,
+    String? serverUrl,
+  }) async {
+    final String baseUrl = serverUrl ?? Env.upassportUrl;
+    final Uri uri = Uri.parse('$baseUrl/g1nostr');
+
+    final Map<String, String> body = <String, String>{
+      'email': deriveAtom4LoveEmail(email),
+      'lang': 'fr',
+      'lat': '0.00',
+      'lon': '0.00',
+      'format': 'json',
+      'birth_datetime': birthDatetime,
+      'birth_lat': birthLat,
+      'birth_lon': birthLon,
+      'birth_weight': birthWeight,
+      'polarity': polarity,
+      if (birthPlace != null && birthPlace.isNotEmpty) 'birth_place': birthPlace,
+      if (conceptionDatetime != null && conceptionDatetime.isNotEmpty)
+        'conception_datetime': conceptionDatetime,
+      if (conceptionPlace != null && conceptionPlace.isNotEmpty)
+        'conception_place': conceptionPlace,
+    };
+
+    final http.Response response = await http
+        .post(uri, body: body)
+        .timeout(_timeout);
+
+    Map<String, dynamic>? data;
+    try {
+      data = jsonDecode(response.body) as Map<String, dynamic>?;
+    } catch (_) {}
+
+    switch (response.statusCode) {
+      case 200:
+        if (data == null) {
+          throw const Atom4LoveActivationFailedException('Réponse invalide');
+        }
+        return Atom4LoveActivationResponse.fromJson(data);
+      case 404:
+        throw const Atom4LovePrimaryAccountNotFoundException();
+      default:
+        throw Atom4LoveActivationFailedException(
+            data?['message'] as String? ?? 'HTTP ${response.statusCode}');
     }
   }
 

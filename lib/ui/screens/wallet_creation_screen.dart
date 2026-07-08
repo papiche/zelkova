@@ -6,7 +6,6 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:calendar_date_picker2/calendar_date_picker2.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -18,13 +17,10 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../../data/models/app_cubit.dart';
 import '../../env.dart';
-import '../../g1/atomic_keys.dart';
 import '../../g1/kin_calculator.dart';
 import '../../g1/kin_sound.dart';
 import '../../g1/multipass_service.dart';
-import '../../g1/nostr/atomic_did_publisher.dart';
 import '../../g1/nostr/nostr_relay_service.dart';
-import '../../g1/zen_tag_service.dart';
 import '../../shared_prefs_helper_v2.dart';
 import '../logger.dart';
 import '../widgets/location_picker_sheet.dart';
@@ -162,17 +158,26 @@ class _NominatimResult {
 
 enum _NostrDetectStatus { idle, checking, found, notFound }
 
-/// Onboarding screen for first launch:
-/// Page 0 — Accueil UPlanet (identité souveraine, monnaie libre)
-/// Page 1 — Formulaire email + géolocalisation → création MULTIPASS
-/// Page 2 — Profil ondulatoire ATOMIC (optionnel) : naissance, conception, KIN
-/// Vue succès — Liens Open Collective personnalisés + bouton "C'est parti"
+/// Écran d'activation ATOM4LOVE — crée un **second portefeuille MULTIPASS**
+/// dérivé du profil ondulatoire (naissance, conception, KIN Dreamspell),
+/// rattaché côté client au compte principal via [StoredAccount.derivationParentId].
+///
+/// L'email de ce second portefeuille est un alias `+a4l@` dérivé de l'email
+/// du compte principal (voir [MultipassService.deriveAtom4LoveEmail]) — le
+/// serveur UPassport n'a aucune notion de ce lien, il crée un MULTIPASS
+/// totalement indépendant.
+///
+/// N'est plus utilisé pour l'onboarding initial (voir
+/// `multipass_creation_screen.dart` pour le flux minimal email + UMAP).
 class WalletCreationScreen extends StatefulWidget {
-  const WalletCreationScreen({super.key, this.initialEmail});
+  const WalletCreationScreen({
+    super.key,
+    required this.linkedPrimaryEmail,
+  });
 
-  /// Pré-remplit le champ email et passe directement à la page du formulaire.
-  /// Utilisé quand on redirige depuis l'écran de récupération (email inconnu).
-  final String? initialEmail;
+  /// Email du compte MULTIPASS principal déjà actif, utilisé pour dériver
+  /// l'alias `+a4l@` envoyé au serveur lors de l'activation.
+  final String linkedPrimaryEmail;
 
   @override
   State<WalletCreationScreen> createState() => _WalletCreationScreenState();
@@ -203,7 +208,6 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
   double _birthLat = 0.0;       // from Nominatim (0.01° precision)
   double _birthLon = 0.0;       // from Nominatim (0.01° precision)
   int _polarity = 0;            // 0 = homme, 1 = femme
-  bool _pbkdf2Running = false;  // true pendant le calcul PBKDF2 (~10s)
   String _locationName = '';    // nom lisible de Ma Position (reverse geocode)
 
   // ── KIN + son personnel ───────────────────────────────────────────────────
@@ -216,19 +220,12 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
   String _nostrFoundName = '';
   Timer? _emailDetectTimer;
 
-  // ── Sécurité PASS : max 3 tentatives ─────────────────────────────────────
-  int _passAttempts = 0;
-  static const int _maxPassAttempts = 3;
-  bool _passBlocked = false;
-
   @override
   void initState() {
     super.initState();
     _loadSwarmStations();
-    if (widget.initialEmail != null && widget.initialEmail!.isNotEmpty) {
-      _emailController.text = widget.initialEmail!;
-      _scheduleEmailDetect(widget.initialEmail!);
-    }
+    _emailController.text =
+        MultipassService.deriveAtom4LoveEmail(widget.linkedPrimaryEmail);
     _emailController.addListener(_onEmailChanged);
   }
 
@@ -304,23 +301,6 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
       if (mounted) {
         setState(() => _nostrStatus = _NostrDetectStatus.idle);
       }
-    }
-  }
-
-  Future<void> _alertCaptain(String email, int attempts) async {
-    try {
-      final Uri uri = Uri.parse('$_selectedUspot/g1nostr/alert');
-      await http.post(
-        uri,
-        headers: <String, String>{'Content-Type': 'application/json'},
-        body: jsonEncode(<String, dynamic>{
-          'email': email,
-          'attempts': attempts,
-        }),
-      ).timeout(const Duration(seconds: 15));
-      logger('WalletCreationScreen: PASS alert envoyée pour $email');
-    } catch (e) {
-      logger('WalletCreationScreen: PASS alert failed: $e');
     }
   }
 
@@ -505,78 +485,6 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
 
   // ── Création du MULTIPASS ──────────────────────────────────────────────────
 
-  Future<void> _createMultipass() async {
-    // Form may be on a different page (ATOMIC flow) — fall back to direct check
-    final FormState? form = _formKey.currentState;
-    if (form != null && !form.validate()) {
-      return;
-    }
-    if (_emailController.text.trim().isEmpty) {
-      setState(() => _errorMessage = 'Email requis.');
-      return;
-    }
-
-    String computedSalt = '';
-    String computedPepper = '';
-
-    if (_birthDate != null) {
-      setState(() {
-        _isLoading = true;
-        _pbkdf2Running = true;
-        _errorMessage = null;
-      });
-      try {
-        (computedSalt, computedPepper) = await _computeAtomicKeys();
-      } catch (e) {
-        if (!mounted) {
-          return;
-        }
-        setState(() {
-          _isLoading = false;
-          _pbkdf2Running = false;
-          _errorMessage = 'Erreur cryptographique : $e';
-        });
-        return;
-      }
-      if (!mounted) {
-        return;
-      }
-      setState(() => _pbkdf2Running = false);
-    } else {
-      setState(() {
-        _isLoading = true;
-        _errorMessage = null;
-      });
-    }
-
-    await _doCreate(salt: computedSalt, pepper: computedPepper);
-  }
-
-  /// Dérive (salt, pepper) via PBKDF2-SHA256 dans un isolate séparé.
-  Future<(String, String)> _computeAtomicKeys() async {
-    final TimeOfDay t = _birthTime ?? const TimeOfDay(hour: 12, minute: 0);
-    final DateTime localBirth = DateTime(
-      _birthDate!.year, _birthDate!.month, _birthDate!.day, t.hour, t.minute,
-    );
-    final double lat = _birthLat != 0.0 ? _birthLat : (double.tryParse(_lat) ?? 0.0);
-    final double lon = _birthLon != 0.0 ? _birthLon : (double.tryParse(_lon) ?? 0.0);
-    final String birthDtUtc = localSolarToUtcStr(
-      localBirth.year, localBirth.month, localBirth.day,
-      localBirth.hour, localBirth.minute, lon,
-    );
-    final DateTime localCon = localBirth.subtract(const Duration(days: 280));
-    final String conDtUtc = localSolarToUtcStr(
-      localCon.year, localCon.month, localCon.day, 12, 0, lon,
-    );
-    return compute(
-      computeAtomicKeyPair,
-      (
-        buildSaltRaw(birthDtUtc: birthDtUtc, birthLat: lat, birthLon: lon, polarity: _polarity, weight: _birthWeight),
-        buildPepperRaw(conDtUtc: conDtUtc, conLat: lat, conLon: lon, weight: _birthWeight),
-      ),
-    );
-  }
-
   static String _monthName(int month) {
     const List<String> names = <String>[
       '', 'jan.', 'fév.', 'mars', 'avr.', 'mai', 'juin',
@@ -598,94 +506,79 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
         ':${t.minute.toString().padLeft(2, '0')}';
   }
 
-  Future<void> _doCreate({String? passCode, String salt = '', String pepper = ''}) async {
-    final String? birthPlace =
-        _birthPlaceName.isNotEmpty ? _birthPlaceName : null;
-    final String? birthWeight =
-        _birthWeight != 3.5 ? _birthWeight.toStringAsFixed(1) : null;
-
-    // Conception estimée : ~280 jours avant la naissance (harmonique).
-    String? conceptionDatetime;
-    String? conceptionPlace;
-    if (_birthDate != null) {
-      final DateTime conceived =
-          _birthDate!.subtract(const Duration(days: 280));
-      conceptionDatetime = '${conceived.year.toString().padLeft(4, '0')}'
-          '-${conceived.month.toString().padLeft(2, '0')}'
-          '-${conceived.day.toString().padLeft(2, '0')}'
-          'T12:00';
-      if (_birthLat != 0.0 || _birthLon != 0.0) {
-        conceptionPlace =
-            '${_birthLat.toStringAsFixed(2)}, ${_birthLon.toStringAsFixed(2)}';
-      }
+  /// Active ATOM4LOVE pour le compte principal déjà existant : envoie les
+  /// données de naissance au serveur, qui dérive la clé LOVE dédiée
+  /// (déterministe), stocke le profil chiffré et publie la résonance Phi²
+  /// (kind 30078). Aucun nouveau MULTIPASS n'est créé.
+  Future<void> _activate() async {
+    final FormState? form = _formKey.currentState;
+    if (form != null && !form.validate()) {
+      return;
+    }
+    if (_birthDate == null) {
+      setState(() => _errorMessage =
+          'Date de naissance requise pour activer ATOM4LOVE.');
+      return;
+    }
+    if (_birthLat == 0.0 && _birthLon == 0.0) {
+      setState(() => _errorMessage =
+          'Lieu de naissance requis pour activer ATOM4LOVE.');
+      return;
     }
 
+    setState(() {
+      _isLoading = true;
+      _errorMessage = null;
+    });
+
+    final String? birthPlace =
+        _birthPlaceName.isNotEmpty ? _birthPlaceName : null;
+
+    // Conception estimée : ~280 jours avant la naissance (harmonique).
+    final DateTime conceived =
+        _birthDate!.subtract(const Duration(days: 280));
+    final String conceptionDatetime =
+        '${conceived.year.toString().padLeft(4, '0')}'
+        '-${conceived.month.toString().padLeft(2, '0')}'
+        '-${conceived.day.toString().padLeft(2, '0')}'
+        'T12:00';
+    final String conceptionPlace =
+        '${_birthLat.toStringAsFixed(2)}, ${_birthLon.toStringAsFixed(2)}';
+
     try {
-      final MultipassResponse response = await MultipassService.createMultipass(
-        email: _emailController.text.trim(),
-        lang: context.locale.languageCode,
-        lat: _lat,
-        lon: _lon,
-        serverUrl: _selectedUspot,
-        passCode: passCode,
-        salt: salt.isNotEmpty ? salt : null,
-        pepper: pepper.isNotEmpty ? pepper : null,
-        birthDatetime: _buildBirthDatetime(),
+      final Atom4LoveActivationResponse response =
+          await MultipassService.activateAtom4Love(
+        email: widget.linkedPrimaryEmail,
+        birthDatetime: _buildBirthDatetime()!,
+        birthLat: _birthLat.toStringAsFixed(2),
+        birthLon: _birthLon.toStringAsFixed(2),
+        birthWeight: _birthWeight.toStringAsFixed(1),
+        polarity: _polarity.toString(),
         birthPlace: birthPlace,
-        birthWeight: birthWeight,
         conceptionDatetime: conceptionDatetime,
         conceptionPlace: conceptionPlace,
+        serverUrl: _selectedUspot,
       );
       await _saveAndShowResult(response);
-      _publishNostrDidAsync(response);
-    } on MultipassExistsException {
+    } on Atom4LovePrimaryAccountNotFoundException {
       if (!mounted) {
         return;
       }
-      setState(() => _isLoading = false);
-      final String? code = await _showPassDialog();
-      if (code == null || !mounted) {
-        return;
-      }
       setState(() {
-        _isLoading = true;
-        _errorMessage = null;
+        _isLoading = false;
+        _errorMessage =
+            "Créez d'abord votre MULTIPASS avant d'activer ATOM4LOVE.";
       });
-      await _doCreate(passCode: code, salt: salt, pepper: pepper);
-    } on MultipassInvalidPassException {
+    } on Atom4LoveActivationFailedException catch (e) {
       if (!mounted) {
         return;
       }
-      _passAttempts++;
-      if (_passAttempts >= _maxPassAttempts) {
-        await _alertCaptain(_emailController.text.trim(), _passAttempts);
-        if (!mounted) {
-          return;
-        }
-        setState(() {
-          _isLoading = false;
-          _passBlocked = true;
-          _errorMessage =
-              'Accès bloqué après $_maxPassAttempts tentatives incorrectes. '
-              'Le capitaine de la station a été alerté. '
-              'Contactez votre station pour réinitialiser votre code PASS.';
-        });
-        return;
-      }
-      // Re-proposer le dialog immédiatement avec le compteur restant
-      setState(() => _isLoading = false);
-      final String? retryCode =
-          await _showPassDialog(errorMsg: 'Code PASS incorrect.');
-      if (retryCode == null || !mounted) {
-        return;
-      }
       setState(() {
-        _isLoading = true;
-        _errorMessage = null;
+        _isLoading = false;
+        _errorMessage = "Échec de l'activation ATOM4LOVE : ${e.message}";
       });
-      await _doCreate(passCode: retryCode, salt: salt, pepper: pepper);
     } on TimeoutException {
-      logger('WalletCreationScreen: createMultipass timeout');
+      logger('WalletCreationScreen: activateAtom4Love timeout');
       if (!mounted) {
         return;
       }
@@ -695,7 +588,7 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
             'Le serveur ne répond pas. Vérifiez votre connexion ou choisissez une autre station.';
       });
     } catch (e) {
-      logger('WalletCreationScreen: createMultipass error: $e');
+      logger('WalletCreationScreen: activateAtom4Love error: $e');
       if (!mounted) {
         return;
       }
@@ -706,117 +599,39 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
     }
   }
 
-  Future<void> _saveAndShowResult(MultipassResponse response) async {
-    // Build matchUrl now (state still has birth data) so it can be persisted
-    String? matchUrl;
-    if (_birthDate != null) {
-      final KinResult birthKin = calculateMayaKin(_birthDate!);
-      final String url = _buildAtomicMatchUrl(birthKin);
-      if (url.isNotEmpty) {
-        matchUrl = url;
-      }
-    }
-
-    await SharedPreferencesHelperV2().createMultipassAccount(
-      salt: response.salt,
-      pepper: response.pepper,
-      nsec: response.nsec,
-      npub: response.npub,
-      nostrns: response.nostrns,
-      ssssPlayer: response.ssssPlayer,
-      email: response.email,
-      isOrigin: response.isOrigin,
-      uplanetHome: response.uplanetHome,
-      ocUrls: <String, dynamic>{
-        'satellite': response.ocUrls.satellite,
-        'constellation': response.ocUrls.constellation,
-        'cloud': response.ocUrls.cloud,
-        'membre': response.ocUrls.membre,
-      },
-      uplanetnameG1: response.uplanetnameG1,
-      matchUrl: matchUrl,
+  Future<void> _saveAndShowResult(Atom4LoveActivationResponse response) async {
+    // Stocke la clé LOVE dédiée (distincte de la clé principale du compte),
+    // utilisée pour signer/chiffrer le canal DM "LOVE" avec BRO.
+    await SharedPreferencesHelperV2().setLoveNsec(
+      SharedPreferencesHelperV2().getPubKey(),
+      response.loveNsec,
     );
-    if (response.uplanetnameG1.isNotEmpty) {
-      ZenTagService().setUplanetnameG1(response.uplanetnameG1);
-    }
+
     if (!mounted) {
       return;
     }
     setState(() {
-      _result = response;
+      _result = MultipassResponse(
+        email: response.email,
+        salt: '',
+        pepper: '',
+        nsec: response.loveNsec,
+        g1pub: '',
+        npub: response.loveNpub,
+        hex: response.loveHex,
+        nostrns: '',
+        lat: '',
+        lon: '',
+        ssssPlayer: '',
+        isOrigin: false,
+        ocUrls: OcUrls(),
+        uplanetHome: '',
+        uplanetnameG1: '',
+      );
       _isLoading = false;
+      _nostrDidPublished = true; // publication kind 30078 faite côté serveur
     });
   }
-
-  /// Show a dialog asking for the 4-digit PASS code.
-  /// [errorMsg] is shown in red when a previous attempt was wrong.
-  /// Returns the code string, or null if cancelled.
-  Future<String?> _showPassDialog({String? errorMsg}) async {
-    final TextEditingController passCtrl = TextEditingController();
-    final int remaining = _maxPassAttempts - _passAttempts;
-    return showDialog<String>(
-      context: context,
-      barrierDismissible: false,
-      builder: (BuildContext ctx) {
-        return AlertDialog(
-          title: const Text('🔑 Code PASS'),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              const Text(
-                'Ce MULTIPASS existe déjà.\n'
-                'Saisissez le code à 4 chiffres reçu par email lors de sa création.',
-                style: TextStyle(fontSize: 13),
-              ),
-              if (errorMsg != null) ...<Widget>[
-                const SizedBox(height: 8),
-                Text(
-                  errorMsg,
-                  style: const TextStyle(
-                    fontSize: 12,
-                    color: Colors.redAccent,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                Text(
-                  'Tentative${remaining > 1 ? 's' : ''} restante${remaining > 1 ? 's' : ''} : $remaining',
-                  style: const TextStyle(fontSize: 12, color: Colors.orange),
-                ),
-              ],
-              const SizedBox(height: 16),
-              TextField(
-                controller: passCtrl,
-                keyboardType: TextInputType.number,
-                maxLength: 4,
-                autofocus: true,
-                textAlign: TextAlign.center,
-                style: const TextStyle(fontSize: 24, letterSpacing: 8),
-                decoration: InputDecoration(
-                  hintText: '••••',
-                  counterText: '',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                ),
-              ),
-            ],
-          ),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () => Navigator.of(ctx).pop(),
-              child: const Text('Annuler'),
-            ),
-            FilledButton(
-              onPressed: () => Navigator.of(ctx).pop(passCtrl.text.trim()),
-              child: const Text('Valider'),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
 
   Future<void> _openUrl(String url) async {
     if (url.isEmpty) {
@@ -1563,17 +1378,15 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
                 const SizedBox(height: 8),
               ],
 
-              // ── Bouton créer ──────────────────────────────────────────────
-              if (_pbkdf2Running)
-                const Center(child: _Pbkdf2Loader())
-              else if (_isLoading)
+              // ── Bouton activer ──────────────────────────────────────────────
+              if (_isLoading)
                 const Center(child: _MultipassCreationLoader())
               else
                 ElevatedButton.icon(
-                  onPressed: (_isLoading || _pbkdf2Running || _passBlocked) ? null : _createMultipass,
+                  onPressed: _activate,
                   icon: const Text('✨', style: TextStyle(fontSize: 18)),
                   label: const Text(
-                    'Initialiser mon MULTIPASS',
+                    'Activer ATOM4LOVE',
                     style: TextStyle(fontWeight: FontWeight.w700, fontSize: 15),
                   ),
                   style: ElevatedButton.styleFrom(
@@ -1593,7 +1406,7 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
   // Shows the SWARM list fetched from {Env.upassportUrl}.
   // Each item displays: label (hostname – IPCity), available MULTIPASS slots,
   // and an active/inactive badge for the UPassport service.
-  // The selected station's uSPOT URL is used in _createMultipass().
+  // The selected station's uSPOT URL is used in _activate().
 
   Widget _buildStationSelector() {
     final ThemeData theme = Theme.of(context);
@@ -2793,59 +2606,6 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
     }
   }
 
-  void _publishNostrDidAsync(MultipassResponse response) {
-    if (response.nsec.isEmpty) {
-      return;
-    }
-    final String relayUrl = _swarmStations
-            .where((_SwarmStation s) => s.relay.isNotEmpty)
-            .map((_SwarmStation s) => s.relay)
-            .firstOrNull ??
-        '';
-    if (relayUrl.isEmpty) {
-      return;
-    }
-
-    final KinResult? birthKin =
-        _birthDate != null ? calculateMayaKin(_birthDate!) : null;
-    final KinResult? concepKin =
-        _birthDate != null ? calculateConceptionKin(_birthDate!) : null;
-
-    // Timestamp Unix UTC de naissance (pour calcul phase φ)
-    int? birthUnix;
-    if (_birthDate != null) {
-      final TimeOfDay t = _birthTime ?? const TimeOfDay(hour: 12, minute: 0);
-      final DateTime bDt = DateTime.utc(
-          _birthDate!.year, _birthDate!.month, _birthDate!.day, t.hour, t.minute);
-      birthUnix = bDt.millisecondsSinceEpoch ~/ 1000;
-    }
-    // Lieu de naissance : saisi dans le formulaire ou position GPS si absent
-    final double bLat = _birthLat != 0.0 ? _birthLat : (double.tryParse(_lat) ?? 0.0);
-    final double bLon = _birthLon != 0.0 ? _birthLon : (double.tryParse(_lon) ?? 0.0);
-    // Résidence actuelle : GPS device (_lat/_lon), distinct du lieu de naissance
-    final double gpsLat = double.tryParse(_lat) ?? 0.0;
-    final double gpsLon = double.tryParse(_lon) ?? 0.0;
-
-    publishAtomicDid(
-      nsec: response.nsec,
-      relayUrl: relayUrl,
-      birthUnix: birthUnix,
-      birthLat: bLat,
-      birthLon: bLon,
-      homeLat: gpsLat,
-      homeLon: gpsLon,
-      weightKg: _birthWeight,
-      polarity: _polarity,
-      birthKin: birthKin,
-      conceptionKin: concepKin,
-      email: response.email,
-    ).then((bool ok) {
-      if (ok && mounted) {
-        setState(() => _nostrDidPublished = true);
-      }
-    });
-  }
-
   // ── Nominatim geocoding ────────────────────────────────────────────────────
 
   Future<Iterable<_NominatimResult>> _searchNominatim(String query) async {
@@ -2899,83 +2659,6 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
         subtitle: Text(subtitle, style: const TextStyle(fontSize: 12)),
         trailing: const Icon(Icons.open_in_new, size: 16),
         onTap: () => _openUrl(url),
-      ),
-    );
-  }
-}
-
-// ── Animation PBKDF2 : cadenas pulsant ────────────────────────────────────────
-
-class _Pbkdf2Loader extends StatefulWidget {
-  const _Pbkdf2Loader();
-
-  @override
-  State<_Pbkdf2Loader> createState() => _Pbkdf2LoaderState();
-}
-
-class _Pbkdf2LoaderState extends State<_Pbkdf2Loader>
-    with SingleTickerProviderStateMixin {
-  late AnimationController _controller;
-  late Animation<double> _scale;
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 900),
-    )..repeat(reverse: true);
-    _scale = Tween<double>(begin: 0.85, end: 1.15).animate(
-      CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
-    );
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final ColorScheme cs = Theme.of(context).colorScheme;
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          ScaleTransition(
-            scale: _scale,
-            child: const Text('🔐', style: TextStyle(fontSize: 48)),
-          ),
-          const SizedBox(height: 12),
-          const Text(
-            'Dérivation des clés ATOMIC…',
-            style: TextStyle(fontWeight: FontWeight.w600, fontSize: 15),
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(height: 4),
-          Text(
-            'PBKDF2-SHA256 · 600 000 itérations · ~10s',
-            style: TextStyle(
-              fontSize: 11,
-              color: cs.onSurface.withValues(alpha: 0.6),
-            ),
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(height: 16),
-          const LinearProgressIndicator(),
-          const SizedBox(height: 10),
-          Text(
-            'Les clés sont calculées sur votre appareil.\n'
-            'Ce calcul garantit la récupérabilité de votre MULTIPASS.',
-            style: TextStyle(
-              fontSize: 10,
-              color: cs.onSurface.withValues(alpha: 0.5),
-            ),
-            textAlign: TextAlign.center,
-          ),
-        ],
       ),
     );
   }

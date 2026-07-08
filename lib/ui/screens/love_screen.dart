@@ -17,6 +17,7 @@ import '../../shared_prefs_helper_v2.dart';
 import '../logger.dart';
 import '../widgets/encrypted_image_bubble.dart';
 import '../widgets/image_composition_sheet.dart';
+import 'wallet_creation_screen.dart';
 
 /// Interface LOVE — Assistance aux rencontres via BRO canal "love" (NIP-44).
 ///
@@ -140,6 +141,27 @@ class _LoveScreenState extends State<LoveScreen> {
       logger('[LoveScreen] init error: $e');
       _setError(e.toString());
     }
+  }
+
+  /// Ouvre l'activation ATOM4LOVE : envoie le profil de naissance au serveur,
+  /// qui dérive une clé NOSTR dédiée (alias email `+a4l@`) pour le compte
+  /// principal déjà existant — nécessaire pour le score de résonance Phi²
+  /// et le canal DM "LOVE". Aucun second MULTIPASS n'est créé.
+  Future<void> _activateAtom4Love() async {
+    final Map<String, dynamic>? multipassData =
+        await SharedPreferencesHelperV2().getMultipassData();
+    final String? primaryEmail = multipassData?['email'] as String?;
+    if (primaryEmail == null || primaryEmail.isEmpty || !mounted) {
+      _setError('Identité NOSTR manquante — crée ton MULTIPASS d\'abord.');
+      return;
+    }
+    await Navigator.of(context).push(
+      MaterialPageRoute<void>(
+        builder: (_) => WalletCreationScreen(
+          linkedPrimaryEmail: primaryEmail,
+        ),
+      ),
+    );
   }
 
   void _setError(String msg) {
@@ -1046,6 +1068,11 @@ class _LoveScreenState extends State<LoveScreen> {
           ],
         ),
         actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.auto_awesome, color: _loveRose),
+            onPressed: _activateAtom4Love,
+            tooltip: 'Activer ATOM4LOVE (résonance Phi²)',
+          ),
           IconButton(
             icon: Icon(Icons.help_outline, color: _loveRose),
             onPressed: _showHelp,

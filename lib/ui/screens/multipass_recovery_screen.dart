@@ -7,15 +7,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
-import 'package:web_socket_channel/web_socket_channel.dart';
 
 import '../../data/models/app_cubit.dart';
 import '../../env.dart';
 import '../../g1/multipass_service.dart';
+import '../../g1/nostr/home_station_lookup.dart';
 import '../../g1/zen_tag_service.dart';
 import '../../shared_prefs_helper_v2.dart';
 import '../logger.dart';
-import 'wallet_creation_screen.dart';
+import 'multipass_creation_screen.dart';
 
 // ── État de détection NOSTR ───────────────────────────────────────────────────
 
@@ -103,57 +103,6 @@ class _Station {
   }
 }
 
-// ── Requête NOSTR home station ─────────────────────────────────────────────────
-
-/// Interroge le relay pour un kind 0 avec tag `["i","email:<email>",""]`.
-/// Retourne `content.home_station` ("IPFSNODEID:NODE_HEX") ou null.
-Future<String?> _queryHomeStation(String email, String relayUrl) async {
-  if (relayUrl.isEmpty) {
-    return null;
-  }
-  WebSocketChannel? ws;
-  try {
-    ws = WebSocketChannel.connect(Uri.parse(relayUrl));
-    final String subId = 'hs_${email.hashCode.abs()}';
-    ws.sink.add(jsonEncode(<dynamic>[
-      'REQ',
-      subId,
-      <String, dynamic>{
-        'kinds': <int>[0],
-        '#i': <String>['email:$email'],
-        'limit': 1,
-      },
-    ]));
-
-    String? homeStation;
-    await for (final dynamic raw
-        in ws.stream.timeout(const Duration(seconds: 6))) {
-      final List<dynamic> msg = jsonDecode(raw as String) as List<dynamic>;
-      if (msg.isEmpty) {
-        continue;
-      }
-      if (msg[0] == 'EOSE') {
-        break;
-      }
-      if (msg[0] == 'EVENT' && msg.length >= 3) {
-        final Map<String, dynamic> event = msg[2] as Map<String, dynamic>;
-        if ((event['kind'] as int?) == 0) {
-          final Map<String, dynamic> content =
-              jsonDecode(event['content'] as String) as Map<String, dynamic>;
-          homeStation = content['home_station'] as String?;
-          break;
-        }
-      }
-    }
-    return homeStation;
-  } catch (e) {
-    loggerDev('[Recovery] home_station lookup error: $e');
-    rethrow; // distinguer "not found" de "relay error"
-  } finally {
-    ws?.sink.close();
-  }
-}
-
 // ── Écran de récupération ─────────────────────────────────────────────────────
 
 /// Flux :
@@ -163,7 +112,11 @@ Future<String?> _queryHomeStation(String email, String relayUrl) async {
 ///   4. Relay KO → mode manuel avec sélecteur de station
 ///   5. PIN uniquement en dialog de fallback (HTTP 409)
 class MultipassRecoveryScreen extends StatefulWidget {
-  const MultipassRecoveryScreen({super.key});
+  const MultipassRecoveryScreen({super.key, this.initialEmail});
+
+  /// Pré-remplit le champ email et lance immédiatement la détection.
+  /// Utilisé quand une création simplifiée détecte un DID déjà actif.
+  final String? initialEmail;
 
   @override
   State<MultipassRecoveryScreen> createState() =>
@@ -196,6 +149,10 @@ class _MultipassRecoveryScreenState extends State<MultipassRecoveryScreen> {
   @override
   void initState() {
     super.initState();
+    if (widget.initialEmail != null && widget.initialEmail!.isNotEmpty) {
+      _emailCtrl.text = widget.initialEmail!;
+      _detection = _DetectionState.detecting;
+    }
     _loadStationsAndGeo();
   }
 
@@ -212,6 +169,11 @@ class _MultipassRecoveryScreenState extends State<MultipassRecoveryScreen> {
     // Lancer la géolocalisation en parallèle du chargement SWARM
     unawaited(_requestGeolocation());
     await _loadStations();
+    if (widget.initialEmail != null &&
+        widget.initialEmail!.isNotEmpty &&
+        _isValidEmail(widget.initialEmail!.trim())) {
+      await _detectHomeStation(widget.initialEmail!.trim());
+    }
   }
 
   Future<void> _requestGeolocation() async {
@@ -364,7 +326,7 @@ class _MultipassRecoveryScreenState extends State<MultipassRecoveryScreen> {
 
     try {
       final String? homeStation =
-          await _queryHomeStation(email, relayUrl);
+          await queryHomeStationForEmail(email, relayUrl);
       if (!mounted) {
         return;
       }
@@ -572,7 +534,7 @@ class _MultipassRecoveryScreenState extends State<MultipassRecoveryScreen> {
   void _goToCreate() {
     Navigator.of(context).pushReplacement(
       MaterialPageRoute<void>(
-        builder: (_) => WalletCreationScreen(
+        builder: (_) => MultipassCreationScreen(
           initialEmail: _emailCtrl.text.trim(),
         ),
       ),

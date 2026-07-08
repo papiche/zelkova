@@ -98,6 +98,23 @@ class PermitCredential {
   final String status; // 'VALID', 'EXPIRED', 'REVOKED'
 }
 
+/// Result of [UPassportApiService.checkOcMember] — is this email already a
+/// known OpenCollective backer? Purely informative: never blocks MULTIPASS
+/// creation, just lets the UI mention that OC contributions will be linked
+/// automatically (see UPassport `POST /oc_webhook`).
+class OcMemberInfo {
+  OcMemberInfo({required this.isMember, this.tierSlug});
+
+  factory OcMemberInfo.fromJson(Map<String, dynamic> json) {
+    return OcMemberInfo(
+      isMember: json['is_member'] as bool? ?? false,
+      tierSlug: json['tier_slug'] as String?,
+    );
+  }
+  final bool isMember;
+  final String? tierSlug;
+}
+
 /// Represents UMAP geographic information
 class UmapInfo {
 
@@ -329,6 +346,27 @@ class UPassportApiService {
     } else {
       throw Exception('Webhook processing failed: ${response.statusCode}');
     }
+  }
+
+  /// Check whether [email] is already a known OpenCollective backer.
+  /// Purely informative — never blocks MULTIPASS creation. Returns
+  /// `isMember: false` on any error (station without OC config, timeout…).
+  Future<OcMemberInfo> checkOcMember(String email) async {
+    final Uri url = Uri.parse('$baseUrl/check_oc_member')
+        .replace(queryParameters: <String, dynamic>{'email': email});
+
+    try {
+      final http.Response response =
+          await http.get(url).timeout(const Duration(seconds: 10));
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> data =
+            jsonDecode(response.body) as Map<String, dynamic>;
+        return OcMemberInfo.fromJson(data);
+      }
+    } catch (e) {
+      logger('[UPassportApiService] check_oc_member failed: $e');
+    }
+    return OcMemberInfo(isMember: false);
   }
 
   /// Get NIP-42 challenge for authentication

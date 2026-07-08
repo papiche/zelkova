@@ -14,4 +14,5 @@ class StorageKeys {
   // MULTIPASS / NOSTR
   static const String nostrNsecPrefix = 'nostr_nsec_'; // + pubKey
   static const String multipassDataPrefix = 'multipass_'; // + pubKey
+  static const String loveNsecPrefix = 'love_nsec_'; // + pubKey (clé ATOM4LOVE dédiée)
 }

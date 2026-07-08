@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'multipass_creation_screen.dart';
 import 'multipass_recovery_screen.dart';
-import 'wallet_creation_screen.dart';
 
 /// Écran d'accueil du onboarding — affiché quand aucun compte n'est enregistré.
 /// Présente UPlanet, explique le MULTIPASS, puis propose les deux chemins :
@@ -60,8 +60,8 @@ class OnboardingChoiceScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 10),
                     Text(
-                      'Une clé cryptographique dérivée de votre ADN cosmique '
-                      '(date, lieu de naissance, poids). '
+                      'Une identité NOSTR et un portefeuille ẐEN générés à '
+                      'partir de votre email et de votre position. '
                       'Aucun mot de passe, aucun serveur central. '
                       'Votre identité vous appartient.',
                       style: theme.textTheme.bodySmall?.copyWith(
@@ -176,7 +176,7 @@ class OnboardingChoiceScreen extends StatelessWidget {
                 labelColor: cs.onTertiaryContainer,
                 onTap: () => Navigator.of(context).push(
                   MaterialPageRoute<void>(
-                    builder: (_) => const WalletCreationScreen(),
+                    builder: (_) => const MultipassCreationScreen(),
                   ),
                 ),
               ),

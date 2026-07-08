@@ -543,6 +543,23 @@ class SharedPreferencesHelperV2
         key: '${StorageKeys.nostrNsecPrefix}${extractPublicKey(key)}');
   }
 
+  /// Store the ATOM4LOVE dedicated NOSTR key (.secret.love server-side) for
+  /// [pubKey]'s account. Used to sign/encrypt the "love" DM channel with BRO
+  /// — distinct from the account's main NOSTR key.
+  Future<void> setLoveNsec(String pubKey, String nsec) async {
+    await _storage.write(
+        key: '${StorageKeys.loveNsecPrefix}${extractPublicKey(pubKey)}',
+        value: nsec);
+  }
+
+  /// Retrieve the ATOM4LOVE dedicated NOSTR key for a given wallet pubKey,
+  /// or null if ATOM4LOVE has not been activated for this account yet.
+  Future<String?> getLoveNsec([String? pubKey]) async {
+    final String key = pubKey ?? getPubKey();
+    return _storage.read(
+        key: '${StorageKeys.loveNsecPrefix}${extractPublicKey(key)}');
+  }
+
   /// Retrieve MULTIPASS metadata for a given wallet pubKey
   Future<Map<String, dynamic>?> getMultipassData([String? pubKey]) async {
     // Guard: getPubKey() accesses accounts[0] and throws RangeError if empty

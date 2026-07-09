@@ -158,14 +158,12 @@ class _NominatimResult {
 
 enum _NostrDetectStatus { idle, checking, found, notFound }
 
-/// Écran d'activation ATOM4LOVE — crée un **second portefeuille MULTIPASS**
-/// dérivé du profil ondulatoire (naissance, conception, KIN Dreamspell),
-/// rattaché côté client au compte principal via [StoredAccount.derivationParentId].
-///
-/// L'email de ce second portefeuille est un alias `+a4l@` dérivé de l'email
-/// du compte principal (voir [MultipassService.deriveAtom4LoveEmail]) — le
-/// serveur UPassport n'a aucune notion de ce lien, il crée un MULTIPASS
-/// totalement indépendant.
+/// Écran d'activation ATOM4LOVE pour le compte MULTIPASS principal déjà
+/// existant : envoie le profil de naissance à `POST /atom4love/activate`,
+/// authentifié par une preuve NIP-42 (signature avec le nsec principal —
+/// voir [MultipassService.activateAtom4Love]). Le serveur dérive une clé
+/// NOSTR dédiée (`.secret.love`) et publie la résonance Phi² (kind 30078).
+/// Aucun nouveau MULTIPASS n'est créé.
 ///
 /// N'est plus utilisé pour l'onboarding initial (voir
 /// `multipass_creation_screen.dart` pour le flux minimal email + UMAP).
@@ -175,8 +173,8 @@ class WalletCreationScreen extends StatefulWidget {
     required this.linkedPrimaryEmail,
   });
 
-  /// Email du compte MULTIPASS principal déjà actif, utilisé pour dériver
-  /// l'alias `+a4l@` envoyé au serveur lors de l'activation.
+  /// Email du compte MULTIPASS principal déjà actif pour lequel ATOM4LOVE
+  /// est activé.
   final String linkedPrimaryEmail;
 
   @override
@@ -224,8 +222,7 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
   void initState() {
     super.initState();
     _loadSwarmStations();
-    _emailController.text =
-        MultipassService.deriveAtom4LoveEmail(widget.linkedPrimaryEmail);
+    _emailController.text = widget.linkedPrimaryEmail;
     _emailController.addListener(_onEmailChanged);
   }
 
@@ -545,10 +542,23 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
     final String conceptionPlace =
         '${_birthLat.toStringAsFixed(2)}, ${_birthLon.toStringAsFixed(2)}';
 
+    final String? primaryNsec = await SharedPreferencesHelperV2().getNostrNsec();
+    if (primaryNsec == null || primaryNsec.isEmpty) {
+      if (!mounted) {
+        return;
+      }
+      setState(() {
+        _isLoading = false;
+        _errorMessage = 'Identité NOSTR introuvable sur cet appareil.';
+      });
+      return;
+    }
+
     try {
       final Atom4LoveActivationResponse response =
           await MultipassService.activateAtom4Love(
         email: widget.linkedPrimaryEmail,
+        primaryNsec: primaryNsec,
         birthDatetime: _buildBirthDatetime()!,
         birthLat: _birthLat.toStringAsFixed(2),
         birthLon: _birthLon.toStringAsFixed(2),

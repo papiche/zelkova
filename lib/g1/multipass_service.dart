@@ -1,10 +1,15 @@
 import 'dart:convert';
+import 'dart:math';
 import 'dart:typed_data';
 
+import 'package:bip340/bip340.dart' as bip340;
+import 'package:hex/hex.dart';
 import 'package:http/http.dart' as http;
 
 import '../env.dart';
 import '../ui/logger.dart';
+import 'nostr/nostr_keys.dart';
+import 'nostr/nostr_utils.dart';
 
 // ── Typed exceptions ──────────────────────────────────────────────────────────
 
@@ -140,8 +145,8 @@ class MultipassResponse {
 
 // ── Atom4LoveActivationResponse ───────────────────────────────────────────────
 
-/// Response from the UPassport /g1nostr ATOM4LOVE activation (+a4l email
-/// convention). No new MULTIPASS is created — [loveNsec]/[loveNpub]/[loveHex]
+/// Response from UPassport `POST /atom4love/activate`. No new MULTIPASS is
+/// created — [loveNsec]/[loveNpub]/[loveHex]
 /// are a dedicated NOSTR keypair (deterministically derived from the birth
 /// data), scoped to the "love" DM channel and the kind 30078 d=atom4love
 /// resonance event, distinct from the account's main NOSTR identity.
@@ -179,21 +184,6 @@ class Atom4LoveActivationResponse {
 /// Service to create or recover a MULTIPASS identity via UPassport API
 class MultipassService {
   static const Duration _timeout = Duration(seconds: 180);
-
-  /// Derives the ATOM4LOVE second-wallet alias email from the primary
-  /// MULTIPASS email, by inserting `+a4l` before the `@`.
-  /// e.g. `jean@dom.tld` → `jean+a4l@dom.tld`.
-  ///
-  /// The server has no knowledge of this convention — it is a totally
-  /// independent email/MULTIPASS from its point of view. The link between
-  /// the two wallets is tracked client-side only (see [StoredAccount]).
-  static String deriveAtom4LoveEmail(String baseEmail) {
-    final int at = baseEmail.indexOf('@');
-    if (at < 0) {
-      return baseEmail;
-    }
-    return '${baseEmail.substring(0, at)}+a4l${baseEmail.substring(at)}';
-  }
 
   /// Create a new MULTIPASS or recover an existing one via UPassport /g1nostr.
   ///
@@ -280,17 +270,22 @@ class MultipassService {
     }
   }
 
-  /// Activate ATOM4LOVE for the existing MULTIPASS behind [email] (the base
-  /// email — [deriveAtom4LoveEmail] is applied internally).
+  /// Activate ATOM4LOVE for the existing MULTIPASS behind [email].
   ///
-  /// The server detects the `+a4l` convention, verifies the base account
-  /// already exists (otherwise throws [Atom4LovePrimaryAccountNotFoundException]),
-  /// derives a dedicated NOSTR keypair from the birth data (deterministic —
-  /// same inputs always yield the same key), stores the encrypted birth
-  /// profile, and publishes the kind 30078 (d=atom4love) resonance event.
-  /// No new MULTIPASS/wallet is created.
+  /// Authenticates via NIP-42: fetches a single-use challenge scoped to the
+  /// account's main NOSTR pubkey (`GET /atom4love/challenge`), signs a kind
+  /// 22242 event with [primaryNsec] (the account's own key, never sent to
+  /// the server), then submits it as proof of ownership to
+  /// `POST /atom4love/activate`. Replaces the removed `+a4l@` email
+  /// convention, which had no ownership check at all.
+  ///
+  /// The server derives a dedicated NOSTR keypair from the birth data
+  /// (deterministic — same inputs always yield the same key), stores the
+  /// encrypted birth profile, and publishes the kind 30078 (d=atom4love)
+  /// resonance event. No new MULTIPASS/wallet is created.
   static Future<Atom4LoveActivationResponse> activateAtom4Love({
     required String email,
+    required String primaryNsec,
     required String birthDatetime,
     required String birthLat,
     required String birthLon,
@@ -302,19 +297,48 @@ class MultipassService {
     String? serverUrl,
   }) async {
     final String baseUrl = serverUrl ?? Env.upassportUrl;
-    final Uri uri = Uri.parse('$baseUrl/g1nostr');
 
+    // Étape 1 — challenge NIP-42 scopé à la clé principale du compte.
+    final Uri challengeUri = Uri.parse('$baseUrl/atom4love/challenge')
+        .replace(queryParameters: <String, String>{'email': email});
+    final http.Response challengeResponse =
+        await http.get(challengeUri).timeout(_timeout);
+    if (challengeResponse.statusCode == 404) {
+      throw const Atom4LovePrimaryAccountNotFoundException();
+    }
+    if (challengeResponse.statusCode != 200) {
+      throw Atom4LoveActivationFailedException(
+          'Challenge indisponible (${challengeResponse.statusCode})');
+    }
+    final String challenge = (jsonDecode(challengeResponse.body)
+        as Map<String, dynamic>)['challenge'] as String;
+
+    // Étape 2 — signer un event kind 22242 (NIP-42) avec le nsec principal.
+    final String hexPrivKey = NostrKeys.nsecToHex(primaryNsec);
+    final String hexPubKey = bip340.getPublicKey(hexPrivKey);
+    final Map<String, dynamic> authEvent = <String, dynamic>{
+      'kind': 22242,
+      'pubkey': hexPubKey,
+      'created_at': DateTime.now().millisecondsSinceEpoch ~/ 1000,
+      'tags': <List<String>>[
+        <String>['challenge', challenge],
+      ],
+      'content': '',
+    };
+    final String eventId = NostrUtils.calculateEventId(authEvent);
+    authEvent['id'] = eventId;
+    authEvent['sig'] = _signNip42Event(eventId, hexPrivKey);
+
+    // Étape 3 — activation, preuve de possession via l'event signé.
+    final Uri activateUri = Uri.parse('$baseUrl/atom4love/activate');
     final Map<String, String> body = <String, String>{
-      'email': deriveAtom4LoveEmail(email),
-      'lang': 'fr',
-      'lat': '0.00',
-      'lon': '0.00',
-      'format': 'json',
+      'email': email,
       'birth_datetime': birthDatetime,
       'birth_lat': birthLat,
       'birth_lon': birthLon,
       'birth_weight': birthWeight,
       'polarity': polarity,
+      'auth_event': jsonEncode(authEvent),
       if (birthPlace != null && birthPlace.isNotEmpty) 'birth_place': birthPlace,
       if (conceptionDatetime != null && conceptionDatetime.isNotEmpty)
         'conception_datetime': conceptionDatetime,
@@ -323,7 +347,7 @@ class MultipassService {
     };
 
     final http.Response response = await http
-        .post(uri, body: body)
+        .post(activateUri, body: body)
         .timeout(_timeout);
 
     Map<String, dynamic>? data;
@@ -343,6 +367,13 @@ class MultipassService {
         throw Atom4LoveActivationFailedException(
             data?['message'] as String? ?? 'HTTP ${response.statusCode}');
     }
+  }
+
+  static String _signNip42Event(String eventIdHex, String hexPrivateKey) {
+    final Random rng = Random.secure();
+    final Uint8List aux = Uint8List.fromList(
+        List<int>.generate(32, (int _) => rng.nextInt(256)));
+    return bip340.sign(hexPrivateKey, eventIdHex, HEX.encode(aux));
   }
 
   /// Upload a profile image (avatar/banner) to the UPassport API.

@@ -23,6 +23,10 @@ const double phi2xOrbitalYearS = 365.25636 * 86400; // Année sidérale [s]
 const double phi2xOrbitalDayS  = 86400.0;           // Jour [s]
 const double phi2xAlphaShapiro = 1.0 / 137.035999084; // ≈ 0.00729735
 
+// ── Bifurcation Relativiste (ATOM4LOVE — Vitesse d'Alignement) ───────────────
+const double phi2xVAlignmentMax      = 0.99; // asymptote — jamais c
+const double phi2xVAlignmentTauYears = 25.0; // constante de temps caractéristique
+
 // 12 pentagones du polyèdre de Goldberg (époque J2000, [lat, lon])
 const List<List<double>> phi2xPentagonsGps = <List<double>>[
   <double>[ 90.0,    0.0], <double>[-90.0,   0.0],
@@ -136,6 +140,82 @@ int phi2xComputeConceptionUnix(int birthUnix, {double weightKg = 3.5}) {
   final double w = weightKg < 0.5 ? 0.5 : weightKg;
   final double gestationS = (280.0 + (w - 3.5) * 4.0) * phi2xOrbitalDayS;
   return (birthUnix - gestationS).round();
+}
+
+// ── Bifurcation Relativiste (ATOM4LOVE — v, γ, dream_vector) ─────────────────
+
+/// Vitesse d'Alignement v ∈ [0, phi2xVAlignmentMax[ — fraction de c vers laquelle un
+/// Atome converge en fonction de son âge (masse temporelle accumulée depuis la
+/// naissance) et de son poids de naissance (facteur de compression Shapiro, cf.
+/// [phi2xComputePersonalStretch]).
+/// Léger/rapide (stretch < phi2xWaveStretch) → convergence plus rapide vers c.
+/// Lourd/ancré  (stretch > phi2xWaveStretch) → convergence plus lente (ancrage matière).
+double phi2xComputeAlignmentV(int birthUnix, {double weightKg = 3.5, int? nowUnix}) {
+  final double now = nowUnix != null
+      ? nowUnix.toDouble()
+      : DateTime.now().millisecondsSinceEpoch / 1000.0;
+  final double ageYears = max(0.0, (now - birthUnix) / phi2xOrbitalYearS);
+  final double stretchRatio = phi2xComputePersonalStretch(weightKg) / phi2xWaveStretch;
+  final double tauYears = phi2xVAlignmentTauYears * stretchRatio;
+  return phi2xVAlignmentMax * (1 - exp(-ageYears / tauYears));
+}
+
+/// Facteur de Lorentz γ = 1/√(1−v²) — physique standard, c=1 normalisé.
+double phi2xComputeLorentzGamma(double v) {
+  final double vC = v.abs().clamp(0.0, 0.999999);
+  return 1 / sqrt(1 - vC * vC);
+}
+
+/// Divergence des Rêves ∈ [0,1] entre deux dream_vector (ensembles de tags DR).
+/// 0 = rêves identiques (DR commune), 1 = aucun tag commun (mondes distincts).
+/// Similarité de Jaccard inversée : 1 − |A∩B|/|A∪B|.
+double phi2xComputeDreamDivergence(
+    List<String>? dreamVectorA, List<String>? dreamVectorB) {
+  final Set<String> setA = (dreamVectorA ?? <String>[]).toSet();
+  final Set<String> setB = (dreamVectorB ?? <String>[]).toSet();
+  if (setA.isEmpty && setB.isEmpty) {
+    return 0.0;
+  }
+  final int inter = setA.intersection(setB).length;
+  final int union = setA.union(setB).length;
+  return union == 0 ? 0.0 : 1 - inter / union;
+}
+
+/// Vitesse relative entre deux Atomes (addition relativiste des vitesses d'Einstein),
+/// pondérée par la divergence de leurs Rêves communs (dreamDivergence ∈ [0,1]).
+/// dreamDivergence=0 (rêves alignés)  → les vitesses restent "solidaires" (v_rel faible).
+/// dreamDivergence=1 (rêves opposés) → v_rel s'approche de la formule brute d'Einstein.
+double phi2xComputeRelativeVelocity(double vA, double vB,
+    {double dreamDivergence = 1.0}) {
+  final double a = vA.clamp(0.0, 0.999999);
+  final double b = vB.clamp(0.0, 0.999999);
+  return ((a - b) / (1 - a * b * dreamDivergence)).abs();
+}
+
+/// Statut textuel de Bifurcation — clé + libellé, en fonction de γ.
+class Phi2xBifurcation {
+  const Phi2xBifurcation({required this.key, required this.label});
+  final String key;
+  final String label;
+}
+
+/// Statut textuel de Bifurcation en fonction de γ.
+Phi2xBifurcation phi2xDescribeBifurcation(double gamma) {
+  if (gamma < 1.1) {
+    return const Phi2xBifurcation(
+        key: 'sync',
+        label: 'Lignes temporelles synchronisées. Présent commun stable.');
+  }
+  if (gamma < 1.5) {
+    return const Phi2xBifurcation(
+        key: 'friction',
+        label:
+            'Friction Créatrice. Changement de phase et ajustement des trajectoires.');
+  }
+  return const Phi2xBifurcation(
+      key: 'bifurcated',
+      label:
+          'Bifurcation Relativiste complétée. Séparation des mondes dans la gratitude.');
 }
 
 // ── Adresse hexagonale A4L (geoTagA4L) ───────────────────────────────────────

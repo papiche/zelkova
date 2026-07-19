@@ -626,6 +626,7 @@ class _WalletCreationScreenState extends State<WalletCreationScreen> {
         salt: '',
         pepper: '',
         nsec: response.loveNsec,
+        pass: '',
         g1pub: '',
         npub: response.loveNpub,
         hex: response.loveHex,

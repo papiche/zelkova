@@ -13,6 +13,7 @@ import '../../shared_prefs_helper_v2.dart';
 import 'bro_screen.dart';
 import 'chat_screen.dart';
 import 'love_screen.dart';
+import 'node_screen.dart';
 
 /// Telegram-style conversation list — one tile per DM peer.
 class MessagesScreen extends StatefulWidget {
@@ -305,14 +306,25 @@ class _MessagesScreenState extends State<MessagesScreen> {
           ),
           const SizedBox(height: 10),
           FloatingActionButton.extended(
-            heroTag: 'bro_open_fab',
+            heroTag: 'node_open_fab',
             icon: const Icon(Icons.smart_toy_outlined),
+            label: const Text('NODE'),
+            onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute<void>(builder: (_) => const NodeScreen()),
+            ),
+            tooltip: 'Ouvrir le chat NODE (IA de la station)',
+          ),
+          const SizedBox(height: 10),
+          FloatingActionButton.extended(
+            heroTag: 'bro_open_fab',
+            icon: const Icon(Icons.person_pin_circle_outlined),
             label: const Text('BRO'),
             onPressed: () => Navigator.push(
               context,
               MaterialPageRoute<void>(builder: (_) => const BroScreen()),
             ),
-            tooltip: 'Ouvrir le chat BRO (IA station)',
+            tooltip: 'Ouvrir BRO — ton clone personnel (self-DM)',
           ),
         ],
       ),

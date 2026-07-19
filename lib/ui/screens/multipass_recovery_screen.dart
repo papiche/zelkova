@@ -458,6 +458,7 @@ class _MultipassRecoveryScreenState extends State<MultipassRecoveryScreen> {
         'membre': response.ocUrls.membre,
       },
       uplanetnameG1: response.uplanetnameG1,
+      pass: response.pass,
     );
     if (response.uplanetnameG1.isNotEmpty) {
       ZenTagService().setUplanetnameG1(response.uplanetnameG1);

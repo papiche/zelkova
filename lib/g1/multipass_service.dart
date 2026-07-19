@@ -93,6 +93,7 @@ class MultipassResponse {
     required this.salt,
     required this.pepper,
     required this.nsec,
+    required this.pass,
     required this.g1pub,
     required this.npub,
     required this.hex,
@@ -112,6 +113,7 @@ class MultipassResponse {
       salt: json['salt'] as String? ?? '',
       pepper: json['pepper'] as String? ?? '',
       nsec: json['nsec'] as String? ?? '',
+      pass: json['pass'] as String? ?? '',
       g1pub: json['g1pub'] as String? ?? '',
       npub: json['npub'] as String? ?? '',
       hex: json['hex'] as String? ?? '',
@@ -130,6 +132,11 @@ class MultipassResponse {
   final String salt;
   final String pepper;
   final String nsec;
+
+  /// Code PASS (PIN court) reçu dès la création du MULTIPASS — sert à
+  /// récupérer le compte (voir [MultipassService.createMultipass] `passCode`)
+  /// sur n'importe quel terminal UPlanet, même une fois la ZEN Card créée.
+  final String pass;
   final String g1pub;
   final String npub;
   final String hex;
@@ -194,9 +201,10 @@ class MultipassService {
   /// - With correct [passCode] → returns existing MULTIPASS JSON (HTTP 200)
   /// - With wrong [passCode]   → throws [MultipassInvalidPassException] (HTTP 401)
   ///
-  /// **ATOMIC birth profile** (optional): if [birthDatetime] is provided,
-  /// the server stores it for Dreamspell/ondulatory profiling.
-  /// Format: `"YYYY-MM-DDTHH:MM"` (ISO 8601, local time of birth place).
+  /// Zelkova never sends birth/salt/pepper data here: the server always
+  /// generates a random identity for a new MULTIPASS. The birth profile
+  /// (ATOM4LOVE) is requested separately, after MULTIPASS creation, via
+  /// [activateAtom4Love].
   static Future<MultipassResponse> createMultipass({
     required String email,
     required String lang,
@@ -204,15 +212,6 @@ class MultipassService {
     required String lon,
     String? passCode,
     String? serverUrl,
-    // ATOMIC birth/conception profile (optional)
-    String? birthDatetime,
-    String? conceptionDatetime,
-    String? birthPlace,
-    String? conceptionPlace,
-    String? birthWeight,
-    // Clés PBKDF2-SHA256 dérivées côté client (base64url 43 chars)
-    String? salt,
-    String? pepper,
   }) async {
     final String baseUrl = serverUrl ?? Env.upassportUrl;
     final Uri uri = Uri.parse('$baseUrl/g1nostr');
@@ -224,18 +223,6 @@ class MultipassService {
       'lon': lon,
       'format': 'json',
       if (passCode != null && passCode.isNotEmpty) 'pass_code': passCode,
-      if (salt != null && salt.isNotEmpty) 'salt': salt,
-      if (pepper != null && pepper.isNotEmpty) 'pepper': pepper,
-      if (birthDatetime != null && birthDatetime.isNotEmpty)
-        'birth_datetime': birthDatetime,
-      if (conceptionDatetime != null && conceptionDatetime.isNotEmpty)
-        'conception_datetime': conceptionDatetime,
-      if (birthPlace != null && birthPlace.isNotEmpty)
-        'birth_place': birthPlace,
-      if (conceptionPlace != null && conceptionPlace.isNotEmpty)
-        'conception_place': conceptionPlace,
-      if (birthWeight != null && birthWeight.isNotEmpty)
-        'birth_weight': birthWeight,
     };
 
     final http.Response response = await http
@@ -374,6 +361,37 @@ class MultipassService {
     final Uint8List aux = Uint8List.fromList(
         List<int>.generate(32, (int _) => rng.nextInt(256)));
     return bip340.sign(hexPrivateKey, eventIdHex, HEX.encode(aux));
+  }
+
+  /// Fetch the dedicated ATOM4LOVE hex pubkey (HEX_LOVE) for [email].
+  ///
+  /// `GET /atom4love/dream` returns `love_hex` at the top level or nested
+  /// under `dream_vector`, depending on whether a resonance profile was
+  /// already published — see UPassport routers/identity.py::get_atom4love_dream.
+  /// Same endpoint used by UPlanet/earth's atomic_chat.html to address the
+  /// LOVE channel, so both clients target the exact same recipient.
+  ///
+  /// Returns null if ATOM4LOVE isn't activated yet (HTTP 404) or on error —
+  /// callers should fall back to [activateAtom4Love] via [WalletCreationScreen].
+  static Future<String?> fetchLoveHex(String email, {String? serverUrl}) async {
+    final String baseUrl = serverUrl ?? Env.upassportUrl;
+    final Uri uri = Uri.parse('$baseUrl/atom4love/dream')
+        .replace(queryParameters: <String, String>{'email': email});
+    try {
+      final http.Response response = await http.get(uri).timeout(_timeout);
+      if (response.statusCode != 200) {
+        return null;
+      }
+      final Map<String, dynamic> data =
+          jsonDecode(response.body) as Map<String, dynamic>;
+      final String? loveHex = data['love_hex'] as String? ??
+          (data['dream_vector']
+              as Map<String, dynamic>?)?['love_hex'] as String?;
+      return (loveHex != null && loveHex.length == 64) ? loveHex : null;
+    } catch (e) {
+      loggerDev('[MultipassService] fetchLoveHex error: $e');
+      return null;
+    }
   }
 
   /// Upload a profile image (avatar/banner) to the UPassport API.

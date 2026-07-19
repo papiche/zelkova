@@ -226,6 +226,7 @@ class _MultipassCreationScreenState extends State<MultipassCreationScreen> {
         'membre': response.ocUrls.membre,
       },
       uplanetnameG1: response.uplanetnameG1,
+      pass: response.pass,
     );
 
     if (response.uplanetnameG1.isNotEmpty) {
@@ -415,6 +416,31 @@ class _MultipassCreationScreenState extends State<MultipassCreationScreen> {
           ),
           const SizedBox(height: 8),
           const Text('Votre identité NOSTR et votre portefeuille ẐEN sont prêts.'),
+          if (result.pass.isNotEmpty) ...<Widget>[
+            const SizedBox(height: 12),
+            Row(
+              children: <Widget>[
+                Icon(Icons.security,
+                    size: 16,
+                    color: Theme.of(context)
+                        .colorScheme
+                        .onSurface
+                        .withValues(alpha: 0.6)),
+                const SizedBox(width: 6),
+                Expanded(
+                  child: Text(
+                    "Votre code PASS et votre clé technique sont disponibles dans l'onglet Info → Mode Expert.",
+                    style: TextStyle(
+                        fontSize: 12,
+                        color: Theme.of(context)
+                            .colorScheme
+                            .onSurface
+                            .withValues(alpha: 0.6)),
+                  ),
+                ),
+              ],
+            ),
+          ],
           if (result.isOrigin) ...<Widget>[
             const SizedBox(height: 10),
             Chip(

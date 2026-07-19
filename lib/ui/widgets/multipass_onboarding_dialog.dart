@@ -115,6 +115,7 @@ class _MultipassOnboardingDialogState extends State<MultipassOnboardingDialog> {
           'membre': response.ocUrls.membre,
         },
         uplanetnameG1: response.uplanetnameG1,
+        pass: response.pass,
       );
 
       // Initialize ZEN tag if UPLANETNAME_G1 was returned

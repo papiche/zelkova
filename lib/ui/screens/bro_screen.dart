@@ -7,39 +7,32 @@ import 'package:flutter/services.dart';
 import '../../data/models/nostr_message.dart';
 import '../../g1/nostr/nostr_keys.dart';
 import '../../g1/nostr/nostr_relay_service.dart';
-import '../../services/astroport_station_service.dart';
 import '../../shared_prefs_helper_v2.dart';
 import '../logger.dart';
 
-/// Interface de chat dédiée BRO — IA station via NIP-44.
+/// Interface de chat dédiée BRO — ton clone personnel, via self-DM NIP-44.
 ///
-/// BRO (bro_dm_daemon.sh) est le démon IA de la station Astroport.ONE.
-/// Il écoute les DMs kind-4 NIP-44 adressés à NODEHEX, chiffre bout-à-bout
-/// avec secp256k1, et répond via tous les relays de la constellation.
+/// BRO (Astroport.ONE/IA/bro_watch_core.py::process_incoming_commands) est
+/// distinct de NODE (voir node_screen.dart, l'assistant RAG de la station) :
+/// ici, le message est envoyé à SA PROPRE clé (auteur == destinataire ==
+/// ma pubkey principale) — pas à la station. Le démon, qui détient la
+/// clé NOSTR de ce compte côté serveur (design MULTIPASS), déchiffre et
+/// répond en signant AUSSI avec cette même clé — la conversation apparaît
+/// donc entièrement comme "moi-même", des deux côtés.
 ///
-/// ## Architecture du dialogue
+/// Un tag NOSTR dédié (`["client","bro"]`, voir
+/// Astroport.ONE/IA/bro/nostr.py::BRO_ORIGIN_TAG) distingue les réponses du
+/// démon des messages réellement tapés par l'utilisateur — c'est
+/// [NostrMessage.isBotReply], jamais une comparaison de pubkey (identiques
+/// des deux côtés ici).
 ///
-/// - Questions libres → RAG Qdrant (base de connaissance NextCloud + slots)
-/// - Commandes → traitement direct côté daemon (mémoire, génération, etc.)
-/// - Latence typique : 2-30 secondes (Ollama local, Qdrant, ComfyUI)
-/// - Chiffrement : NIP-44 par défaut (ou NIP-04 si le client a initié en NIP-04)
+/// Le même mécanisme est exposé côté web par UPlanet/earth/atomic_chat.html
+/// (onglet "🤖 BRO", toujours épinglé en 1ère position).
 ///
-/// ## Commandes reconnues
-///
-/// | Commande          | Effet                                             |
-/// |-------------------|---------------------------------------------------|
-/// | (texte libre)     | Question IA avec RAG Qdrant                       |
-/// | #mem              | Lister tous les souvenirs enregistrés             |
-/// | #mem #N           | Afficher les 5 derniers souvenirs du slot N       |
-/// | #rec <texte>      | Mémoriser dans le slot 0 (public)                 |
-/// | #rec #N <texte>   | Mémoriser dans le slot N (1-12, sociétaires)      |
-/// | #reset            | Effacer tous les souvenirs                        |
-/// | #reset #N         | Effacer uniquement le slot N                      |
-/// | #badge <skill>    | Générer une image de badge (ComfyUI)              |
-/// | #craft <URL>      | Décomposer un tutoriel en recette JSON            |
-/// | #rec:<skill>      | Contribuer à la mémoire partagée d'un skill       |
-/// | #mem:<skill>      | Lire la mémoire partagée d'un skill               |
-/// | [ctx:skill:N] Q   | Question pédagogique avec contexte skill N        |
+/// BRO couvre un périmètre large et évolutif (mémoire, veille sociale,
+/// génération média #image/#video/#music, interprétation en langage
+/// naturel…) — volontairement pas détaillé exhaustivement ici pour éviter
+/// toute liste figée qui divergerait du comportement réel du démon.
 class BroScreen extends StatefulWidget {
   const BroScreen({super.key});
 
@@ -59,21 +52,9 @@ class _BroScreenState extends State<BroScreen> {
 
   String? _myHexPubkey;
   String? _myHexPrivkey;
-  String? _broHexPubkey;
-  String? _stationHostname;
 
   String? _dmSubId;
   Timer? _typingTimer;
-
-  // Commandes qui s'envoient directement
-  static const List<String> _directSend = <String>['#mem'];
-
-  // Commandes qui insèrent un préfixe dans le champ de saisie
-  static const Map<String, String> _prefixInsert = <String, String>{
-    '#rec ': '#rec ',
-    '#badge ': '#badge ',
-    '#craft ': '#craft ',
-  };
 
   @override
   void initState() {
@@ -98,7 +79,6 @@ class _BroScreenState extends State<BroScreen> {
   }
 
   Future<void> _init() async {
-    // Annuler l'abonnement précédent pour éviter les fuites lors d'un retry
     _cancelSubscription();
     _typingTimer?.cancel();
 
@@ -119,24 +99,12 @@ class _BroScreenState extends State<BroScreen> {
       final String hexPriv = NostrKeys.nsecToHex(nsec);
       final String hexPub = bip340.getPublicKey(hexPriv);
 
-      // NODEHEX + hostname depuis 12345.json (une seule requête, résultat mis en cache)
-      final Map<String, dynamic>? stationData =
-          await AstroportStationService().fetchStationData();
-      final String? broHex = stationData?['NODEHEX'] as String?;
-      if (broHex == null || broHex.length != 64) {
-        _setError('Station BRO introuvable — vérifie ta connexion.');
-        return;
-      }
-      final String? hostname = stationData?['hostname'] as String?;
-
-      logger('[BroScreen] NODEHEX → ${broHex.substring(0, 8)}… station=$hostname');
+      logger('[BroScreen] self-DM → ${hexPub.substring(0, 8)}…');
 
       if (mounted) {
         setState(() {
           _myHexPubkey = hexPub;
           _myHexPrivkey = hexPriv;
-          _broHexPubkey = broHex;
-          _stationHostname = hostname;
         });
       }
 
@@ -157,16 +125,15 @@ class _BroScreenState extends State<BroScreen> {
   }
 
   Future<void> _loadHistory() async {
-    if (_myHexPubkey == null || _myHexPrivkey == null || _broHexPubkey == null) {
+    if (_myHexPubkey == null || _myHexPrivkey == null) {
       return;
     }
     setState(() => _loading = true);
     try {
       final List<NostrMessage> msgs =
-          await NostrRelayService().fetchNip44Messages(
+          await NostrRelayService().fetchSelfDmMessages(
         myHexPubkey: _myHexPubkey!,
         myHexPrivkey: _myHexPrivkey!,
-        peerHexPubkey: _broHexPubkey!,
       );
       if (mounted) {
         setState(() {
@@ -185,42 +152,47 @@ class _BroScreenState extends State<BroScreen> {
   }
 
   void _subscribeLive() {
-    if (_myHexPubkey == null || _myHexPrivkey == null || _broHexPubkey == null) {
+    if (_myHexPubkey == null || _myHexPrivkey == null) {
       return;
     }
-    _dmSubId = NostrRelayService().subscribeToDms(
+    _dmSubId = NostrRelayService().subscribeToSelfDms(
       myHexPubkey: _myHexPubkey!,
       myHexPrivkey: _myHexPrivkey!,
       onMessage: (NostrMessage msg) {
         if (!mounted) return;
-        if (msg.senderHex != _broHexPubkey) return;
-        // BRO a répondu → arrêter le typing indicator
-        _typingTimer?.cancel();
         setState(() {
-          _broTyping = false;
-          _messages.removeWhere(
+          // Écho d'un message que je viens d'envoyer : remplace le placeholder
+          // optimiste au lieu de dupliquer la bulle.
+          final int pendingIdx = _messages.indexWhere(
               (NostrMessage m) => m.pending && m.content == msg.content);
-          _messages.add(msg);
+          if (pendingIdx >= 0 && !msg.isBotReply) {
+            _messages[pendingIdx] = msg;
+            return;
+          }
+          if (msg.isBotReply) {
+            _typingTimer?.cancel();
+            _broTyping = false;
+          }
+          if (!_messages.any((NostrMessage m) => m.id == msg.id)) {
+            _messages.add(msg);
+          }
         });
         _scrollToBottom();
       },
     );
   }
 
-  /// Envoie [override] si fourni, sinon le contenu du champ de saisie.
-  /// Pour les commandes avec paramètres (#rec, #badge, #craft), utiliser
-  /// [_insertPrefix] pour pré-remplir le champ plutôt que d'envoyer directement.
-  Future<void> _send([String? override]) async {
-    final String text = override ?? _inputCtrl.text.trim();
+  Future<void> _send() async {
+    final String text = _inputCtrl.text.trim();
     if (text.isEmpty || _sending) return;
-    if (_myHexPrivkey == null || _broHexPubkey == null) return;
+    if (_myHexPrivkey == null || _myHexPubkey == null) return;
 
-    if (override == null) _inputCtrl.clear();
+    _inputCtrl.clear();
 
     final NostrMessage optimistic = NostrMessage(
       id: 'pending_${DateTime.now().millisecondsSinceEpoch}',
       senderHex: _myHexPubkey!,
-      recipientHex: _broHexPubkey!,
+      recipientHex: _myHexPubkey!,
       content: text,
       createdAt: DateTime.now().millisecondsSinceEpoch ~/ 1000,
       pending: true,
@@ -232,15 +204,16 @@ class _BroScreenState extends State<BroScreen> {
     });
     _scrollToBottom();
 
-    // Timer de sécurité : BRO répond max en ~30s, 45s avant abandon indicator
+    // Timer de sécurité : certaines commandes BRO (génération média) peuvent
+    // prendre plus de temps qu'un simple RAG — indicateur abandonné après 60s.
     _typingTimer?.cancel();
-    _typingTimer = Timer(const Duration(seconds: 45), () {
+    _typingTimer = Timer(const Duration(seconds: 60), () {
       if (mounted) setState(() => _broTyping = false);
     });
 
     final bool ok = await NostrRelayService().sendNip44Message(
       hexPrivateKey: _myHexPrivkey!,
-      recipientHexPubkey: _broHexPubkey!,
+      recipientHexPubkey: _myHexPubkey!,
       plaintext: text,
     );
 
@@ -264,39 +237,6 @@ class _BroScreenState extends State<BroScreen> {
     }
   }
 
-  /// Insère un préfixe de commande dans le champ de saisie et donne le focus.
-  void _insertPrefix(String prefix) {
-    _inputCtrl.text = prefix;
-    _inputCtrl.selection = TextSelection.fromPosition(
-      TextPosition(offset: prefix.length),
-    );
-  }
-
-  /// Demande confirmation avant d'envoyer #reset.
-  Future<void> _confirmReset() async {
-    final bool? confirmed = await showDialog<bool>(
-      context: context,
-      builder: (BuildContext ctx) => AlertDialog(
-        title: const Text('Effacer les souvenirs ?'),
-        content: const Text(
-          'BRO effacera tous tes souvenirs (slots 0-12).\n'
-          'Cette action est irréversible.',
-        ),
-        actions: <Widget>[
-          TextButton(
-            onPressed: () => Navigator.pop(ctx, false),
-            child: const Text('Annuler'),
-          ),
-          FilledButton(
-            onPressed: () => Navigator.pop(ctx, true),
-            child: const Text('Effacer'),
-          ),
-        ],
-      ),
-    );
-    if (confirmed == true) await _send('#reset');
-  }
-
   void _scrollToBottom({bool animated = true}) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (_scrollCtrl.hasClients) {
@@ -316,7 +256,7 @@ class _BroScreenState extends State<BroScreen> {
   // ── Widgets ──────────────────────────────────────────────────────────────────
 
   Widget _buildBubble(NostrMessage msg) {
-    final bool isMe = msg.isFromMe(_myHexPubkey ?? '');
+    final bool isMe = !msg.isBotReply;
     final ColorScheme cs = Theme.of(context).colorScheme;
     final Color bubbleColor =
         isMe ? cs.primary : cs.surfaceContainerHighest;
@@ -498,86 +438,6 @@ class _BroScreenState extends State<BroScreen> {
     );
   }
 
-  /// Barre de chips de raccourcis — 3 modes :
-  /// - Commande directe : s'envoie immédiatement (#mem)
-  /// - Préfixe : insère dans le champ, l'utilisateur complète (#rec, #badge, #craft)
-  /// - Confirmation : affiche un dialog (#reset)
-  Widget _buildQuickCommands() {
-    final bool canInteract = !_loading && !_sending && _broHexPubkey != null;
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-      child: Row(
-        children: <Widget>[
-          // Commandes directes
-          for (final String cmd in _directSend)
-            _chip(
-              label: cmd,
-              tooltip: 'Afficher les souvenirs enregistrés',
-              onTap: canInteract ? () => _send(cmd) : null,
-            ),
-          // Préfixes
-          for (final MapEntry<String, String> entry in _prefixInsert.entries)
-            _chip(
-              label: entry.key,
-              tooltip: _chipTooltip(entry.key),
-              onTap: canInteract ? () => _insertPrefix(entry.value) : null,
-            ),
-          // Reset avec confirmation
-          _chip(
-            label: '#reset',
-            tooltip: 'Effacer tous les souvenirs (confirmation demandée)',
-            onTap: canInteract ? _confirmReset : null,
-            danger: true,
-          ),
-        ],
-      ),
-    );
-  }
-
-  String _chipTooltip(String label) {
-    switch (label) {
-      case '#rec ':
-        return 'Mémoriser : #rec <texte> ou #rec #N <texte>';
-      case '#badge ':
-        return 'Générer un badge image : #badge <nom-du-skill>';
-      case '#craft ':
-        return 'Analyser un tutoriel : #craft <URL>';
-      default:
-        return label;
-    }
-  }
-
-  Widget _chip({
-    required String label,
-    required VoidCallback? onTap,
-    String? tooltip,
-    bool danger = false,
-  }) {
-    final ColorScheme cs = Theme.of(context).colorScheme;
-    final Widget chip = Padding(
-      padding: const EdgeInsets.only(right: 6),
-      child: ActionChip(
-        label: Text(
-          label.trimRight(), // affiche sans espace trailing
-          style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
-        ),
-        onPressed: onTap,
-        visualDensity: VisualDensity.compact,
-        side: BorderSide.none,
-        backgroundColor: danger
-            ? cs.errorContainer.withAlpha(onTap != null ? 255 : 120)
-            : cs.primaryContainer.withAlpha(onTap != null ? 255 : 120),
-        labelStyle: TextStyle(
-          color: danger ? cs.onErrorContainer : cs.onPrimaryContainer,
-        ),
-      ),
-    );
-    return tooltip != null
-        ? Tooltip(message: tooltip, child: chip)
-        : chip;
-  }
-
   Widget _buildInput() {
     return Container(
       color: Theme.of(context).colorScheme.surface,
@@ -587,51 +447,44 @@ class _BroScreenState extends State<BroScreen> {
         top: 4,
         bottom: MediaQuery.of(context).viewInsets.bottom + 8,
       ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.end,
         children: <Widget>[
-          _buildQuickCommands(),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: <Widget>[
-              Expanded(
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Theme.of(context)
-                        .colorScheme
-                        .surfaceContainerHighest,
-                    borderRadius: BorderRadius.circular(24),
-                  ),
-                  child: TextField(
-                    controller: _inputCtrl,
-                    keyboardType: TextInputType.multiline,
-                    maxLines: 5,
-                    minLines: 1,
-                    textCapitalization: TextCapitalization.sentences,
-                    decoration: const InputDecoration(
-                      hintText: 'Question libre ou #commande…',
-                      border: InputBorder.none,
-                      contentPadding: EdgeInsets.symmetric(
-                          horizontal: 16, vertical: 10),
-                    ),
-                    onSubmitted: (_) => _send(),
-                  ),
+          Expanded(
+            child: Container(
+              decoration: BoxDecoration(
+                color:
+                    Theme.of(context).colorScheme.surfaceContainerHighest,
+                borderRadius: BorderRadius.circular(24),
+              ),
+              child: TextField(
+                controller: _inputCtrl,
+                keyboardType: TextInputType.multiline,
+                maxLines: 5,
+                minLines: 1,
+                textCapitalization: TextCapitalization.sentences,
+                decoration: const InputDecoration(
+                  hintText: 'Question libre ou #commande…',
+                  border: InputBorder.none,
+                  contentPadding:
+                      EdgeInsets.symmetric(horizontal: 16, vertical: 10),
                 ),
+                onSubmitted: (_) => _send(),
               ),
-              const SizedBox(width: 8),
-              FloatingActionButton.small(
-                heroTag: 'bro_send_fab',
-                onPressed: _sending ? null : () => _send(),
-                child: _sending
-                    ? const SizedBox(
-                        width: 20,
-                        height: 20,
-                        child: CircularProgressIndicator(
-                            strokeWidth: 2, color: Colors.white),
-                      )
-                    : const Icon(Icons.send),
-              ),
-            ],
+            ),
+          ),
+          const SizedBox(width: 8),
+          FloatingActionButton.small(
+            heroTag: 'bro_self_send_fab',
+            onPressed: _sending ? null : _send,
+            child: _sending
+                ? const SizedBox(
+                    width: 20,
+                    height: 20,
+                    child: CircularProgressIndicator(
+                        strokeWidth: 2, color: Colors.white),
+                  )
+                : const Icon(Icons.send),
           ),
         ],
       ),
@@ -648,15 +501,12 @@ class _BroScreenState extends State<BroScreen> {
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
       builder: (BuildContext ctx) => DraggableScrollableSheet(
-        initialChildSize: 0.7,
-        minChildSize: 0.4,
-        maxChildSize: 0.95,
+        initialChildSize: 0.6,
+        minChildSize: 0.35,
+        maxChildSize: 0.9,
         expand: false,
-        builder: (_, ScrollController sc) => _BroHelpSheet(
-          scrollController: sc,
-          stationHostname: _stationHostname,
-          broHex: _broHexPubkey,
-        ),
+        builder: (_, ScrollController sc) =>
+            _BroHelpSheet(scrollController: sc),
       ),
     );
   }
@@ -698,17 +548,17 @@ class _BroScreenState extends State<BroScreen> {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
-                      Icon(Icons.smart_toy_outlined,
+                      Icon(Icons.person_pin_circle_outlined,
                           size: 64, color: cs.onSurface.withAlpha(80)),
                       const SizedBox(height: 12),
                       Text(
-                        'Dis bonjour à BRO !',
+                        'Dis bonjour à ton BRO !',
                         style:
                             TextStyle(color: cs.onSurface.withAlpha(150)),
                       ),
                       const SizedBox(height: 4),
                       Text(
-                        'IA locale · Mémoire · Badges',
+                        'Ton clone personnel · self-DM chiffré',
                         style: TextStyle(
                           fontSize: 12,
                           color: cs.onSurface.withAlpha(100),
@@ -717,7 +567,7 @@ class _BroScreenState extends State<BroScreen> {
                       const SizedBox(height: 16),
                       OutlinedButton.icon(
                         icon: const Icon(Icons.help_outline, size: 18),
-                        label: const Text('Voir les commandes'),
+                        label: const Text('Qu\'est-ce que BRO ?'),
                         onPressed: _showHelp,
                       ),
                     ],
@@ -733,7 +583,7 @@ class _BroScreenState extends State<BroScreen> {
   @override
   Widget build(BuildContext context) {
     final ColorScheme cs = Theme.of(context).colorScheme;
-    final bool ready = _broHexPubkey != null && !_loading;
+    final bool ready = _myHexPubkey != null && !_loading;
 
     return Scaffold(
       appBar: AppBar(
@@ -746,41 +596,34 @@ class _BroScreenState extends State<BroScreen> {
                 CircleAvatar(
                   radius: 18,
                   backgroundColor: cs.primaryContainer,
-                  child: Icon(Icons.smart_toy,
+                  child: Icon(Icons.person_pin_circle,
                       color: cs.onPrimaryContainer, size: 20),
                 ),
-                // Point de statut (vert = station joignable, gris = init)
                 Container(
                   width: 9,
                   height: 9,
                   decoration: BoxDecoration(
                     color: ready ? Colors.green : Colors.grey,
                     shape: BoxShape.circle,
-                    border: Border.all(
-                        color: cs.surface, width: 1.5),
+                    border: Border.all(color: cs.surface, width: 1.5),
                   ),
                 ),
               ],
             ),
             const SizedBox(width: 10),
-            Expanded(
+            const Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
-                    _stationHostname != null
-                        ? 'BRO · $_stationHostname'
-                        : 'BRO',
-                    style: const TextStyle(
+                    'BRO',
+                    style: TextStyle(
                         fontSize: 16, fontWeight: FontWeight.w600),
                     overflow: TextOverflow.ellipsis,
                   ),
                   Text(
-                    'Assistant IA · NIP-44 · Qdrant RAG',
-                    style: TextStyle(
-                      fontSize: 11,
-                      color: cs.onSurface.withAlpha(150),
-                    ),
+                    'Ton clone personnel · self-DM NIP-44',
+                    style: TextStyle(fontSize: 11),
                   ),
                 ],
               ),
@@ -791,7 +634,7 @@ class _BroScreenState extends State<BroScreen> {
           IconButton(
             icon: const Icon(Icons.help_outline),
             onPressed: _showHelp,
-            tooltip: 'Aide & commandes',
+            tooltip: 'Qu\'est-ce que BRO ?',
           ),
           IconButton(
             icon: const Icon(Icons.refresh),
@@ -805,18 +648,12 @@ class _BroScreenState extends State<BroScreen> {
   }
 }
 
-// ── Sheet d'aide détaillée ────────────────────────────────────────────────────
+// ── Sheet d'aide ──────────────────────────────────────────────────────────────
 
 class _BroHelpSheet extends StatelessWidget {
-  const _BroHelpSheet({
-    required this.scrollController,
-    this.stationHostname,
-    this.broHex,
-  });
+  const _BroHelpSheet({required this.scrollController});
 
   final ScrollController scrollController;
-  final String? stationHostname;
-  final String? broHex;
 
   @override
   Widget build(BuildContext context) {
@@ -826,14 +663,12 @@ class _BroHelpSheet extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         color: cs.surface,
-        borderRadius:
-            const BorderRadius.vertical(top: Radius.circular(20)),
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
       ),
       child: ListView(
         controller: scrollController,
         padding: const EdgeInsets.fromLTRB(20, 12, 20, 32),
         children: <Widget>[
-          // Poignée
           Center(
             child: Container(
               width: 40,
@@ -845,176 +680,66 @@ class _BroHelpSheet extends StatelessWidget {
               ),
             ),
           ),
-
-          // En-tête
           Row(
             children: <Widget>[
               CircleAvatar(
                 radius: 22,
                 backgroundColor: cs.primaryContainer,
-                child: Icon(Icons.smart_toy,
+                child: Icon(Icons.person_pin_circle,
                     color: cs.onPrimaryContainer, size: 24),
               ),
               const SizedBox(width: 12),
               Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text('BRO — Assistant IA de ta Station',
-                        style: tt.titleMedium
-                            ?.copyWith(fontWeight: FontWeight.bold)),
-                    if (stationHostname != null)
-                      Text('Station : $stationHostname',
-                          style: tt.bodySmall?.copyWith(
-                              color: cs.onSurface.withAlpha(160))),
-                  ],
-                ),
+                child: Text('BRO — ton clone personnel',
+                    style: tt.titleMedium
+                        ?.copyWith(fontWeight: FontWeight.bold)),
               ),
             ],
           ),
-
           const SizedBox(height: 16),
           _divider(cs),
-
-          // Présentation
           _section(
             context,
             icon: Icons.info_outline,
             title: 'Qu\'est-ce que BRO ?',
             body:
-                'BRO est le démon IA de ta station Astroport.ONE. Il traite tes '
-                'messages en local, avec accès à :\n'
-                '• Sa base de connaissance (docs NextCloud + Qdrant)\n'
-                '• Ta mémoire personnelle (13 slots)\n'
-                '• Les services de génération (ComfyUI pour les images)\n\n'
-                'Les échanges sont chiffrés bout-à-bout (NIP-44) et ne '
-                'transitent jamais en clair sur le réseau.',
+                'BRO est ta propre identité MULTIPASS qui te répond : le '
+                'message que tu envoies est adressé à toi-même — self-DM. '
+                'Ta station (qui détient ta clé NOSTR côté serveur, comme '
+                'tout compte MULTIPASS) le déchiffre, l\'interprète, et te '
+                'répond en signant avec cette même clé. La conversation '
+                'apparaît donc entièrement comme "toi-même", des deux côtés.\n\n'
+                'Distinct de NODE (l\'assistant RAG de la station, autre '
+                'onglet) : BRO, c\'est ton clone — mémoire, veille, '
+                'génération, interprétation en langage naturel.',
           ),
-
           _divider(cs),
-
-          // Questions libres
           _section(
             context,
             icon: Icons.chat_bubble_outline,
-            title: 'Questions libres',
+            title: 'Comment lui parler',
             body:
-                'Tout message sans commande est envoyé à l\'IA avec le contexte '
-                'de ta base de connaissance (RAG Qdrant).\n\n'
-                'Exemples :\n'
-                '  "Comment déployer nginx ?"\n'
-                '  "Résume les réunions de cette semaine"\n'
-                '  "Qu\'ai-je mémorisé sur ce projet ?"',
+                'Question libre ou commande #hashtag — quelques exemples '
+                'stables :\n'
+                '  #mem              → lister tes souvenirs enregistrés\n'
+                '  #rec <texte>      → mémoriser une préférence\n'
+                '  #reset            → effacer tes souvenirs\n\n'
+                'BRO couvre bien plus (génération d\'image/vidéo/musique, '
+                'veille sociale, outils…) et évolue régulièrement — cette '
+                'liste n\'est volontairement pas exhaustive pour ne jamais '
+                'diverger du comportement réel du démon.',
           ),
-
           _divider(cs),
-
-          // Mémoire
           _section(
             context,
-            icon: Icons.memory,
-            title: 'Mémoire personnelle — #mem / #rec / #reset',
+            icon: Icons.lock_outline,
+            title: 'Confidentialité',
             body:
-                'BRO dispose de 13 slots de mémoire personnelle :\n'
-                '  • Slot 0 : accessible à tous\n'
-                '  • Slots 1–12 : réservés aux sociétaires\n\n'
-                'Mémoriser :\n'
-                '  #rec Mon idée importante\n'
-                '  #rec #3 Contexte technique projet X\n\n'
-                'Lire :\n'
-                '  #mem              → lister tous les slots non-vides\n'
-                '  #mem #3           → afficher les 5 derniers souvenirs du slot 3\n\n'
-                'Effacer :\n'
-                '  #reset            → effacer tous les slots\n'
-                '  #reset #3         → effacer uniquement le slot 3\n\n'
-                'Question avec contexte de slots :\n'
-                '  "Que dois-je faire ensuite ? #1 #3"',
+                'Les échanges sont chiffrés bout-à-bout (NIP-44) et ne '
+                'transitent jamais en clair sur le réseau. Ta station les '
+                'déchiffre pour te répondre — c\'est le prix de l\'IA '
+                'auto-hébergée, sans dépendre d\'un service tiers.',
           ),
-
-          _divider(cs),
-
-          // Mémoire partagée
-          _section(
-            context,
-            icon: Icons.people_outline,
-            title: 'Mémoire partagée — Skills',
-            body:
-                'Partage des connaissances avec la communauté via les skills.\n\n'
-                'Contribuer :\n'
-                '  #rec:devops Je sais configurer Traefik\n'
-                '  #rec:cuisine Recette tarte aux pommes\n\n'
-                'Consulter :\n'
-                '  #mem:devops           → lire la mémoire partagée DevOps\n'
-                '  #mem:                 → lister tous les skills disponibles\n\n'
-                'Contexte pédagogique (question ciblée) :\n'
-                '  [ctx:devops:2] Comment configurer un reverse proxy ?',
-          ),
-
-          _divider(cs),
-
-          // Génération
-          _section(
-            context,
-            icon: Icons.auto_awesome,
-            title: 'Génération — #badge / #craft',
-            body:
-                '#badge <nom-skill> — Génère une image de badge personnalisé '
-                '(via ComfyUI, si disponible sur ta station).\n'
-                '  Ex : #badge artisan-du-bois\n\n'
-                '#craft <URL> — Analyse un tutoriel ou article et le '
-                'décompose en recette JSON structurée (format WoTx²).\n'
-                '  Ex : #craft https://example.com/tuto-docker',
-          ),
-
-          _divider(cs),
-
-          // Latence
-          _section(
-            context,
-            icon: Icons.timer_outlined,
-            title: 'Délais de réponse',
-            body:
-                'BRO traite les messages en asynchrone :\n'
-                '  • Question simple (Ollama local) : 2–15 s\n'
-                '  • Question avec Qdrant RAG : 5–20 s\n'
-                '  • Génération d\'image #badge : 20–60 s\n'
-                '  • Analyse #craft : 10–30 s\n\n'
-                'Si BRO est sur un Brain-Node distant (GPU), '
-                'les réponses sont plus rapides mais dépendent du réseau.',
-          ),
-
-          // NODEHEX (debug)
-          if (broHex != null) ...<Widget>[
-            _divider(cs),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8),
-              child: Row(
-                children: <Widget>[
-                  Expanded(
-                    child: Text(
-                      'NODEHEX : ${broHex!.substring(0, 16)}…',
-                      style: tt.bodySmall?.copyWith(
-                          fontFamily: 'monospace',
-                          color: cs.onSurface.withAlpha(100)),
-                    ),
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.copy, size: 16),
-                    onPressed: () {
-                      Clipboard.setData(ClipboardData(text: broHex!));
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('NODEHEX copié'),
-                          duration: Duration(seconds: 1),
-                        ),
-                      );
-                    },
-                    tooltip: 'Copier le NODEHEX complet',
-                  ),
-                ],
-              ),
-            ),
-          ],
         ],
       ),
     );

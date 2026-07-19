@@ -491,6 +491,7 @@ class SharedPreferencesHelperV2
     Map<String, dynamic>? ocUrls,
     String? uplanetnameG1,
     String? matchUrl,
+    String? pass,
   }) async {
     final CesiumWallet wallet = await CesiumWallet.derive(salt, pepper);
     final String pubKey = wallet.pubkey;
@@ -529,6 +530,7 @@ class SharedPreferencesHelperV2
           'uplanetname_g1': uplanetnameG1,
         if (matchUrl != null && matchUrl.isNotEmpty)
           'match_url': matchUrl,
+        if (pass != null && pass.isNotEmpty) 'pass': pass,
       }),
     );
 
@@ -579,6 +581,13 @@ class SharedPreferencesHelperV2
   Future<String?> getMatchUrl([String? pubKey]) async {
     final Map<String, dynamic>? data = await getMultipassData(pubKey);
     return data?['match_url'] as String?;
+  }
+
+  /// Retrieve the PASS code (recovery PIN, see [MultipassResponse.pass])
+  /// for a given wallet pubKey.
+  Future<String?> getMultipassPass([String? pubKey]) async {
+    final Map<String, dynamic>? data = await getMultipassData(pubKey);
+    return data?['pass'] as String?;
   }
 
   /// Update the oc_urls field in stored MULTIPASS data.

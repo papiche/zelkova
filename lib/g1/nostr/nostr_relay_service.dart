@@ -1033,6 +1033,114 @@ class NostrRelayService {
     return messages;
   }
 
+  /// Fetch self-DMs (kind 4, author == recipient == [myHexPubkey]) — the
+  /// BRO channel (see Astroport.ONE/IA/bro_watch_core.py::process_incoming_commands).
+  ///
+  /// A single query suffices: sender and recipient are always the same
+  /// pubkey, unlike [fetchNip44Messages] which needs two (sent + received).
+  /// Both the user's own messages and the BRO daemon's replies carry
+  /// `pubkey == myHexPubkey` — only [NostrMessage.tags] (BRO_ORIGIN_TAG)
+  /// tells them apart, see [NostrMessage.isBotReply].
+  Future<List<NostrMessage>> fetchSelfDmMessages({
+    required String myHexPubkey,
+    required String myHexPrivkey,
+    int limit = 200,
+  }) async {
+    if (!_isConnected) {
+      return <NostrMessage>[];
+    }
+
+    final List<Map<String, dynamic>> raw = await queryEvents(
+      kinds: <int>[4],
+      authors: <String>[myHexPubkey],
+      tags: <List<String>>[<String>['p', myHexPubkey]],
+      limit: limit,
+    );
+
+    final List<NostrMessage> messages = <NostrMessage>[];
+    for (final Map<String, dynamic> ev in raw) {
+      try {
+        final String plaintext = Nip44.decrypt(
+          ev['content'] as String,
+          myHexPrivkey,
+          myHexPubkey,
+        );
+        messages.add(NostrMessage(
+          id: ev['id'] as String,
+          senderHex: myHexPubkey,
+          recipientHex: myHexPubkey,
+          content: plaintext,
+          createdAt: ev['created_at'] as int,
+          tags: (ev['tags'] as List<dynamic>)
+              .map((dynamic t) => (t as List<dynamic>).cast<String>())
+              .toList(),
+        ));
+      } catch (e) {
+        loggerDev('[NostrRelay] Failed to decrypt self-DM: $e');
+      }
+    }
+
+    messages.sort((NostrMessage a, NostrMessage b) =>
+        a.createdAt.compareTo(b.createdAt));
+    return messages;
+  }
+
+  /// Subscribe to new self-DMs (BRO channel) for [myHexPubkey].
+  ///
+  /// Unlike [subscribeToDms], does NOT skip events where sender == recipient
+  /// == myHexPubkey — that's the whole point of a self-DM: both the user's
+  /// own sent messages (echoed back by the relay) and the BRO daemon's
+  /// replies share that same pubkey.
+  String subscribeToSelfDms({
+    required String myHexPubkey,
+    required String myHexPrivkey,
+    required void Function(NostrMessage) onMessage,
+  }) {
+    final String subId = NostrUtils.generateSubscriptionId('selfdm');
+    final int since = DateTime.now().millisecondsSinceEpoch ~/ 1000;
+
+    _handlers[subId] = (List<dynamic> msg) {
+      final String type = msg[0] as String;
+      if (type != 'EVENT' || msg.length < 3) {
+        return;
+      }
+      try {
+        final Map<String, dynamic> ev = msg[2] as Map<String, dynamic>;
+        final int kind = ev['kind'] as int;
+        if (kind != 4) {
+          return;
+        }
+        final String plaintext = Nip44.decrypt(
+          ev['content'] as String,
+          myHexPrivkey,
+          myHexPubkey,
+        );
+        onMessage(NostrMessage(
+          id: ev['id'] as String,
+          senderHex: myHexPubkey,
+          recipientHex: myHexPubkey,
+          content: plaintext,
+          createdAt: ev['created_at'] as int,
+          tags: (ev['tags'] as List<dynamic>)
+              .map((dynamic t) => (t as List<dynamic>).cast<String>())
+              .toList(),
+        ));
+      } catch (e) {
+        loggerDev('[NostrRelay] Self-DM subscription decrypt error: $e');
+      }
+    };
+
+    final Map<String, dynamic> filter = <String, dynamic>{
+      'kinds': <int>[4],
+      'authors': <String>[myHexPubkey],
+      '#p': <String>[myHexPubkey],
+      'since': since,
+    };
+    _sendRaw(jsonEncode(<dynamic>['REQ', subId, filter]));
+    loggerDev('[NostrRelay] Subscribed to self-DMs for ${myHexPubkey.substring(0, 8)}...');
+    return subId;
+  }
+
   /// Subscribe to new incoming kind-4 DMs addressed to [myHexPubkey].
   /// Calls [onMessage] for each new decrypted message.
   /// Returns the subscription ID (use it to call [cancelDmSubscription]).

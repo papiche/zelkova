@@ -19,6 +19,7 @@ import '../widgets/bottom_widget.dart';
 import '../widgets/card_drawer.dart';
 import '../widgets/contacts_actions.dart';
 import '../widgets/fifth_screen/fifth_tutorial.dart';
+import '../widgets/fifth_screen/identity_keys_card.dart';
 import '../widgets/fifth_screen/link_card.dart';
 import '../widgets/fifth_screen/node_list_card.dart';
 import '../widgets/fifth_screen/text_divider.dart';
@@ -159,6 +160,7 @@ class _FifthScreenState extends State<FifthScreen> {
                         title: Text(tr('last_node') +
                             NodeManager().getCurrentGvaNode()!.url)),
                   if (state.expertMode) const NodeListCard(),
+                  if (state.expertMode) const IdentityKeysCard(),
                   const TextDivider(text: 'info_links'),
                   // Rapport de bug / feedback — formulaire natif via /api/feedback
                   LinkCard(

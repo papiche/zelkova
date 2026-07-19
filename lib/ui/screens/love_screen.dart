@@ -9,6 +9,7 @@ import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../data/models/nostr_message.dart';
+import '../../g1/multipass_service.dart';
 import '../../g1/nostr/nostr_keys.dart';
 import '../../g1/nostr/nostr_relay_service.dart';
 import '../../services/astroport_station_service.dart';
@@ -19,13 +20,23 @@ import '../widgets/encrypted_image_bubble.dart';
 import '../widgets/image_composition_sheet.dart';
 import 'wallet_creation_screen.dart';
 
-/// Interface LOVE — Assistance aux rencontres via BRO canal "love" (NIP-44).
+/// Interface LOVE — Assistance aux rencontres via la clé ATOM4LOVE dédiée
+/// (HEX_LOVE), pas la station (NODEHEX) — même destinataire que
+/// UPlanet/earth/atomic_chat.html, pour que les deux clients partagent le
+/// même fil de conversation. Nécessite l'activation ATOM4LOVE au préalable
+/// (voir _activateAtom4Love) : sans elle, HEX_LOVE n'existe pas encore.
 ///
 /// ## Protocole
 ///
-/// Les messages envoyés sont chiffrés NIP-44 au NODEHEX de la station.
-/// Le contenu décrypté est un JSON avec channel "love" :
+/// Les messages envoyés sont chiffrés NIP-44 avec la clé principale (nsec),
+/// adressés à HEX_LOVE (récupéré via `GET /atom4love/dream?email=...`,
+/// [MultipassService.fetchLoveHex]). Le contenu décrypté est un JSON avec
+/// channel "love" :
 ///   {"channel":"love","payload":{"action":"ask","text":"Ma question"}}
+///
+/// Le serveur (bro_dm_daemon.sh::_handle_love_dm_event) déchiffre avec
+/// `.secret.love` de ce compte et répond signé avec la même clé LOVE —
+/// jamais avec NODE_NSEC ni la clé principale de l'utilisateur.
 ///
 /// Les réponses de BRO arrivent en texte brut (non JSON).
 ///
@@ -58,6 +69,7 @@ class _LoveScreenState extends State<LoveScreen> {
   bool _broTyping = false;
   bool _uploadingImage = false;
   bool _showEmojiPicker = false;
+  bool _needsActivation = false;
   String? _errorMsg;
 
   String? _myHexPubkey;
@@ -103,6 +115,7 @@ class _LoveScreenState extends State<LoveScreen> {
       setState(() {
         _loading = true;
         _errorMsg = null;
+        _needsActivation = false;
         _broTyping = false;
       });
     }
@@ -116,22 +129,40 @@ class _LoveScreenState extends State<LoveScreen> {
       final String hexPriv = NostrKeys.nsecToHex(nsec);
       final String hexPub = bip340.getPublicKey(hexPriv);
 
-      final Map<String, dynamic>? stationData =
-          await AstroportStationService().fetchStationData();
-      final String? broHex = stationData?['NODEHEX'] as String?;
-      if (broHex == null || broHex.length != 64) {
-        _setError('Station LOVE introuvable — vérifie ta connexion.');
+      final Map<String, dynamic>? multipassData =
+          await SharedPreferencesHelperV2().getMultipassData();
+      final String? email = multipassData?['email'] as String?;
+      if (email == null || email.isEmpty) {
+        _setError('Identité NOSTR manquante — crée ton MULTIPASS d\'abord.');
         return;
       }
+
+      // Hostname affiché à titre informatif (le daemon LOVE tourne sur la
+      // home station) — indépendant du destinataire réel (HEX_LOVE).
+      final Map<String, dynamic>? stationData =
+          await AstroportStationService().fetchStationData();
       final String? hostname = stationData?['hostname'] as String?;
 
-      logger('[LoveScreen] NODEHEX → ${broHex.substring(0, 8)}… station=$hostname');
+      final String? loveHex = await MultipassService.fetchLoveHex(email);
+      if (loveHex == null) {
+        logger('[LoveScreen] ATOM4LOVE non activé pour $email');
+        if (mounted) {
+          setState(() {
+            _loading = false;
+            _needsActivation = true;
+            _stationHostname = hostname;
+          });
+        }
+        return;
+      }
+
+      logger('[LoveScreen] HEX_LOVE → ${loveHex.substring(0, 8)}… station=$hostname');
 
       if (mounted) {
         setState(() {
           _myHexPubkey = hexPub;
           _myHexPrivkey = hexPriv;
-          _broHexPubkey = broHex;
+          _broHexPubkey = loveHex;
           _stationHostname = hostname;
         });
       }
@@ -162,6 +193,12 @@ class _LoveScreenState extends State<LoveScreen> {
         ),
       ),
     );
+    // De retour de l'activation : HEX_LOVE existe peut-être désormais — on
+    // relance _init() pour le récupérer sans que l'utilisateur ait à quitter
+    // puis rouvrir l'écran LOVE.
+    if (mounted) {
+      await _init();
+    }
   }
 
   void _setError(String msg) {
@@ -281,6 +318,10 @@ class _LoveScreenState extends State<LoveScreen> {
         'enc_key': encKey,
         'enc_type': data['enc_type'] as String? ?? 'aes256gcm',
         'filename': data['filename'] as String? ?? 'image',
+        if ((data['title'] as String?)?.isNotEmpty ?? false)
+          'title': data['title'] as String,
+        if ((data['caption'] as String?)?.isNotEmpty ?? false)
+          'caption': data['caption'] as String,
       };
     } catch (_) {
       return null;
@@ -929,6 +970,34 @@ class _LoveScreenState extends State<LoveScreen> {
   }
 
   Widget _buildBody() {
+    if (_needsActivation) {
+      return Center(
+        child: Padding(
+          padding: const EdgeInsets.all(24),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Icon(Icons.auto_awesome, size: 48, color: _loveRose),
+              const SizedBox(height: 12),
+              Text(
+                'Active ton profil ATOM4LOVE pour ouvrir le canal LOVE — il crée ta clé dédiée, distincte de ton identité MULTIPASS.',
+                textAlign: TextAlign.center,
+                style: TextStyle(color: _loveCoral.withAlpha(220)),
+              ),
+              const SizedBox(height: 16),
+              ElevatedButton.icon(
+                style: ElevatedButton.styleFrom(backgroundColor: _loveRose),
+                icon: const Icon(Icons.auto_awesome, color: Colors.white),
+                label: const Text('Activer ATOM4LOVE',
+                    style: TextStyle(color: Colors.white)),
+                onPressed: _activateAtom4Love,
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+
     if (_errorMsg != null) {
       return Center(
         child: Padding(

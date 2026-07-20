@@ -53,9 +53,7 @@ android {
         release {
             // Signing avec les clés de debug par défaut.
             // Pour la production: créer android/key.properties + zelkova.jks
-            signingConfig = keystorePropertiesFile.exists()
-                ? signingConfigs.release
-                : signingConfigs.debug
+            signingConfig = keystorePropertiesFile.exists() ? signingConfigs.release : signingConfigs.debug
         }
         debug {
             applicationIdSuffix = ".debug"

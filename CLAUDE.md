@@ -58,6 +58,12 @@ For the APK release build, `android/key.properties` and `android/upload-keystore
 - **`nostr/`** — NOSTR relay connection (`nostr_relay_service.dart`), profile publish/fetch (`nostr_profile.dart`), key utilities (`nostr_keys.dart`, `nostr_utils.dart`), station economy events (`station_economy_event.dart`).
 - **`crypto/`** — Low-level Ed25519/Schnorrkel cryptography, Cesium wallet, key derivation.
 
+### MULTIPASS vs ATOM4LOVE
+
+Two distinct NOSTR identities per account, not to be confused:
+- **MULTIPASS** — the main NOSTR/Ğ1 identity, created via `/g1nostr` with a **server-generated random** identity. Zelkova never sends birth/salt/pepper data for this call (`lib/g1/multipass_service.dart`).
+- **ATOM4LOVE / `.secret.love`** — a secondary NOSTR key, **deterministically derived** from the user's birth/conception data, requested separately via `POST /atom4love/activate` *after* MULTIPASS creation (`lib/ui/screens/wallet_creation_screen.dart`). It is stored client-side per account (`lib/shared_prefs_helper_v2.dart`) and used only to sign/encrypt the "love" DM channel with BRO/Astria — never as the account's main NOSTR key.
+
 ### State management
 
 Strict Bloc/Cubit pattern throughout. Key cubits:

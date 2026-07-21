@@ -1,19 +1,27 @@
-G1nkgo est un portefeuille moderne pour le ẐEN, un stablecoin de couche 2 construit sur la blockchain de monnaie libre Ğ1 (June / Duniter v2s).
+Ẑelkova est le portefeuille officiel du ẐEN MULTIPASS, l'identité numérique
+souveraine et le système de comptabilité coopératif de l'écosystème
+UPlanet / Astroport.
 
-Le ẐEN est l'unité opérationnelle de l'écosystème coopératif UPlanet. Chaque station relais Astroport exécute un moteur ZEN.ECONOMY qui automatise les règles constitutionnelles de la coopérative : répartition des revenus (3x1/3), provisions fiscales et pont de liquidité entre ẐEN et Euros.
+Fonctionnalités principales :
 
-Fonctionnalités :
-- Envoi et réception de paiements en ẐEN
-- Scan de QR codes pour des transactions faciles
-- Consultation de l'historique et du solde
-- Authentification biométrique
-- Intégration IPFS pour le contenu décentralisé
-- Outils d'analyse de marché
-- Notifications push
+* Identité MULTIPASS : créez ou récupérez votre identité cryptographique
+  NOSTR + Ğ1 depuis votre email et vos données de naissance (déterministe,
+  aucune phrase de récupération à mémoriser)
+* Paiements ẐEN : envoyez et recevez des ẐEN (1 ẐEN ≈ 1 EUR), adossés au
+  Ğ1 (June) sur la blockchain Duniter v2s
+* Messages chiffrés NIP-44 : chat privé 1:1, agent IA de station, et
+  rencontres de résonance ATOM4LOVE
+* Contacts WoTx² : contacts de toile de confiance avec certificats de
+  compétence (Kind 30503) et inventaire d'objets/ressources (Kind 30505)
+* KIN Maya : moteur de résonance Tzolkin maya — signature vibratoire
+  personnelle
+* Mode expert : affichage de la nsec, QR de récupération SSSS, infos
+  techniques du nœud
 
-Chaque instance G1nkgo se connecte à sa constellation UPlanet ORIGIN — un réseau de nœuds relais Astroport partageant le même swarm.key. Les règles économiques sont définies par la constitution LEGAL de la coopérative et appliquées par le protocole ZEN.ECONOMY.
-
-Il y a autant de déploiements G1nkgo que de constellations UPlanet ORIGIN et leurs clones ẐEN.
+Confidentialité : aucun tracking, aucune publicité, aucun Google Play
+Services.
+Cryptographie : Ed25519/Schnorrkel, secp256k1 NIP-44 (HKDF + ChaCha20),
+PBKDF2.
 
 Développé avec Flutter. Licence AGPL-3.0.
 SCIC CopyLaRadio — https://copylaradio.com

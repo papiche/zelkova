@@ -92,7 +92,10 @@ La messagerie privée n'utilise **pas** de Bloc/Cubit — les écrans appellent 
 | `lib/ui/screens/messages_screen.dart` | Liste des conversations, chargement parallèle via `Future.wait` |
 | `lib/ui/screens/chat_screen.dart` | Chat 1:1, optimistic UI (`pending: true`), images chiffrées, emoji picker |
 | `lib/ui/screens/bro_screen.dart` | Chat IA daemon station via NIP-44 (commandes `#mem`, `#rec`, `#reset`…) |
-| `lib/ui/screens/love_screen.dart` | Canal matchmaking via NIP-44 (payload JSON `{channel, action}`) |
+| `lib/ui/screens/love_screen.dart` | Canal matchmaking via NIP-44 (payload JSON `{channel, action}`) ; badge solde ♥ (Ğ1-N², `GET /api/g1n2/balance?hex=<HEX_LOVE>`) dans l'AppBar |
+| `lib/ui/screens/love_contacts_screen.dart` | Raccourcis "love" : scan/génération QR (HEX_LOVE, format `love:<hex>`), envoi ♥ via kind 7 (`publishReaction`, signé par la clé LOVE), republication kind 3 signée LOVE à chaque ajout/suppression (réciprocité N1/N2 pour `N2_Economics.py`), photo chiffrée IPFS par contact, recherche/filtre |
+| `lib/data/models/love_contact.dart` | Modèle `LoveContact` (hexLove, nickname, photoCid/photoEncKeyHex) — stocké en JSON via `SharedPreferencesHelperV2.getLoveContacts/saveLoveContacts` (secure storage, pas de codegen Hive) |
+| `lib/ui/widgets/encrypted_avatar.dart` | Avatar circulaire pour photo chiffrée IPFS (UENC), fallback icône cœur |
 | `lib/ui/widgets/encrypted_image_bubble.dart` | Bulle image UENC — cache mémoire par CID, miniature async, plein écran |
 | `lib/services/encrypted_file_service.dart` | Format UENC v1 (AES-256-GCM) — upload via UPassport `/api/fileupload/encrypted`, download IPFS |
 

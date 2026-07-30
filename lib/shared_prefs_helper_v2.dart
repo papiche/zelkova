@@ -9,6 +9,7 @@ import 'package:substrate_bip39/substrate_bip39.dart' show Language;
 
 import 'data/models/contact.dart';
 import 'data/models/legacy_wallet.dart';
+import 'data/models/love_contact.dart';
 import 'data/models/stored_account.dart';
 import 'data/models/wallet_themes.dart';
 import 'g1/api.dart';
@@ -560,6 +561,39 @@ class SharedPreferencesHelperV2
     final String key = pubKey ?? getPubKey();
     return _storage.read(
         key: '${StorageKeys.loveNsecPrefix}${extractPublicKey(key)}');
+  }
+
+  /// Retrieve the LOVE contacts shortcut list (QR-exchanged HEX_LOVE peers)
+  /// for a given wallet pubKey. Empty list if none saved yet.
+  Future<List<LoveContact>> getLoveContacts([String? pubKey]) async {
+    final String key = pubKey ?? getPubKey();
+    final String? raw = await _storage.read(
+        key: '${StorageKeys.loveContactsPrefix}${extractPublicKey(key)}');
+    if (raw == null || raw.isEmpty) {
+      return <LoveContact>[];
+    }
+    try {
+      final List<dynamic> decoded = jsonDecode(raw) as List<dynamic>;
+      return decoded
+          .map((dynamic e) => LoveContact.fromJson(e as Map<String, dynamic>))
+          .whereType<LoveContact>()
+          .toList();
+    } catch (_) {
+      return <LoveContact>[];
+    }
+  }
+
+  /// Persist the LOVE contacts shortcut list for a given wallet pubKey.
+  Future<void> saveLoveContacts(
+    List<LoveContact> contacts, [
+    String? pubKey,
+  ]) async {
+    final String key = pubKey ?? getPubKey();
+    final String raw =
+        jsonEncode(contacts.map((LoveContact c) => c.toJson()).toList());
+    await _storage.write(
+        key: '${StorageKeys.loveContactsPrefix}${extractPublicKey(key)}',
+        value: raw);
   }
 
   /// Retrieve MULTIPASS metadata for a given wallet pubKey

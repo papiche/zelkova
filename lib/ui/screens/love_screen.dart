@@ -18,6 +18,7 @@ import '../../shared_prefs_helper_v2.dart';
 import '../logger.dart';
 import '../widgets/encrypted_image_bubble.dart';
 import '../widgets/image_composition_sheet.dart';
+import 'love_contacts_screen.dart';
 import 'wallet_creation_screen.dart';
 
 /// Interface LOVE — Assistance aux rencontres via la clé ATOM4LOVE dédiée
@@ -76,6 +77,7 @@ class _LoveScreenState extends State<LoveScreen> {
   String? _myHexPrivkey;
   String? _broHexPubkey;
   String? _stationHostname;
+  double? _myLoveBalance;
 
   String? _dmSubId;
   Timer? _typingTimer;
@@ -166,6 +168,7 @@ class _LoveScreenState extends State<LoveScreen> {
           _stationHostname = hostname;
         });
       }
+      unawaited(_refreshLoveBalance(loveHex));
 
       await _loadHistory();
     } catch (e) {
@@ -198,6 +201,13 @@ class _LoveScreenState extends State<LoveScreen> {
     // puis rouvrir l'écran LOVE.
     if (mounted) {
       await _init();
+    }
+  }
+
+  Future<void> _refreshLoveBalance(String hexLove) async {
+    final double? zen = await MultipassService.fetchG1n2Balance(hexLove);
+    if (mounted) {
+      setState(() => _myLoveBalance = zen);
     }
   }
 
@@ -1137,6 +1147,37 @@ class _LoveScreenState extends State<LoveScreen> {
           ],
         ),
         actions: <Widget>[
+          if (_myLoveBalance != null)
+            Padding(
+              padding: const EdgeInsets.only(right: 4),
+              child: Center(
+                child: Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 11, vertical: 4),
+                  decoration: BoxDecoration(
+                    color: _loveRoseLight,
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(color: _loveRose.withAlpha(90)),
+                  ),
+                  child: Text(
+                    '♥ ${_myLoveBalance!.toStringAsFixed(2)} Ẑ',
+                    style: const TextStyle(
+                        fontSize: 12, fontWeight: FontWeight.w700, color: _loveRose),
+                  ),
+                ),
+              ),
+            ),
+          IconButton(
+            icon: const Icon(Icons.qr_code_scanner, color: _loveRose),
+            tooltip: 'Raccourcis & QR love',
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute<void>(
+                  builder: (_) => const LoveContactsScreen(),
+                ),
+              );
+            },
+          ),
           IconButton(
             icon: Icon(Icons.auto_awesome, color: _loveRose),
             onPressed: _activateAtom4Love,

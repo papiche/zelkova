@@ -394,6 +394,29 @@ class MultipassService {
     }
   }
 
+  /// Fetch the Ğ1-N² (Ẑen display) balance for a given hex pubkey — typically
+  /// a LOVE identity (`HEX_LOVE`). Public, no-auth endpoint (see UPassport
+  /// routers/finance.py::g1n2_balance). Returns null on error or if the
+  /// server response is malformed; a hex with no history returns 0.0, not null.
+  static Future<double?> fetchG1n2Balance(String hex, {String? serverUrl}) async {
+    final String baseUrl = serverUrl ?? Env.upassportUrl;
+    final Uri uri = Uri.parse('$baseUrl/api/g1n2/balance')
+        .replace(queryParameters: <String, String>{'hex': hex});
+    try {
+      final http.Response response = await http.get(uri).timeout(_timeout);
+      if (response.statusCode != 200) {
+        return null;
+      }
+      final Map<String, dynamic> data =
+          jsonDecode(response.body) as Map<String, dynamic>;
+      final num? zen = data['zen'] as num?;
+      return zen?.toDouble();
+    } catch (e) {
+      loggerDev('[MultipassService] fetchG1n2Balance error: $e');
+      return null;
+    }
+  }
+
   /// Upload a profile image (avatar/banner) to the UPassport API.
   ///
   /// Returns the IPFS URL (or local fallback URL) of the uploaded image,

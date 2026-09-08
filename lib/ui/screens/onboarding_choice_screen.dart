@@ -1,12 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
-import 'multipass_creation_screen.dart';
 import 'multipass_recovery_screen.dart';
 
+/// URL du site de création de compte UPlanet. Zelkova ne crée plus de
+/// MULTIPASS lui-même : seule la récupération (email + code PASS) est
+/// proposée dans l'app, pour simplifier l'UX et éviter la duplication des
+/// parcours de création côté client.
+const String _kQoOpUrl = 'https://qo-op.com';
+
+Future<void> _openQoOp() async {
+  final Uri uri = Uri.parse(_kQoOpUrl);
+  if (await canLaunchUrl(uri)) {
+    await launchUrl(uri, mode: LaunchMode.externalApplication);
+  }
+}
+
 /// Écran d'accueil du onboarding — affiché quand aucun compte n'est enregistré.
-/// Présente UPlanet, explique le MULTIPASS, puis propose les deux chemins :
-///   1. Récupérer un MULTIPASS existant (email → home station via NOSTR)
-///   2. Créer un nouveau MULTIPASS (flux ATOMIC complet)
+/// Présente UPlanet, explique le MULTIPASS, puis propose de récupérer un
+/// MULTIPASS existant (email + code PASS → home station via NOSTR). La
+/// création d'un nouveau MULTIPASS se fait exclusivement sur qo-op.com.
 class OnboardingChoiceScreen extends StatelessWidget {
   const OnboardingChoiceScreen({super.key});
 
@@ -107,19 +120,19 @@ class OnboardingChoiceScreen extends StatelessWidget {
                       ],
                     ),
                     const SizedBox(height: 12),
-                    _Step(
+                    const _Step(
                       n: '1',
-                      text: 'Votre station Astroport locale crée votre identité '
-                          'NOSTR + portefeuille ZEN en quelques secondes.',
+                      text: 'Vous créez votre MULTIPASS sur qo-op.com — '
+                          'identité NOSTR + portefeuille ẐEN générés en quelques secondes.',
                     ),
-                    _Step(
+                    const _Step(
                       n: '2',
                       text: 'Vous recevez un code PASS par email — gardez-le précieusement.',
                     ),
-                    _Step(
+                    const _Step(
                       n: '3',
-                      text: 'Votre MULTIPASS vous donne accès à tous les services '
-                          'de la coopérative UPlanet.',
+                      text: 'Dans Ẑelkova, saisissez votre email et ce code PASS '
+                          'pour retrouver votre MULTIPASS et tous les services UPlanet.',
                     ),
                   ],
                 ),
@@ -149,12 +162,12 @@ class OnboardingChoiceScreen extends StatelessWidget {
               ),
               const SizedBox(height: 20),
 
-              // ── Chemin 1 : récupération ────────────────────────────────────
+              // ── Récupération du MULTIPASS ───────────────────────────────────
               _PathCard(
                 emoji: '📧',
-                title: "J'ai déjà un MULTIPASS",
-                subtitle: 'Saisissez votre email — votre station Astroport\n'
-                    'est détectée automatiquement via le réseau.',
+                title: 'Récupérer mon MULTIPASS',
+                subtitle: 'Saisissez votre email et votre code PASS — votre\n'
+                    'station Astroport est détectée automatiquement via le réseau.',
                 color: cs.primaryContainer,
                 labelColor: cs.onPrimaryContainer,
                 onTap: () => Navigator.of(context).push(
@@ -164,19 +177,16 @@ class OnboardingChoiceScreen extends StatelessWidget {
                 ),
               ),
 
-              const SizedBox(height: 14),
+              const SizedBox(height: 18),
 
-              // ── Chemin 2 : nouvelle inscription ───────────────────────────
-              _PathCard(
-                emoji: '✨',
-                title: 'Créer mon MULTIPASS',
-                subtitle: "Nouveau sur UPlanet ? Votre station Astroport\n"
-                    'crée votre identité en moins d’une minute.',
-                color: cs.tertiaryContainer,
-                labelColor: cs.onTertiaryContainer,
-                onTap: () => Navigator.of(context).push(
-                  MaterialPageRoute<void>(
-                    builder: (_) => const MultipassCreationScreen(),
+              // ── Pas encore de MULTIPASS ─────────────────────────────────────
+              Center(
+                child: TextButton.icon(
+                  onPressed: _openQoOp,
+                  icon: const Icon(Icons.open_in_new, size: 16),
+                  label: const Text('Pas encore de MULTIPASS ? Créez-en un sur qo-op.com'),
+                  style: TextButton.styleFrom(
+                    foregroundColor: cs.onSurface.withValues(alpha: 0.65),
                   ),
                 ),
               ),

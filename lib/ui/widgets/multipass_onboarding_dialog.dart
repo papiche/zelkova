@@ -1,13 +1,12 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../../data/models/app_cubit.dart';
-import '../../g1/multipass_service.dart';
-import '../../g1/zen_tag_service.dart';
-import '../../shared_prefs_helper_v2.dart';
+import '../screens/multipass_recovery_screen.dart';
+
+/// URL du site de création de compte UPlanet. Zelkova ne crée jamais de
+/// MULTIPASS lui-même — y compris pour les comptes legacy (wallet Cesium
+/// importé avant l'existence du MULTIPASS) détectés ici.
+const String _kQoOpUrl = 'https://qo-op.com';
 
 void showMultipassOnboardingDialog(BuildContext context) {
   showDialog(
@@ -17,322 +16,53 @@ void showMultipassOnboardingDialog(BuildContext context) {
   );
 }
 
-class MultipassOnboardingDialog extends StatefulWidget {
+/// Dialog affiché une fois pour tout compte local sans MULTIPASS (nsec
+/// absent). Ne propose plus de créer un MULTIPASS in-app : uniquement un
+/// lien vers qo-op.com (création) et un raccourci vers l'écran de
+/// récupération (email + code PASS) pour un MULTIPASS déjà existant.
+class MultipassOnboardingDialog extends StatelessWidget {
   const MultipassOnboardingDialog({super.key});
 
-  @override
-  State<MultipassOnboardingDialog> createState() =>
-      _MultipassOnboardingDialogState();
-}
-
-class _MultipassOnboardingDialogState extends State<MultipassOnboardingDialog> {
-  final TextEditingController _emailController = TextEditingController();
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  bool _isLoading = false;
-  String? _errorMessage;
-  String _lat = '';
-  String _lon = '';
-  bool _geolocated = false;
-  MultipassResponse? _result;
-
-  @override
-  void dispose() {
-    _emailController.dispose();
-    super.dispose();
-  }
-
-  Future<void> _requestGeolocation() async {
-    try {
-      LocationPermission permission = await Geolocator.checkPermission();
-      if (permission == LocationPermission.denied) {
-        permission = await Geolocator.requestPermission();
-      }
-      if (permission == LocationPermission.denied ||
-          permission == LocationPermission.deniedForever) {
-        // User refused geolocation — use 0.00, 0.00
-        setState(() {
-          _lat = '0.00';
-          _lon = '0.00';
-          _geolocated = true;
-          _errorMessage = null;
-        });
-        return;
-      }
-      final Position position = await Geolocator.getCurrentPosition(
-        locationSettings:
-            const LocationSettings(accuracy: LocationAccuracy.low),
-      );
-      setState(() {
-        // Precision 0.01° (~1.1 km) for UMAP grid
-        _lat = position.latitude.toStringAsFixed(2);
-        _lon = position.longitude.toStringAsFixed(2);
-        _geolocated = true;
-        _errorMessage = null;
-      });
-    } catch (e) {
-      // Geolocation error — fallback to 0.00, 0.00
-      setState(() {
-        _lat = '0.00';
-        _lon = '0.00';
-        _geolocated = true;
-        _errorMessage = null;
-      });
+  Future<void> _openQoOp() async {
+    final Uri uri = Uri.parse(_kQoOpUrl);
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri, mode: LaunchMode.externalApplication);
     }
   }
 
-  Future<void> _createMultipass() async {
-    if (!_formKey.currentState!.validate()) return;
-
-    setState(() {
-      _isLoading = true;
-      _errorMessage = null;
-    });
-
-    try {
-      final MultipassResponse response =
-          await MultipassService.createMultipass(
-        email: _emailController.text.trim(),
-        lang: context.locale.languageCode,
-        lat: _lat,
-        lon: _lon,
-      );
-
-      // Create the wallet from salt/pepper
-      await SharedPreferencesHelperV2().createMultipassAccount(
-        salt: response.salt,
-        pepper: response.pepper,
-        nsec: response.nsec,
-        npub: response.npub,
-        nostrns: response.nostrns,
-        ssssPlayer: response.ssssPlayer,
-        email: response.email,
-        isOrigin: response.isOrigin,
-        uplanetHome: response.uplanetHome,
-        ocUrls: <String, String>{
-          'satellite': response.ocUrls.satellite,
-          'constellation': response.ocUrls.constellation,
-          'cloud': response.ocUrls.cloud,
-          'membre': response.ocUrls.membre,
-        },
-        uplanetnameG1: response.uplanetnameG1,
-        pass: response.pass,
-      );
-
-      // Initialize ZEN tag if UPLANETNAME_G1 was returned
-      if (response.uplanetnameG1.isNotEmpty) {
-        ZenTagService().setUplanetnameG1(response.uplanetnameG1);
-      }
-
-      setState(() {
-        _result = response;
-        _isLoading = false;
-      });
-    } catch (e) {
-      setState(() {
-        _isLoading = false;
-        _errorMessage = e.toString();
-      });
-    }
+  void _goToRecovery(BuildContext context) {
+    Navigator.of(context).pop();
+    Navigator.of(context).push(
+      MaterialPageRoute<void>(
+        builder: (_) => const MultipassRecoveryScreen(),
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    if (_result != null) {
-      return _buildSuccessView(context);
-    }
-    return _buildFormView(context);
-  }
-
-  Widget _buildFormView(BuildContext context) {
     return AlertDialog(
-      title: Text(tr('multipass_onboarding_title')),
-      content: Form(
-        key: _formKey,
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Text(tr('multipass_onboarding_description')),
-              const SizedBox(height: 16),
-              TextFormField(
-                controller: _emailController,
-                keyboardType: TextInputType.emailAddress,
-                decoration: InputDecoration(
-                  labelText: tr('email'),
-                  prefixIcon: const Icon(Icons.email),
-                ),
-                validator: (String? value) {
-                  if (value == null || value.trim().isEmpty) {
-                    return tr('email_required');
-                  }
-                  if (!RegExp(r'^[^@]+@[^@]+\.[^@]+$')
-                      .hasMatch(value.trim())) {
-                    return tr('email_invalid');
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 16),
-              if (!_geolocated)
-                ElevatedButton.icon(
-                  onPressed: _isLoading ? null : _requestGeolocation,
-                  icon: const Icon(Icons.my_location),
-                  label: Text(tr('get_location')),
-                )
-              else
-                Chip(
-                  avatar: const Icon(Icons.location_on, size: 18),
-                  label: Text('$_lat, $_lon'),
-                ),
-              if (_errorMessage != null) ...<Widget>[
-                const SizedBox(height: 8),
-                Text(
-                  _errorMessage!,
-                  style: TextStyle(color: Theme.of(context).colorScheme.error),
-                ),
-              ],
-            ],
-          ),
-        ),
+      title: const Text('Activez votre MULTIPASS'),
+      content: const Text(
+        'Ce portefeuille ne possède pas encore d’identité MULTIPASS '
+        '(NOSTR + ẐEN). Créez-en un sur qo-op.com, ou récupérez-en un '
+        'existant avec votre email et votre code PASS.',
       ),
       actions: <Widget>[
         TextButton(
-          onPressed: _isLoading ? null : () => Navigator.of(context).pop(),
-          child: Text(tr('cancel')),
+          onPressed: () => Navigator.of(context).pop(),
+          child: const Text('Plus tard'),
         ),
-        if (_isLoading)
-          const Padding(
-            padding: EdgeInsets.all(8),
-            child: SizedBox(
-              width: 24,
-              height: 24,
-              child: CircularProgressIndicator(strokeWidth: 2),
-            ),
-          )
-        else
-          ElevatedButton(
-            onPressed: _createMultipass,
-            child: Text(tr('create_multipass')),
-          ),
-      ],
-    );
-  }
-
-  Widget _buildSuccessView(BuildContext context) {
-    final OcUrls ocUrls = _result!.ocUrls;
-    final bool hasBatisseur =
-        ocUrls.satellite.isNotEmpty || ocUrls.constellation.isNotEmpty;
-    final bool hasExplorateur =
-        ocUrls.cloud.isNotEmpty || ocUrls.membre.isNotEmpty;
-
-    return AlertDialog(
-      title: Text(tr('multipass_created_title')),
-      content: SingleChildScrollView(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Text(tr('multipass_created_description')),
-            if (_result!.isOrigin) ...<Widget>[
-              const SizedBox(height: 8),
-              Chip(
-                avatar: const Icon(Icons.science, size: 18),
-                label: Text(tr('origin_mode_label')),
-                backgroundColor: Colors.orange.shade100,
-              ),
-            ],
-            // Bâtisseur — parcelle numérique (sociétaire SCIC)
-            if (hasBatisseur) ...<Widget>[
-              const SizedBox(height: 16),
-              Text(
-                tr('tier_batisseur_title'),
-                style: Theme.of(context).textTheme.titleSmall,
-              ),
-              Text(
-                tr('tier_batisseur_desc'),
-                style: Theme.of(context).textTheme.bodySmall,
-              ),
-              const SizedBox(height: 4),
-              if (ocUrls.satellite.isNotEmpty)
-                ListTile(
-                  leading: const Icon(Icons.satellite_alt),
-                  title: Text(tr('subscription_satellite_title')),
-                  subtitle: Text(tr('subscription_satellite_desc')),
-                  onTap: () => _openSubscription(ocUrls.satellite),
-                  trailing: const Icon(Icons.open_in_new),
-                ),
-              if (ocUrls.constellation.isNotEmpty)
-                ListTile(
-                  leading: const Icon(Icons.memory),
-                  title: Text(tr('subscription_constellation_title')),
-                  subtitle: Text(tr('subscription_constellation_desc')),
-                  onTap: () => _openSubscription(ocUrls.constellation),
-                  trailing: const Icon(Icons.open_in_new),
-                ),
-            ],
-            // Explorateur — recharge MULTIPASS (sans parcelle)
-            if (hasExplorateur) ...<Widget>[
-              const SizedBox(height: 16),
-              Text(
-                tr('tier_explorateur_title'),
-                style: Theme.of(context).textTheme.titleSmall,
-              ),
-              Text(
-                tr('tier_explorateur_desc'),
-                style: Theme.of(context).textTheme.bodySmall,
-              ),
-              const SizedBox(height: 4),
-              if (ocUrls.cloud.isNotEmpty)
-                ListTile(
-                  leading: const Icon(Icons.bolt),
-                  title: Text(tr('subscription_recharge_title')),
-                  subtitle: Text(tr('subscription_recharge_desc')),
-                  onTap: () => _openSubscription(ocUrls.cloud),
-                  trailing: const Icon(Icons.open_in_new),
-                ),
-              if (ocUrls.membre.isNotEmpty)
-                ListTile(
-                  leading: const Icon(Icons.autorenew),
-                  title: Text(tr('subscription_monthly_title')),
-                  subtitle: Text(tr('subscription_monthly_desc')),
-                  onTap: () => _openSubscription(ocUrls.membre),
-                  trailing: const Icon(Icons.open_in_new),
-                ),
-            ],
-            // UPlanet home link
-            if (_result!.uplanetHome.isNotEmpty) ...<Widget>[
-              const SizedBox(height: 16),
-              const Divider(),
-              ListTile(
-                leading: const Icon(Icons.public),
-                title: Text(tr('uplanet_home_title')),
-                subtitle: Text(tr('uplanet_home_desc')),
-                onTap: () => _openSubscription(_result!.uplanetHome),
-                trailing: const Icon(Icons.open_in_new),
-              ),
-            ],
-          ],
+        TextButton.icon(
+          onPressed: _openQoOp,
+          icon: const Icon(Icons.open_in_new, size: 16),
+          label: const Text('qo-op.com'),
         ),
-      ),
-      actions: <Widget>[
-        ElevatedButton(
-          onPressed: () {
-            Navigator.of(context).pop();
-            context.read<AppCubit>().setHasRecentExport(false);
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(tr('wallet_created_successfully'))),
-            );
-          },
-          child: Text(tr('done')),
+        FilledButton(
+          onPressed: () => _goToRecovery(context),
+          child: const Text('J’ai un MULTIPASS'),
         ),
       ],
     );
-  }
-
-  Future<void> _openSubscription(String url) async {
-    final Uri uri = Uri.parse(url);
-    if (await canLaunchUrl(uri)) {
-      await launchUrl(uri, mode: LaunchMode.externalApplication);
-    }
   }
 }

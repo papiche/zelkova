@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../data/models/app_cubit.dart';
 import '../../env.dart';
@@ -15,7 +16,9 @@ import '../../g1/nostr/home_station_lookup.dart';
 import '../../g1/zen_tag_service.dart';
 import '../../shared_prefs_helper_v2.dart';
 import '../logger.dart';
-import 'multipass_creation_screen.dart';
+
+/// Zelkova ne crée plus de MULTIPASS lui-même — uniquement sur qo-op.com.
+const String _kQoOpUrl = 'https://qo-op.com';
 
 // ── État de détection NOSTR ───────────────────────────────────────────────────
 
@@ -108,9 +111,9 @@ class _Station {
 /// Flux :
 ///   1. Email saisi → debounce 800 ms → requête relay NOSTR (#i email:xxx)
 ///   2. Trouvé → station pré-sélectionnée → "Récupérer" en un tap
-///   3. Non trouvé → proposition de créer un MULTIPASS avec cet email
+///   3. Non trouvé → lien vers qo-op.com (Zelkova ne crée pas de MULTIPASS)
 ///   4. Relay KO → mode manuel avec sélecteur de station
-///   5. PIN uniquement en dialog de fallback (HTTP 409)
+///   5. PIN (code PASS) requis en dialog de fallback (HTTP 409)
 class MultipassRecoveryScreen extends StatefulWidget {
   const MultipassRecoveryScreen({super.key, this.initialEmail});
 
@@ -421,6 +424,14 @@ class _MultipassRecoveryScreenState extends State<MultipassRecoveryScreen> {
           _error = "Conflit d'identité : cette clé appartient à un autre compte.";
         });
       }
+    } on MultipassNotFoundException {
+      if (mounted) {
+        setState(() {
+          _recovering = false;
+          _error = 'Aucun MULTIPASS pour cet email sur cette station. '
+              'Vérifiez la station sélectionnée, ou créez-en un sur qo-op.com.';
+        });
+      }
     } on TimeoutException {
       if (mounted) {
         setState(() {
@@ -532,14 +543,11 @@ class _MultipassRecoveryScreenState extends State<MultipassRecoveryScreen> {
     Navigator.of(context).pushReplacementNamed('/');
   }
 
-  void _goToCreate() {
-    Navigator.of(context).pushReplacement(
-      MaterialPageRoute<void>(
-        builder: (_) => MultipassCreationScreen(
-          initialEmail: _emailCtrl.text.trim(),
-        ),
-      ),
-    );
+  Future<void> _openQoOp() async {
+    final Uri uri = Uri.parse(_kQoOpUrl);
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri, mode: LaunchMode.externalApplication);
+    }
   }
 
   // ── Build ───────────────────────────────────────────────────────────────────
@@ -671,7 +679,7 @@ class _MultipassRecoveryScreenState extends State<MultipassRecoveryScreen> {
           email: _emailCtrl.text.trim(),
           theme: theme,
           cs: cs,
-          onCreateTap: _goToCreate,
+          onQoOpTap: _openQoOp,
         );
 
       case _DetectionState.failed:
@@ -990,12 +998,12 @@ class _NotFoundCard extends StatelessWidget {
     required this.email,
     required this.theme,
     required this.cs,
-    required this.onCreateTap,
+    required this.onQoOpTap,
   });
   final String email;
   final ThemeData theme;
   final ColorScheme cs;
-  final VoidCallback onCreateTap;
+  final VoidCallback onQoOpTap;
 
   @override
   Widget build(BuildContext context) {
@@ -1021,13 +1029,20 @@ class _NotFoundCard extends StatelessWidget {
               ),
             ),
           ]),
+          const SizedBox(height: 8),
+          Text(
+            'Zelkova ne crée pas de nouveau MULTIPASS. Créez-en un sur '
+            'qo-op.com, puis revenez ici avec votre email et votre code PASS.',
+            style: theme.textTheme.bodySmall?.copyWith(
+                color: cs.onSurface.withValues(alpha: 0.65)),
+          ),
           const SizedBox(height: 12),
           SizedBox(
             width: double.infinity,
             child: FilledButton.tonalIcon(
-              onPressed: onCreateTap,
-              icon: const Icon(Icons.add_circle_outline, size: 18),
-              label: Text('Créer un MULTIPASS avec $email'),
+              onPressed: onQoOpTap,
+              icon: const Icon(Icons.open_in_new, size: 18),
+              label: const Text('Créer un compte sur qo-op.com'),
               style: FilledButton.styleFrom(
                 padding: const EdgeInsets.symmetric(
                     horizontal: 16, vertical: 12),

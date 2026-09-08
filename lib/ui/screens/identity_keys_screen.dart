@@ -6,11 +6,11 @@ import '../../shared_prefs_helper_v2.dart';
 /// Écran "Mode Expert" affichant le nsec principal et le code PASS du
 /// MULTIPASS courant — masqués par défaut, révélables un par un.
 ///
-/// Volontairement absent du flux d'onboarding standard (création/récupération) :
+/// Volontairement absent du flux d'onboarding standard (récupération) :
 /// ces secrets techniques ne sont utiles qu'aux utilisateurs avancés (recréer
 /// une identité sur un autre client, terminal UPlanet, débogage). Voir
-/// multipass_creation_screen.dart / multipass_recovery_screen.dart, qui
-/// renvoient ici plutôt que d'exposer directement le secret post-création.
+/// multipass_recovery_screen.dart, qui renvoie ici plutôt que d'exposer
+/// directement le secret post-récupération.
 class IdentityKeysScreen extends StatefulWidget {
   const IdentityKeysScreen({super.key});
 

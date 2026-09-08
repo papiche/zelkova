@@ -166,7 +166,8 @@ enum _NostrDetectStatus { idle, checking, found, notFound }
 /// Aucun nouveau MULTIPASS n'est créé.
 ///
 /// N'est plus utilisé pour l'onboarding initial (voir
-/// `multipass_creation_screen.dart` pour le flux minimal email + UMAP).
+/// `multipass_recovery_screen.dart` — Zelkova ne crée plus de MULTIPASS,
+/// seule la récupération via email + code PASS est proposée dans l'app).
 class WalletCreationScreen extends StatefulWidget {
   const WalletCreationScreen({
     super.key,

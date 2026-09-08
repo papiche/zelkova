@@ -41,6 +41,14 @@ class MultipassIdentityConflictException implements Exception {
   String toString() => 'IDENTITY_CONFLICT';
 }
 
+/// Aucun MULTIPASS pour cet email sur cette station, et [recoverOnly] a
+/// empêché la création automatique d'un nouveau compte (HTTP 404).
+class MultipassNotFoundException implements Exception {
+  const MultipassNotFoundException();
+  @override
+  String toString() => 'MULTIPASS_NOT_FOUND';
+}
+
 /// Activation ATOM4LOVE demandée pour un email dont le compte principal
 /// n'existe pas encore (HTTP 404 PRIMARY_ACCOUNT_NOT_FOUND).
 class Atom4LovePrimaryAccountNotFoundException implements Exception {
@@ -192,17 +200,21 @@ class Atom4LoveActivationResponse {
 class MultipassService {
   static const Duration _timeout = Duration(seconds: 180);
 
-  /// Create a new MULTIPASS or recover an existing one via UPassport /g1nostr.
-  ///
-  /// **New MULTIPASS** (email unknown to server): creates all keys and returns JSON.
+  /// Recover an existing MULTIPASS via UPassport /g1nostr.
   ///
   /// **Existing MULTIPASS** (email known to server):
   /// - Without [passCode] → throws [MultipassExistsException] (HTTP 409)
   /// - With correct [passCode] → returns existing MULTIPASS JSON (HTTP 200)
   /// - With wrong [passCode]   → throws [MultipassInvalidPassException] (HTTP 401)
   ///
-  /// Zelkova never sends birth/salt/pepper data here: the server always
-  /// generates a random identity for a new MULTIPASS. The birth profile
+  /// **Unknown email** (no MULTIPASS on this station): with [recoverOnly]
+  /// (the default, and always true in practice — Zelkova never creates a
+  /// MULTIPASS, only qo-op.com does) throws [MultipassNotFoundException]
+  /// (HTTP 404) instead of silently creating a new empty account. This
+  /// matters when the target station was picked manually (NOSTR relay
+  /// lookup failed) and might not be the account's actual home station.
+  ///
+  /// Zelkova never sends birth/salt/pepper data here — the birth profile
   /// (ATOM4LOVE) is requested separately, after MULTIPASS creation, via
   /// [activateAtom4Love].
   static Future<MultipassResponse> createMultipass({
@@ -212,6 +224,7 @@ class MultipassService {
     required String lon,
     String? passCode,
     String? serverUrl,
+    bool recoverOnly = true,
   }) async {
     final String baseUrl = serverUrl ?? Env.upassportUrl;
     final Uri uri = Uri.parse('$baseUrl/g1nostr');
@@ -222,6 +235,7 @@ class MultipassService {
       'lat': lat,
       'lon': lon,
       'format': 'json',
+      'recover_only': recoverOnly.toString(),
       if (passCode != null && passCode.isNotEmpty) 'pass_code': passCode,
     };
 
@@ -236,6 +250,8 @@ class MultipassService {
         return MultipassResponse.fromJson(data);
       case 401:
         throw const MultipassInvalidPassException();
+      case 404:
+        throw const MultipassNotFoundException();
       case 409:
         Map<String, dynamic>? body409;
         try { body409 = jsonDecode(response.body) as Map<String, dynamic>?; } catch (_) {}

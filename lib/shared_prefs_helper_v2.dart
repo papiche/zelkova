@@ -1053,6 +1053,22 @@ class SharedPreferencesHelperV2
     _currentPubKey = null;
   }
 
+  /// Wipes every secret this helper ever wrote to secure storage (accounts
+  /// list, per-account NOSTR/MULTIPASS/ATOM4LOVE keys, LOVE contacts, and the
+  /// unlock pattern/password/salt), then resets the in-memory state.
+  ///
+  /// Used by the "Reset application" settings action — a full factory reset,
+  /// distinct from [removeWallet] which only ever removes one account among
+  /// several and refuses to drop the last one.
+  Future<void> wipeSecureStorage() async {
+    await _storage.deleteAll();
+    accounts.clear();
+    _currentPubKey = null;
+    _passwordKey = null;
+    _cesiumVolatileCards.clear();
+    notifyListeners();
+  }
+
   @override
   bool get hasMultipleWallets => accounts.length > 1;
 

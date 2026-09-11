@@ -27,29 +27,16 @@ class _StationStatusWidgetState extends State<StationStatusWidget> {
     _fetchStationData();
   }
 
-  /// Derive IPFS gateway URL from UPASSPORT_URL and fetch 12345.json
+  /// Fetch the station JSON directly from UPASSPORT_URL.
+  ///
+  /// Same data source and pattern as [AstroSwarmWidget]: the UPassport root
+  /// endpoint already returns the station's own 12345.json content (hostname,
+  /// captain, services, capacities, ...). No IPFS-gateway hostname needs to
+  /// be derived here — doing so previously broke on IP/localhost dev URLs
+  /// (e.g. `http://127.0.0.1:54321` produced the invalid host `ipfs.0.0.1`).
   Future<void> _fetchStationData() async {
     try {
-      final Uri upassportUri = Uri.parse(Env.upassportUrl);
-      final String host = upassportUri.host;
-      String ipfsHost;
-      if (host.startsWith('u.')) {
-        ipfsHost = 'ipfs.${host.substring(2)}';
-      } else {
-        final List<String> parts = host.split('.');
-        if (parts.length >= 2) {
-          parts[0] = 'ipfs';
-          ipfsHost = parts.join('.');
-        } else {
-          setState(() {
-            _loading = false;
-            _error = 'invalid_host';
-          });
-          return;
-        }
-      }
-
-      final Uri stationUrl = Uri.https(ipfsHost, '/12345/');
+      final Uri stationUrl = Uri.parse(Env.upassportUrl);
       loggerDev('StationStatus: fetching $stationUrl');
 
       final http.Response response = await http

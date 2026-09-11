@@ -5,7 +5,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../data/models/app_cubit.dart';
 import '../../../data/models/app_state.dart';
 import '../../../data/models/theme_cubit.dart';
+import '../../../services/app_reset_service.dart';
 import '../../../ui/notification_controller.dart';
+import '../../screens/onboarding_choice_screen.dart';
 import 'authentication_settings_page.dart';
 
 class SettingsPage extends StatefulWidget {
@@ -240,6 +242,29 @@ class _SettingsPageState extends State<SettingsPage> {
                 },
               ),
 
+              // DANGER ZONE
+              const SizedBox(height: 24),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Text(
+                  tr('settings_danger_zone_title'),
+                  style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    color: Theme.of(context).colorScheme.error,
+                  ),
+                ),
+              ),
+              ListTile(
+                leading: Icon(Icons.delete_forever,
+                    color: Theme.of(context).colorScheme.error),
+                title: Text(
+                  tr('settings_reset_app_title'),
+                  style: TextStyle(color: Theme.of(context).colorScheme.error),
+                ),
+                subtitle: Text(tr('settings_reset_app_desc')),
+                onTap: () => _showResetAppDialog(context),
+              ),
+
               const SizedBox(height: 20),
             ],
           );
@@ -292,6 +317,91 @@ class _SettingsPageState extends State<SettingsPage> {
         );
       },
     );
+  }
+
+  void _showResetAppDialog(BuildContext context) {
+    bool confirmed = false;
+    showDialog<void>(
+      context: context,
+      builder: (BuildContext dialogContext) {
+        return StatefulBuilder(
+          builder: (BuildContext context, StateSetter setDialogState) {
+            return AlertDialog(
+              title: Text(tr('settings_reset_app_dialog_title')),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(tr('settings_reset_app_dialog_body')),
+                  const SizedBox(height: 12),
+                  CheckboxListTile(
+                    contentPadding: EdgeInsets.zero,
+                    controlAffinity: ListTileControlAffinity.leading,
+                    value: confirmed,
+                    title: Text(
+                      tr('settings_reset_app_dialog_confirm_checkbox'),
+                      style: Theme.of(context).textTheme.bodySmall,
+                    ),
+                    onChanged: (bool? value) {
+                      setDialogState(() => confirmed = value ?? false);
+                    },
+                  ),
+                ],
+              ),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () => Navigator.of(dialogContext).pop(),
+                  child: Text(tr('settings_reset_app_dialog_cancel_button')),
+                ),
+                TextButton(
+                  onPressed: confirmed
+                      ? () {
+                          Navigator.of(dialogContext).pop();
+                          _resetApplication(context);
+                        }
+                      : null,
+                  style: TextButton.styleFrom(
+                    foregroundColor: Theme.of(context).colorScheme.error,
+                  ),
+                  child:
+                      Text(tr('settings_reset_app_dialog_confirm_button')),
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
+  }
+
+  Future<void> _resetApplication(BuildContext context) async {
+    final NavigatorState navigator =
+        Navigator.of(context, rootNavigator: true);
+    final ScaffoldMessengerState messenger = ScaffoldMessenger.of(context);
+    showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (_) => const Center(child: CircularProgressIndicator()),
+    );
+    try {
+      await AppResetService.resetApplication();
+      navigator.pushAndRemoveUntil(
+        MaterialPageRoute<void>(
+          builder: (BuildContext _) => const OnboardingChoiceScreen(),
+        ),
+        (Route<dynamic> route) => false,
+      );
+    } catch (e) {
+      navigator.pop(); // dismiss the progress dialog
+      messenger.showSnackBar(
+        SnackBar(
+          content:
+              Text(tr('settings_reset_app_error', namedArgs: <String, String>{
+            'error': e.toString(),
+          })),
+        ),
+      );
+    }
   }
 
   IconData _getThemeIcon(ThemeMode? mode) {

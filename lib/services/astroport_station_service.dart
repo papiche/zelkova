@@ -32,22 +32,44 @@ class AstroportStationService {
   DateTime? _stationDataFetchedAt;
   static const Duration _stationDataTtl = Duration(minutes: 5);
 
-  /// Derive the IPFS gateway hostname from UPASSPORT_URL.
-  /// Returns null when the URL cannot be parsed.
+  /// Derive the IPFS gateway hostname from UPASSPORT_URL, by convention
+  /// `https://u.{domain}` → `https://ipfs.{domain}`.
+  ///
+  /// Only rewrites a recognised service prefix (`u.`) — never blindly
+  /// replaces the first DNS label. On a bare IP or `localhost` (dev
+  /// environments, where UPASSPORT_URL is e.g. `http://127.0.0.1:54321`),
+  /// there is no domain to rewrite into an `ipfs.` subdomain, so this
+  /// returns null instead of fabricating an invalid host such as
+  /// `ipfs.0.0.1`.
   String? _ipfsHost() {
     try {
       final Uri uri = Uri.parse(Env.upassportUrl);
       final String host = uri.host;
+      if (_isLocalOrIpHost(host)) return null;
       if (host.startsWith('u.')) {
         return 'ipfs.${host.substring(2)}';
       }
-      final List<String> parts = host.split('.');
-      if (parts.length < 2) return null;
-      parts[0] = 'ipfs';
-      return parts.join('.');
+      if (host.startsWith('astroport.')) {
+        return 'ipfs.${host.substring(10)}';
+      }
+      return null;
     } catch (_) {
       return null;
     }
+  }
+
+  /// True for `localhost`, loopback, or a private-network IPv4 literal
+  /// (mirrors the guard used by uplanet-header.js/common.js and coracle
+  /// before they ever attempt to rewrite a hostname by convention).
+  static bool _isLocalOrIpHost(String host) {
+    if (host == 'localhost' || host.endsWith('.localhost')) return true;
+    if (host.endsWith('.home')) return true;
+    final RegExpMatch? m =
+        RegExp(r'^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$').firstMatch(host);
+    if (m == null) return false;
+    final int a = int.parse(m.group(1)!);
+    final int b = int.parse(m.group(2)!);
+    return a == 127 || a == 10 || (a == 192 && b == 168) || (a == 172 && b >= 16 && b <= 31);
   }
 
   /// Fetch the station's 12345.json (cached 5 min).

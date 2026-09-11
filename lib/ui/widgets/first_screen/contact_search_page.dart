@@ -18,11 +18,13 @@ import '../../../g1/g1_v2_helper.dart';
 import '../../../g1/nostr/nostr_keys.dart';
 import '../../../g1/nostr/nostr_profile.dart';
 import '../../../g1/nostr/nostr_relay_service.dart';
+import '../../../shared_prefs_helper_v2.dart';
 import '../../contact_list_item.dart';
 import '../../contacts_cache.dart';
 import '../../in_dev_helper.dart';
 import '../../logger.dart';
 import '../../qr_manager.dart';
+import '../../screens/chat_screen.dart';
 import '../../ui_helpers.dart';
 import '../connectivity_widget_wrapper_wrapper.dart';
 import '../contact_menu.dart';
@@ -805,6 +807,30 @@ class _ContactSearchPageState extends State<ContactSearchPage> {
     }
   }
 
+  /// Open a NIP-44 chat directly from a search result row, without going
+  /// through the contact detail page first.
+  Future<void> _openChatFromSearch(String peerHexPubkey) async {
+    final String? nsec = await SharedPreferencesHelperV2().getNostrNsec();
+    if (nsec == null || nsec.isEmpty) {
+      return;
+    }
+    final String myPrivHex = NostrKeys.nsecToHex(nsec);
+    final String myPubHex = NostrRelayService.derivePublicKey(myPrivHex);
+    if (!mounted) {
+      return;
+    }
+    unawaited(Navigator.push(
+      context,
+      MaterialPageRoute<void>(
+        builder: (_) => ChatScreen(
+          myHexPubkey: myPubHex,
+          myHexPrivkey: myPrivHex,
+          peerHexPubkey: peerHexPubkey,
+        ),
+      ),
+    ));
+  }
+
   Widget _buildItem(Contact contact, int index, BuildContext context) {
     final Widget? subtitle =
         contact.subtitle != null ? Text(contact.subtitle!) : null;
@@ -855,18 +881,35 @@ class _ContactSearchPageState extends State<ContactSearchPage> {
             },
             trailing: BlocBuilder<ContactsCubit, ContactsState>(
                 builder: (BuildContext context, ContactsState state) {
-              return widget.searchUse == SearchUse.payment
-                  ? ContactFavIcon(
-                      contact: contact,
-                      contactsCubit: context.read<ContactsCubit>())
-                  : widget.searchUse == SearchUse.contactSearch
-                      ? ContactMenu(
-                          contact: contact,
-                          onEdit: () => onEditContact(context, contact),
-                          onSent: () => onSentContact(context, contact),
-                          onCopy: () => onShowContactQr(context, contact),
-                          onDelete: () => onDeleteContact(context, contact))
-                      : Container();
+              if (widget.searchUse == SearchUse.payment) {
+                return ContactFavIcon(
+                    contact: contact,
+                    contactsCubit: context.read<ContactsCubit>());
+              }
+              if (widget.searchUse == SearchUse.contactSearch) {
+                return Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    if (contact.nostrHex != null &&
+                        extractPublicKey(contact.pubKey) !=
+                            extractPublicKey(
+                                SharedPreferencesHelperV2().getPubKey()))
+                      IconButton(
+                        icon: const Icon(Icons.chat_bubble_outline, size: 20),
+                        tooltip: tr('send_message'),
+                        onPressed: () =>
+                            _openChatFromSearch(contact.nostrHex!),
+                      ),
+                    ContactMenu(
+                        contact: contact,
+                        onEdit: () => onEditContact(context, contact),
+                        onSent: () => onSentContact(context, contact),
+                        onCopy: () => onShowContactQr(context, contact),
+                        onDelete: () => onDeleteContact(context, contact)),
+                  ],
+                );
+              }
+              return Container();
             }),
           );
   }

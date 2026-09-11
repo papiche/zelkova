@@ -865,8 +865,14 @@ class _ContactPageState extends State<ContactPage> with RouteAware {
             ListTile(
               leading: const Icon(Icons.electric_bolt,
                   color: Color(0xFFBF5AFF)),
-              title: const Text('Clef NOSTR',
-                  style: TextStyle(fontWeight: FontWeight.w700)),
+              title: Text(
+                (_nostrProfile!.displayName?.isNotEmpty ?? false)
+                    ? _nostrProfile!.displayName!
+                    : _nostrProfile!.name.isNotEmpty
+                        ? _nostrProfile!.name
+                        : 'Clef NOSTR',
+                style: const TextStyle(fontWeight: FontWeight.w700),
+              ),
               subtitle: Text(
                 _nostrProfile!.npub.length > 16
                     ? '${_nostrProfile!.npub.substring(0, 8)}…${_nostrProfile!.npub.substring(_nostrProfile!.npub.length - 8)}'
